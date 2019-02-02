@@ -51503,7 +51503,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         to: "/",
         className: "navbar-brand"
-      }, "MyCE App"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      }, "school.educate2earn.com"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         className: "navbar-toggler",
         type: "button",
         "data-toggle": "collapse",

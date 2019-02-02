@@ -19,7 +19,7 @@ class Header extends Component {
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <div className="container">
-                    <Link to={"/"} className="navbar-brand">MyCE App</Link>
+                    <Link to={"/"} className="navbar-brand">school.educate2earn.com</Link>
                     <button className="navbar-toggler"
                             type="button"
                             data-toggle="collapse"
