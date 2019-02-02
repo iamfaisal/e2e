@@ -107,6 +107,9 @@ class AuthController extends Controller
             : response()->json(['message' => 'Unable to send reset link.'], 401);
     }
 
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function reset()
     {
         $credentials = request(
@@ -124,6 +127,10 @@ class AuthController extends Controller
             : response()->json(['message' => 'Password reset failed.'], 401);
     }
 
+    /**
+     * @param HasherContract $hasher
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function reset_password_email(HasherContract $hasher)
     {
         $dbTokens = DB::table('password_resets')->get();
