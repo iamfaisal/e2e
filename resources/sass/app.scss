@@ -1,0 +1,41 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+body {
+  background: $white;
+}
+
+.navbar-laravel {
+  background-color: $white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+.isLink {
+  cursor: pointer;
+}
+
+.form-group {
+  margin-bottom: 10px;
+
+  label {
+    margin-bottom: 5px;
+  }
+}
+
+.form-auth {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
