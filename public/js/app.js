@@ -51372,7 +51372,6 @@ __webpack_require__.r(__webpack_exports__);
 function login(credentials) {
   return new Promise(function (res, rej) {
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/auth/login", credentials).then(function (response) {
-      console.log(response.data);
       setAuthTokenInLocalStorage(response.data.user, response.data.access_token, response.data.roles);
       setAuthorizationToken(response.data.access_token);
       res(response);

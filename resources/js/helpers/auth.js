@@ -4,7 +4,6 @@ export function login(credentials) {
     return new Promise((res, rej) => {
         axios.post("/api/auth/login", credentials)
             .then((response) => {
-                console.log(response.data);
                 setAuthTokenInLocalStorage(response.data.user, response.data.access_token, response.data.roles);
                 setAuthorizationToken(response.data.access_token);
                 res(response);
