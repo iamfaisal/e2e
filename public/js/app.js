@@ -51352,7 +51352,7 @@ function (_Component) {
 /*!**************************************!*\
   !*** ./resources/js/helpers/auth.js ***!
   \**************************************/
-/*! exports provided: login, forgotPassword, resetPassword, getEmailFromToken, getAuthUser, setAuthorizationToken, setAuthTokenInLocalStorage, logout */
+/*! exports provided: login, forgotPassword, resetPassword, getEmailFromToken, getAuthUser, setAuthorizationToken, encodeAclData, setAuthTokenInLocalStorage, logout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -51363,6 +51363,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getEmailFromToken", function() { return getEmailFromToken; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAuthUser", function() { return getAuthUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAuthorizationToken", function() { return setAuthorizationToken; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "encodeAclData", function() { return encodeAclData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setAuthTokenInLocalStorage", function() { return setAuthTokenInLocalStorage; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logout", function() { return logout; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -51371,7 +51372,8 @@ __webpack_require__.r(__webpack_exports__);
 function login(credentials) {
   return new Promise(function (res, rej) {
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/auth/login", credentials).then(function (response) {
-      setAuthTokenInLocalStorage(response.data.user, response.data.access_token);
+      console.log(response.data);
+      setAuthTokenInLocalStorage(response.data.user, response.data.access_token, response.data.roles);
       setAuthorizationToken(response.data.access_token);
       res(response);
     }).catch(function (err) {
@@ -51417,10 +51419,21 @@ function setAuthorizationToken(token) {
     delete axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common["Authorization"];
   }
 }
-function setAuthTokenInLocalStorage(user, token) {
-  if (user && token) {
+function encodeAclData(acl, token) {
+  var aclArray = {};
+  acl.map(function (role) {
+    aclArray[role.name] = role.permissions && role.permissions.map(function (permission) {
+      return permission.name;
+    });
+  });
+  return window.btoa(JSON.stringify(aclArray)) + token;
+}
+function setAuthTokenInLocalStorage(user, token, acl) {
+  if (user && token && acl) {
     var currentUser = Object.assign({}, user, {
       token: token
+    }, {
+      roles: encodeAclData(acl, token)
     });
     localStorage.setItem("user", JSON.stringify(currentUser));
   } else {
