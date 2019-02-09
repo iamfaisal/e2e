@@ -107,10 +107,16 @@ class AccessControlListDataSeeder extends Seeder
         ];
 
         // assign permissions to roles
-        foreach ($roles as $role) {
-            $role_permissions = $permissions[$role];
-            foreach ($role_permissions as $permission) {
-                $role->assign($permission);
+        foreach ($roles as $key => $value) {
+            $role_permissions = $permissions[$key];
+            $role = new Role([
+                'name'  => $key,
+                'label' => $value
+            ]);
+            if ($role->save()) {
+                foreach ($role_permissions as $permission) {
+                    $role->assign($permission);
+                }
             }
         }
 
