@@ -114,8 +114,14 @@ class AccessControlListDataSeeder extends Seeder
                 'label' => $value
             ]);
             if ($role->save()) {
-                foreach ($role_permissions as $permission) {
-                    $role->assign($permission);
+                foreach ($role_permissions as $permissionKey => $permissionValue) {
+                    $permission = new Permission([
+                        'name'  => $permissionKey,
+                        'label' => $permissionValue
+                    ]);
+                    if ($permission->save()) {
+                        $role->assign($permission);
+                    }
                 }
             }
         }
