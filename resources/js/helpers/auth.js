@@ -4,7 +4,7 @@ export function login(credentials) {
     return new Promise((res, rej) => {
         axios.post("/api/auth/login", credentials)
             .then((response) => {
-                setAuthTokenInLocalStorage(response.data.user, response.data.access_token);
+                setAuthTokenInLocalStorage(response.data.user, response.data.access_token, response.data.roles);
                 setAuthorizationToken(response.data.access_token);
                 res(response);
             })
@@ -63,9 +63,17 @@ export function setAuthorizationToken(token) {
     }
 }
 
-export function setAuthTokenInLocalStorage(user, token) {
-    if (user && token) {
-        const currentUser = Object.assign({}, user, {token: token});
+export function encodeAclData(acl, token) {
+    let aclArray = {};
+    acl.map((role) => {
+        aclArray[role.name] = role.permissions && role.permissions.map(permission => permission.name);
+    });
+    return window.btoa(JSON.stringify(aclArray)) + token;
+}
+
+export function setAuthTokenInLocalStorage(user, token, acl) {
+    if (user && token && acl) {
+        const currentUser = Object.assign({}, user, {token: token}, {roles: encodeAclData(acl, token)});
         localStorage.setItem("user", JSON.stringify(currentUser));
     } else {
         localStorage.removeItem("user")

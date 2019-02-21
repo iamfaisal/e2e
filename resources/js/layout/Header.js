@@ -1,59 +1,74 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { getAuthUser, logout } from "../helpers/auth";
+import classnames from "classnames";
 
 class Header extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            sidebar: true
+        };
 
         this.handleLogout = this.handleLogout.bind(this);
+        this.handleSidebarToggle = this.handleSidebarToggle.bind(this);
     }
 
     handleLogout() {
         logout();
     }
 
+    handleSidebarToggle() {
+        const { sidebar } = this.state;
+        this.setState({sidebar: !sidebar});
+    }
+
     render() {
+        const { sidebar } = this.state;
+        const sidebarClass = classnames("sidebar", { "collapse": !sidebar })
         const currentUser = getAuthUser();
 
         return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <div className="container">
-                    <Link to={"/"} className="navbar-brand">school.educate2earn.com</Link>
-                    <button className="navbar-toggler"
-                            type="button"
-                            data-toggle="collapse"
-                            data-target="#navbarContent"
-                            aria-controls="navbarContent"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarContent">
-                        {currentUser ?
-                            <ul className="navbar-nav ml-auto">
-                                <li className="nav-item dropdown">
-                                    <a className="nav-link dropdown-toggle isLink text-capitalize"
-                                       id="navbarDropdownMenuLink"
-                                       role="button" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        Hi, {currentUser.name}
-                                    </a>
-                                    <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <a className="dropdown-item isLink" onClick={this.handleLogout}>Logout</a>
-                                    </div>
-                                </li>
-                            </ul>
-                            :
-                            <ul className="navbar-nav ml-auto">
-                                <li className="nav-item">
-                                    <Link to={"/login"} className="nav-link">Login</Link>
-                                </li>
-                            </ul>
-                        }
+            <div>
+                <header className="header">
+                    <Link className="logo" to={"/"}>
+                        <img src="images/logo.png"/>
+                    </Link>
+                    <div className="actions">
+                        <a href="#" className="profile"><img src="images/user.jpg"/></a>
+                        <a href="javascript:void(0)" onClick={this.handleLogout} className="logout ion-md-log-out"/>
+                        <a href="#" className="ion-md-more"/>
                     </div>
-                </div>
-            </nav>
+                </header>
+                <aside className={sidebarClass}>
+                    <header>
+                        <Link className="logo" to={"/"}>
+                            <img src="images/logo.png"/>
+                            <img src="images/icon.png"/>
+                        </Link>
+                        <div className="toggle" onClick={this.handleSidebarToggle}>
+                            <a className="ion-ios-arrow-back"/>
+                            <a className="ion-ios-arrow-forward"/>
+                        </div>
+                    </header>
+
+                    <nav>
+                        <h3>System Admin</h3>
+                        <ul>
+                            <li className="active"><a href="#" className="ion-md-airplane"> <span>Menu Item 1</span></a>
+                            </li>
+                            <li><a href="#" className="ion-md-alarm"> <span>Menu Item 2</span></a></li>
+                            <li><a href="#" className="ion-md-bulb"> <span>Menu Item 3</span></a></li>
+                            <li><a href="#" className="ion-md-cloudy"> <span>Menu Item 4</span></a></li>
+                        </ul>
+                    </nav>
+
+                    <div className="profile">
+                        <img src="images/user.jpg"/>
+                        <h4>{currentUser.name}</h4>
+                    </div>
+                </aside>
+            </div>
         );
     }
 }

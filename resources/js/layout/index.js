@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { withRouter } from "react-router-dom";
+import { getAuthUser } from "../helpers/auth";
 
 import Header from "./Header";
 
@@ -13,10 +14,13 @@ class Layout extends Component {
     }
 
     render() {
+        const currentUser = getAuthUser();
         return (
             <Fragment>
-                <Header page={this.state.page}/>
-                {this.props.children}
+                {currentUser && <Header page={this.state.page}/>}
+                <main className="content">
+                    {this.props.children}
+                </main>
             </Fragment>
         );
     }
