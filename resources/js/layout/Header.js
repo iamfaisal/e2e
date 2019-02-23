@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { getAuthUser, logout } from "../helpers/auth";
+import { getAuthUserName, logout } from "../helpers/auth";
+import { asset } from "../helpers/app";
 import classnames from "classnames";
 
 class Header extends Component {
@@ -26,16 +27,16 @@ class Header extends Component {
     render() {
         const { sidebar } = this.state;
         const sidebarClass = classnames("sidebar", { "collapse": !sidebar })
-        const currentUser = getAuthUser();
+        const userName = getAuthUserName();
 
         return (
             <div>
                 <header className="header">
                     <Link className="logo" to={"/"}>
-                        <img src="images/logo.png"/>
+                        <img src={asset("images/logo.png")}/>
                     </Link>
                     <div className="actions">
-                        <a href="#" className="profile"><img src="images/user.jpg"/></a>
+                        <a href="#" className="profile"><img src={asset("images/user.jpg")}/></a>
                         <a href="javascript:void(0)" onClick={this.handleLogout} className="logout ion-md-log-out"/>
                         <a href="#" className="ion-md-more"/>
                     </div>
@@ -43,8 +44,8 @@ class Header extends Component {
                 <aside className={sidebarClass}>
                     <header>
                         <Link className="logo" to={"/"}>
-                            <img src="images/logo.png"/>
-                            <img src="images/icon.png"/>
+                            <img src={asset("images/logo.png")}/>
+                            <img src={asset("images/icon.png")}/>
                         </Link>
                         <div className="toggle" onClick={this.handleSidebarToggle}>
                             <a className="ion-ios-arrow-back"/>
@@ -63,10 +64,10 @@ class Header extends Component {
                         </ul>
                     </nav>
 
-                    <div className="profile">
-                        <img src="images/user.jpg"/>
-                        <h4>{currentUser.name}</h4>
-                    </div>
+                    <Link className="profile" to={"/user/profile"}>
+                        <img src={asset("images/user.jpg")}/>
+                        <h4>{userName}</h4>
+                    </Link>
                 </aside>
             </div>
         );

@@ -85,6 +85,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'user' => $user,
+            'profile' => $user->profile,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
             'roles' => $user->allPermissions()
