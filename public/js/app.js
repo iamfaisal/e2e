@@ -50404,14 +50404,17 @@ function (_Component) {
       var alertClass = classnames__WEBPACK_IMPORTED_MODULE_1___default()("alert alert-success", {
         "alert-danger": !isFormValid
       });
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "form-auth",
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
+        className: "login"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         onSubmit: this.handleSubmit
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
-        className: "h3 mb-3 font-weight-normal"
-      }, "Password Reset"), formValidationData.form && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Password Reset"), formValidationData.form && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: alertClass
-      }, formValidationData.form), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, formValidationData.form), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "fields"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_3__["default"], {
         onBlur: function onBlur(isValid) {
           return _this3.handleFields(isValid);
         },
@@ -50424,12 +50427,13 @@ function (_Component) {
         bordered: true,
         maxLength: 50,
         labelText: "Email Address",
-        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_4__["validations"].isEmail]
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_4__["validations"].isEmail],
+        icon: "ion-ios-person"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         disabled: !isFormValid,
-        className: "btn btn-lg btn-primary btn-block mb-2",
+        className: "button",
         type: "submit"
-      }, "Request Password Reset"));
+      }, "Request Password Reset"))));
     }
   }]);
 
@@ -50505,6 +50509,7 @@ function (_Component) {
       isFormValid: false
     };
     _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleCBChange = _this.handleCBChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleFields = _this.handleFields.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
@@ -50534,9 +50539,18 @@ function (_Component) {
     }
   }, {
     key: "handleChange",
-    value: function handleChange() {
+    value: function handleChange(value) {
       var fields = this.state.fields;
       fields[event.target.name] = event.target.value;
+      this.setState({
+        fields: fields
+      });
+    }
+  }, {
+    key: "handleCBChange",
+    value: function handleCBChange(value) {
+      var fields = this.state.fields;
+      fields["remember_me"] = value;
       this.setState({
         fields: fields
       });
@@ -50585,14 +50599,17 @@ function (_Component) {
           fields = _this$state3.fields,
           isFormValid = _this$state3.isFormValid,
           formValidationData = _this$state3.formValidationData;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "form-auth",
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
+        className: "login"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         onSubmit: this.handleSubmit
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
-        className: "h3 mb-3 font-weight-normal"
-      }, "Login to your account"), formValidationData.form && !isFormValid && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Login to your account"), formValidationData.form && !isFormValid && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "alert alert-danger"
-      }, formValidationData.form), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, formValidationData.form), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "fields"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_4__["default"], {
         onBlur: function onBlur(isValid) {
           return _this3.handleFields(isValid);
         },
@@ -50604,7 +50621,8 @@ function (_Component) {
         required: true,
         maxLength: 50,
         labelText: "Email Address",
-        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_3__["validations"].isEmail]
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_3__["validations"].isEmail],
+        icon: "ion-ios-person"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_4__["default"], {
         onBlur: function onBlur(isValid) {
           return _this3.handleFields(isValid);
@@ -50618,23 +50636,25 @@ function (_Component) {
         required: true,
         maxLength: 50,
         labelText: "Password",
-        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_3__["validations"].isEmpty, _utils_validations__WEBPACK_IMPORTED_MODULE_3__["validations"].isAlphaNumeric]
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_CheckBox__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_3__["validations"].isEmpty, _utils_validations__WEBPACK_IMPORTED_MODULE_3__["validations"].isAlphaNumeric],
+        icon: "ion-md-lock"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "space-between"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_CheckBox__WEBPACK_IMPORTED_MODULE_5__["default"], {
         onChange: function onChange(event) {
-          return _this3.handleChange(event);
+          return _this3.handleCBChange(event);
         },
         name: "remember-me",
         value: fields.remember_me,
         labelText: "Remember me"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        className: "btn btn-lg btn-primary btn-block mb-2",
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+        className: "forgot",
+        to: "/forgot/password"
+      }, "Forgot Password?")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "button",
         type: "submit",
         disabled: !isFormValid
-      }, "Login"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-        className: "small text-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
-        to: "/forgot/password"
-      }, "Forgot Your Password?")));
+      }, "Login"))));
     }
   }]);
 
@@ -50778,7 +50798,6 @@ function (_Component) {
       this.setState({
         fields: fields
       });
-      console.log(this.state.isFormValid);
     }
   }, {
     key: "handleSubmit",
@@ -50833,14 +50852,17 @@ function (_Component) {
       var alertClass = classnames__WEBPACK_IMPORTED_MODULE_1___default()("alert alert-success", {
         "alert-danger": !isFormValid
       });
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "form-auth",
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
+        className: "login"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         onSubmit: this.handleSubmit
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", {
-        className: "h3 mb-3 font-weight-normal"
-      }, "Reset your password"), formValidationData.form && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Reset your password"), formValidationData.form && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: alertClass
-      }, formValidationData.form), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, formValidationData.form), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "fields"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_3__["default"], {
         onBlur: function onBlur(isValid) {
           return _this4.handleFields(isValid);
         },
@@ -50854,7 +50876,8 @@ function (_Component) {
         bordered: true,
         maxLength: 50,
         labelText: "New Password",
-        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_4__["validations"].isEmpty, _utils_validations__WEBPACK_IMPORTED_MODULE_4__["validations"].isAlphaNumeric]
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_4__["validations"].isEmpty, _utils_validations__WEBPACK_IMPORTED_MODULE_4__["validations"].isAlphaNumeric],
+        icon: "ion-md-lock"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_3__["default"], {
         onBlur: function onBlur(isValid) {
           return _this4.handleFields(isValid);
@@ -50869,12 +50892,13 @@ function (_Component) {
         bordered: true,
         maxLength: 50,
         labelText: "Confirm New Password",
-        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_4__["validations"].isEmpty, _utils_validations__WEBPACK_IMPORTED_MODULE_4__["validations"].isAlphaNumeric]
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_4__["validations"].isEmpty, _utils_validations__WEBPACK_IMPORTED_MODULE_4__["validations"].isAlphaNumeric],
+        icon: "ion-md-lock"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         disabled: !isFormValid,
-        className: "btn btn-lg btn-primary btn-block mb-2",
+        className: "button",
         type: "submit"
-      }, "Reset Password"));
+      }, "Reset Password"))));
     }
   }]);
 
@@ -50962,14 +50986,15 @@ function (_Component) {
 
   _createClass(CheckBox, [{
     key: "onChange",
-    value: function onChange(value) {
+    value: function onChange(event) {
       var _this2 = this;
 
+      var value = event.target.checked;
       this.setState({
         value: value
       }, function () {
         if (_this2.props.onChange) {
-          _this2.props.onChange(value);
+          _this2.props.onChange(event);
         }
       });
     }
@@ -50983,10 +51008,8 @@ function (_Component) {
           labelText = _this$props.labelText,
           name = _this$props.name,
           id = _this$props.id;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-check"
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: "checkbox"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         className: "form-check-input",
         type: "checkbox",
@@ -50995,12 +51018,9 @@ function (_Component) {
         name: name,
         id: id ? id : name,
         onChange: function onChange(event) {
-          return _this3.onChange(event.target.value);
+          return _this3.onChange(event);
         }
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-        className: "form-check-label",
-        htmlFor: id ? id : name
-      }, labelText)));
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, labelText));
     }
   }]);
 
@@ -51302,15 +51322,13 @@ function (_Component) {
           maxLength = _this$props.maxLength,
           disabled = _this$props.disabled,
           readOnly = _this$props.readOnly,
-          placeholder = _this$props.placeholder;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
-        htmlFor: name,
-        className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("control-label", {
-          "text-danger": !isValid
+          placeholder = _this$props.placeholder,
+          icon = _this$props.icon;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        className: classnames__WEBPACK_IMPORTED_MODULE_1___default()({
+          "invalid": !isValid
         })
-      }, labelText), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, labelText), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         onChange: function onChange(event) {
           return _this6.onChange(event.target.value);
         },
@@ -51331,10 +51349,12 @@ function (_Component) {
         maxLength: maxLength,
         disabled: disabled,
         readOnly: readOnly,
-        placeholder: placeholder || " ",
+        placeholder: placeholder || "Enter " + name,
         className: classnames__WEBPACK_IMPORTED_MODULE_1___default()("form-control", {
           "is-invalid": !isValid
         })
+      }), icon && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: icon
       }), !isValid && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "invalid-feedback"
       }, errorText));
@@ -51604,9 +51624,11 @@ function (_Component) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-/* harmony import */ var _helpers_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/auth */ "./resources/js/helpers/auth.js");
-/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Header */ "./resources/js/layout/Header.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var _helpers_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/auth */ "./resources/js/helpers/auth.js");
+/* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Header */ "./resources/js/layout/Header.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51624,6 +51646,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -51650,11 +51673,14 @@ function (_Component) {
   _createClass(Layout, [{
     key: "render",
     value: function render() {
-      var currentUser = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_2__["getAuthUser"])();
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, currentUser && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      var currentUser = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getAuthUser"])();
+      var mainWrapperClass = classnames__WEBPACK_IMPORTED_MODULE_1___default()({
+        "content": currentUser
+      });
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, currentUser && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Header__WEBPACK_IMPORTED_MODULE_4__["default"], {
         page: this.state.page
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("main", {
-        className: "content"
+        className: mainWrapperClass
       }, this.props.children));
     }
   }]);
@@ -51662,7 +51688,7 @@ function (_Component) {
   return Layout;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["withRouter"])(Layout));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(Layout));
 
 /***/ }),
 

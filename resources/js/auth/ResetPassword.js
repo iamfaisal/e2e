@@ -72,7 +72,6 @@ class ResetPassword extends Component {
 		let { fields } = this.state;
 		fields[event.target.name] = event.target.value;
 		this.setState({fields: fields});
-		console.log(this.state.isFormValid);
     }
 
 	handleSubmit(event) {
@@ -113,39 +112,41 @@ class ResetPassword extends Component {
         const alertClass = classnames("alert alert-success", { "alert-danger": !isFormValid });
 		
         return (
-            <form className="form-auth" onSubmit={this.handleSubmit}>
-                <h2 className="h3 mb-3 font-weight-normal">Reset your password</h2>
-
-				{formValidationData.form && <div className={alertClass}>{formValidationData.form}</div>}
-
-				<TextField
-					onBlur={(isValid) => this.handleFields(isValid)}
-					onChange={(event) => this.handleChange(event)}
-					name="password"
-					type="password"
-					value={fields.password}
-					required={true}
-					bordered={true}
-					maxLength={50}
-					labelText="New Password"
-					validation={[validations.isEmpty, validations.isAlphaNumeric]}
-				/>
-
-				<TextField
-					onBlur={(isValid) => this.handleFields(isValid)}
-					onChange={(event) => this.handleChange(event)}
-					name="password_confirmation"
-					type="password"
-					value={fields.password_confirmation}
-					required={true}
-					bordered={true}
-					maxLength={50}
-					labelText="Confirm New Password"
-					validation={[validations.isEmpty, validations.isAlphaNumeric]}
-				/>
-
-                <button disabled={!isFormValid} className="btn btn-lg btn-primary btn-block mb-2" type="submit">Reset Password</button>
-            </form>
+			<section className="login">
+				<div className="container">
+					<form onSubmit={this.handleSubmit}>
+						<h1>Reset your password</h1>
+						{formValidationData.form && <div className={alertClass}>{formValidationData.form}</div>}
+						<div className="fields">
+							<TextField
+								onBlur={(isValid) => this.handleFields(isValid)}
+								onChange={(event) => this.handleChange(event)}
+								name="password"
+								type="password"
+								value={fields.password}
+								required={true}
+								bordered={true}
+								maxLength={50}
+								labelText="New Password"
+								validation={[validations.isEmpty, validations.isAlphaNumeric]}
+								icon="ion-md-lock"/>
+							<TextField
+								onBlur={(isValid) => this.handleFields(isValid)}
+								onChange={(event) => this.handleChange(event)}
+								name="password_confirmation"
+								type="password"
+								value={fields.password_confirmation}
+								required={true}
+								bordered={true}
+								maxLength={50}
+								labelText="Confirm New Password"
+								validation={[validations.isEmpty, validations.isAlphaNumeric]}
+								icon="ion-md-lock"/>
+						</div>
+						<button disabled={!isFormValid} className="button" type="submit">Reset Password</button>
+					</form>
+				</div>
+			</section>
         );
     }
 }

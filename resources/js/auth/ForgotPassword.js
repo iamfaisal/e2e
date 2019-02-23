@@ -75,25 +75,28 @@ class ForgotPassword extends Component {
         const alertClass = classnames("alert alert-success", { "alert-danger": !isFormValid });
 		
         return (
-            <form className="form-auth" onSubmit={this.handleSubmit}>
-                <h2 className="h3 mb-3 font-weight-normal">Password Reset</h2>
-
-				{formValidationData.form && <div className={alertClass}>{formValidationData.form}</div>}
-
-				<TextField
-					onBlur={(isValid) => this.handleFields(isValid)}
-					onChange={(event) => this.handleChange(event)}
-					name="email"
-					value={fields.email}
-					required={true}
-					bordered={true}
-					maxLength={50}
-					labelText="Email Address"
-					validation={[validations.isEmail]}
-				/>
-
-                <button disabled={!isFormValid} className="btn btn-lg btn-primary btn-block mb-2" type="submit">Request Password Reset</button>
-            </form>
+			<section className="login">
+				<div className="container">
+					<form onSubmit={this.handleSubmit}>
+						<h1>Password Reset</h1>
+						{formValidationData.form && <div className={alertClass}>{formValidationData.form}</div>}
+						<div className="fields">
+							<TextField
+								onBlur={(isValid) => this.handleFields(isValid)}
+								onChange={(event) => this.handleChange(event)}
+								name="email"
+								value={fields.email}
+								required={true}
+								bordered={true}
+								maxLength={50}
+								labelText="Email Address"
+								validation={[validations.isEmail]}
+								icon="ion-ios-person"/>
+						</div>
+						<button disabled={!isFormValid} className="button" type="submit">Request Password Reset</button>
+					</form>
+				</div>
+			</section>
         );
     }
 }

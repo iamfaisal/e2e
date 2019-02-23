@@ -182,32 +182,30 @@ class TextField extends Component {
 
 	render() {
 		const { isValid, value, type, errorText } = this.state;
-		const { labelText, name, id, required, maxLength, disabled, readOnly, placeholder } = this.props;
+		const { labelText, name, id, required, maxLength, disabled, readOnly, placeholder, icon } = this.props;
 
 		return (
-			<div className="form-group">
-				<label htmlFor={name}
-					className={classnames("control-label", { "text-danger": !isValid })}>
-					{labelText}
-				</label>
-				<input
-					onChange={(event) => this.onChange(event.target.value)}
-					onBlur={(event) => this.onBlur(event, name)}
-					onKeyDown={(event) => this.onKeyDown(event)}
+            <label className={classnames({ "invalid": !isValid })}>
+                <span>{labelText}</span>
+                <input
+                    onChange={(event) => this.onChange(event.target.value)}
+                    onBlur={(event) => this.onBlur(event, name)}
+                    onKeyDown={(event) => this.onKeyDown(event)}
                     onKeyUp={(event) => this.onKeyUp(event)}
-					value={value ? value : ""}
-					name={name}
-					id={id ? id : name}
-					type={type}
-					required={required}
-					maxLength={maxLength}
-					disabled={disabled}
-					readOnly={readOnly}
-					placeholder={placeholder || " "}
-					className={classnames("form-control", { "is-invalid": !isValid })}
-				/>
-				{!isValid && <span className="invalid-feedback">{errorText}</span>}
-			</div> 
+                    value={value ? value : ""}
+                    name={name}
+                    id={id ? id : name}
+                    type={type}
+                    required={required}
+                    maxLength={maxLength}
+                    disabled={disabled}
+                    readOnly={readOnly}
+                    placeholder={placeholder || "Enter " + name}
+                    className={classnames("form-control", { "is-invalid": !isValid })}
+                />
+                {icon && <i className={icon}/>}
+                {!isValid && <span className="invalid-feedback">{errorText}</span>}
+            </label>
 		);
 	}
 }

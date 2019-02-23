@@ -23,6 +23,7 @@ class Login extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleCBChange = this.handleCBChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleFields = this.handleFields.bind(this);
     }
@@ -40,9 +41,15 @@ class Login extends Component {
         this.setState({isFormValid: isFormValid});
     }
 
-    handleChange() {
+    handleChange(value) {
         let { fields } = this.state;
         fields[event.target.name] = event.target.value;
+        this.setState({fields: fields});
+    }
+
+    handleCBChange(value) {
+        let { fields } = this.state;
+        fields["remember_me"] = value;
         this.setState({fields: fields});
     }
 
@@ -79,51 +86,48 @@ class Login extends Component {
         const { fields, isFormValid, formValidationData } = this.state;
 
         return (
-            <form className="form-auth" onSubmit={this.handleSubmit}>
-                <h2 className="h3 mb-3 font-weight-normal">Login to your account</h2>
-
-                {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
-
-                <TextField
-                    onBlur={(isValid) => this.handleFields(isValid)}
-                    onChange={(event) => this.handleChange(event)}
-                    name="email"
-                    value={fields.email}
-                    required={true}
-                    maxLength={50}
-                    labelText="Email Address"
-                    validation={[validations.isEmail]}
-                />
-
-                <TextField
-                    onBlur={(isValid) => this.handleFields(isValid)}
-                    onChange={(event) => this.handleChange(event)}
-                    name="password"
-                    type="password"
-                    value={fields.password}
-                    required={true}
-                    maxLength={50}
-                    labelText="Password"
-                    validation={[validations.isEmpty, validations.isAlphaNumeric]}
-                />
-
-                <CheckBox
-                    onChange={(event) => this.handleChange(event)}
-                    name="remember-me"
-                    value={fields.remember_me}
-                    labelText="Remember me"
-                />
-
-                <button className="btn btn-lg btn-primary btn-block mb-2"
-                        type="submit"
-                        disabled={!isFormValid}>
-                    Login
-                </button>
-
-                <p className="small text-center">
-                    <Link to={"/forgot/password"}>Forgot Your Password?</Link>
-                </p>
-            </form>
+            <section className="login">
+                <div className="container">
+                    <form onSubmit={this.handleSubmit}>
+                        <h1>Login to your account</h1>
+                        {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
+                        <div className="fields">
+                            <TextField
+                                onBlur={(isValid) => this.handleFields(isValid)}
+                                onChange={(event) => this.handleChange(event)}
+                                name="email"
+                                value={fields.email}
+                                required={true}
+                                maxLength={50}
+                                labelText="Email Address"
+                                validation={[validations.isEmail]}
+                                icon="ion-ios-person"/>
+                            <TextField
+                                onBlur={(isValid) => this.handleFields(isValid)}
+                                onChange={(event) => this.handleChange(event)}
+                                name="password"
+                                type="password"
+                                value={fields.password}
+                                required={true}
+                                maxLength={50}
+                                labelText="Password"
+                                validation={[validations.isEmpty, validations.isAlphaNumeric]}
+                                icon="ion-md-lock"/>
+                        </div>
+                        <div className="space-between">
+                            <CheckBox
+                                onChange={(event) => this.handleCBChange(event)}
+                                name="remember-me"
+                                value={fields.remember_me}
+                                labelText="Remember me"/>
+                            <Link className="forgot" to={"/forgot/password"}>Forgot Password?</Link>
+                        </div>
+                        <button className="button" type="submit" disabled={!isFormValid}>
+                            Login
+                        </button>
+                    </form>
+                </div>
+            </section>
         );
     }
 }
