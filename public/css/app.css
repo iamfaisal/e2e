@@ -4778,7 +4778,11 @@ table .actions a:not(:last-child) {
 
 .fields span {
   display: block;
-  color: #232d39;
+  color: #9196a1;
+}
+
+.fields .invalid .invalid-feedback {
+  color: #ee252f;
 }
 
 .fields select {
@@ -4815,6 +4819,7 @@ table .actions a:not(:last-child) {
 
   .fields.horizontal > label:nth-child(2n+1) {
     border-right-width: 1px;
+    clear: left;
   }
 
   .fields.horizontal > label:nth-child(+n+3) {

@@ -25,10 +25,10 @@ class CreateProfilesTable extends Migration
             $table->string('zip_code')->nullable();
             $table->string('cell_phone')->nullable();
             $table->string('work_phone')->nullable();
-            $table->string('additional_email1')->nullable();
+            $table->string('additional_name')->nullable();
+            $table->string('additional_email')->nullable();
+            $table->string('additional_name2')->nullable();
             $table->string('additional_email2')->nullable();
-            $table->string('additional_email3')->nullable();
-            $table->string('additional_email4')->nullable();
             $table->text('info')->nullable();
             $table->string('avatar')->nullable();
             $table->timestamps();

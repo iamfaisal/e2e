@@ -51802,64 +51802,6 @@ var links = [// super admin
   url: "/categories",
   icon: "ion-ios-bookmark",
   role: "super-admin"
-}, // school admin
-{
-  name: "Current Classes",
-  url: "/current-classes",
-  icon: "ion-ios-albums",
-  role: "admin"
-}, {
-  name: "Archived Classes",
-  url: "/archived-classes",
-  icon: "ion-ios-archive",
-  role: "admin"
-}, {
-  name: "Instructors",
-  url: "/instructors",
-  icon: "ion-ios-people",
-  role: "admin"
-}, {
-  name: "Venues",
-  url: "/venues",
-  icon: "ion-ios-flag",
-  role: "admin"
-}, {
-  name: "Sponsors",
-  url: "/sponsors",
-  icon: "ion-ios-people",
-  role: "admin"
-}, // instructor
-{
-  name: "Classes",
-  url: "/classes",
-  icon: "ion-ios-albums",
-  role: "instructor"
-}, {
-  name: "Archived Classes",
-  url: "/archived-classes",
-  icon: "ion-ios-archive",
-  role: "instructor"
-}, {
-  name: "Materials",
-  url: "/materials",
-  icon: "ion-ios-briefcase",
-  role: "instructor"
-}, {
-  name: "Venues",
-  url: "/venues",
-  icon: "ion-ios-flag",
-  role: "instructor"
-}, {
-  name: "Sponsors",
-  url: "/sponsors",
-  icon: "ion-ios-people",
-  role: "instructor"
-}, // student
-{
-  name: "Classes",
-  url: "/classes",
-  icon: "ion-ios-albums",
-  role: "student"
 }];
 /* harmony default export */ __webpack_exports__["default"] = (links);
 
@@ -51932,6 +51874,10 @@ function (_Component) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_validations__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/validations */ "./resources/js/utils/validations.js");
+/* harmony import */ var _common_TextField__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../common/TextField */ "./resources/js/common/TextField.js");
+/* harmony import */ var _helpers_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/auth */ "./resources/js/helpers/auth.js");
+/* harmony import */ var _helpers_acl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/acl */ "./resources/js/helpers/acl.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51942,15 +51888,19 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
- //import { getAuthUser } from "../helpers/auth";
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+
+
+
+
+
 
 var Profile =
 /*#__PURE__*/
@@ -51958,15 +51908,283 @@ function (_Component) {
   _inherits(Profile, _Component);
 
   function Profile(props) {
+    var _this;
+
     _classCallCheck(this, Profile);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Profile).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Profile).call(this, props));
+    _this.state = {
+      isLoading: false,
+      fields: {
+        "first_name": "",
+        "last_name": ""
+      },
+      formValidationData: {},
+      isFormValid: false
+    };
+    _this.handleChange = _this.handleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleFields = _this.handleFields.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    return _this;
   }
 
   _createClass(Profile, [{
+    key: "handleFields",
+    value: function handleFields(field) {
+      var _this$state = this.state,
+          formValidationData = _this$state.formValidationData,
+          fields = _this$state.fields;
+      formValidationData[field.key] = field.value;
+      this.setState({
+        formValidationData: formValidationData
+      });
+      var isFormValid = true;
+
+      for (var key in fields) {
+        if (!formValidationData[key]) {
+          isFormValid = false;
+        }
+      }
+
+      this.setState({
+        isFormValid: isFormValid
+      });
+    }
+  }, {
+    key: "handleChange",
+    value: function handleChange(value) {
+      var fields = this.state.fields;
+      fields[event.target.name] = event.target.value;
+      this.setState({
+        fields: fields
+      });
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(event) {
+      event.preventDefault();
+      var _this$state2 = this.state,
+          isFormValid = _this$state2.isFormValid,
+          fields = _this$state2.fields;
+      this.setState({
+        isLoading: true
+      });
+      var userData = {
+        first_name: fields.first_name,
+        last_name: fields.last_name
+      };
+
+      if (isFormValid) {
+        console.log(userData);
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "profile");
+      var _this2 = this;
+
+      var _this$state3 = this.state,
+          fields = _this$state3.fields,
+          isFormValid = _this$state3.isFormValid,
+          formValidationData = _this$state3.formValidationData;
+      var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getAuthUser"])();
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, "Profile")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        onSubmit: this.handleSubmit
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("legend", null, "Basic information"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("fieldset", {
+        className: "fields horizontal"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "first_name",
+        value: user.profile.first_name,
+        required: true,
+        maxLength: 50,
+        labelText: "First Name",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isEmpty],
+        icon: "ion-ios-person"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "last_name",
+        value: user.profile.last_name,
+        required: true,
+        maxLength: 50,
+        labelText: "Last Name",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isEmpty],
+        icon: "ion-ios-person"
+      })), Object(_helpers_acl__WEBPACK_IMPORTED_MODULE_4__["is"])('instructor') && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("legend", null, "Instructor's profile"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("fieldset", {
+        className: "fields horizontal"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "sub_domain",
+        value: user.profile.sub_domain,
+        required: true,
+        maxLength: 50,
+        labelText: "Subdomain (ex. sallysmith.psre.com)",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isEmpty]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "email",
+        value: user.email,
+        required: true,
+        maxLength: 50,
+        labelText: "Email",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isEmail]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "address",
+        value: user.profile.address,
+        required: true,
+        maxLength: 50,
+        labelText: "Street Address",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isEmpty]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "city",
+        value: user.profile.city,
+        required: true,
+        maxLength: 50,
+        labelText: "City",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isEmpty]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "state",
+        value: user.profile.state,
+        required: true,
+        maxLength: 50,
+        labelText: "State",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isEmpty]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "zip_code",
+        value: user.profile.zip_code,
+        required: true,
+        maxLength: 50,
+        labelText: "Zip Code",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isPostalCode]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "cell_phone",
+        value: user.profile.cell_phone,
+        required: true,
+        maxLength: 50,
+        labelText: "Cell Phone",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isMobilePhone]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "work_phone",
+        value: user.profile.work_phone,
+        required: true,
+        maxLength: 50,
+        labelText: "Work Phone",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isMobilePhone]
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("fieldset", {
+        className: "fields horizontal"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "additional_name",
+        value: user.profile.additional_name,
+        required: true,
+        maxLength: 50,
+        labelText: "Additional Name (#1)",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isEmpty]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "additional_email",
+        value: user.profile.additional_email,
+        required: true,
+        maxLength: 50,
+        labelText: "Additional Email (#1)",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isEmail]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "additional_name2",
+        value: user.profile.additional_name2,
+        required: true,
+        maxLength: 50,
+        labelText: "Additional Name (#2)",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isEmpty]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        onBlur: function onBlur(isValid) {
+          return _this2.handleFields(isValid);
+        },
+        onChange: function onChange(event) {
+          return _this2.handleChange(event);
+        },
+        name: "additional_email2",
+        value: user.profile.additional_email2,
+        required: true,
+        maxLength: 50,
+        labelText: "Additional Email (#2)",
+        validation: [_utils_validations__WEBPACK_IMPORTED_MODULE_1__["validations"].isEmail]
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        className: "button",
+        type: "submit",
+        disabled: !isFormValid
+      }, "Update Profile")));
     }
   }]);
 

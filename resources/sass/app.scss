@@ -569,7 +569,12 @@ table {
   }
   span {
     display: block;
-    color: $color_ebony_clay_approx;
+    color: $color_manatee_approx;
+  }
+  .invalid {
+    .invalid-feedback {
+      color: $color_alizarin_crimson_approx;
+    }
   }
   select {
     width: 100%;
@@ -601,6 +606,7 @@ table {
     border: 0 solid $color_mystic_approx;
     &:nth-child(2n + 1) {
       border-right-width: 1px;
+      clear: left;
     }
     &:nth-child(+n+3) {
       border-top-width: 1px;

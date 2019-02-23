@@ -24,6 +24,7 @@ export const links = [
         icon: "ion-ios-bookmark",
         role: "super-admin"
     },
+    /*
     // school admin
     {
         name: "Current Classes",
@@ -92,7 +93,7 @@ export const links = [
         url: "/classes",
         icon: "ion-ios-albums",
         role: "student"
-    }
+    }*/
 ];
 
 export default links;
