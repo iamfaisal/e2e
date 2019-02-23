@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-//import { getAuthUserName } from "../helpers/auth";
+//import { getAuthUser } from "../helpers/auth";
 
 class Profile extends Component {
     constructor(props) {

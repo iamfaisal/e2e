@@ -1,8 +1,10 @@
-import React, { Component } from "react";
+import React, {Component, Fragment} from "react";
 import { Link } from "react-router-dom";
 import { getAuthUserName, logout } from "../helpers/auth";
 import { asset } from "../helpers/app";
+import { is, getRoles } from "../helpers/acl";
 import classnames from "classnames";
+import { links } from "./navigation";
 
 class Header extends Component {
     constructor(props) {
@@ -13,6 +15,7 @@ class Header extends Component {
 
         this.handleLogout = this.handleLogout.bind(this);
         this.handleSidebarToggle = this.handleSidebarToggle.bind(this);
+        this.renderNavigation = this.renderNavigation.bind(this);
     }
 
     handleLogout() {
@@ -24,8 +27,26 @@ class Header extends Component {
         this.setState({sidebar: !sidebar});
     }
 
+    renderNavigation(role, roleLinks) {
+        return(
+            <nav key={role}>
+                <h3>{role.replace("-", " ")}</h3>
+                <ul>
+                    {roleLinks.map(function(link) {
+                        return (
+                            <li key={link.url} className={classnames({"active": window.location.pathname === link.url})}>
+                                <Link to={link.url} className={link.icon}> <span>{link.name}</span></Link>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </nav>
+        );
+    }
+
     render() {
         const { sidebar } = this.state;
+        const self = this;
         const sidebarClass = classnames("sidebar", { "collapse": !sidebar })
         const userName = getAuthUserName();
 
@@ -53,16 +74,10 @@ class Header extends Component {
                         </div>
                     </header>
 
-                    <nav>
-                        <h3>System Admin</h3>
-                        <ul>
-                            <li className="active"><a href="#" className="ion-md-airplane"> <span>Menu Item 1</span></a>
-                            </li>
-                            <li><a href="#" className="ion-md-alarm"> <span>Menu Item 2</span></a></li>
-                            <li><a href="#" className="ion-md-bulb"> <span>Menu Item 3</span></a></li>
-                            <li><a href="#" className="ion-md-cloudy"> <span>Menu Item 4</span></a></li>
-                        </ul>
-                    </nav>
+                    {getRoles().map((role) => {
+                        const roleLinks = links.filter(function(link){return link.role === role;});
+                        return roleLinks && roleLinks.length > 0 ? self.renderNavigation(role, roleLinks) : false;
+                    })}
 
                     <Link className="profile" to={"/user/profile"}>
                         <img src={asset("images/user.jpg")}/>

@@ -13,3 +13,8 @@ export function is(role) {
     const data = decodeAclData();
     return !!data[role];
 }
+
+export function getRoles() {
+    const data = decodeAclData();
+    return Object.keys(data);
+}

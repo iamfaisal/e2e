@@ -51368,6 +51368,39 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./resources/js/helpers/acl.js":
+/*!*************************************!*\
+  !*** ./resources/js/helpers/acl.js ***!
+  \*************************************/
+/*! exports provided: decodeAclData, can, is, getRoles */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "decodeAclData", function() { return decodeAclData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "can", function() { return can; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "is", function() { return is; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getRoles", function() { return getRoles; });
+function decodeAclData() {
+  var data = JSON.parse(localStorage.getItem("user"));
+  data = data.roles.replace(data.token, "");
+  return JSON.parse(window.atob(data));
+}
+function can(role, permission) {
+  var data = decodeAclData();
+  return data[role] ? data[role].includes(permission) : false;
+}
+function is(role) {
+  var data = decodeAclData();
+  return !!data[role];
+}
+function getRoles() {
+  var data = decodeAclData();
+  return Object.keys(data);
+}
+
+/***/ }),
+
 /***/ "./resources/js/helpers/app.js":
 /*!*************************************!*\
   !*** ./resources/js/helpers/app.js ***!
@@ -51512,8 +51545,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 /* harmony import */ var _helpers_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/auth */ "./resources/js/helpers/auth.js");
 /* harmony import */ var _helpers_app__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/app */ "./resources/js/helpers/app.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
-/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _helpers_acl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../helpers/acl */ "./resources/js/helpers/acl.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _navigation__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./navigation */ "./resources/js/layout/navigation.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51538,6 +51573,8 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 
 
 
+
+
 var Header =
 /*#__PURE__*/
 function (_Component) {
@@ -51554,6 +51591,7 @@ function (_Component) {
     };
     _this.handleLogout = _this.handleLogout.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleSidebarToggle = _this.handleSidebarToggle.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.renderNavigation = _this.renderNavigation.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     return _this;
   }
 
@@ -51571,10 +51609,28 @@ function (_Component) {
       });
     }
   }, {
+    key: "renderNavigation",
+    value: function renderNavigation(role, roleLinks) {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
+        key: role
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, role.replace("-", " ")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, roleLinks.map(function (link) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          key: link.url,
+          className: classnames__WEBPACK_IMPORTED_MODULE_5___default()({
+            "active": window.location.pathname === link.url
+          })
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+          to: link.url,
+          className: link.icon
+        }, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, link.name)));
+      })));
+    }
+  }, {
     key: "render",
     value: function render() {
       var sidebar = this.state.sidebar;
-      var sidebarClass = classnames__WEBPACK_IMPORTED_MODULE_4___default()("sidebar", {
+      var self = this;
+      var sidebarClass = classnames__WEBPACK_IMPORTED_MODULE_5___default()("sidebar", {
         "collapse": !sidebar
       });
       var userName = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_2__["getAuthUserName"])();
@@ -51615,21 +51671,12 @@ function (_Component) {
         className: "ion-ios-arrow-back"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         className: "ion-ios-arrow-forward"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "System Admin"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-        className: "active"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        href: "#",
-        className: "ion-md-airplane"
-      }, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Menu Item 1"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        href: "#",
-        className: "ion-md-alarm"
-      }, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Menu Item 2"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        href: "#",
-        className: "ion-md-bulb"
-      }, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Menu Item 3"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        href: "#",
-        className: "ion-md-cloudy"
-      }, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Menu Item 4"))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+      }))), Object(_helpers_acl__WEBPACK_IMPORTED_MODULE_4__["getRoles"])().map(function (role) {
+        var roleLinks = _navigation__WEBPACK_IMPORTED_MODULE_6__["links"].filter(function (link) {
+          return link.role === role;
+        });
+        return roleLinks && roleLinks.length > 0 ? self.renderNavigation(role, roleLinks) : false;
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         className: "profile",
         to: "/user/profile"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
@@ -51724,6 +51771,100 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./resources/js/layout/navigation.js":
+/*!*******************************************!*\
+  !*** ./resources/js/layout/navigation.js ***!
+  \*******************************************/
+/*! exports provided: links, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "links", function() { return links; });
+var links = [// super admin
+{
+  name: "Courses",
+  url: "/courses",
+  icon: "ion-ios-filing",
+  role: "super-admin"
+}, {
+  name: "Territories",
+  url: "/territories",
+  icon: "ion-ios-globe",
+  role: "super-admin"
+}, {
+  name: "Regulations",
+  url: "/regulations",
+  icon: "ion-ios-hand",
+  role: "super-admin"
+}, {
+  name: "Categories",
+  url: "/categories",
+  icon: "ion-ios-bookmark",
+  role: "super-admin"
+}, // school admin
+{
+  name: "Current Classes",
+  url: "/current-classes",
+  icon: "ion-ios-albums",
+  role: "admin"
+}, {
+  name: "Archived Classes",
+  url: "/archived-classes",
+  icon: "ion-ios-archive",
+  role: "admin"
+}, {
+  name: "Instructors",
+  url: "/instructors",
+  icon: "ion-ios-people",
+  role: "admin"
+}, {
+  name: "Venues",
+  url: "/venues",
+  icon: "ion-ios-flag",
+  role: "admin"
+}, {
+  name: "Sponsors",
+  url: "/sponsors",
+  icon: "ion-ios-people",
+  role: "admin"
+}, // instructor
+{
+  name: "Classes",
+  url: "/classes",
+  icon: "ion-ios-albums",
+  role: "instructor"
+}, {
+  name: "Archived Classes",
+  url: "/archived-classes",
+  icon: "ion-ios-archive",
+  role: "instructor"
+}, {
+  name: "Materials",
+  url: "/materials",
+  icon: "ion-ios-briefcase",
+  role: "instructor"
+}, {
+  name: "Venues",
+  url: "/venues",
+  icon: "ion-ios-flag",
+  role: "instructor"
+}, {
+  name: "Sponsors",
+  url: "/sponsors",
+  icon: "ion-ios-people",
+  role: "instructor"
+}, // student
+{
+  name: "Classes",
+  url: "/classes",
+  icon: "ion-ios-albums",
+  role: "student"
+}];
+/* harmony default export */ __webpack_exports__["default"] = (links);
+
+/***/ }),
+
 /***/ "./resources/js/pages/Dashboard.js":
 /*!*****************************************!*\
   !*** ./resources/js/pages/Dashboard.js ***!
@@ -51809,7 +51950,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
- //import { getAuthUserName } from "../helpers/auth";
+ //import { getAuthUser } from "../helpers/auth";
 
 var Profile =
 /*#__PURE__*/
