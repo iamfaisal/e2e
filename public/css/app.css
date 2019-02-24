@@ -4553,6 +4553,8 @@ table .actions a:not(:last-child) {
   width: 40px;
   height: 40px;
   border: 1px solid rgba(0, 0, 0, 0.2);
+  -o-object-fit: cover;
+     object-fit: cover;
   border-radius: 50%;
   margin-right: 8px;
 }

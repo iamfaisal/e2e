@@ -379,7 +379,7 @@ table {
       width: 40px;
       height: 40px;
       border: 1px solid $black_20;
-      //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
+      object-fit: cover;
       border-radius: 50%;
       margin-right: 8px;
     }
