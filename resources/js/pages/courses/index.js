@@ -6,25 +6,38 @@ class Courses extends Component {
         super(props);
 
         this.state = {
-            courses: [{
-                id: 1,
-                title: 'Strategic Financing - What Agents Should Know',
-                state: 'AZ',
-                code: 'AZSTF3',
-                categories: ['General', 'Disclosure'],
-                hours: 3,
-                expire: '02/11/2019',
-            }]
+            courses: [],
+            loader: true
         };
+
+        this.renderLoader = this.renderLoader.bind(this);
     }
 
     componentDidMount() {
-        const data = read('courses', []);
-        console.log(data);
+        read('courses', [])
+            .then(res => {
+                this.setState({
+                    courses: res.data.courses,
+                    loader: false
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+                this.setState({
+                    loader: true
+                });
+            });
+    }
+
+    renderLoader() {
+        return (
+            <div className="loader"/>
+        );
     }
 
     render() {
-        const { courses } = this.state;
+        const { courses, loader } = this.state;
+
         return (
             <div>
                 <header>
@@ -60,8 +73,9 @@ class Courses extends Component {
                 </div>
 
                 <div className="tablewrap">
-                    <table>
-                        <thead>
+                    {!loader && courses ? (
+                        <table>
+                            <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Title</th>
@@ -72,8 +86,8 @@ class Courses extends Component {
                                 <th>Expiration</th>
                                 <th></th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             {courses.map((course) => {
                                 return (
                                     <tr key={course.id}>
@@ -81,9 +95,13 @@ class Courses extends Component {
                                         <td>{course.title}</td>
                                         <td>{course.state}</td>
                                         <td>{course.code}</td>
-                                        <td>{course.categories.join(', ')}</td>
+                                        <td>
+                                            {course.categories ? course.categories.map((category) => {
+                                                return category.label + " ";
+                                            }) : false}
+                                        </td>
                                         <td>{course.hours}</td>
-                                        <td>{course.expire}</td>
+                                        <td>{course.expiration_date}</td>
                                         <td className="actions">
                                             <a className="ion-md-create" href="#"></a>
                                             <a className="ion-ios-thumbs-up" href="#"></a>
@@ -92,8 +110,9 @@ class Courses extends Component {
                                     </tr>
                                 );
                             })}
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    ) : this.renderLoader()}
                 </div>
             </div>
         );

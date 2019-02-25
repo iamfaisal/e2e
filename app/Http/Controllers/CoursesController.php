@@ -14,7 +14,7 @@ class CoursesController extends Controller
      */
     public function index()
     {
-        $courses = Course::orderBy('created_at', 'desc')->get();
+        $courses = Course::with('categories:name,label')->get();
         return response()->json([
             'courses' => $courses
         ], 200);
