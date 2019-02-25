@@ -509,6 +509,7 @@ table {
   padding-bottom: 10px;
   > * {
     margin-right: 10px;
+    max-width: 160px;
   }
 }
 @media(min-width: 992px) {

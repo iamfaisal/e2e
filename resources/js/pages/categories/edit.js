@@ -7,15 +7,15 @@ class EditCategory extends Component {
         super(props);
 
         this.state = {
+            category: props.match.params.category,
             loading: true
         };
-
-        console.log(props.match.params.category);
     }
 
     componentDidMount() {
-        read('category', [])
+        read('categories/'+this.state.category, [])
             .then(res => {
+                console.log(res);
                 this.setState({
                     category: res.data.courses,
                     loader: false
