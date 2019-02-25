@@ -55,6 +55,17 @@ export function getAuthUser() {
     return JSON.parse(user) || false;
 }
 
+export function getAuthUserName() {
+    const user = localStorage.getItem("user");
+    if (JSON.parse(user)) {
+        const firstName = JSON.parse(user).profile.first_name;
+        const lastName = JSON.parse(user).profile.last_name;
+        const userName = JSON.parse(user).name;
+        return firstName && lastName ? firstName + " " + lastName : userName;
+    }
+    return false;
+}
+
 export function setAuthorizationToken(token) {
     if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

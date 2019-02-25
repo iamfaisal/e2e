@@ -1,5 +1,7 @@
 <?php
 
+use App\User;
+use App\Profile;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -19,5 +21,10 @@ class UsersTableSeeder extends Seeder
             'password' => bcrypt('secret'),
             'email_verified_at' => Carbon::now()
         ]);
+        $user = User::find(1);
+        $user->profile()->save(new Profile([
+            'first_name' => 'Faisal',
+            'last_name' => 'Mughal'
+        ]));
     }
 }

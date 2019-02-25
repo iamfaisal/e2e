@@ -10,12 +10,13 @@ class CheckBox extends Component {
         };
     }
 
-    onChange(value) {
+    onChange(event) {
+        const value = event.target.checked;
         this.setState({
             value: value
         }, () => {
             if(this.props.onChange){
-                this.props.onChange(value);
+                this.props.onChange(event);
             }
         });
     }
@@ -25,20 +26,18 @@ class CheckBox extends Component {
         const { labelText, name, id } = this.props;
 
         return (
-            <div className="form-group">
-                <div className="form-check">
-                    <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value={value ? value : ""}
-                        checked={value ? value : ""}
-                        name={name}
-                        id={id ? id : name}
-                        onChange={(event) => this.onChange(event.target.value)}
-                    />
-                    <label className="form-check-label" htmlFor={id ? id : name}>{labelText}</label>
-                </div>
-            </div>
+            <label className="checkbox">
+                <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value={value ? value : ""}
+                    checked={value ? value : ""}
+                    name={name}
+                    id={id ? id : name}
+                    onChange={(event) => this.onChange(event)}
+                />
+                <span>{labelText}</span>
+            </label>
         );
     }
 }
