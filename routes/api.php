@@ -11,6 +11,6 @@ Route::group(['prefix' => 'auth'], function()
     Route::post('reset', 'AuthController@reset');
     Route::post('reset_email', 'AuthController@reset_password_email');
     // Courses and categories
-    Route::resource('courses', 'CoursesController');
-    Route::resource('categories', 'CategoriesController');
+    Route::resource('courses', 'CoursesController')->except(['create', 'edit']);
+    Route::resource('categories', 'CategoriesController')->except(['create', 'edit']);
 });
