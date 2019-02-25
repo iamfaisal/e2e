@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { read } from "../../helpers/resource";
+import Select from "../../common/Select";
 
 class Courses extends Component {
     constructor(props) {
@@ -8,6 +9,8 @@ class Courses extends Component {
 
         this.state = {
             courses: [],
+            categories: [],
+            regulations: [],
             loader: true
         };
 
@@ -19,6 +22,8 @@ class Courses extends Component {
             .then(res => {
                 this.setState({
                     courses: res.data.courses,
+                    categories: res.data.categories,
+                    regulations: res.data.regulations,
                     loader: false
                 });
             })
@@ -37,8 +42,8 @@ class Courses extends Component {
     }
 
     render() {
-        const { courses, loader } = this.state;
-
+        const { courses, categories, regulations, loader } = this.state;
+        //console.log(categories, regulations);
         return (
             <div>
                 <header>
@@ -47,22 +52,8 @@ class Courses extends Component {
                 </header>
 
                 <div className="filter">
-                    <select>
-                        <option value>Select a State</option>
-                        <option value="AZ">Arizona</option>
-                        <option value="CA">California</option>
-                        <option value="CO">Colorado</option>
-                        <option value="FL">Florida</option>
-                        <option value="MO">Missouri</option>
-                        <option value="NV">Nevada</option>
-                        <option value="TN">Tennessee</option>
-                        <option value="TX">Texas</option>
-                        <option value="UT">Utah</option>
-                        <option value="WA">Washington</option>
-                    </select>
-                    <select>
-                        <option value>Select a Category</option>
-                    </select>
+                    <Select items={regulations} id={"id"} val={"name"}/>
+                    <Select items={categories} id={"id"} val={"label"}/>
                     <input type="text" placeholder="Course Code" />
 
                     <br />
@@ -94,7 +85,7 @@ class Courses extends Component {
                                     <tr key={course.id}>
                                         <td>{course.id}</td>
                                         <td>{course.title}</td>
-                                        <td>{course.state}</td>
+                                        <td>{course.regulation.abbreviation}</td>
                                         <td>{course.code}</td>
                                         <td>
                                             {course.categories ? course.categories.map((category) => {

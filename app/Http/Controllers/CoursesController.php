@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
+use App\Regulation;
 use Illuminate\Http\Request;
 use App\Course;
 
@@ -14,9 +16,13 @@ class CoursesController extends Controller
      */
     public function index()
     {
-        $courses = Course::with('categories:name,label')->get();
+        $courses = Course::with('categories:name,label', 'regulation')->get();
+        $categories = Category::all();
+        $regulations = Regulation::all();
         return response()->json([
-            'courses' => $courses
+            'courses' => $courses,
+            'categories' => $categories,
+            'regulations' => $regulations
         ], 200);
     }
 
