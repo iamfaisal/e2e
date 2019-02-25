@@ -1,4 +1,5 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
+import { Link } from "react-router-dom";
 import { read } from "../../helpers/resource";
 
 class Courses extends Component {
@@ -103,9 +104,9 @@ class Courses extends Component {
                                         <td>{course.hours}</td>
                                         <td>{course.expiration_date}</td>
                                         <td className="actions">
-                                            <a className="ion-md-create" href="#"></a>
-                                            <a className="ion-ios-thumbs-up" href="#"></a>
-                                            <a className="ion-md-close" href="#"></a>
+                                            <Link className="ion-md-create" to={""}/>
+                                            <Link className="ion-ios-archive" to={""}/>
+                                            <Link className="ion-md-close" to={""}/>
                                         </td>
                                     </tr>
                                 );
