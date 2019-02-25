@@ -21,4 +21,9 @@ class Course extends Model
 
         return $this->categories()->save($category);
     }
+
+    public function regulation()
+    {
+        return $this->belongsTo(Regulation::class);
+    }
 }
