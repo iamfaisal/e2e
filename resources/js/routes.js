@@ -3,6 +3,7 @@ import ForgotPassword from "./auth/ForgotPassword";
 import ResetPassword from "./auth/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import Courses from "./pages/courses";
 
 import requireAuth from "./utils/requireAuth";
 
@@ -28,6 +29,11 @@ const routes = [
     {
         path: "/password/reset/:token",
         component: ResetPassword,
+    },
+    {
+        path: "/courses",
+        component: requireAuth(Courses),
+        exact: true
     }
 ]
 
