@@ -220,12 +220,43 @@ select {
     color: $white;
   }
 }
+@keyframes loader {
+  0% {
+    transform: rotate(0deg)
+  }
+  100% {
+    transform: rotate(360deg)
+  }
+}
 .tablewrap {
+  background: #fff;
   //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
   border-radius: 5px;
   //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
   box-shadow: 0 2px 8px $black_7_5;
   overflow-x: auto;
+  .loader {
+    width: 50px;
+    height: 50px;
+    margin: 50px auto;
+    border: 2px solid rgba(0, 0, 0, .15);
+    border-radius: 50%;
+    position: relative;
+    &:after {
+      content: "";
+      position: absolute;
+      left: -2px;
+      right: -2px;
+      top: -2px;
+      bottom: -2px;
+      border: 2px solid transparent;
+      border-left-color: $color_alizarin_crimson_approx;
+      border-top-color: $color_alizarin_crimson_approx;
+      border-radius: 50%;
+      animation: .75s loader infinite;
+      animation-timing-function: linear;
+    }
+  }
 }
 table {
   min-width: 100%;
