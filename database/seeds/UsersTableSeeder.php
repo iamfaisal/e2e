@@ -16,15 +16,15 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => 'faisal',
-            'email' => 'faisal@gmail.com',
+            'name' => 'terrye',
+            'email' => 'tiannetta@amerifirst.us',
             'password' => bcrypt('secret'),
             'email_verified_at' => Carbon::now()
         ]);
         $user = User::find(1);
         $user->profile()->save(new Profile([
-            'first_name' => 'Faisal',
-            'last_name' => 'Mughal'
+            'first_name' => 'Terrye',
+            'last_name' => 'Iannetta'
         ]));
     }
 }
