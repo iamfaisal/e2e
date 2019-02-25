@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {validations} from "../utils/validations";
 import TextField from "../common/TextField";
+import TextArea from "../common/TextArea";
 import { getAuthUser } from "../helpers/auth";
 import { is } from "../helpers/acl";
 
@@ -204,6 +205,16 @@ class Profile extends Component {
                                 required={true}
                                 maxLength={50}
                                 labelText="Additional Email (#2)"
+                                validation={[validations.isEmail]}/>
+                        </fieldset>
+                        <fieldset className="fields horizontal">
+                            <TextArea
+                                onBlur={(isValid) => this.handleFields(isValid)}
+                                onChange={(event) => this.handleChange(event)}
+                                name="info"
+                                value={user.profile.info}
+                                required={true}
+                                placeholder="Public Profile"
                                 validation={[validations.isEmail]}/>
                         </fieldset>
                     </Fragment>
