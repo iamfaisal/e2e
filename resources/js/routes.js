@@ -5,6 +5,10 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Courses from "./pages/courses";
 
+import Categories from "./pages/categories";
+import CreateCategory from "./pages/categories/create";
+import EditCategory from "./pages/categories/edit";
+
 import requireAuth from "./utils/requireAuth";
 
 const routes = [
@@ -33,6 +37,21 @@ const routes = [
     {
         path: "/courses",
         component: requireAuth(Courses),
+        exact: true
+    },
+    {
+        path: "/categories",
+        component: requireAuth(Categories),
+        exact: true
+    },
+    {
+        path: "/categories/create/",
+        component: requireAuth(CreateCategory),
+        exact: true
+    },
+    {
+        path: "/categories/edit/",
+        component: requireAuth(EditCategory),
         exact: true
     }
 ]
