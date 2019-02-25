@@ -15,6 +15,7 @@
 
 %extend_2 {
   appearance: none;
+  width: 100%;
   min-width: 160px;
   height: 32px;
   padding: 2px 12px 4px;
@@ -132,12 +133,14 @@ small {
   //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
   border-radius: 5px;
   padding: 0 12px;
+  font-family: inherit;
   font-size: 14px;
   line-height: 36px;
   color: $white;
   border: 1px solid $black_12;
   border-bottom-width: 2px;
   text-align: center;
+  cursor: pointer;
   &.secondary {
     background: $white;
     color: $color_ebony_clay_approx;
@@ -146,6 +149,9 @@ small {
     background: $color_monza_approx;
     color: $white;
   }
+}
+label {
+  display: block;
 }
 select {
   @extend %extend_2;
@@ -642,6 +648,10 @@ table {
     &:nth-child(+n+3) {
       border-top-width: 1px;
     }
+    &:first-child:last-child {
+      width: 100%;
+      border-right: 0;
+    }
   }
 }
 .login {
@@ -760,4 +770,33 @@ input:not([type=radio]):not([type=checkbox]) {
 
 .RichEditor-activeButton {
   color: $color_alizarin_crimson_approx !important;
+}
+
+form.loading {
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(246, 247, 251, 0.5);
+    z-index: 1;
+  }
+  &:after {
+    content: "";
+    position: absolute;
+    left: calc(50% - 15px);
+    top: calc(50% - 15px);
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgba(0, 0, 0, .15);
+    border-left-color: $color_alizarin_crimson_approx;
+    border-top-color: $color_alizarin_crimson_approx;
+    border-radius: 50%;
+    animation: .75s loader infinite;
+    animation-timing-function: linear;
+    z-index: 2;
+  }
 }
