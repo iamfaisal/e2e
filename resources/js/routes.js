@@ -45,12 +45,12 @@ const routes = [
         exact: true
     },
     {
-        path: "/categories/create/",
+        path: "/categories/create",
         component: requireAuth(CreateCategory),
         exact: true
     },
     {
-        path: "/categories/edit/",
+        path: "/categories/edit/:category",
         component: requireAuth(EditCategory),
         exact: true
     }

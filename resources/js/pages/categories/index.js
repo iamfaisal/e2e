@@ -43,7 +43,7 @@ class Categories extends Component {
             <div>
                 <header>
                     <h2>Categories</h2>
-                    <Link className="button" to={"/categories/create/"}>Add New Category</Link>
+                    <Link className="button" to={"/categories/create"}>Add New Category</Link>
                 </header>
 
                 <div className="tablewrap">
@@ -57,11 +57,12 @@ class Categories extends Component {
                             </thead>
                             <tbody>
                             {categories.map((category) => {
+                                console.log(category);
                                 return (
                                     <tr key={category.id}>
-                                        <td>{category.title}</td>
+                                        <td>{category.label}</td>
                                         <td className="actions">
-                                            <Link className="ion-md-create" to={""}/>
+                                            <Link className="ion-md-create" to={"/categories/edit/"+category.id}/>
                                             <Link className="ion-md-close" to={""}/>
                                         </td>
                                     </tr>

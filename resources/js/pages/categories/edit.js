@@ -6,11 +6,24 @@ class EditCategory extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = {
+            loading: true
+        };
+
+        console.log(props.match.params.category);
     }
 
     componentDidMount() {
-        
+        read('category', [])
+            .then(res => {
+                this.setState({
+                    category: res.data.courses,
+                    loader: false
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     render() {
