@@ -26,7 +26,7 @@ class CreateCoursesTable extends Migration
             $table->string('class_docs_template');
             $table->string('material');
             $table->string('commercial_link');
-            $table->boolean('is_deleted');
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }
