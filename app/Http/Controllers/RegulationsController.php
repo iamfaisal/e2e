@@ -100,7 +100,7 @@ class RegulationsController extends Controller
         }
         $regulation->update($data);
         return response()->json([
-            'regulation' => $regulation
+            'regulation' => $request->all()
         ], 200);
     }
 
