@@ -15,6 +15,7 @@ class EditRegulation extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
