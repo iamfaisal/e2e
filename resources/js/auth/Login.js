@@ -68,7 +68,7 @@ class Login extends Component {
         if (isFormValid) {
             login(userData)
                 .then(res => {
-                    if (res.status == 200) {
+                    if (res.status === 200) {
                         this.props.history.push("/");
                     }
                 }).catch((err) => {

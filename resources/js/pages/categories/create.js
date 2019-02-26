@@ -31,20 +31,22 @@ class CreateCategory extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
+        const { isFormValid, category } = this.state;
         if (!isFormValid) return;
+        console.log(category);
         
         this.setState({
             loading: true
         });
 
-        create('categories', this.state.category)
+        create('categories', {label: category})
             .then(res => {
-                this.setState({
-                    loading: false
-                });
+                res.status === 200
+                    ? this.props.history.push("/categories")
+                    : this.setState({isFormValid: false});
             })
             .catch((err) => {
-                console.log(err);
+                this.setState({isFormValid: false})
             });
     }
 

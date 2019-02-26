@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoriesController extends Controller
 {
@@ -28,7 +29,10 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        $category = Category::create($request->all());
+        $category = Category::create([
+            'name' => Str::slug($request->get('label'), '-'),
+            'label' => $request->get('label'),
+        ]);
         return response()->json([
             'category' => $category
         ], 200);
