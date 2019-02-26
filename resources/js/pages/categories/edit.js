@@ -15,6 +15,7 @@ class EditCategory extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -38,7 +39,9 @@ class EditCategory extends Component {
     }
 
     handleBlur(field) {
-        this.setState({isFormValid: field.value});
+        this.setState({
+            isFormValid: field.value
+        });
     }
 
     handleSubmit(e) {
