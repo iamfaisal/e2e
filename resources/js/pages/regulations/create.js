@@ -81,7 +81,7 @@ class CreateRegulation extends Component {
             loading: true
         });
 
-        create('regulations', fields, true)
+        create('regulations', new FormData(e.target), true)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/regulations")
@@ -91,8 +91,10 @@ class CreateRegulation extends Component {
                     });
             })
             .catch((err) => {
+                let { formValidationData } = this.state;
+                formValidationData.state = "Unable To Create Regulation";
                 this.setState({
-                    formValidationData: {form: "Unable To Create Regulation"},
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })
