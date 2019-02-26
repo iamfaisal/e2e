@@ -2,7 +2,11 @@ import axios from "axios";
 
 export function create(dataType, params, files) {
     let headers = {};
-    if (files) headers.headers["Content-Type"] = "multipart/form-data";
+    if (files) headers = {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    }
 
     return new Promise((res, rej) => {
         axios.post("/api/auth/"+dataType, params, headers)
@@ -17,7 +21,11 @@ export function create(dataType, params, files) {
 
 export function read(dataType, params, files) {
     let headers = {};
-    if (files) headers.headers["Content-Type"] = "multipart/form-data";
+    if (files) headers = {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    }
 
     return new Promise((res, rej) => {
         axios.get("/api/auth/"+dataType, params, headers)
@@ -32,7 +40,11 @@ export function read(dataType, params, files) {
 
 export function update(dataType, params, files) {
     let headers = {};
-    if (files) headers.headers["Content-Type"] = "multipart/form-data";
+    if (files) headers = {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    }
 
     return new Promise((res, rej) => {
         axios.put("/api/auth/"+dataType, params, headers)
