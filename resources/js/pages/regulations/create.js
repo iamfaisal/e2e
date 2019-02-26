@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
+import TextArea from "../../common/TextArea";
 import { create } from "../../helpers/resource";
 
 class CreateRegulation extends Component {
@@ -210,13 +211,13 @@ class CreateRegulation extends Component {
                         />
                     </fieldset>
 
-                    <legend>Contact</legend>
+                    <legend>Regulations</legend>
                     <fieldset className="fields horizontal">
                         <TextArea
                             onBlur={(isValid) => this.handleFields(isValid)}
                             onChange={(event) => this.handleChange(event)}
                             name="info"
-                            value={user.profile.info}
+                            value={fields.regulations}
                             required={true}
                             placeholder="Public Profile"
                             validation={[validations.isEmail]}/>
