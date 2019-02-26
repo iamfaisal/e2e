@@ -62,7 +62,7 @@ class CreateCategory extends Component {
             })
             .catch((err) => {
                 this.setState({
-                    formValidationData: {form: "Invalid email or password."},
+                    formValidationData: {form: "Unable To Create Category"},
                     loading: false,
                     isFormValid: false
                 })
@@ -70,7 +70,7 @@ class CreateCategory extends Component {
     }
 
     render() {
-        const {loading, isFormValid, formValidationData } = this.state;
+        const {fields, loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
@@ -87,7 +87,7 @@ class CreateCategory extends Component {
                                     onBlur={this.handleBlur}
                                     onChange={this.handleChange}
                                     name="title"
-                                    value={this.state.category}
+                                    value={fields.title}
                                     required={true}
                                     labelText="Title"
                                     validation={[validations.isEmpty]}

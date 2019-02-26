@@ -8,9 +8,12 @@ class EditCategory extends Component {
         super(props);
 
         this.state = {
-            category_id: props.match.params.category,
-            category_label: "",
-            loading: true,
+            id: props.match.params.category,
+            loading: false,
+            fields: {
+                title: ""
+            },
+            formValidationData: {},
             isFormValid: false
         };
 
@@ -20,10 +23,13 @@ class EditCategory extends Component {
     }
 
     componentDidMount() {
-        read('categories/'+this.state.category_id, [])
+        const { id } = this.state;
+        read('categories/'+id, [])
             .then(res => {
+                let { fields } = this.state;
+                fields.title = res.data.category.label;
                 this.setState({
-                    category_label: res.data.category.label,
+                    fields: fields,
                     loading: false
                 });
             })
@@ -33,41 +39,57 @@ class EditCategory extends Component {
     }
 
     handleChange(value) {
-        this.setState({
-            category_label: value
-        });
+        let { fields } = this.state;
+        fields[event.target.name] = event.target.value;
+        this.setState({fields: fields});
     }
 
     handleBlur(field) {
-        this.setState({
-            isFormValid: field.value
-        });
+        let { formValidationData, fields } = this.state;
+        formValidationData[field.key] = field.value;
+        this.setState({formValidationData: formValidationData});
+        let isFormValid = true;
+        for (let key in fields) {
+            if (!formValidationData[key]) {
+                isFormValid = false;
+            }
+        }
+        this.setState({isFormValid: isFormValid});
     }
 
     handleSubmit(e) {
         e.preventDefault();
 
-        const { isFormValid } = this.state;
+        const { fields, isFormValid } = this.state;
 
         if (!isFormValid) return;
-
+        
         this.setState({
             loading: true
         });
 
-        update('categories/'+this.state.category_id, this.state.category_label)
+        update('categories', {label: fields.title})
             .then(res => {
-                this.setState({
-                    loading: false
-                });
+                res.status === 200
+                    ? this.props.history.push("/categories")
+                    : this.setState({
+                        loading: false,
+                        isFormValid: false
+                    });
             })
             .catch((err) => {
-                console.log(err);
+                this.setState({
+                    formValidationData: {form: "Unable To Update Category"},
+                    loading: false,
+                    isFormValid: false
+                })
             });
     }
 
     render() {
-        const {loader, isFormValid } = this.state;
+        const {fields, loading, isFormValid, formValidationData } = this.state;
+
+        if (fields.title === "") return false;
 
         return (
             <div>
@@ -77,13 +99,14 @@ class EditCategory extends Component {
 
                 <div className="row">
                     <div className="col-md-6">
-                        <form className={this.state.loading ? "loading" : ""} onSubmit={this.handleSubmit}>
+                        <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
+                        {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                             <fieldset className="fields horizontal">
                                 <TextField
                                     onBlur={this.handleBlur}
                                     onChange={this.handleChange}
                                     name="title"
-                                    value={this.state.category}
+                                    value={fields.title}
                                     required={true}
                                     labelText="Title"
                                     validation={[validations.isEmpty]}
