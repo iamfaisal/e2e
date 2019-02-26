@@ -183,7 +183,7 @@ class TextField extends Component {
 	render() {
 		const { isValid, value, type, errorText } = this.state;
 		const { labelText, name, id, required, maxLength, disabled, readOnly, placeholder, icon } = this.props;
-        
+
 		return (
             <label className={classnames({ "invalid": !isValid })}>
                 <span>{labelText}</span>

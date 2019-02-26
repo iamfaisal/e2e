@@ -8,8 +8,26 @@ class CreateRegulation extends Component {
         super(props);
 
         this.state = {
-            category: "",
             loading: false,
+            fields: {
+                name: "",
+                abbreviation: "",
+                commission_name: "",
+                commission_abbreviation: "",
+                contact_first_name: "",
+                contact_last_name: "",
+                contact_email_address: "",
+                contact_phone: "",
+                contact_street_address: "",
+                contact_city: "",
+                contact_state: "",
+                contact_zip_code: "",
+                regulations: "",
+                regulations_doc: "",
+                ce_requirements_statement: "",
+                must_specify_courses: 1
+            },
+            formValidationData: {},
             isFormValid: false
         };
 
@@ -19,17 +37,28 @@ class CreateRegulation extends Component {
     }
 
     handleChange(value) {
-        this.setState({
-            category: value
-        });
+        let { fields } = this.state;
+        fields[event.target.name] = event.target.value;
+        this.setState({fields: fields});
     }
 
     handleBlur(field) {
-        this.setState({isFormValid: field.value});
+        let { formValidationData, fields } = this.state;
+        formValidationData[field.key] = field.value;
+        this.setState({formValidationData: formValidationData});
+        let isFormValid = true;
+        for (let key in fields) {
+            if (!formValidationData[key]) {
+                isFormValid = false;
+            }
+        }
+        this.setState({isFormValid: isFormValid});
     }
 
     handleSubmit(e) {
         e.preventDefault();
+
+        const { fields, isFormValid, category } = this.state;
 
         if (!isFormValid) return;
         
@@ -37,19 +66,26 @@ class CreateRegulation extends Component {
             loading: true
         });
 
-        create('regulations', this.state.category)
+        create('regulations', {label: fields.title})
             .then(res => {
-                this.setState({
-                    loading: false
-                });
+                res.status === 200
+                    ? this.props.history.push("/regulations")
+                    : this.setState({
+                        loading: false,
+                        isFormValid: false
+                    });
             })
             .catch((err) => {
-                console.log(err);
+                this.setState({
+                    formValidationData: {form: "Unable To Create Regulation"},
+                    loading: false,
+                    isFormValid: false
+                })
             });
     }
 
     render() {
-        const {loader, isFormValid } = this.state;
+        const {fields, loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
@@ -57,24 +93,137 @@ class CreateRegulation extends Component {
                     <h2>Create Regulation</h2>
                 </header>
 
-                <div className="row">
-                    <div className="col-md-6">
-                        <form className={this.state.loading ? "loading" : ""} onSubmit={this.handleSubmit}>
-                            <fieldset className="fields horizontal">
-                                <TextField
-                                    onBlur={this.handleBlur}
-                                    onChange={this.handleChange}
-                                    name="title"
-                                    value={this.state.category}
-                                    required={true}
-                                    labelText="Title"
-                                    validation={[validations.isEmpty]}
-                                />
-                            </fieldset>
-                            <button className="button" disabled={!isFormValid}>Create Regulation</button>
-                        </form>
-                    </div>
-                </div>
+                <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
+                {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
+                    <fieldset className="fields horizontal">
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="name"
+                            value={fields.name}
+                            required={true}
+                            labelText="Name"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="abbreviation"
+                            value={fields.abbreviation}
+                            required={true}
+                            labelText="Abbreviation"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="commission_name"
+                            value={fields.commission_name}
+                            required={true}
+                            labelText="Commission Name"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="commission_abbreviation"
+                            value={fields.commission_abbreviation}
+                            required={true}
+                            labelText="Commission Abbreviation"
+                            validation={[validations.isEmpty]}
+                        />
+                    </fieldset>
+
+                    <legend>Contact</legend>
+                    <fieldset className="fields horizontal">
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="contact_first_name"
+                            value={fields.contact_first_name}
+                            required={true}
+                            labelText="First Name"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="contact_last_name"
+                            value={fields.contact_last_name}
+                            required={true}
+                            labelText="Last Name"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="contact_email_address"
+                            value={fields.contact_email_address}
+                            required={true}
+                            labelText="Email"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="contact_phone"
+                            value={fields.contact_phone}
+                            required={true}
+                            labelText="Phone"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="contact_street_address"
+                            value={fields.contact_street_address}
+                            required={true}
+                            labelText="Street Address"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="contact_city"
+                            value={fields.contact_city}
+                            required={true}
+                            labelText="City"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="contact_state"
+                            value={fields.contact_state}
+                            required={true}
+                            labelText="State"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={this.handleBlur}
+                            onChange={this.handleChange}
+                            name="contact_zip_code"
+                            value={fields.contact_zip_code}
+                            required={true}
+                            labelText="Zip Code"
+                            validation={[validations.isEmpty]}
+                        />
+                    </fieldset>
+
+                    <legend>Contact</legend>
+                    <fieldset className="fields horizontal">
+                        <TextArea
+                            onBlur={(isValid) => this.handleFields(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="info"
+                            value={user.profile.info}
+                            required={true}
+                            placeholder="Public Profile"
+                            validation={[validations.isEmail]}/>
+                    </fieldset>
+
+                    <button className="button" disabled={!isFormValid}>Create Regulation</button>
+                </form>
             </div>
         );
     }

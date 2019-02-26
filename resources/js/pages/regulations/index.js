@@ -12,7 +12,7 @@ class Regulations extends Component {
         };
 
         this.renderLoader = this.renderLoader.bind(this);
-        this.deleteCategory = this.deleteCategory.bind(this);
+        this.deleteRegulation = this.deleteRegulation.bind(this);
     }
 
     componentDidMount() {
@@ -37,10 +37,10 @@ class Regulations extends Component {
         );
     }
 
-    deleteCategory(e, cat) {
+    deleteRegulation(e, reg) {
         const tr = e.target.parentNode.parentNode;
-        if (confirm('Do you really want to delete this regulation?')) {
-            remove('regulations/'+cat, [])
+        if (confirm('Do you really want to delete this Regulation?')) {
+            remove('regulations/'+reg, [])
             .then(res => {
                 tr.remove();
             })
@@ -65,7 +65,7 @@ class Regulations extends Component {
                         <table>
                             <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Title</th>
                                 <th>Commission</th>
                                 <th></th>
                             </tr>
@@ -78,7 +78,7 @@ class Regulations extends Component {
                                         <td>{regulation.commission_name}</td>
                                         <td className="actions">
                                             <Link className="ion-md-create" to={"/regulations/edit/"+regulation.id}/>
-                                            <a className="ion-md-close" onClick={e => this.deleteCategory(e, regulation.id)}/>
+                                            <a className="ion-md-close" onClick={e => this.deleteRegulation(e, category.id)}/>
                                         </td>
                                     </tr>
                                 );
