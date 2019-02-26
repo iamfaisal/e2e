@@ -2,13 +2,17 @@ import axios from "axios";
 
 export function create(dataType, params) {
     return new Promise((res, rej) => {
-        axios.post("/api/auth/"+dataType, params)
-            .then((response) => {
-                res(response);
-            })
-            .catch((err) => {
-                rej(err);
-            })
+        axios.post("/api/auth/"+dataType, params, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+        .then((response) => {
+            res(response);
+        })
+        .catch((err) => {
+            rej(err);
+        })
     })
 }
 

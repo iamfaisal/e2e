@@ -64,6 +64,7 @@ class CreateRegulation extends Component {
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
+                console.log(key);
             }
         }
         this.setState({isFormValid: isFormValid});
@@ -80,7 +81,7 @@ class CreateRegulation extends Component {
             loading: true
         });
 
-        create('regulations', fields)
+        create('regulations', fields, true)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/regulations")
