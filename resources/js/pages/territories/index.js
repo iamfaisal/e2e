@@ -2,24 +2,24 @@ import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { read, remove } from "../../helpers/resource";
 
-class Regulations extends Component {
+class Territories extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            regulations: [],
+            territories: [],
             loader: true
         };
 
         this.renderLoader = this.renderLoader.bind(this);
-        this.deleteRegulation = this.deleteRegulation.bind(this);
+        this.deleteTerritory = this.deleteTerritory.bind(this);
     }
 
     componentDidMount() {
-        read('regulations', [])
+        read('territories', [])
             .then(res => {
                 this.setState({
-                    regulations: res.data.regulations,
+                    territories: res.data.territories,
                     loader: false
                 });
             })
@@ -37,10 +37,10 @@ class Regulations extends Component {
         );
     }
 
-    deleteRegulation(e, reg) {
+    deleteTerritory(e, ter) {
         const tr = e.target.parentNode.parentNode;
-        if (confirm('Do you really want to delete this Regulation?')) {
-            remove('regulations/'+reg, [])
+        if (confirm('Do you really want to delete this Territory?')) {
+            remove('territories/'+ter, [])
             .then(res => {
                 tr.remove();
             })
@@ -51,34 +51,36 @@ class Regulations extends Component {
     }
 
     render() {
-        const { regulations, loader } = this.state;
+        const { territories, loader } = this.state;
 
         return (
             <div>
                 <header>
-                    <h2>Regulations</h2>
-                    <Link className="button" to={"/regulations/create"}>Add New Regulation</Link>
+                    <h2>Territories</h2>
+                    <Link className="button" to={"/territories/create"}>Add New Territory</Link>
                 </header>
 
                 <div className="tablewrap">
-                    {!loader && regulations ? (
+                    {!loader && territories ? (
                         <table>
                             <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Commission</th>
+                                <th>Name</th>
+                                <th>Regulation</th>
+                                <th>Zip Codes</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            {regulations.map((regulation) => {
+                            {territories.map((territory) => {
                                 return (
-                                    <tr key={regulation.id}>
-                                        <td>{regulation.name}</td>
-                                        <td>{regulation.commission_name}</td>
+                                    <tr key={territory.id}>
+                                        <td>{territory.name}</td>
+                                        <td>{territory.regulation.name}</td>
+                                        <td>{territory.zip_codes}</td>
                                         <td className="actions">
-                                            <Link className="ion-md-create" to={"/regulations/edit/"+regulation.id}/>
-                                            <a className="ion-md-close" onClick={e => this.deleteRegulation(e, regulation.id)}/>
+                                            <Link className="ion-md-create" to={"/territories/edit/"+territory.id}/>
+                                            <a className="ion-md-close" onClick={e => this.deleteTerritory(e, territory.id)}/>
                                         </td>
                                     </tr>
                                 );
@@ -92,4 +94,4 @@ class Regulations extends Component {
     }
 }
 
-export default Regulations;
+export default Territories;

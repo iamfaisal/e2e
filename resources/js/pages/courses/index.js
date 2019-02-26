@@ -35,6 +35,19 @@ class Courses extends Component {
             });
     }
 
+    deleteCourse(e, course) {
+        const tr = e.target.parentNode.parentNode;
+        if (confirm('Do you really want to delete this Course?')) {
+            remove('courses/'+course, [])
+            .then(res => {
+                tr.remove();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
+    }
+
     renderLoader() {
         return (
             <div className="loader"/>
@@ -97,7 +110,7 @@ class Courses extends Component {
                                         <td className="actions">
                                             <Link className="ion-md-create" to={""}/>
                                             <Link className="ion-ios-archive" to={""}/>
-                                            <Link className="ion-md-close" to={""}/>
+                                            <a className="ion-md-close" onClick={e => this.deleteCourse(e, course.id)}/>
                                         </td>
                                     </tr>
                                 );

@@ -5,13 +5,17 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Courses from "./pages/courses";
 
-import Categories from "./pages/categories";
-import CreateCategory from "./pages/categories/create";
-import EditCategory from "./pages/categories/edit";
+import Territories from "./pages/territories";
+import CreateTerritory from "./pages/territories/create";
+import EditTerritory from "./pages/territories/edit";
 
 import Regulations from "./pages/regulations";
 import CreateRegulation from "./pages/regulations/create";
 import EditRegulation from "./pages/regulations/edit";
+
+import Categories from "./pages/categories";
+import CreateCategory from "./pages/categories/create";
+import EditCategory from "./pages/categories/edit";
 
 import requireAuth from "./utils/requireAuth";
 
@@ -44,18 +48,18 @@ const routes = [
         exact: true
     },
     {
-        path: "/categories",
-        component: requireAuth(Categories),
+        path: "/territories",
+        component: requireAuth(Territories),
         exact: true
     },
     {
-        path: "/categories/create",
-        component: requireAuth(CreateCategory),
+        path: "/territories/create",
+        component: requireAuth(CreateTerritory),
         exact: true
     },
     {
-        path: "/categories/edit/:category",
-        component: requireAuth(EditCategory),
+        path: "/territories/edit/:territory",
+        component: requireAuth(EditTerritory),
         exact: true
     },
     {
@@ -71,6 +75,21 @@ const routes = [
     {
         path: "/regulations/edit/:regulation",
         component: requireAuth(EditRegulation),
+        exact: true
+    },
+    {
+        path: "/categories",
+        component: requireAuth(Categories),
+        exact: true
+    },
+    {
+        path: "/categories/create",
+        component: requireAuth(CreateCategory),
+        exact: true
+    },
+    {
+        path: "/categories/edit/:category",
+        component: requireAuth(EditCategory),
         exact: true
     }
 ]

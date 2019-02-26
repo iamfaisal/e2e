@@ -41,7 +41,7 @@ class Select extends Component {
                 {
                     items.map((item, i) => {
                         return (
-                            <option key={item[id]+i} value={item[id]}>
+                            <option key={i} value={item[id]}>
                                 {item[val]}
                             </option>
                         )
