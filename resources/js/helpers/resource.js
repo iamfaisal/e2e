@@ -35,3 +35,15 @@ export function update(dataType, params) {
             })
     })
 }
+
+export function remove(dataType, params) {
+    return new Promise((res, rej) => {
+        axios.delete("/api/auth/"+dataType, params)
+            .then((response) => {
+                res(response);
+            })
+            .catch((err) => {
+                rej(err);
+            })
+    })
+}

@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import { validations } from "../../utils/validations";
+import TextField from "../../common/TextField";
 import { create } from "../../helpers/resource";
 
 class CreateCategory extends Component {
@@ -7,22 +9,29 @@ class CreateCategory extends Component {
 
         this.state = {
             category: "",
-            loading: false
+            loading: false,
+            isFormValid: false
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(e) {
-        console.log(e);
+    handleChange(value) {
         this.setState({
-            category: e.target.value
+            category: value
         });
+    }
+
+    handleBlur(field) {
+        this.setState({isFormValid: field.value});
     }
 
     handleSubmit(e) {
         e.preventDefault();
+
+        if (!isFormValid) return;
         
         this.setState({
             loading: true
@@ -40,7 +49,7 @@ class CreateCategory extends Component {
     }
 
     render() {
-        const { categories, loader } = this.state;
+        const {loader, isFormValid } = this.state;
 
         return (
             <div>
@@ -52,16 +61,17 @@ class CreateCategory extends Component {
                     <div className="col-md-6">
                         <form className={this.state.loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                             <fieldset className="fields horizontal">
-                                <label>
-                                    <span>Title</span>
-                                    <input
-                                        type="text"
-                                        placeholder="enter category title"
-                                        onChange={this.handleChange}
-                                    />
-                                </label>
+                                <TextField
+                                    onBlur={this.handleBlur}
+                                    onChange={this.handleChange}
+                                    name="title"
+                                    value={this.state.category}
+                                    required={true}
+                                    labelText="Title"
+                                    validation={[validations.isEmpty]}
+                                />
                             </fieldset>
-                            <button className="button">Create Category</button>
+                            <button className="button" disabled={!isFormValid}>Create Category</button>
                         </form>
                     </div>
                 </div>

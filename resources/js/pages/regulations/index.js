@@ -2,12 +2,12 @@ import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { read, remove } from "../../helpers/resource";
 
-class Categories extends Component {
+class Regulations extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            categories: [],
+            regulations: [],
             loader: true
         };
 
@@ -16,10 +16,10 @@ class Categories extends Component {
     }
 
     componentDidMount() {
-        read('categories', [])
+        read('regulations', [])
             .then(res => {
                 this.setState({
-                    categories: res.data.categories,
+                    regulations: res.data.regulations,
                     loader: false
                 });
             })
@@ -39,8 +39,8 @@ class Categories extends Component {
 
     deleteCategory(e, cat) {
         const tr = e.target.parentNode.parentNode;
-        if (confirm('Do you really want to delete this Category?')) {
-            remove('categories/'+cat, [])
+        if (confirm('Do you really want to delete this regulation?')) {
+            remove('regulations/'+cat, [])
             .then(res => {
                 tr.remove();
             })
@@ -51,32 +51,34 @@ class Categories extends Component {
     }
 
     render() {
-        const { categories, loader } = this.state;
+        const { regulations, loader } = this.state;
 
         return (
             <div>
                 <header>
-                    <h2>Categories</h2>
-                    <Link className="button" to={"/categories/create"}>Add New Category</Link>
+                    <h2>Regulations</h2>
+                    <Link className="button" to={"/regulations/create"}>Add New Regulation</Link>
                 </header>
 
                 <div className="tablewrap">
-                    {!loader && categories ? (
+                    {!loader && regulations ? (
                         <table>
                             <thead>
                             <tr>
-                                <th>Title</th>
+                                <th>Name</th>
+                                <th>Commission</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
-                            {categories.map((category) => {
+                            {regulations.map((regulation) => {
                                 return (
-                                    <tr key={category.id}>
-                                        <td>{category.label}</td>
+                                    <tr key={regulation.id}>
+                                        <td>{regulation.name}</td>
+                                        <td>{regulation.commission_name}</td>
                                         <td className="actions">
-                                            <Link className="ion-md-create" to={"/categories/edit/"+category.id}/>
-                                            <a className="ion-md-close" onClick={e => this.deleteCategory(e, category.id)}/>
+                                            <Link className="ion-md-create" to={"/regulations/edit/"+regulation.id}/>
+                                            <a className="ion-md-close" onClick={e => this.deleteCategory(e, regulation.id)}/>
                                         </td>
                                     </tr>
                                 );
@@ -90,4 +92,4 @@ class Categories extends Component {
     }
 }
 
-export default Categories;
+export default Regulations;

@@ -149,6 +149,11 @@ small {
     background: $color_monza_approx;
     color: $white;
   }
+
+  &:disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
 }
 label {
   display: block;
@@ -685,10 +690,6 @@ table {
     min-width: 140px;
     &:not(:last-child) {
       margin-right: 15px;
-    }
-    &:disabled {
-      opacity: 0.6;
-      pointer-events: none;
     }
   }
 }

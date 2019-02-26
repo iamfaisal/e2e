@@ -1,39 +1,26 @@
 import React, {Component} from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
-import { read, update } from "../../helpers/resource";
+import { create } from "../../helpers/resource";
 
-class EditCategory extends Component {
+class CreateRegulation extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            category_id: props.match.params.category,
-            category_label: "",
-            loading: true,
+            category: "",
+            loading: false,
             isFormValid: false
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        read('categories/'+this.state.category_id, [])
-            .then(res => {
-                this.setState({
-                    category_label: res.data.category.label,
-                    loading: false
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
     }
 
     handleChange(value) {
         this.setState({
-            category_label: value
+            category: value
         });
     }
 
@@ -45,12 +32,12 @@ class EditCategory extends Component {
         e.preventDefault();
 
         if (!isFormValid) return;
-
+        
         this.setState({
             loading: true
         });
 
-        update('categories/'+this.state.category_id, this.state.category_label)
+        create('regulations', this.state.category)
             .then(res => {
                 this.setState({
                     loading: false
@@ -67,7 +54,7 @@ class EditCategory extends Component {
         return (
             <div>
                 <header>
-                    <h2>Edit Category</h2>
+                    <h2>Create Regulation</h2>
                 </header>
 
                 <div className="row">
@@ -84,7 +71,7 @@ class EditCategory extends Component {
                                     validation={[validations.isEmpty]}
                                 />
                             </fieldset>
-                            <button className="button" disabled={!isFormValid}>Update Category</button>
+                            <button className="button" disabled={!isFormValid}>Create Regulation</button>
                         </form>
                     </div>
                 </div>
@@ -93,4 +80,4 @@ class EditCategory extends Component {
     }
 }
 
-export default EditCategory;
+export default CreateRegulation;

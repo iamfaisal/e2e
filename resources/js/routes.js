@@ -9,6 +9,10 @@ import Categories from "./pages/categories";
 import CreateCategory from "./pages/categories/create";
 import EditCategory from "./pages/categories/edit";
 
+import Regulations from "./pages/regulations";
+import CreateRegulation from "./pages/regulations/create";
+import EditRegulation from "./pages/regulations/edit";
+
 import requireAuth from "./utils/requireAuth";
 
 const routes = [
@@ -52,6 +56,21 @@ const routes = [
     {
         path: "/categories/edit/:category",
         component: requireAuth(EditCategory),
+        exact: true
+    },
+    {
+        path: "/regulations",
+        component: requireAuth(Regulations),
+        exact: true
+    },
+    {
+        path: "/regulations/create",
+        component: requireAuth(CreateRegulation),
+        exact: true
+    },
+    {
+        path: "/regulations/edit/:category",
+        component: requireAuth(EditRegulation),
         exact: true
     }
 ]

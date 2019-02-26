@@ -3,7 +3,7 @@ import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import { read, update } from "../../helpers/resource";
 
-class EditCategory extends Component {
+class EditRegulation extends Component {
     constructor(props) {
         super(props);
 
@@ -50,7 +50,7 @@ class EditCategory extends Component {
             loading: true
         });
 
-        update('categories/'+this.state.category_id, this.state.category_label)
+        update('regulations/'+this.state.category_id, this.state.category_label)
             .then(res => {
                 this.setState({
                     loading: false
@@ -67,7 +67,7 @@ class EditCategory extends Component {
         return (
             <div>
                 <header>
-                    <h2>Edit Category</h2>
+                    <h2>Edit Regulation</h2>
                 </header>
 
                 <div className="row">
@@ -84,7 +84,7 @@ class EditCategory extends Component {
                                     validation={[validations.isEmpty]}
                                 />
                             </fieldset>
-                            <button className="button" disabled={!isFormValid}>Update Category</button>
+                            <button className="button" disabled={!isFormValid}>Update Regulation</button>
                         </form>
                     </div>
                 </div>
@@ -93,4 +93,4 @@ class EditCategory extends Component {
     }
 }
 
-export default EditCategory;
+export default EditRegulation;
