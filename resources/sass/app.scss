@@ -299,6 +299,8 @@ table {
   .actions {
     font-size: 18px;
     white-space: nowrap;
+    width: 100px;
+    text-align: center;
     a {
       display: inline-block;
       &:not(:last-child) {
@@ -641,6 +643,10 @@ table {
     padding: 0;
     margin: 0;
   }
+  + .checkbox {
+    position: relative;
+    top: -15px;
+  }
 }
 @media(min-width: 576px) {
   .fields.horizontal > label {
@@ -884,5 +890,37 @@ form.loading {
 .alert {
   &:empty {
     display: none;
+  }
+}
+
+.uploader {
+	background: #fff;
+	border: 0;
+	border-radius: 5px;
+	margin: 0 0 30px;
+	padding: 30px;
+	box-shadow: 0 8px 60px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  
+  input {
+    display: none;
+  }
+
+  .sep {
+    display: inline-block;
+    padding: 0 10px;
+  }
+
+  .filenames {
+    text-align: left;
+    padding-top: 10px;
+
+    span {
+      display: inline-block;
+      padding: 2px 6px;
+      margin: 5px 5px 0 0;
+      border: 1px dashed rgba(0, 0, 0, .15);
+      border-radius: 4px;
+    }
   }
 }

@@ -43,7 +43,7 @@ class Courses extends Component {
 
     render() {
         const { courses, categories, regulations, loader } = this.state;
-        //console.log(categories, regulations);
+
         return (
             <div>
                 <header>
