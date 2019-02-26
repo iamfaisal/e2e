@@ -87,7 +87,7 @@ class EditRegulation extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { fields, isFormValid, category } = this.state;
+        const { id, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -95,7 +95,7 @@ class EditRegulation extends Component {
             loading: true
         });
 
-        update('regulations', new FormData(e.target), true)
+        update('regulations/'+id, new FormData(e.target), true)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/regulations")
@@ -123,7 +123,7 @@ class EditRegulation extends Component {
         return (
             <div>
                 <header>
-                    <h2>Create Regulation</h2>
+                    <h2>Edit Regulation</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -252,7 +252,7 @@ class EditRegulation extends Component {
                         value={fields.regulations_doc}
                     />
 
-                    <button className="button" disabled={!isFormValid}>Create Regulation</button>
+                    <button className="button" disabled={!isFormValid}>Update Regulation</button>
                 </form>
             </div>
         );

@@ -60,7 +60,7 @@ class EditCategory extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { fields, isFormValid } = this.state;
+        const { id, fields, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -68,7 +68,7 @@ class EditCategory extends Component {
             loading: true
         });
 
-        update('categories', {label: fields.title})
+        update('categories/'+id, {label: fields.title})
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/categories")

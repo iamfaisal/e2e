@@ -85,7 +85,7 @@ class FileInput extends Component {
 	render() {
         const { isValid, errorText } = this.state;
         let { files } = this.state;
-        const { labelText, name, id, multiple, required } = this.props;
+        const { labelText, name, id, value, multiple, required } = this.props;
 
 		return (
             <label htmlFor={id ? id : name} className={classnames('uploader', { "invalid": !isValid })}>
@@ -94,9 +94,9 @@ class FileInput extends Component {
                 <span className="sep">-OR-</span>
                 <span className="button">Upload</span>
                 <div className="filenames">
-                    {files.map(file => {
+                    {files.length ? files.map(file => {
                         return <span key={file.name}>{file.name}</span>
-                    })}
+                    }) : <span>{value}</span>}
                 </div>
                 <input
                     onChange={this.onChange}
