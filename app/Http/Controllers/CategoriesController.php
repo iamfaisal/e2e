@@ -60,7 +60,10 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $category->update($request->all());
+        $category->update([
+            'name' => Str::slug($request->get('label'), '-'),
+            'label' => $request->get('label'),
+        ]);
         return response()->json([
             'category' => $category
         ], 200);
