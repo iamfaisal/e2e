@@ -72,6 +72,7 @@ class Regulations extends Component {
                             </thead>
                             <tbody>
                             {regulations.map((regulation) => {
+                                console.log(regulation);
                                 return (
                                     <tr key={regulation.id}>
                                         <td>{regulation.name}</td>

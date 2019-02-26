@@ -69,7 +69,7 @@ const routes = [
         exact: true
     },
     {
-        path: "/regulations/edit/:category",
+        path: "/regulations/edit/:regulation",
         component: requireAuth(EditRegulation),
         exact: true
     }

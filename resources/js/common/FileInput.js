@@ -95,7 +95,7 @@ class FileInput extends Component {
                 <span className="button">Upload</span>
                 <div className="filenames">
                     {files.map(file => {
-                        return <span>{file.name}</span>
+                        return <span key={file.name}>{file.name}</span>
                     })}
                 </div>
                 <input

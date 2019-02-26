@@ -64,7 +64,6 @@ class CreateRegulation extends Component {
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
-                console.log(key);
             }
         }
         this.setState({isFormValid: isFormValid});
@@ -103,14 +102,6 @@ class CreateRegulation extends Component {
 
     render() {
         const {fields, loading, isFormValid, formValidationData } = this.state;
-
-        const states = [{
-            id: "select",
-            val: "Select state"
-        },{
-            id: "AZ",
-            val: "Arizona"
-        }];
 
         return (
             <div>
@@ -203,15 +194,12 @@ class CreateRegulation extends Component {
                             value={fields.contact_city}
                             labelText="City"
                         />
-                        <label>
-                            <span>State</span>
-                            <Select
-                                items={states}
-                                id={"id"}
-                                name="contact_state"
-                                value={fields.contact_state}
-                                val={"val"}/>
-                        </label>
+                        <TextField
+                            onChange={this.handleChange}
+                            name="contact_state"
+                            value={fields.contact_state}
+                            labelText="State"
+                        />
                         <TextField
                             onChange={this.handleChange}
                             name="contact_zip_code"
@@ -234,9 +222,9 @@ class CreateRegulation extends Component {
                     <fieldset className="fields horizontal">
                         <TextArea
                             onChange={(event) => this.handleChange(event)}
-                            name="regulations"
-                            value={fields.regulations}
-                            placeholder="Regulations"
+                            name="ce_requirements_statement"
+                            value={fields.ce_requirements_statement}
+                            placeholder="CE Eequirements Statement"
                         />
                     </fieldset>
 
