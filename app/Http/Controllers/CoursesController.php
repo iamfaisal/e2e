@@ -34,7 +34,29 @@ class CoursesController extends Controller
      */
     public function store(Request $request)
     {
-        $course = Course::create($request->all());
+        $data = [
+            'title' => $request->get('title'),
+            'regulation_id' => $request->get('regulation_id'),
+            'number' => $request->get('number'),
+            'code' => $request->get('code'),
+            'hours' => $request->get('hours'),
+            'description' => $request->get('description'),
+            'expiration_date' => $request->get('expiration_date'),
+            'commercial_link' => $request->get('commercial_link')
+        ];
+        if($request->hasFile('class_flyer_template'))
+        {
+            $data['class_flyer_template'] = $request->file('class_flyer_template')->store('courses');
+        }
+        if($request->hasFile('class_docs_template'))
+        {
+            $data['class_docs_template'] = $request->file('class_docs_template')->store('courses');
+        }
+        if($request->hasFile('material'))
+        {
+            $data['material'] = $request->file('material')->store('courses');
+        }
+        $course = Course::create($data);
         return response()->json([
             'course' => $course
         ], 200);
@@ -63,7 +85,29 @@ class CoursesController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        $course->update($request->all());
+        $data = [
+            'title' => $request->get('title'),
+            'regulation_id' => $request->get('regulation_id'),
+            'number' => $request->get('number'),
+            'code' => $request->get('code'),
+            'hours' => $request->get('hours'),
+            'description' => $request->get('description'),
+            'expiration_date' => $request->get('expiration_date'),
+            'commercial_link' => $request->get('commercial_link')
+        ];
+        if($request->hasFile('class_flyer_template'))
+        {
+            $data['class_flyer_template'] = $request->file('class_flyer_template')->store('courses');
+        }
+        if($request->hasFile('class_docs_template'))
+        {
+            $data['class_docs_template'] = $request->file('class_docs_template')->store('courses');
+        }
+        if($request->hasFile('material'))
+        {
+            $data['material'] = $request->file('material')->store('courses');
+        }
+        $course->update($data);
         return response()->json([
             'course' => $course
         ], 200);
