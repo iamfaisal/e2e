@@ -1,17 +1,19 @@
 import React, { Component } from "react";
-import { Editor, EditorState, RichUtils, getDefaultKeyBinding } from "draft-js";
+import { Editor, EditorState, RichUtils, getDefaultKeyBinding, convertToRaw } from "draft-js";
+import {stateFromHTML} from "draft-js-import-html";
+import {stateToHTML} from "draft-js-export-html";
 
 class TextArea extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            editorState: EditorState.createEmpty(),
+            editorState: EditorState.createWithContent(stateFromHTML(props.value ? props.value : "")),
             value: props.value ? props.value : ""
         };
 
         this.focus = () => this.refs.editor.focus();
-        this.onChange = (editorState) => this.setState({editorState});
+        this.onChange = (editorState) => this.setState({editorState, value: stateToHTML(editorState.getCurrentContent())});
         this.handleKeyCommand = this._handleKeyCommand.bind(this);
         this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
         this.toggleBlockType = this._toggleBlockType.bind(this);
@@ -60,10 +62,17 @@ class TextArea extends Component {
         );
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.value && this.props.value !== prevProps.value) {
+            this.setState({
+                value: this.props.value ? this.props.value : ""
+            });
+        }
+    }
+
     render() {
         const { value, editorState } = this.state;
         const { name, id, disabled, placeholder } = this.props;
-
         let className = 'RichEditor-editor';
         var contentState = editorState.getCurrentContent();
         if (!contentState.hasText()) {
@@ -98,6 +107,7 @@ class TextArea extends Component {
                         spellCheck={true}
                     />
                 </div>
+                <textarea readOnly={true} name={name} value={value ? value : ""}/>
             </div>
         );
     }

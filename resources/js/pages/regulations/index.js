@@ -78,7 +78,7 @@ class Regulations extends Component {
                                         <td>{regulation.commission_name}</td>
                                         <td className="actions">
                                             <Link className="ion-md-create" to={"/regulations/edit/"+regulation.id}/>
-                                            <a className="ion-md-close" onClick={e => this.deleteRegulation(e, category.id)}/>
+                                            <a className="ion-md-close" onClick={e => this.deleteRegulation(e, regulation.id)}/>
                                         </td>
                                     </tr>
                                 );
