@@ -88,7 +88,7 @@ class FileInput extends Component {
         const { labelText, name, id, multiple, required } = this.props;
 
 		return (
-            <label for={id ? id : name} className={classnames('uploader', { "invalid": !isValid })}>
+            <label htmlFor={id ? id : name} className={classnames('uploader', { "invalid": !isValid })}>
                 <h3>{labelText}</h3>
                 <span>Drag n Drop</span>
                 <span className="sep">-OR-</span>
