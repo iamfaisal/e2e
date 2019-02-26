@@ -47,7 +47,7 @@ export function update(dataType, params, files) {
     }
 
     return new Promise((res, rej) => {
-        axios.put("/api/auth/"+dataType, params, headers)
+        axios.post("/api/auth/"+dataType, params, headers)
         .then((response) => {
             res(response);
         })

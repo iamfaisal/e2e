@@ -39,7 +39,7 @@ class EditRegulation extends Component {
                 commission_abbreviation: ""
             },
             formValidationData: {},
-            isFormValid: false
+            isFormValid: true
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -95,7 +95,10 @@ class EditRegulation extends Component {
             loading: true
         });
 
-        update('regulations/'+id, new FormData(e.target), true)
+        let data = new FormData(e.target);
+        data.append('_method', 'PUT');
+
+        update('regulations/'+id, data, true)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/regulations")
@@ -239,9 +242,9 @@ class EditRegulation extends Component {
                     <fieldset className="fields horizontal">
                         <TextArea
                             onChange={(event) => this.handleChange(event)}
-                            name="regulations"
-                            value={fields.regulations}
-                            placeholder="Regulations"
+                            name="ce_requirements_statement"
+                            value={fields.ce_requirements_statement}
+                            placeholder="CE Eequirements Statement"
                         />
                     </fieldset>
 

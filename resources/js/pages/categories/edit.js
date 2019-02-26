@@ -68,7 +68,10 @@ class EditCategory extends Component {
             loading: true
         });
 
-        update('categories/'+id, {label: fields.title})
+        update("categories/"+id, {
+            label: fields.title,
+            _method: "PUT"
+        })
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/categories")
