@@ -28,7 +28,28 @@ class RegulationsController extends Controller
      */
     public function store(Request $request)
     {
-        $regulation = Regulation::create($request->all());
+        $data = [
+            'name' => $request->get('name'),
+            'abbreviation' => $request->get('abbreviation'),
+            'commission_name' => $request->get('commission_name'),
+            'commission_abbreviation' => $request->get('commission_abbreviation'),
+            'contact_first_name' => $request->get('contact_first_name'),
+            'contact_last_name' => $request->get('contact_last_name'),
+            'contact_email_address' => $request->get('contact_email_address'),
+            'contact_phone' => $request->get('contact_phone'),
+            'contact_street_address' => $request->get('contact_street_address'),
+            'contact_city' => $request->get('contact_city'),
+            'contact_state' => $request->get('contact_state'),
+            'contact_zip_code' => $request->get('contact_zip_code'),
+            'regulations' => $request->get('regulations'),
+            'ce_requirements_statement' => $request->get('ce_requirements_statement'),
+            'must_specify_courses' => $request->get('must_specify_courses') || false
+        ];
+        if($request->hasFile('regulations_doc'))
+        {
+            $data['regulations_doc'] = $request->file('regulations_doc')->store('regulations');
+        }
+        $regulation = Regulation::create($data);
         return response()->json([
             'regulation' => $regulation
         ], 200);
@@ -56,7 +77,28 @@ class RegulationsController extends Controller
      */
     public function update(Request $request, Regulation $regulation)
     {
-        $regulation->update($request->all());
+        $data = [
+            'name' => $request->get('name'),
+            'abbreviation' => $request->get('abbreviation'),
+            'commission_name' => $request->get('commission_name'),
+            'commission_abbreviation' => $request->get('commission_abbreviation'),
+            'contact_first_name' => $request->get('contact_first_name'),
+            'contact_last_name' => $request->get('contact_last_name'),
+            'contact_email_address' => $request->get('contact_email_address'),
+            'contact_phone' => $request->get('contact_phone'),
+            'contact_street_address' => $request->get('contact_street_address'),
+            'contact_city' => $request->get('contact_city'),
+            'contact_state' => $request->get('contact_state'),
+            'contact_zip_code' => $request->get('contact_zip_code'),
+            'regulations' => $request->get('regulations'),
+            'ce_requirements_statement' => $request->get('ce_requirements_statement'),
+            'must_specify_courses' => $request->get('must_specify_courses') || false
+        ];
+        if($request->hasFile('regulations_doc'))
+        {
+            $data['regulations_doc'] = $request->file('regulations_doc')->store('regulations');
+        }
+        $regulation->update($data);
         return response()->json([
             'regulation' => $regulation
         ], 200);
