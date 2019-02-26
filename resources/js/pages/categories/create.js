@@ -8,8 +8,11 @@ class CreateCategory extends Component {
         super(props);
 
         this.state = {
-            category: "",
             loading: false,
+            fields: {
+                title: ""
+            },
+            formValidationData: {},
             isFormValid: false
         };
 
@@ -19,39 +22,55 @@ class CreateCategory extends Component {
     }
 
     handleChange(value) {
-        this.setState({
-            category: value
-        });
+        let { fields } = this.state;
+        fields[event.target.name] = event.target.value;
+        this.setState({fields: fields});
     }
 
     handleBlur(field) {
-        this.setState({isFormValid: field.value});
+        let { formValidationData, fields } = this.state;
+        formValidationData[field.key] = field.value;
+        this.setState({formValidationData: formValidationData});
+        let isFormValid = true;
+        for (let key in fields) {
+            if (!formValidationData[key]) {
+                isFormValid = false;
+            }
+        }
+        this.setState({isFormValid: isFormValid});
     }
 
     handleSubmit(e) {
         e.preventDefault();
 
-        const { isFormValid, category } = this.state;
+        const { fields, isFormValid, category } = this.state;
+
         if (!isFormValid) return;
-        console.log(category);
         
         this.setState({
             loading: true
         });
 
-        create('categories', {label: category})
+        create('categories', {label: fields.title})
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/categories")
-                    : this.setState({isFormValid: false});
+                    : this.setState({
+                        loading: false,
+                        isFormValid: false
+                    });
             })
             .catch((err) => {
-                this.setState({isFormValid: false})
+                this.setState({
+                    formValidationData: {form: "Invalid email or password."},
+                    loading: false,
+                    isFormValid: false
+                })
             });
     }
 
     render() {
-        const {loader, isFormValid } = this.state;
+        const {loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
@@ -61,7 +80,8 @@ class CreateCategory extends Component {
 
                 <div className="row">
                     <div className="col-md-6">
-                        <form className={this.state.loading ? "loading" : ""} onSubmit={this.handleSubmit}>
+                        <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
+                        {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                             <fieldset className="fields horizontal">
                                 <TextField
                                     onBlur={this.handleBlur}

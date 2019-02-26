@@ -47,6 +47,8 @@ class EditCategory extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
+        const { isFormValid } = this.state;
+
         if (!isFormValid) return;
 
         this.setState({
