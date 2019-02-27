@@ -32,10 +32,11 @@ class Select extends Component {
 
     render() {
         const { value } = this.state;
-        const { items, id, val } = this.props;
+        const { name, items, id, val } = this.props;
 
         return (
             <select
+                name={name}
                 value={value}
                 onChange={(event) => this.onChange(event.target.value)}>
                 {

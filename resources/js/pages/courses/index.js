@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
-import { read } from "../../helpers/resource";
+import { read, remove } from "../../helpers/resource";
 import Select from "../../common/Select";
 
 class Courses extends Component {
@@ -61,7 +61,7 @@ class Courses extends Component {
             <div>
                 <header>
                     <h2>Courses</h2>
-                    <a className="button" href="">Add New Course</a>
+                    <Link className="button" to={"/courses/create"}>Add New Course</Link>
                 </header>
 
                 <div className="filter">

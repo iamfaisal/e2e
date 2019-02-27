@@ -660,7 +660,8 @@ table {
     &:nth-child(+n+3) {
       border-top-width: 1px;
     }
-    &:first-child:last-child {
+    &:first-child:last-child,
+    &:nth-child(2n+1):last-child {
       width: 100%;
       border-right: 0;
     }
@@ -915,12 +916,20 @@ form.loading {
     text-align: left;
     padding-top: 10px;
 
+    &:empty {
+      display: none;
+    }
+
     span {
       display: inline-block;
       padding: 2px 6px;
       margin: 5px 5px 0 0;
       border: 1px dashed rgba(0, 0, 0, .15);
       border-radius: 4px;
+
+      &:empty {
+        display: none;
+      }
     }
   }
 }
