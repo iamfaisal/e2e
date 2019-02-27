@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 
 import Courses from "./pages/courses";
 import CreateCourse from "./pages/courses/create";
+import EditCourse from "./pages/courses/edit";
 
 import Territories from "./pages/territories";
 import CreateTerritory from "./pages/territories/create";
@@ -52,6 +53,11 @@ const routes = [
     {
         path: "/courses/create",
         component: requireAuth(CreateCourse),
+        exact: true
+    },
+    {
+        path: "/courses/edit/:course",
+        component: requireAuth(EditCourse),
         exact: true
     },
     {

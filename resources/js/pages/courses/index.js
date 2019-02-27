@@ -108,7 +108,7 @@ class Courses extends Component {
                                         <td>{course.hours}</td>
                                         <td>{course.expiration_date}</td>
                                         <td className="actions">
-                                            <Link className="ion-md-create" to={""}/>
+                                            <Link className="ion-md-create" to={"/courses/edit/"+course.id}/>
                                             <Link className="ion-ios-archive" to={""}/>
                                             <a className="ion-md-close" onClick={e => this.deleteCourse(e, course.id)}/>
                                         </td>

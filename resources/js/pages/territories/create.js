@@ -100,7 +100,7 @@ class CreateTerritory extends Component {
             })
             .catch((err) => {
                 let { formValidationData } = this.state;
-                formValidationData.state = "Unable To Create Territory";
+                formValidationData.form = "Unable To Create Territory";
                 this.setState({
                     formValidationData: formValidationData,
                     loading: false,

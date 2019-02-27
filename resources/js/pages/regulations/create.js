@@ -91,7 +91,7 @@ class CreateRegulation extends Component {
             })
             .catch((err) => {
                 let { formValidationData } = this.state;
-                formValidationData.state = "Unable To Create Regulation";
+                formValidationData.form = "Unable To Create Regulation";
                 this.setState({
                     formValidationData: formValidationData,
                     loading: false,

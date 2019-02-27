@@ -4,13 +4,14 @@ import TextField from "../../common/TextField";
 import TextArea from "../../common/TextArea";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
-import { read, create } from "../../helpers/resource";
+import { read, update } from "../../helpers/resource";
 
-class CreateCourse extends Component {
+class EditCourse extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            id: props.match.params.course,
             loading: false,
             fields: {
                 title: "",
@@ -40,16 +41,23 @@ class CreateCourse extends Component {
     }
 
     componentDidMount() {
+        const { id } = this.state;
+
+        read('courses/'+id, [])
+            .then(res => {
+                this.setState({
+                    fields: res.data.course,
+                    loading: false
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
         read('regulations/', [])
             .then(res => {
-                let { regulations } = res.data;
-                let { fields } = this.state;
-                if (regulations) {
-                    fields.regulation_id = regulations[0].id;
-                }
                 this.setState({
-                    regulations: regulations,
-                    fields: fields
+                    regulations: res.data.regulations,
                 });
             })
             .catch((err) => {
@@ -91,7 +99,7 @@ class CreateCourse extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const {isFormValid } = this.state;
+        const { id, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -99,7 +107,10 @@ class CreateCourse extends Component {
             loading: true
         });
 
-        create('courses', new FormData(e.target), true)
+        let data = new FormData(e.target);
+        data.append("_method", "PUT");
+
+        update('courses/'+id, data, true)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/courses")
@@ -110,7 +121,7 @@ class CreateCourse extends Component {
             })
             .catch((err) => {
                 let { formValidationData } = this.state;
-                formValidationData.form = "Unable To Create Course";
+                formValidationData.form = "Unable To Update Course";
                 this.setState({
                     formValidationData: formValidationData,
                     loading: false,
@@ -121,6 +132,8 @@ class CreateCourse extends Component {
 
     render() {
         const {fields, regulations, loading, isFormValid, formValidationData } = this.state;
+
+        if (!fields.id) return false;
 
         return (
             <div>
@@ -146,6 +159,7 @@ class CreateCourse extends Component {
                                 onChange={this.changeRegulation}
                                 name="regulation_id"
                                 items={regulations}
+                                value={fields.regulation_id}
                                 id={"id"}
                                 val={"name"}
                             />
@@ -200,17 +214,23 @@ class CreateCourse extends Component {
                     <FileInput
                         onChange={(event) => this.handleChange(event)}
                         name="class_flyer_template"
-                        labelText="Class Flyer Template"/>
+                        labelText="Class Flyer Template"
+                        value={fields.class_flyer_template}
+                    />
 
                     <FileInput
                         onChange={(event) => this.handleChange(event)}
                         name="class_docs_template"
-                        labelText="Class Docs Template"/>
-                    
+                        labelText="Class Docs Template"
+                        value={fields.class_docs_template}
+                    />
+
                     <FileInput
                         onChange={(event) => this.handleChange(event)}
                         name="material"
-                        labelText="Material"/>
+                        labelText="Material"
+                        value={fields.material}
+                    />
 
                     <button className="button" disabled={!isFormValid}>Create Course</button>
                 </form>
@@ -219,4 +239,4 @@ class CreateCourse extends Component {
     }
 }
 
-export default CreateCourse;
+export default EditCourse;

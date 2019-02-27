@@ -109,7 +109,7 @@ class EditRegulation extends Component {
             })
             .catch((err) => {
                 let { formValidationData } = this.state;
-                formValidationData.state = "Unable To Update Regulation";
+                formValidationData.form = "Unable To Update Regulation";
                 this.setState({
                     formValidationData: formValidationData,
                     loading: false,

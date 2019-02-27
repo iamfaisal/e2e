@@ -110,7 +110,7 @@ class EditTerritory extends Component {
             })
             .catch((err) => {
                 let { formValidationData } = this.state;
-                formValidationData.state = "Unable To Update Territory";
+                formValidationData.form = "Unable To Update Territory";
                 this.setState({
                     formValidationData: formValidationData,
                     loading: false,
