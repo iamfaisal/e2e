@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://e2e-app.site'),
+    'url' => env('APP_URL', 'http://e2e-app.webdevtesting.com'),
 
     'asset_url' => env('ASSET_URL', null),
 
