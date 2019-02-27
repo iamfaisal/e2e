@@ -90,7 +90,7 @@ class FileInput extends Component {
     }
 
     getFileURL(file) {
-        let url = '';
+	    let url = '';
         console.log(typeof file);
         if (file.name.search('/') < 0) {
             url = URL.createObjectURL(file);
@@ -118,14 +118,14 @@ class FileInput extends Component {
                 <span className="button">Upload</span>
                 <div className="filenames">
                     {files.map((file, i) => {
-                        return <figure key={i}>
+                        return file.name ? <figure key={i}>
                             {file.type.search('image') > -1
-                            ? <img src={this.getFileURL(file)}></img>
-                            : file.name.search('http') === 0
-                                ? <a href={file.name} target="-blank">Download File</a>
-                                : <figcaption>{file.name}</figcaption>
+                                ? <img src={this.getFileURL(file)}/>
+                                : file.name.search('http') === 0
+                                    ? <a href={file.name} target="-blank">Download File</a>
+                                    : <figcaption>{file.name}</figcaption>
                             }
-                        </figure>
+                        </figure> : false
                     })}
                 </div>
                 <input
