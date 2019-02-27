@@ -197,20 +197,29 @@ class CreateCourse extends Component {
                         />
                     </fieldset>
 
-                    <FileInput
-                        onChange={(event) => this.handleChange(event)}
-                        name="class_flyer_template"
-                        labelText="Class Flyer Template"/>
-
-                    <FileInput
-                        onChange={(event) => this.handleChange(event)}
-                        name="class_docs_template"
-                        labelText="Class Docs Template"/>
-                    
-                    <FileInput
-                        onChange={(event) => this.handleChange(event)}
-                        name="material"
-                        labelText="Material"/>
+                    <div className="row">
+                        <div className="col-lg-4">
+                            <FileInput
+                                onChange={(event) => this.handleChange(event)}
+                                name="class_flyer_template"
+                                labelText="Class Flyer Template"
+                            />
+                        </div>
+                        <div className="col-lg-4">
+                            <FileInput
+                                onChange={(event) => this.handleChange(event)}
+                                name="class_docs_template"
+                                labelText="Class Docs Template"
+                            />
+                        </div>
+                        <div className="col-lg-4">
+                            <FileInput
+                                onChange={(event) => this.handleChange(event)}
+                                name="material"
+                                labelText="Course Material"
+                            />
+                        </div>
+                    </div>
 
                     <button className="button" disabled={!isFormValid}>Create Course</button>
                 </form>

@@ -902,14 +902,25 @@ form.loading {
 	padding: 30px;
 	box-shadow: 0 8px 60px rgba(0, 0, 0, 0.1);
   text-align: center;
+
+  > span {
+    display: block;
+    color: $color_ebony_clay_approx;
+  }
   
   input {
     display: none;
   }
 
   .sep {
-    display: inline-block;
     padding: 0 10px;
+    color: inherit;
+  }
+
+  .button {
+    display: inline-block;
+    margin-top: 5px;
+    color: #fff;
   }
 
   .filenames {
@@ -920,15 +931,29 @@ form.loading {
       display: none;
     }
 
-    span {
-      display: inline-block;
-      padding: 2px 6px;
+    figure {
+      display: block;
+      margin: 0;
       margin: 5px 5px 0 0;
-      border: 1px dashed rgba(0, 0, 0, .15);
-      border-radius: 4px;
+      
 
-      &:empty {
-        display: none;
+      img {
+        display: block;
+        margin: 0 auto;
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+      }
+
+      a {
+        display: block;
+        text-align: center
+      }
+
+      figcaption {
+        padding: 2px 6px;
+        border: 1px dashed rgba(0, 0, 0, .15);
+        border-radius: 4px;
       }
     }
   }

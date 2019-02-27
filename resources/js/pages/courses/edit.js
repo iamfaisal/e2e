@@ -211,26 +211,32 @@ class EditCourse extends Component {
                         />
                     </fieldset>
 
-                    <FileInput
-                        onChange={(event) => this.handleChange(event)}
-                        name="class_flyer_template"
-                        labelText="Class Flyer Template"
-                        value={fields.class_flyer_template}
-                    />
-
-                    <FileInput
-                        onChange={(event) => this.handleChange(event)}
-                        name="class_docs_template"
-                        labelText="Class Docs Template"
-                        value={fields.class_docs_template}
-                    />
-
-                    <FileInput
-                        onChange={(event) => this.handleChange(event)}
-                        name="material"
-                        labelText="Material"
-                        value={fields.material}
-                    />
+                    <div className="row">
+                        <div className="col-lg-4">
+                            <FileInput
+                                onChange={(event) => this.handleChange(event)}
+                                name="class_flyer_template"
+                                labelText="Class Flyer Template"
+                                value={fields.class_flyer_template}
+                            />
+                        </div>
+                        <div className="col-lg-4">
+                            <FileInput
+                                onChange={(event) => this.handleChange(event)}
+                                name="class_docs_template"
+                                labelText="Class Docs Template"
+                                value={fields.class_docs_template}
+                            />
+                        </div>
+                        <div className="col-lg-4">
+                            <FileInput
+                                onChange={(event) => this.handleChange(event)}
+                                name="material"
+                                labelText="Material"
+                                value={fields.material}
+                            />
+                        </div>
+                    </div>
 
                     <button className="button" disabled={!isFormValid}>Create Course</button>
                 </form>

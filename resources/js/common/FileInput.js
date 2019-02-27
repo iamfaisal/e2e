@@ -82,10 +82,33 @@ class FileInput extends Component {
         });
     }
 
+    getFileType(filename) {
+        var images = ["jpg", "jpeg", "png", "gif", "svg", "webp"];
+        let ext = /[^.]+$/.exec(filename)[0];
+        if (images.indexOf(ext) > -1) ext = "image/"+ext;
+        return ext;
+    }
+
+    getFileURL(file) {
+        let url = '';
+        console.log(typeof file);
+        if (file.name.search('/') < 0) {
+            url = URL.createObjectURL(file);
+        } else {
+            url = "/"+file.name;
+        }
+        return url;
+    }
+
 	render() {
         const { isValid, errorText } = this.state;
         let { files } = this.state;
         const { labelText, name, id, value, multiple, required } = this.props;
+
+        if (!files.length) files.push({
+            name: value,
+            type: this.getFileType(value)
+        });
 
 		return (
             <label htmlFor={id ? id : name} className={classnames('uploader', { "invalid": !isValid })}>
@@ -94,9 +117,16 @@ class FileInput extends Component {
                 <span className="sep">-OR-</span>
                 <span className="button">Upload</span>
                 <div className="filenames">
-                    {files.length ? files.map(file => {
-                        return <span key={file.name}>{file.name}</span>
-                    }) : <span>{value}</span>}
+                    {files.map((file, i) => {
+                        return <figure key={i}>
+                            {file.type.search('image') > -1
+                            ? <img src={this.getFileURL(file)}></img>
+                            : file.name.search('http') === 0
+                                ? <a href={file.name} target="-blank">Download File</a>
+                                : <figcaption>{file.name}</figcaption>
+                            }
+                        </figure>
+                    })}
                 </div>
                 <input
                     onChange={this.onChange}
