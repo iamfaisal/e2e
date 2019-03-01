@@ -124,4 +124,4 @@ class EditAdmin extends Component {
     }
 }
 
-export default EditCategory;
+export default EditAdmin;

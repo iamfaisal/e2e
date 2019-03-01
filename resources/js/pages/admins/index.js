@@ -8,14 +8,14 @@ class Admins extends Component {
         super(props);
 
         this.state = {
-            categories: [],
+            users: [],
             filters: {},
             loader: true
         };
 
         this.renderLoader = this.renderLoader.bind(this);
         this.renderActions = this.renderActions.bind(this);
-        this.deleteCategory = this.deleteCategory.bind(this);
+        this.deleteAdmin = this.deleteAdmin.bind(this);
     }
 
     componentDidMount() {
@@ -25,10 +25,10 @@ class Admins extends Component {
     getData() {
         this.setState({loader: true});
 
-        read('categories', [])
+        read('users', {params: {role: 'admin'}})
             .then(res => {
                 this.setState({
-                    categories: res.data.categories,
+                    users: res.data.users,
                     loader: false
                 });
             })
@@ -46,18 +46,18 @@ class Admins extends Component {
         );
     }
 
-    renderActions(category) {
+    renderActions(user) {
         return (
             <div className="actions">
-                <Link className="ion-md-create" to={"/categories/edit/" + category.id} />
-                <a className="ion-md-close" onClick={e => this.deleteCategory(e, category.id)} />
+                <Link className="ion-md-create" to={"/users/edit/" + user.id} />
+                <a className="ion-md-close" onClick={e => this.deleteAdmin(e, user.id)} />
             </div>
         );
     }
 
-    deleteCategory(e, cat) {
-        if (confirm('Do you really want to delete this Category?')) {
-            remove('categories/'+cat, {})
+    deleteAdmin(e, user) {
+        if (confirm('Do you really want to delete this User?')) {
+            remove('users/'+user, {})
             .then(res => {
                 this.getData();
             })
@@ -74,11 +74,16 @@ class Admins extends Component {
     }
 
     render() {
-        let { categories, filters, loader } = this.state;
+        let { users, filters, loader } = this.state;
         const columns = [
             {
-                name: 'Title',
-                selector: 'label',
+                name: 'Name',
+                selector: 'name',
+                sortable: true,
+            },
+            {
+                name: 'Email',
+                selector: 'email',
                 sortable: true,
             },
             {
@@ -90,23 +95,23 @@ class Admins extends Component {
         ];
 
         if (Object.keys(filters).length) {
-            categories = filter(categories, filters);
+            users = filter(users, filters);
         }
 
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Categories</h2>
-                    <Link className="button" to={"/categories/create"}>Add New Category</Link>
+                    <h2>Administrators</h2>
+                    <Link className="button" to={"/users/create"}>Add New Admin</Link>
                 </header>
 
                 <div className="filter">
-                    <input type="text" placeholder="Search Categories" onChange={e => this.setfilter(e, "label")} />
+                    <input type="text" placeholder="Search Admins" onChange={e => this.setfilter(e, "name")} />
                 </div>
 
                 <div className="tablewrap">
-                    {!loader && categories
-                        ? <DataTable columns={columns} data={categories} noHeader={true} pagination />
+                    {!loader && users
+                        ? <DataTable columns={columns} data={users} noHeader={true} pagination />
                         : this.renderLoader()}
                 </div>
             </div>
@@ -114,4 +119,4 @@ class Admins extends Component {
     }
 }
 
-export default Categories;
+export default Admins;

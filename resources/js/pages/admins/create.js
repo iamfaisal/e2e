@@ -102,4 +102,4 @@ class CreateAdmin extends Component {
     }
 }
 
-export default CreateCategory;
+export default CreateAdmin;
