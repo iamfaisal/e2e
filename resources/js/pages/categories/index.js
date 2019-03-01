@@ -78,7 +78,8 @@ class Categories extends Component {
         return data.filter(item => {
             let ok = false;
             for (let filter in filters) {
-                if (filters[filter] == '' || item[filter].search(filters[filter]) > -1) ok = true;
+                console.log(item[filter], filters[filter]);
+                if (filters[filter] == '' || item[filter].search(new RegExp(filters[filter], "i")) > -1) ok = true;
             }
             return ok;
         });
