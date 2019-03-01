@@ -17,10 +17,11 @@ class CoursesController extends Controller
      */
     public function index(Request $request)
     {
-        $courses = Course::with('categories:name,label', 'regulation');
+        $courses = Course::with('categories:name,label', 'regulation')
+            ->where("is_deleted", false);
 
-        if ($request->has('is_deleted')) {
-            $courses->where("is_deleted", $request->is_deleted);
+        if ($request->has('show_deleted')) {
+            $courses->where("is_deleted", true);
         }
 
         $categories = Category::all();
