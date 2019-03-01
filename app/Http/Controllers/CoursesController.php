@@ -78,7 +78,8 @@ class CoursesController extends Controller
     public function show(Course $course)
     {
         return response()->json([
-            'course' => $course
+            'course' => $course,
+            'categories' => $course->categories
         ], 200);
     }
 
