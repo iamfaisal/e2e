@@ -139,7 +139,7 @@ class CoursesController extends Controller
     public function destroy(Course $course)
     {
         $course->update([
-            'is_deleted' => true
+            'is_deleted' => !$course->is_deleted
         ]);
         return response()->json([
             'course' => 'success'
