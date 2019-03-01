@@ -39,7 +39,7 @@ class Select extends Component {
                 name={name}
                 value={value}
                 onChange={(event) => this.onChange(event.target.value)}>
-                placeholder && <option value={""}>{placeholder}</option>
+                {placeholder && <option value={""}>{placeholder}</option>}
                 {
                     items.map((item, i) => {
                         return (
