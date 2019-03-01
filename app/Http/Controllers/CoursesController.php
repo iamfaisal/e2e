@@ -66,13 +66,8 @@ class CoursesController extends Controller
         $course = Course::create($data);
 
         if($categories = $request->has('categories')) {
-//            $categories = [];
-//            foreach ($request->categories as $categoryID) {
-//                $categories[] = Category::find($categoryID);
-//            }
             $course->categories()->sync($categories);
         }
-
 
         return response()->json([
             'course' => $course
@@ -124,6 +119,9 @@ class CoursesController extends Controller
         if($request->hasFile('material'))
         {
             $data['material'] = $request->file('material')->store('courses');
+        }
+        if($categories = $request->has('categories')) {
+            $course->categories()->sync($categories);
         }
         $course->update($data);
         return response()->json([
