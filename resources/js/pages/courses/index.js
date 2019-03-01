@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { read, remove } from "../../helpers/resource";
 import Select from "../../common/Select";
+import DataTable from "react-data-table-component";
 
 class Courses extends Component {
     constructor(props) {
@@ -15,9 +16,15 @@ class Courses extends Component {
         };
 
         this.renderLoader = this.renderLoader.bind(this);
+        this.renderActions = this.renderActions.bind(this);
+        this.deleteCourse = this.deleteCourse.bind(this);
     }
 
     componentDidMount() {
+        this.getData();
+    }
+
+    getData() {
         read('courses', [])
             .then(res => {
                 this.setState({
@@ -35,27 +42,89 @@ class Courses extends Component {
             });
     }
 
-    deleteCourse(e, course) {
-        const tr = e.target.parentNode.parentNode;
-        if (confirm('Do you really want to delete this Course?')) {
-            remove('courses/'+course, [])
-            .then(res => {
-                tr.remove();
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        }
-    }
-
     renderLoader() {
         return (
             <div className="loader"/>
         );
     }
 
+    renderActions(course) {
+        return (
+            <div className="actions">
+                <Link className="ion-md-create" to={"/courses/edit/" + course.id} />
+                <a className="ion-md-close" onClick={e => this.deleteCourse(e, course.id)} />
+            </div>
+        );
+    }
+
+    renderCategories(course) {
+        let categories = [];
+        course.categories.map((category) => {
+            categories.push(category.label);
+        });
+        console.log(course);
+        return categories.join(", ");
+    }
+
+    deleteCourse(e, course) {
+        if (confirm('Do you really want to delete this Course?')) {
+            remove('courses/' + course, {})
+                .then(res => {
+                    this.getData();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    }
+
     render() {
         const { courses, categories, regulations, loader } = this.state;
+        const columns = [
+            {
+                name: 'ID',
+                selector: 'id',
+                sortable: true,
+                width: '50px',
+            },
+            {
+                name: 'Title',
+                selector: 'title',
+                sortable: true,
+                grow: 1
+            },
+            {
+                name: 'State',
+                selector: 'regulation.abbreviation',
+                sortable: true,
+            },
+            {
+                name: 'Code',
+                selector: 'code',
+                sortable: true,
+            },
+            {
+                name: 'Categories',
+                cell: row => this.renderCategories(row),
+                sortable: true,
+            },
+            {
+                name: 'Hours',
+                selector: 'hours',
+                sortable: true,
+            },
+            {
+                name: 'Expiration',
+                selector: 'expiration_date',
+                sortable: true,
+            },
+            {
+                name: 'Actions',
+                cell: row => this.renderActions(row),
+                ignoreRowClick: true,
+                width: '100px',
+            }
+        ];
 
         return (
             <div>
@@ -78,46 +147,9 @@ class Courses extends Component {
                 </div>
 
                 <div className="tablewrap">
-                    {!loader && courses ? (
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>State</th>
-                                <th>Code</th>
-                                <th>Categories</th>
-                                <th>Hours</th>
-                                <th>Expiration</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {courses.map((course) => {
-                                return (
-                                    <tr key={course.id}>
-                                        <td>{course.id}</td>
-                                        <td>{course.title}</td>
-                                        <td>{course.regulation.abbreviation}</td>
-                                        <td>{course.code}</td>
-                                        <td>
-                                            {course.categories ? course.categories.map((category) => {
-                                                return category.label + " ";
-                                            }) : false}
-                                        </td>
-                                        <td>{course.hours}</td>
-                                        <td>{course.expiration_date}</td>
-                                        <td className="actions">
-                                            <Link className="ion-md-create" to={"/courses/edit/"+course.id}/>
-                                            <Link className="ion-ios-archive" to={""}/>
-                                            <a className="ion-md-close" onClick={e => this.deleteCourse(e, course.id)}/>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                            </tbody>
-                        </table>
-                    ) : this.renderLoader()}
+                    {!loader && courses
+                        ? <DataTable columns={columns} data={courses} noHeader={true} pagination />
+                        : this.renderLoader()}
                 </div>
             </div>
         );

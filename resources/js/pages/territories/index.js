@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { read, remove } from "../../helpers/resource";
+import DataTable from "react-data-table-component";
 
 class Territories extends Component {
     constructor(props) {
@@ -12,10 +13,15 @@ class Territories extends Component {
         };
 
         this.renderLoader = this.renderLoader.bind(this);
+        this.renderActions = this.renderActions.bind(this);
         this.deleteTerritory = this.deleteTerritory.bind(this);
     }
 
     componentDidMount() {
+        this.getData();
+    }
+
+    getData() {
         read('territories', [])
             .then(res => {
                 this.setState({
@@ -37,12 +43,20 @@ class Territories extends Component {
         );
     }
 
+    renderActions(territory) {
+        return (
+            <div className="actions">
+                <Link className="ion-md-create" to={"/territories/edit/" + territory.id} />
+                <a className="ion-md-close" onClick={e => this.deleteTerritory(e, territory.id)} />
+            </div>
+        );
+    }
+
     deleteTerritory(e, ter) {
-        const tr = e.target.parentNode.parentNode;
         if (confirm('Do you really want to delete this Territory?')) {
             remove('territories/'+ter, [])
             .then(res => {
-                tr.remove();
+                this.getData();
             })
             .catch((err) => {
                 console.log(err);
@@ -52,6 +66,29 @@ class Territories extends Component {
 
     render() {
         const { territories, loader } = this.state;
+        const columns = [
+            {
+                name: 'Name',
+                selector: 'name',
+                sortable: true,
+            },
+            {
+                name: 'Regulation',
+                selector: 'regulation.name',
+                sortable: true,
+            },
+            {
+                name: 'Zip Codes',
+                selector: 'zip_codes',
+                sortable: true,
+            },
+            {
+                name: 'Actions',
+                cell: row => this.renderActions(row),
+                ignoreRowClick: true,
+                width: '100px',
+            }
+        ];
 
         return (
             <div>
@@ -61,33 +98,9 @@ class Territories extends Component {
                 </header>
 
                 <div className="tablewrap">
-                    {!loader && territories ? (
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Regulation</th>
-                                <th>Zip Codes</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {territories.map((territory) => {
-                                return (
-                                    <tr key={territory.id}>
-                                        <td>{territory.name}</td>
-                                        <td>{territory.regulation.name}</td>
-                                        <td>{territory.zip_codes}</td>
-                                        <td className="actions">
-                                            <Link className="ion-md-create" to={"/territories/edit/"+territory.id}/>
-                                            <a className="ion-md-close" onClick={e => this.deleteTerritory(e, territory.id)}/>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                            </tbody>
-                        </table>
-                    ) : this.renderLoader()}
+                    {!loader && territories
+                        ? <DataTable columns={columns} data={territories} noHeader={true} pagination />
+                        : this.renderLoader()}
                 </div>
             </div>
         );

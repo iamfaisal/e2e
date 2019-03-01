@@ -18,6 +18,12 @@ class Categories extends Component {
     }
 
     componentDidMount() {
+        this.getData();
+    }
+
+    getData() {
+        this.setState({loader: true});
+
         read('categories', [])
             .then(res => {
                 this.setState({
@@ -39,26 +45,25 @@ class Categories extends Component {
         );
     }
 
+    renderActions(category) {
+        return (
+            <div className="actions">
+                <Link className="ion-md-create" to={"/categories/edit/" + category.id} />
+                <a className="ion-md-close" onClick={e => this.deleteCategory(e, category.id)} />
+            </div>
+        );
+    }
+
     deleteCategory(e, cat) {
-        const tr = e.target.parentNode.parentNode;
         if (confirm('Do you really want to delete this Category?')) {
-            remove('categories/'+cat, [])
+            remove('categories/'+cat, {})
             .then(res => {
-                tr.remove();
+                this.getData();
             })
             .catch((err) => {
                 console.log(err);
             });
         }
-    }
-
-    renderActions(category) {
-        return(
-            <div className="actions">
-                <Link className="ion-md-create" to={"/categories/edit/"+category.id}/>
-                <a className="ion-md-close" onClick={e => this.deleteCategory(e, category.id)}/>
-            </div>
-        );
     }
 
     render() {
