@@ -17,7 +17,8 @@ class CoursesController extends Controller
      */
     public function index(Request $request)
     {
-        $courses = Course::with('categories:name,label', 'regulation');
+        $courses = Course::with('categories:name,label', 'regulation')
+                    ->orderBy('created_at', 'desc');
 
         if ($request->has('active')) {
             $courses->where("is_deleted", false);

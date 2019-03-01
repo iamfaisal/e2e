@@ -14,7 +14,7 @@ class TerritoriesController extends Controller
      */
     public function index()
     {
-        $territories = Territory::with('regulation');
+        $territories = Territory::with('regulation')->orderBy('created_at', 'desc');
         return response()->json([
             'territories' => $territories->get()
         ], 200);
