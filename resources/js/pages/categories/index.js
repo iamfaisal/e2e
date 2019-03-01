@@ -9,12 +9,14 @@ class Categories extends Component {
 
         this.state = {
             categories: [],
-            loader: true
+            loader: true,
+            filters: {}
         };
 
         this.renderLoader = this.renderLoader.bind(this);
         this.renderActions = this.renderActions.bind(this);
         this.deleteCategory = this.deleteCategory.bind(this);
+        this.filter = this.filter.bind(this);
     }
 
     componentDidMount() {
@@ -66,8 +68,42 @@ class Categories extends Component {
         }
     }
 
+    filter(e, key) {
+        let { categories, filters } = this.state;
+        filters[key] = e.target.value;
+
+        let filtered = categories.filter(cat => {
+            let ok = false;
+            for (let filter in filters) {
+                if (filters[filter] == '' || cat[filter].search(filters[filter]) > -1) ok = true;
+            }
+            return ok;
+        });
+
+        this.setState({
+            //categories: filtered,
+            filters: filters
+        });
+    }
+
+    setfilter(e, key) {
+        let { filters } = this.state;
+        filters[key] = e.target.value;
+        this.setState({filters: filters});
+    }
+
+    filter(data, filters) {
+        return data.filter(item => {
+            let ok = false;
+            for (let filter in filters) {
+                if (filters[filter] == '' || item[filter].search(filters[filter]) > -1) ok = true;
+            }
+            return ok;
+        });
+    }
+
     render() {
-        const { categories, loader } = this.state;
+        let { categories, filters, loader } = this.state;
         const columns = [
             {
                 name: 'Title',
@@ -82,6 +118,10 @@ class Categories extends Component {
             }
         ];
 
+        if (Object.keys(filters).length) {
+            categories = this.filter(categories, filters);
+        }
+
         return (
             <div>
                 <header className="pageheader">
@@ -90,7 +130,7 @@ class Categories extends Component {
                 </header>
 
                 <div className="filter">
-                    <input type="text" placeholder="Search Categories" />
+                    <input type="text" placeholder="Search Categories" onChange={e => this.setfilter(e, "label")} />
                 </div>
 
                 <div className="tablewrap">
