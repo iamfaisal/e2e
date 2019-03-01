@@ -12,15 +12,21 @@ class CoursesController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $courses = Course::with('categories:name,label', 'regulation')->get();
+        $courses = Course::with('categories:name,label', 'regulation');
+
+        if ($request->has('is_deleted')) {
+            $courses->where("is_deleted", $request->is_deleted);
+        }
+
         $categories = Category::all();
         $regulations = Regulation::all();
         return response()->json([
-            'courses' => $courses,
+            'courses' => $courses->get(),
             'categories' => $categories,
             'regulations' => $regulations
         ], 200);
