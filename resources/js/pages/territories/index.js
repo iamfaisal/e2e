@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
-import { read, remove } from "../../helpers/resource";
+import { read, remove, filter } from "../../helpers/resource";
 import DataTable from "react-data-table-component";
 
 class Territories extends Component {
@@ -9,6 +9,7 @@ class Territories extends Component {
 
         this.state = {
             territories: [],
+            filters: {},
             loader: true
         };
 
@@ -64,8 +65,15 @@ class Territories extends Component {
         }
     }
 
+    setfilter(e, key) {
+        let { filters } = this.state;
+        filters[key] = e.target.value;
+        this.setState({ filters: filters });
+    }
+
+
     render() {
-        const { territories, loader } = this.state;
+        let { territories, filters, loader } = this.state;
         const columns = [
             {
                 name: 'Name',
@@ -90,12 +98,22 @@ class Territories extends Component {
             }
         ];
 
+        if (Object.keys(filters).length) {
+            territories = filter(territories, filters);
+        }
+
         return (
             <div>
                 <header className="pageheader">
                     <h2>Territories</h2>
                     <Link className="button" to={"/territories/create"}>Add New Territory</Link>
                 </header>
+
+                <div className="filter">
+                    <input type="text" placeholder="Name" onChange={e => this.setfilter(e, "name")} />
+                    <input type="text" placeholder="Regulation" onChange={e => this.setfilter(e, "regulation.name")} />
+                    <input type="text" placeholder="Zip Code" onChange={e => this.setfilter(e, "zip_codes")} />
+                </div>
 
                 <div className="tablewrap">
                     {!loader && territories

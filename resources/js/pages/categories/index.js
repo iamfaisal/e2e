@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import { Link } from "react-router-dom";
-import { read, remove } from "../../helpers/resource";
+import { read, remove, filter } from "../../helpers/resource";
 import DataTable from "react-data-table-component";
 
 class Categories extends Component {
@@ -9,14 +9,13 @@ class Categories extends Component {
 
         this.state = {
             categories: [],
-            loader: true,
-            filters: {}
+            filters: {},
+            loader: true
         };
 
         this.renderLoader = this.renderLoader.bind(this);
         this.renderActions = this.renderActions.bind(this);
         this.deleteCategory = this.deleteCategory.bind(this);
-        this.filter = this.filter.bind(this);
     }
 
     componentDidMount() {
@@ -74,17 +73,6 @@ class Categories extends Component {
         this.setState({filters: filters});
     }
 
-    filter(data, filters) {
-        return data.filter(item => {
-            let ok = false;
-            for (let filter in filters) {
-                console.log(item[filter], filters[filter]);
-                if (filters[filter] == '' || item[filter].search(new RegExp(filters[filter], "i")) > -1) ok = true;
-            }
-            return ok;
-        });
-    }
-
     render() {
         let { categories, filters, loader } = this.state;
         const columns = [
@@ -102,7 +90,7 @@ class Categories extends Component {
         ];
 
         if (Object.keys(filters).length) {
-            categories = this.filter(categories, filters);
+            categories = filter(categories, filters);
         }
 
         return (

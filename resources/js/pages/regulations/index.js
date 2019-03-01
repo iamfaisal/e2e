@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
-import { read, remove } from "../../helpers/resource";
+import { read, remove, filter } from "../../helpers/resource";
 import DataTable from "react-data-table-component";
 
 class Regulations extends Component {
@@ -9,6 +9,7 @@ class Regulations extends Component {
 
         this.state = {
             regulations: [],
+            filters: {},
             loader: true
         };
 
@@ -66,8 +67,18 @@ class Regulations extends Component {
         }
     }
 
+    setfilter(e, key) {
+        let { filters } = this.state;
+        filters[key] = e.target.value;
+        this.setState({ filters: filters });
+    }
+
     render() {
-        const { regulations, loader } = this.state;
+        let { regulations, filters, loader } = this.state;
+
+        if (Object.keys(filters).length) {
+            regulations = filter(regulations, filters);
+        }
 
         const columns = [
             {
@@ -94,6 +105,11 @@ class Regulations extends Component {
                     <h2>Regulations</h2>
                     <Link className="button" to={"/regulations/create"}>Add New Regulation</Link>
                 </header>
+
+                <div className="filter">
+                    <input type="text" placeholder="Title" onChange={e => this.setfilter(e, "name")} />
+                    <input type="text" placeholder="Commission" onChange={e => this.setfilter(e, "commission_name")} />
+                </div>
 
                 <div className="tablewrap">
                     {!loader && regulations

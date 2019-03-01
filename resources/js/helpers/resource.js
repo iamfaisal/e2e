@@ -68,3 +68,24 @@ export function remove(dataType, params) {
             })
     })
 }
+
+export function filter(data, filters) {
+    return data.filter(item => {
+        let ok = true;
+        for (let filter in filters) {
+            let search = filters[filter];
+            let tosearch = item[filter];
+
+            if (!search) continue;
+
+            if (filter.search('.') > -1) {
+                let subfilter = item;
+                filter.split(".").forEach(part => subfilter = subfilter[part]);
+                tosearch = subfilter;
+            }
+
+            if (tosearch.search(new RegExp(search, "i")) < 0) ok = false;
+        }
+        return ok;
+    });
+}
