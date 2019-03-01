@@ -13,7 +13,7 @@ class Courses extends Component {
             categories: [],
             regulations: [],
             filters: {
-                is_deleted: 0
+                is_deleted: "0"
             },
             loader: true
         };
@@ -96,8 +96,8 @@ class Courses extends Component {
 
     toggleArchived(e) {
         let { filters } = this.state;
-        filters["is_deleted"] = 0;
-        if (e.target.checked) filters["is_deleted"] = "";
+        filters["is_deleted"] = "0";
+        if (e.target.checked) filters["is_deleted"] = "1";
         this.setState({ filters: filters });
     }
 
@@ -154,7 +154,6 @@ class Courses extends Component {
             }
         ];
 
-        console.log(courses);
         if (Object.keys(filters).length) {
             courses = filter(courses, filters);
         }

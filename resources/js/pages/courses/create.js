@@ -29,6 +29,7 @@ class CreateCourse extends Component {
                 title: "",
             },
             regulations: [],
+            categories: [],
             formValidationData: {},
             isFormValid: false
         };
@@ -42,14 +43,18 @@ class CreateCourse extends Component {
     componentDidMount() {
         read('regulations/', [])
             .then(res => {
-                let { regulations } = res.data;
-                let { fields } = this.state;
-                if (regulations) {
-                    fields.regulation_id = regulations[0].id;
-                }
                 this.setState({
-                    regulations: regulations,
-                    fields: fields
+                    regulations: res.data.regulations
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+        read('categories/', [])
+            .then(res => {
+                this.setState({
+                    categories: res.data.categories
                 });
             })
             .catch((err) => {
@@ -120,7 +125,7 @@ class CreateCourse extends Component {
     }
 
     render() {
-        const {fields, regulations, loading, isFormValid, formValidationData } = this.state;
+        const { fields, regulations, categories, loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
@@ -146,6 +151,7 @@ class CreateCourse extends Component {
                                 onChange={this.changeRegulation}
                                 name="regulation_id"
                                 items={regulations}
+                                placeholder="Select Regulation"
                                 id={"id"}
                                 val={"name"}
                             />
@@ -185,6 +191,17 @@ class CreateCourse extends Component {
                             value={fields.commercial_link}
                             labelText="Commercial Link"
                         />
+                        <label>
+                            <span>Category</span>
+                            <Select
+                                onChange={this.changeRegulation}
+                                name="categories[]"
+                                items={categories}
+                                placeholder="Select Category"
+                                id={"id"}
+                                val={"label"}
+                            />
+                        </label>
                     </fieldset>
 
                     <legend>Description</legend>

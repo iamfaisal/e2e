@@ -91,7 +91,6 @@ class FileInput extends Component {
 
     getFileURL(file) {
 	    let url = '';
-        console.log(typeof file);
         if (file.name.search('/') < 0) {
             url = URL.createObjectURL(file);
         } else {

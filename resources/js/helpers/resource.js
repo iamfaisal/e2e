@@ -85,8 +85,6 @@ export function filter(data, filters) {
             if (Array.isArray(tosearch)) tosearch = tosearch.join(' ');
             if (typeof tosearch == 'number') tosearch = tosearch.toString();
 
-            console.log(tosearch, search, filter);
-
             if (tosearch.search(new RegExp(search, "i")) < 0) ok = false;
         }
         return ok;

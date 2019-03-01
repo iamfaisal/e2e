@@ -24,12 +24,14 @@ class EditCourse extends Component {
                 class_flyer_template: "",
                 class_docs_template: "",
                 material: "",
-                commercial_link: ""
+                commercial_link: "",
+                categories: []
             },
             required_fields: {
                 title: "",
             },
             regulations: [],
+            categories: [],
             formValidationData: {},
             isFormValid: false
         };
@@ -45,6 +47,7 @@ class EditCourse extends Component {
 
         read('courses/'+id, [])
             .then(res => {
+                console.log(res.data.course);
                 this.setState({
                     fields: res.data.course,
                     loading: false
@@ -58,6 +61,16 @@ class EditCourse extends Component {
             .then(res => {
                 this.setState({
                     regulations: res.data.regulations,
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+        read('categories/', [])
+            .then(res => {
+                this.setState({
+                    categories: res.data.categories
                 });
             })
             .catch((err) => {
@@ -131,10 +144,11 @@ class EditCourse extends Component {
     }
 
     render() {
-        const {fields, regulations, loading, isFormValid, formValidationData } = this.state;
+        const { fields, regulations, categories, loading, isFormValid, formValidationData } = this.state;
 
         if (!fields.id) return false;
 
+        console.log(fields.categories);
         return (
             <div>
                 <header className="pageheader">
@@ -199,6 +213,18 @@ class EditCourse extends Component {
                             value={fields.commercial_link}
                             labelText="Commercial Link"
                         />
+                        <label>
+                            <span>Category</span>
+                            <Select
+                                onChange={this.changeRegulation}
+                                name="categories[]"
+                                items={categories}
+                                //value={fields.categories[0]}
+                                placeholder="Select Category"
+                                id={"id"}
+                                val={"label"}
+                            />
+                        </label>
                     </fieldset>
 
                     <legend>Description</legend>
