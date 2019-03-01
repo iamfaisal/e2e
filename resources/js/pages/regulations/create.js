@@ -105,7 +105,7 @@ class CreateRegulation extends Component {
 
         return (
             <div>
-                <header>
+                <header className="pageheader">
                     <h2>Create Regulation</h2>
                 </header>
 

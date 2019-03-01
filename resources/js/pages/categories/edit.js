@@ -96,7 +96,7 @@ class EditCategory extends Component {
 
         return (
             <div>
-                <header>
+                <header className="pageheader">
                     <h2>Edit Category</h2>
                 </header>
 

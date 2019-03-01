@@ -54,10 +54,10 @@ class Categories extends Component {
 
     renderActions(category) {
         return(
-            <Fragment>
+            <div className="actions">
                 <Link className="ion-md-create" to={"/categories/edit/"+category.id}/>
                 <a className="ion-md-close" onClick={e => this.deleteCategory(e, category.id)}/>
-            </Fragment>
+            </div>
         );
     }
 
@@ -79,14 +79,14 @@ class Categories extends Component {
 
         return (
             <div>
-                <header>
+                <header className="pageheader">
                     <h2>Categories</h2>
                     <Link className="button" to={"/categories/create"}>Add New Category</Link>
                 </header>
 
                 <div className="tablewrap">
                     {!loader && categories
-                        ? <DataTable columns={columns} data={categories} pagination />
+                        ? <DataTable columns={columns} data={categories} noHeader={true} pagination />
                         : this.renderLoader()}
                 </div>
             </div>

@@ -55,7 +55,7 @@ class Regulations extends Component {
 
         return (
             <div>
-                <header>
+                <header className="pageheader">
                     <h2>Regulations</h2>
                     <Link className="button" to={"/regulations/create"}>Add New Regulation</Link>
                 </header>

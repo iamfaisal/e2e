@@ -74,7 +74,7 @@ class CreateCategory extends Component {
 
         return (
             <div>
-                <header>
+                <header className="pageheader">
                     <h2>Create Category</h2>
                 </header>
 

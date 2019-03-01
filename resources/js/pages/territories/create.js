@@ -114,7 +114,7 @@ class CreateTerritory extends Component {
 
         return (
             <div>
-                <header>
+                <header className="pageheader">
                     <h2>Create Territory</h2>
                 </header>
 
