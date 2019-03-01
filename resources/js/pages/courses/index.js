@@ -12,7 +12,9 @@ class Courses extends Component {
             courses: [],
             categories: [],
             regulations: [],
-            filters: {},
+            filters: {
+                is_deleted: 0
+            },
             loader: true
         };
 
@@ -28,7 +30,7 @@ class Courses extends Component {
     getData() {
         this.setState({ loader: true });
 
-        read('courses', [])
+        read('courses', {})
             .then(res => {
                 this.setState({
                     courses: res.data.courses,
@@ -82,7 +84,20 @@ class Courses extends Component {
 
     setfilter(value, key) {
         let { filters } = this.state;
-        filters[key] = value;
+
+        if (typeof value == 'string') {
+            filters[key] = value;
+        } else {
+            filters[key] = value.target.value;
+        }
+    
+        this.setState({ filters: filters });
+    }
+
+    toggleArchived(e) {
+        let { filters } = this.state;
+        filters["is_deleted"] = 0;
+        if (e.target.checked) filters["is_deleted"] = "";
         this.setState({ filters: filters });
     }
 
@@ -139,6 +154,7 @@ class Courses extends Component {
             }
         ];
 
+        console.log(courses);
         if (Object.keys(filters).length) {
             courses = filter(courses, filters);
         }
@@ -151,14 +167,14 @@ class Courses extends Component {
                 </header>
 
                 <div className="filter">
-                    <Select items={regulations} id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")}/>
-                    <Select items={categories} id={"id"} val={"label"}/>
-                    <input type="text" placeholder="Course Code" />
+                    <Select items={regulations} placeholder="Select Regulation" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")} />
+                    <Select items={categories} placeholder="Select Category" id={"id"} val={"label"} onChange={value => this.setfilter(value, "categories")} />
+                    <input type="text" placeholder="Course Code" onChange={e => this.setfilter(e, "code")} />
 
                     <br />
 
                     <label className="checkbox">
-                        <input type="checkbox" />
+                        <input type="checkbox" onChange={e => this.toggleArchived(e)} />
                         <span>Show archived</span>
                     </label>
                 </div>

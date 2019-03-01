@@ -74,17 +74,18 @@ export function filter(data, filters) {
         let ok = true;
         for (let filter in filters) {
             let search = filters[filter];
-            let tosearch = item[filter];
-
             if (!search) continue;
 
+            let tosearch = item[filter];
             if (filter.search('.') > -1) {
                 let subfilter = item;
                 filter.split(".").forEach(part => subfilter = subfilter[part]);
                 tosearch = subfilter;
             }
-
+            if (Array.isArray(tosearch)) tosearch = tosearch.join(' ');
             if (typeof tosearch == 'number') tosearch = tosearch.toString();
+
+            console.log(tosearch, search, filter);
 
             if (tosearch.search(new RegExp(search, "i")) < 0) ok = false;
         }
