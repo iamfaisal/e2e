@@ -39,6 +39,7 @@ class EditCourse extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
         this.changeRegulation = this.changeRegulation.bind(this);
+        this.changeCategories = this.changeCategories.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -47,9 +48,14 @@ class EditCourse extends Component {
 
         read('courses/'+id, [])
             .then(res => {
-                console.log(res.data.course);
+                let { course } = res.data;
+                let cats = [];
+                course.categories.forEach(category => {
+                    cats.push(category.id);
+                });
+                course.categories = cats;
                 this.setState({
-                    fields: res.data.course,
+                    fields: course,
                     loading: false
                 });
             })
@@ -109,6 +115,14 @@ class EditCourse extends Component {
         });
     }
 
+    changeCategories(value) {
+        let { fields } = this.state;
+        fields.categories = value;
+        this.setState({
+            fields: fields
+        });
+    }
+
     handleSubmit(e) {
         e.preventDefault();
 
@@ -151,7 +165,7 @@ class EditCourse extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Create Course</h2>
+                    <h2>Edit Course</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -218,10 +232,10 @@ class EditCourse extends Component {
                         <label>
                             <span>Categories</span>
                             <Select
-                                onChange={this.changeRegulation}
+                                onChange={this.changeCategories}
                                 name="categories[]"
                                 items={categories}
-                                value={[fields.categories]}
+                                value={fields.categories}
                                 multiple
                                 id={"id"}
                                 val={"label"}
@@ -266,7 +280,7 @@ class EditCourse extends Component {
                         </div>
                     </div>
 
-                    <button className="button" disabled={!isFormValid}>Create Course</button>
+                    <button className="button" disabled={!isFormValid}>Update Course</button>
                 </form>
             </div>
         );

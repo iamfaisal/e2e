@@ -77,14 +77,27 @@ export function filter(data, filters) {
             if (!search) continue;
 
             let tosearch = item[filter];
+
             if (filter.search('.') > -1) {
                 let subfilter = item;
-                filter.split(".").forEach(part => subfilter = subfilter[part]);
+                filter.split(".").forEach(part => {
+                    if (!Array.isArray(subfilter)) {
+                        subfilter = subfilter[part]
+                    } else {
+                        let values = [];
+                        subfilter.forEach(val => values.push(val[part]));
+                        subfilter = values;
+                    }
+                });
                 tosearch = subfilter;
             }
             if (Array.isArray(tosearch)) tosearch = tosearch.join(' ');
             if (typeof tosearch == 'number') tosearch = tosearch.toString();
 
+            if (!tosearch) {
+                ok = false;
+                continue;
+            }
             if (tosearch.search(new RegExp(search, "i")) < 0) ok = false;
         }
         return ok;

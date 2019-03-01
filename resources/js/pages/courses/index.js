@@ -167,7 +167,7 @@ class Courses extends Component {
 
                 <div className="filter">
                     <Select items={regulations} placeholder="Select Regulation" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")} />
-                    <Select items={categories} placeholder="Select Category" id={"id"} val={"label"} onChange={value => this.setfilter(value, "categories")} />
+                    <Select items={categories} placeholder="Select Category" id={"label"} val={"label"} onChange={value => this.setfilter(value, "categories.label")} />
                     <input type="text" placeholder="Course Code" onChange={e => this.setfilter(e, "code")} />
 
                     <br />
