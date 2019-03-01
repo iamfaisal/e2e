@@ -20,6 +20,10 @@ import Categories from "./pages/categories";
 import CreateCategory from "./pages/categories/create";
 import EditCategory from "./pages/categories/edit";
 
+import Admins from "./pages/admins";
+import CreateAdmin from "./pages/admins/create";
+import EditAdmin from "./pages/admins/edit";
+
 import requireAuth from "./utils/requireAuth";
 
 const routes = [
@@ -103,6 +107,21 @@ const routes = [
     {
         path: "/categories/edit/:category",
         component: requireAuth(EditCategory),
+        exact: true
+    },
+    {
+        path: "/users",
+        component: requireAuth(Admins),
+        exact: true
+    },
+    {
+        path: "/users/create",
+        component: requireAuth(CreateAdmin),
+        exact: true
+    },
+    {
+        path: "/users/edit/:category",
+        component: requireAuth(EditAdmin),
         exact: true
     }
 ]

@@ -26,7 +26,7 @@ export const links = [
     },
     {
         name: "School Admins",
-        url: "/school-admins",
+        url: "/users",
         icon: "ion-ios-people",
         role: "super-admin"
     },
