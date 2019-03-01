@@ -191,13 +191,16 @@ class CreateCourse extends Component {
                             value={fields.commercial_link}
                             labelText="Commercial Link"
                         />
+                    </fieldset>
+
+                    <fieldset className="fields horizontal">
                         <label>
-                            <span>Category</span>
+                            <span>Categories</span>
                             <Select
                                 onChange={this.changeRegulation}
                                 name="categories[]"
                                 items={categories}
-                                placeholder="Select Category"
+                                multiple
                                 id={"id"}
                                 val={"label"}
                             />

@@ -148,7 +148,6 @@ class EditCourse extends Component {
 
         if (!fields.id) return false;
 
-        console.log(fields.categories);
         return (
             <div>
                 <header className="pageheader">
@@ -213,14 +212,17 @@ class EditCourse extends Component {
                             value={fields.commercial_link}
                             labelText="Commercial Link"
                         />
+                    </fieldset>
+
+                    <fieldset className="fields horizontal">
                         <label>
-                            <span>Category</span>
+                            <span>Categories</span>
                             <Select
                                 onChange={this.changeRegulation}
                                 name="categories[]"
                                 items={categories}
-                                //value={fields.categories[0]}
-                                placeholder="Select Category"
+                                value={[fields.categories]}
+                                multiple
                                 id={"id"}
                                 val={"label"}
                             />

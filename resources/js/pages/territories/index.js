@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter } from "../../helpers/resource";
+import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
 
 class Territories extends Component {
@@ -9,6 +10,7 @@ class Territories extends Component {
 
         this.state = {
             territories: [],
+            regulations: [],
             filters: {},
             loader: true
         };
@@ -20,6 +22,16 @@ class Territories extends Component {
 
     componentDidMount() {
         this.getData();
+
+        read('regulations/', [])
+            .then(res => {
+                this.setState({
+                    regulations: res.data.regulations,
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     getData() {
@@ -65,15 +77,21 @@ class Territories extends Component {
         }
     }
 
-    setfilter(e, key) {
+    setfilter(value, key) {
         let { filters } = this.state;
-        filters[key] = e.target.value;
+
+        if (typeof value == 'string') {
+            filters[key] = value;
+        } else {
+            filters[key] = value.target.value;
+        }
+
         this.setState({ filters: filters });
     }
 
 
     render() {
-        let { territories, filters, loader } = this.state;
+        let { territories, regulations, filters, loader } = this.state;
         const columns = [
             {
                 name: 'Name',
@@ -111,7 +129,7 @@ class Territories extends Component {
 
                 <div className="filter">
                     <input type="text" placeholder="Name" onChange={e => this.setfilter(e, "name")} />
-                    <input type="text" placeholder="Regulation" onChange={e => this.setfilter(e, "regulation.name")} />
+                    <Select items={regulations} placeholder="Select Regulation" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")} />
                     <input type="text" placeholder="Zip Code" onChange={e => this.setfilter(e, "zip_codes")} />
                 </div>
 

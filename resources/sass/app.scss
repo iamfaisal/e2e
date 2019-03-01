@@ -160,6 +160,8 @@ label {
 }
 select {
   @extend %extend_2;
+}
+select:not([multiple]) {
   background-image: url(../img/arrow-down.svg);
   background-repeat: no-repeat;
   background-size: 12px;

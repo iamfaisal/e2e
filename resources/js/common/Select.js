@@ -7,9 +7,19 @@ class Select extends Component {
         this.state = {
             value: props.value ? props.value : "",
         };
+
+        this.onChange = this.onChange.bind(this);
     }
 
-    onChange(value) {
+    onChange(event) {
+        let value = event.target.value;
+        if (this.props.multiple) {
+            value = [];
+            var options = event.target.selectedOptions;
+            for (let i = 0; i < options.length; i++) {
+                value.push(options[i].value);
+            }
+        }
         this.setState({
             value: value
         }, () => {
@@ -31,14 +41,17 @@ class Select extends Component {
     }
 
     render() {
-        const { value } = this.state;
-        const { name, items, id, val, placeholder } = this.props;
+        let { value } = this.state;
+        const { name, items, id, val, placeholder, multiple } = this.props;
+
+        if (multiple && !Array.isArray(value)) value = [value];
 
         return (
             <select
                 name={name}
                 value={value}
-                onChange={(event) => this.onChange(event.target.value)}>
+                onChange={this.onChange}
+                multiple={multiple}>
                 {placeholder && <option value={""}>{placeholder}</option>}
                 {
                     items.map((item, i) => {
