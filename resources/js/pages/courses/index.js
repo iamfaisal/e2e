@@ -25,6 +25,8 @@ class Courses extends Component {
     }
 
     getData() {
+        this.setState({ loader: true });
+
         read('courses', [])
             .then(res => {
                 this.setState({
@@ -85,38 +87,42 @@ class Courses extends Component {
                 name: 'ID',
                 selector: 'id',
                 sortable: true,
-                width: '50px',
+                width: '50px'
             },
             {
                 name: 'Title',
                 selector: 'title',
-                sortable: true,
-                grow: 1
+                sortable: true
             },
             {
                 name: 'State',
                 selector: 'regulation.abbreviation',
                 sortable: true,
+                maxWidth: '50px'
             },
             {
                 name: 'Code',
                 selector: 'code',
                 sortable: true,
+                maxWidth: '100px'
             },
             {
                 name: 'Categories',
                 cell: row => this.renderCategories(row),
                 sortable: true,
+                maxWidth: '150px'
             },
             {
                 name: 'Hours',
                 selector: 'hours',
                 sortable: true,
+                maxWidth: '50px'
             },
             {
                 name: 'Expiration',
                 selector: 'expiration_date',
                 sortable: true,
+                maxWidth: '120px'
             },
             {
                 name: 'Actions',

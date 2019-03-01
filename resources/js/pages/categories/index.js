@@ -89,6 +89,10 @@ class Categories extends Component {
                     <Link className="button" to={"/categories/create"}>Add New Category</Link>
                 </header>
 
+                <div className="filter">
+                    <input type="text" placeholder="Search Categories" />
+                </div>
+
                 <div className="tablewrap">
                     {!loader && categories
                         ? <DataTable columns={columns} data={categories} noHeader={true} pagination />
