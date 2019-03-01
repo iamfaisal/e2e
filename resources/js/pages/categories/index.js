@@ -1,6 +1,7 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import { Link } from "react-router-dom";
 import { read, remove } from "../../helpers/resource";
+import DataTable from "react-data-table-component";
 
 class Categories extends Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class Categories extends Component {
         };
 
         this.renderLoader = this.renderLoader.bind(this);
+        this.renderActions = this.renderActions.bind(this);
         this.deleteCategory = this.deleteCategory.bind(this);
     }
 
@@ -50,8 +52,30 @@ class Categories extends Component {
         }
     }
 
+    renderActions(category) {
+        return(
+            <Fragment>
+                <Link className="ion-md-create" to={"/categories/edit/"+category.id}/>
+                <a className="ion-md-close" onClick={e => this.deleteCategory(e, category.id)}/>
+            </Fragment>
+        );
+    }
+
     render() {
         const { categories, loader } = this.state;
+        const columns = [
+            {
+                name: 'Title',
+                selector: 'label',
+                sortable: true,
+            },
+            {
+                name: 'Actions',
+                cell: row => this.renderActions(row),
+                ignoreRowClick: true,
+                width: '100px',
+            }
+        ];
 
         return (
             <div>
@@ -61,29 +85,9 @@ class Categories extends Component {
                 </header>
 
                 <div className="tablewrap">
-                    {!loader && categories ? (
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {categories.map((category) => {
-                                return (
-                                    <tr key={category.id}>
-                                        <td>{category.label}</td>
-                                        <td className="actions">
-                                            <Link className="ion-md-create" to={"/categories/edit/"+category.id}/>
-                                            <a className="ion-md-close" onClick={e => this.deleteCategory(e, category.id)}/>
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                            </tbody>
-                        </table>
-                    ) : this.renderLoader()}
+                    {!loader && categories
+                        ? <DataTable columns={columns} data={categories} pagination />
+                        : this.renderLoader()}
                 </div>
             </div>
         );
