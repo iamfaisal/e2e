@@ -68,24 +68,6 @@ class Categories extends Component {
         }
     }
 
-    filter(e, key) {
-        let { categories, filters } = this.state;
-        filters[key] = e.target.value;
-
-        let filtered = categories.filter(cat => {
-            let ok = false;
-            for (let filter in filters) {
-                if (filters[filter] == '' || cat[filter].search(filters[filter]) > -1) ok = true;
-            }
-            return ok;
-        });
-
-        this.setState({
-            //categories: filtered,
-            filters: filters
-        });
-    }
-
     setfilter(e, key) {
         let { filters } = this.state;
         filters[key] = e.target.value;
