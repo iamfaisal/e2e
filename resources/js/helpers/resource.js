@@ -84,6 +84,8 @@ export function filter(data, filters) {
                 tosearch = subfilter;
             }
 
+            if (typeof tosearch == 'number') tosearch = tosearch.toString();
+
             if (tosearch.search(new RegExp(search, "i")) < 0) ok = false;
         }
         return ok;

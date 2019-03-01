@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
-import { read, remove } from "../../helpers/resource";
+import { read, remove, filter } from "../../helpers/resource";
 import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
 
@@ -12,6 +12,7 @@ class Courses extends Component {
             courses: [],
             categories: [],
             regulations: [],
+            filters: {},
             loader: true
         };
 
@@ -64,7 +65,6 @@ class Courses extends Component {
         course.categories.map((category) => {
             categories.push(category.label);
         });
-        console.log(course);
         return categories.join(", ");
     }
 
@@ -80,8 +80,15 @@ class Courses extends Component {
         }
     }
 
+    setfilter(value, key) {
+        let { filters } = this.state;
+        filters[key] = value;
+        this.setState({ filters: filters });
+    }
+
     render() {
-        const { courses, categories, regulations, loader } = this.state;
+        let { courses } = this.state;
+        const { filters, categories, regulations, loader } = this.state;
         const columns = [
             {
                 name: 'ID',
@@ -132,6 +139,10 @@ class Courses extends Component {
             }
         ];
 
+        if (Object.keys(filters).length) {
+            courses = filter(courses, filters);
+        }
+
         return (
             <div>
                 <header className="pageheader">
@@ -140,7 +151,7 @@ class Courses extends Component {
                 </header>
 
                 <div className="filter">
-                    <Select items={regulations} id={"id"} val={"name"}/>
+                    <Select items={regulations} id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")}/>
                     <Select items={categories} id={"id"} val={"label"}/>
                     <input type="text" placeholder="Course Code" />
 
