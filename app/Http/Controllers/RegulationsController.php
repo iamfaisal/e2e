@@ -10,17 +10,11 @@ class RegulationsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $regulations = Regulation::orderBy('created_at', 'desc');
-
-        if ($request->has('label')) {
-            $regulations->where("name", "LIKE", "%{$request->name}%");
-        }
-
         return response()->json([
             'regulations' => $regulations->get()
         ], 200);

@@ -11,17 +11,11 @@ class CategoriesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $categories = Category::orderBy('created_at', 'desc');
-
-        if ($request->has('label')) {
-            $categories->where("label", "LIKE", "%{$request->label}%");
-        }
-
         return response()->json([
             'categories' => $categories->get()
         ], 200);

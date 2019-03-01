@@ -10,21 +10,11 @@ class TerritoriesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         $territories = Territory::with('regulation');
-
-        if ($request->has('name')) {
-            $territories->where("name", "LIKE", "%{$request->label}%");
-        }
-
-        if ($request->has('regulation_id')) {
-            $territories->where("regulation_id", "=", $request->regulation_id);
-        }
-
         return response()->json([
             'territories' => $territories->get()
         ], 200);
