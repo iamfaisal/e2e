@@ -137,7 +137,7 @@ class EditCourse extends Component {
 
         return (
             <div>
-                <header>
+                <header className="pageheader">
                     <h2>Create Course</h2>
                 </header>
 

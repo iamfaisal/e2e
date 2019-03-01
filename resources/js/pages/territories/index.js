@@ -55,7 +55,7 @@ class Territories extends Component {
 
         return (
             <div>
-                <header>
+                <header className="pageheader">
                     <h2>Territories</h2>
                     <Link className="button" to={"/territories/create"}>Add New Territory</Link>
                 </header>

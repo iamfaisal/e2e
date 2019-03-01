@@ -126,7 +126,7 @@ class EditTerritory extends Component {
 
         return (
             <div>
-                <header>
+                <header className="pageheader">
                     <h2>Edit Territory</h2>
                 </header>
 

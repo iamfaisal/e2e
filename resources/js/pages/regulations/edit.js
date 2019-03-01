@@ -125,7 +125,7 @@ class EditRegulation extends Component {
 
         return (
             <div>
-                <header>
+                <header className="pageheader">
                     <h2>Edit Regulation</h2>
                 </header>
 
