@@ -64,6 +64,16 @@ class CoursesController extends Controller
             $data['material'] = $request->file('material')->store('courses');
         }
         $course = Course::create($data);
+
+        if($categories = $request->has('categories')) {
+//            $categories = [];
+//            foreach ($request->categories as $categoryID) {
+//                $categories[] = Category::find($categoryID);
+//            }
+            $course->categories()->sync($categories);
+        }
+
+
         return response()->json([
             'course' => $course
         ], 200);
