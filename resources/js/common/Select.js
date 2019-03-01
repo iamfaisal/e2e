@@ -32,13 +32,14 @@ class Select extends Component {
 
     render() {
         const { value } = this.state;
-        const { name, items, id, val } = this.props;
+        const { name, items, id, val, placeholder } = this.props;
 
         return (
             <select
                 name={name}
                 value={value}
                 onChange={(event) => this.onChange(event.target.value)}>
+                placeholder && <option value={""}>{placeholder}</option>
                 {
                     items.map((item, i) => {
                         return (
