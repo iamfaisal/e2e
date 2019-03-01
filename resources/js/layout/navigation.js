@@ -24,6 +24,12 @@ export const links = [
         icon: "ion-ios-bookmark",
         role: "super-admin"
     },
+    {
+        name: "School Admins",
+        url: "/school-admins",
+        icon: "ion-ios-people",
+        role: "super-admin"
+    },
     /*
     // school admin
     {
