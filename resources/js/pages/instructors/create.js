@@ -3,6 +3,7 @@ import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
+import TextArea from "../../common/TextArea";
 import { read, create } from "../../helpers/resource";
 
 class CreateInstructor extends Component {
@@ -15,8 +16,12 @@ class CreateInstructor extends Component {
                 first_name: "",
                 last_name: "",
                 email: "",
-                password: "",
-                roles: []
+                licenses: [{
+                    regulation: "",
+                    code: "",
+                    certificate: "",
+                    expiration: ""
+                }]
             },
             required_fields: {
                 first_name: "",
@@ -35,6 +40,9 @@ class CreateInstructor extends Component {
         this.handleBlur = this.handleBlur.bind(this);
         this.setRoles = this.setRoles.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        this.addLicense = this.addLicense.bind(this);
+        this.removeLicense = this.removeLicense.bind(this);
     }
 
     componentDidMount() {
@@ -113,6 +121,31 @@ class CreateInstructor extends Component {
         });
     }
 
+    addLicense(e) {
+        e.preventDefault();
+
+        let { fields } = this.state;
+        fields.licenses.push({
+            regulation: "",
+            code: "",
+            certificate: "",
+            expiration: ""
+        });
+        this.setState({
+            fields: fields
+        });
+    }
+
+    removeLicense(e) {
+        e.preventDefault();
+
+        let { fields } = this.state;
+        fields.licenses.pop();
+        this.setState({
+            fields: fields
+        });
+    }
+
     render() {
         const { fields, roles, loading, isFormValid, formValidationData } = this.state;
 
@@ -155,20 +188,75 @@ class CreateInstructor extends Component {
                             labelText="Email"
                             validation={[validations.isEmail]}
                         />
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="sub_domain"
+                            value={fields.sub_domain}
+                            maxLength={50}
+                            labelText="Sub Domain"
+                        />
                     </fieldset>
 
                     <fieldset className="fields horizontal">
-                        <label>
-                            <span>Roles</span>
-                            <Select
-                                onChange={this.setRoles}
-                                name="roles[]"
-                                items={roles}
-                                multiple
-                                id={"id"}
-                                val={"label"}
-                            />
-                        </label>
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="password"
+                            value={fields.password}
+                            maxLength={50}
+                            labelText="Cell Phone"
+                        />
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="password"
+                            value={fields.password}
+                            maxLength={50}
+                            labelText="Work Phone"
+                        />
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="password"
+                            value={fields.password}
+                            maxLength={50}
+                            labelText="Additional Name (#1)"
+                        />
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="password"
+                            value={fields.password}
+                            maxLength={50}
+                            labelText="Additional Email Address (#1)"
+                        />
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="password"
+                            value={fields.password}
+                            maxLength={50}
+                            labelText="Additional Name (#2)"
+                        />
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="password"
+                            value={fields.password}
+                            maxLength={50}
+                            labelText="Additional Email Address (#2)"
+                        />
+                    </fieldset>
+
+                    <legend>Profile</legend>
+                    <fieldset className="fields horizontal">
+                        <TextArea
+                            onChange={(event) => this.handleChange(event)}
+                            name="profile"
+                            value={fields.description}
+                            placeholder="Profile"
+                        />
                     </fieldset>
 
                     <fieldset className="fields horizontal">
@@ -205,6 +293,36 @@ class CreateInstructor extends Component {
                                 labelText="Avatar"
                             />
                         </div>
+                    </div>
+
+                    {fields.licenses.map((linense, i) => {
+                        return <fieldset key={i} className="fields horizontal">
+                            <TextField
+                                onBlur={(isValid) => this.handleBlur(isValid)}
+                                onChange={(event) => this.handleChange(event)}
+                                name="licenses[][code]"
+                                value={""}
+                                maxLength={50}
+                                labelText="License Number"
+                            />
+                            <TextField
+                                onBlur={(isValid) => this.handleBlur(isValid)}
+                                onChange={(event) => this.handleChange(event)}
+                                name="licenses[][expiration]"
+                                value={""}
+                                maxLength={50}
+                                labelText="License Number"
+                            />
+                            <FileInput
+                                onChange={event => this.handleChange(event)}
+                                name="licenses[][certificate]"
+                                labelText="Certificate"
+                            />
+                        </fieldset>
+                    })}
+                    <div className="repeatActions">
+                        <button onClick={this.removeLicense}>-</button>
+                        <button onClick={this.addLicense}>+</button>
                     </div>
 
                     <button className="button" disabled={!isFormValid}>Create Admin</button>

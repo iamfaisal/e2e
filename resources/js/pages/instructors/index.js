@@ -26,7 +26,7 @@ class Instructors extends Component {
     getData() {
         this.setState({loader: true});
 
-        read('users', { params: { role: 'instructors'}})
+        read('users', { params: { role: 'instructor'}})
             .then(res => {
                 this.setState({
                     instructors: res.data.users,

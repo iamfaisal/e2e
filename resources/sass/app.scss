@@ -997,3 +997,13 @@ form.loading {
 .RichEditor-root textarea {
   display: none;
 }
+
+.repeatActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.repeatActions button {
+  background: none;
+  border: none;
+}
