@@ -55,39 +55,38 @@ export const links = [
         icon: "ion-ios-people",
         role: "admin"
     },
-    /*
     // instructor
     {
         name: "Classes",
-        url: "/classes",
+        url: "/my-classes",
         icon: "ion-ios-albums",
         role: "instructor"
     },
     {
         name: "Materials",
-        url: "/materials",
+        url: "/course-materials",
         icon: "ion-ios-briefcase",
         role: "instructor"
     },
     {
         name: "Venues",
-        url: "/venues",
+        url: "/my-venues",
         icon: "ion-ios-flag",
         role: "instructor"
     },
     {
         name: "Sponsors",
-        url: "/sponsors",
+        url: "/my-sponsors",
         icon: "ion-ios-people",
         role: "instructor"
     },
     // student
     {
         name: "Classes",
-        url: "/classes",
+        url: "/student-classes",
         icon: "ion-ios-albums",
         role: "student"
-    }*/
+    }
 ];
 
 export default links;
