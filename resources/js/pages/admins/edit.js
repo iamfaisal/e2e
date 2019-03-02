@@ -79,7 +79,6 @@ class EditAdmin extends Component {
         this.setState({formValidationData: formValidationData});
         let isFormValid = true;
         for (let key in required_fields) {
-            console.log(formValidationData, key)
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
@@ -200,7 +199,7 @@ class EditAdmin extends Component {
                             value={fields.password}
                             maxLength={50}
                             labelText="Password"
-                            validation={[validations.isEmpty, validations.isAlphaNumeric]}
+                            validation={[validations.isAlphaNumeric]}
                         />
                         <TextField
                             onBlur={(isValid) => this.handleBlur(isValid)}
@@ -211,7 +210,7 @@ class EditAdmin extends Component {
                             maxLength={50}
                             labelText="Confirm Password"
                             equalTo={fields.password}
-                            validation={[validations.isEmpty, validations.isAlphaNumeric, validations.equalTo]}
+                            validation={[validations.equalTo]}
                         />
                     </fieldset>
 
