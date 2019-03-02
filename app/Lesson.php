@@ -42,4 +42,14 @@ class Lesson extends Model
     {
         return $this->hasOne(Cancellation::class);
     }
+
+    public function students()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function sponsors()
+    {
+        return $this->belongsToMany(Sponsor::class);
+    }
 }
