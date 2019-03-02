@@ -197,11 +197,15 @@ class CreateAdmin extends Component {
                         />
                     </fieldset>
 
-                    <FileInput
-                        onChange={event => this.handleChange(event)}
-                        name="avatar"
-                        labelText="Avatar"
-                    />
+                    <div className="row">
+                        <div className="col-md-6 col-lg-4">
+                            <FileInput
+                                onChange={event => this.handleChange(event)}
+                                name="avatar"
+                                labelText="Avatar"
+                            />
+                        </div>
+                    </div>
 
                     <button className="button" disabled={!isFormValid}>Create Admin</button>
                 </form>

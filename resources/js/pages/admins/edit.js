@@ -100,9 +100,10 @@ class EditAdmin extends Component {
             loading: true
         });
 
-        fields._method = "PUT";
+        let data = new FormData(e.target);
+        data.append("_method", "PUT");
 
-        update("users/"+id, fields)
+        update("users/" + id, data)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/users")
@@ -217,12 +218,16 @@ class EditAdmin extends Component {
                         />
                     </fieldset>
 
-                    <FileInput
-                        onChange={event => this.handleChange(event)}
-                        name="avatar"
-                        labelText="Avatar"
-                        value={fields.avatar}
-                    />
+                    <div className="row">
+                        <div className="col-md-6 col-lg-4">
+                            <FileInput
+                                onChange={event => this.handleChange(event)}
+                                name="avatar"
+                                labelText="Avatar"
+                                value={fields.avatar}
+                            />
+                        </div>
+                    </div>
 
                     <button className="button" disabled={!isFormValid}>Update Admin</button>
                 </form>
