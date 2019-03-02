@@ -28,9 +28,10 @@ class Header extends Component {
     }
 
     renderNavigation(role, roleLinks) {
+        let roleName = role === "admin" ? "school-admin" : role;
         return(
-            <nav key={role}>
-                <h3>{role.replace("-", " ")}</h3>
+            <nav key={roleName}>
+                <h3>{roleName.replace("-", " ")}</h3>
                 <ul>
                     {roleLinks.map(function(link) {
                         return (
