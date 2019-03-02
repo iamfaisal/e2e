@@ -93,4 +93,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Venue::class);
     }
+
+    public function licenses()
+    {
+        return $this->hasMany(License::class);
+    }
 }

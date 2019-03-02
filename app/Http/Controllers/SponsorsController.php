@@ -50,7 +50,7 @@ class SponsorsController extends Controller
         {
             $data['logo'] = $this->handleFileUpload($request->file('logo'));
         }
-        $sponsor = Sponsor::create();
+        $sponsor = Sponsor::create($data);
         return response()->json([
             'sponsor' => $sponsor
         ], 200);
