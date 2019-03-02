@@ -53,15 +53,15 @@ class CoursesController extends Controller
         ];
         if($request->hasFile('class_flyer_template'))
         {
-            $data['class_flyer_template'] = $request->file('class_flyer_template')->store('public/courses');
+            $data['class_flyer_template'] = $this->handleFileUpload($request->file('class_flyer_template'), 'courses');
         }
         if($request->hasFile('class_docs_template'))
         {
-            $data['class_docs_template'] = $request->file('class_docs_template')->store('public/courses');
+            $data['class_docs_template'] = $this->handleFileUpload($request->file('class_docs_template'), 'courses');
         }
         if($request->hasFile('material'))
         {
-            $data['material'] = $request->file('material')->store('public/courses');
+            $data['material'] = $this->handleFileUpload($request->file('material'), 'courses');
         }
         $course = Course::create($data);
 
@@ -110,20 +110,15 @@ class CoursesController extends Controller
         ];
         if($request->hasFile('class_flyer_template'))
         {
-            //$data['class_flyer_template'] = $request->file('class_flyer_template')->store('public/courses');
-            $file = $request->file('class_flyer_template');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $destinationPath = public_path() . '/uploads/';
-            $file->move($destinationPath, $filename);
-            $data['class_flyer_template'] = $filename;
+            $data['class_flyer_template'] = $this->handleFileUpload($request->file('class_flyer_template'), 'courses');
         }
         if($request->hasFile('class_docs_template'))
         {
-            $data['class_docs_template'] = $request->file('class_docs_template')->store('public/courses');
+            $data['class_docs_template'] = $this->handleFileUpload($request->file('class_docs_template'), 'courses');
         }
         if($request->hasFile('material'))
         {
-            $data['material'] = $request->file('material')->store('public/courses');
+            $data['material'] = $this->handleFileUpload($request->file('material'), 'courses');
         }
         if($request->has('categories')) {
             $course->categories()->sync($request->categories);
@@ -149,5 +144,13 @@ class CoursesController extends Controller
         return response()->json([
             'course' => 'success'
         ], 200);
+    }
+
+    private function handleFileUpload($file, $destination) {
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $path = '/uploads/'.$destination.'/';
+        $destinationPath = public_path() . $path;
+        $file->move($destinationPath, $filename);
+        return $path . $filename;
     }
 }
