@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
+import FileInput from "../../common/FileInput";
 import { read, update } from "../../helpers/resource";
 
 class EditAdmin extends Component {
@@ -17,7 +18,8 @@ class EditAdmin extends Component {
                 email: "",
                 password: "",
                 confirm_pass: "",
-                roles: []
+                roles: [],
+                avatar: ""
             },
             required_fields: {
                 first_name: "",
@@ -46,6 +48,7 @@ class EditAdmin extends Component {
                 fields.last_name = res.data.profile.last_name;
                 fields.email = res.data.user.email;
                 fields.roles = res.data.roles;
+                fields.avatar = res.data.profile.avatar;
 
                 this.setState({
                     fields: fields,
@@ -213,6 +216,13 @@ class EditAdmin extends Component {
                             validation={[validations.equalTo]}
                         />
                     </fieldset>
+
+                    <FileInput
+                        onChange={event => this.handleChange(event)}
+                        name="avatar"
+                        labelText="Avatar"
+                        value={fields.avatar}
+                    />
 
                     <button className="button" disabled={!isFormValid}>Update Admin</button>
                 </form>

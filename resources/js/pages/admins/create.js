@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
+import FileInput from "../../common/FileInput";
 import { read, create } from "../../helpers/resource";
 
 class CreateAdmin extends Component {
@@ -15,6 +16,14 @@ class CreateAdmin extends Component {
                 last_name: "",
                 email: "",
                 password: "",
+                roles: []
+            },
+            required_fields: {
+                first_name: "",
+                last_name: "",
+                email: "",
+                password: "",
+                confirm_pass: "",
                 roles: []
             },
             roles: [],
@@ -51,11 +60,11 @@ class CreateAdmin extends Component {
     }
 
     handleBlur(field) {
-        let { formValidationData, fields } = this.state;
+        let { formValidationData, required_fields } = this.state;
         formValidationData[field.key] = field.value;
         this.setState({formValidationData: formValidationData});
         let isFormValid = true;
-        for (let key in fields) {
+        for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
@@ -74,7 +83,7 @@ class CreateAdmin extends Component {
             loading: true
         });
 
-        create('users', fields)
+        create('users', new FormData(e.target))
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/users")
@@ -187,6 +196,12 @@ class CreateAdmin extends Component {
                             validation={[validations.isEmpty, validations.isAlphaNumeric, validations.equalTo]}
                         />
                     </fieldset>
+
+                    <FileInput
+                        onChange={event => this.handleChange(event)}
+                        name="avatar"
+                        labelText="Avatar"
+                    />
 
                     <button className="button" disabled={!isFormValid}>Create Admin</button>
                 </form>
