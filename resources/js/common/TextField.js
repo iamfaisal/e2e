@@ -131,7 +131,11 @@ class TextField extends Component {
 							}
 						}
 						break;
-					}
+                    }
+                    case "equalTo": {
+                        result = value.length > 0 || this.state.required ? value == this.props.equalTo : true;
+                        break;
+                    }
                 }
 
                 if(!result) {

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
+import Select from "../../common/Select";
 import { read, update } from "../../helpers/resource";
 
 class EditAdmin extends Component {
@@ -11,14 +12,27 @@ class EditAdmin extends Component {
             id: props.match.params.category,
             loading: false,
             fields: {
-                user: ""
+                first_name: "",
+                last_name: "",
+                email: "",
+                password: "",
+                confirm_pass: "",
+                roles: []
             },
+            required_fields: {
+                first_name: "",
+                last_name: "",
+                email: "",
+                roles: []
+            },
+            roles: [],
             formValidationData: {},
             isFormValid: false
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
+        this.setRoles = this.setRoles.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -27,12 +41,25 @@ class EditAdmin extends Component {
         read('users/'+id, [])
             .then(res => {
                 let { fields } = this.state;
-                fields.user = res.data.user;
-                fields.user.profile = res.data.profile;
-                fields.user.roles = res.data.roles;
+
+                fields.first_name = res.data.profile.first_name;
+                fields.last_name = res.data.profile.last_name;
+                fields.email = res.data.user.email;
+                fields.roles = res.data.roles;
+
                 this.setState({
                     fields: fields,
                     loading: false
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+        read('roles/', {})
+            .then(res => {
+                this.setState({
+                    roles: res.data.roles
                 });
             })
             .catch((err) => {
@@ -47,11 +74,12 @@ class EditAdmin extends Component {
     }
 
     handleBlur(field) {
-        let { formValidationData, fields } = this.state;
+        let { formValidationData, required_fields } = this.state;
         formValidationData[field.key] = field.value;
         this.setState({formValidationData: formValidationData});
         let isFormValid = true;
-        for (let key in fields) {
+        for (let key in required_fields) {
+            console.log(formValidationData, key)
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
@@ -70,13 +98,12 @@ class EditAdmin extends Component {
             loading: true
         });
 
-        update("categories/"+id, {
-            label: fields.title,
-            _method: "PUT"
-        })
+        fields._method = "PUT";
+
+        update("users/"+id, fields)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/categories")
+                    ? this.props.history.push("/users")
                     : this.setState({
                         loading: false,
                         isFormValid: false
@@ -84,43 +111,112 @@ class EditAdmin extends Component {
             })
             .catch((err) => {
                 this.setState({
-                    formValidationData: {form: "Unable To Update Category"},
+                    formValidationData: {form: "Unable To Update User"},
                     loading: false,
                     isFormValid: false
                 })
             });
     }
 
-    render() {
-        const {fields, loading, isFormValid, formValidationData } = this.state;
+    setRoles(roles) {
+        let { fields } = this.state;
+        fields.roles = roles;
+        this.setState({
+            fields: fields
+        });
+        this.handleBlur({
+            key: "roles",
+            value: roles
+        });
+    }
 
-        if (fields.title === "") return false;
+    render() {
+        const { fields, roles, loading, isFormValid, formValidationData } = this.state;
+
+        if (fields.first_name === "") return false;
 
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Edit Category</h2>
+                    <h2>Edit Admin</h2>
                 </header>
 
-                <div className="row">
-                    <div className="col-md-6">
-                        <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
-                        {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
-                            <fieldset className="fields horizontal">
-                                <TextField
-                                    onBlur={this.handleBlur}
-                                    onChange={this.handleChange}
-                                    name="title"
-                                    value={fields.title}
-                                    required={true}
-                                    labelText="Title"
-                                    validation={[validations.isEmpty]}
-                                />
-                            </fieldset>
-                            <button className="button" disabled={!isFormValid}>Update Category</button>
-                        </form>
-                    </div>
-                </div>
+                <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
+                    {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
+                    <fieldset className="fields horizontal">
+                        <TextField
+                            onBlur={isValid => this.handleBlur(isValid)}
+                            onChange={event => this.handleChange(event)}
+                            name="first_name"
+                            value={fields.first_name}
+                            required={true}
+                            maxLength={50}
+                            labelText="First Name"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={isValid => this.handleBlur(isValid)}
+                            onChange={event => this.handleChange(event)}
+                            name="last_name"
+                            value={fields.last_name}
+                            required={true}
+                            maxLength={50}
+                            labelText="Last Name"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="email"
+                            value={fields.email}
+                            required={true}
+                            maxLength={50}
+                            labelText="Email"
+                            validation={[validations.isEmail]}
+                        />
+                    </fieldset>
+
+                    <fieldset className="fields horizontal">
+                        <label>
+                            <span>Roles</span>
+                            <Select
+                                onChange={this.setRoles}
+                                name="roles[]"
+                                items={roles}
+                                value={fields.roles}
+                                multiple
+                                id={"id"}
+                                val={"label"}
+                            />
+                        </label>
+                    </fieldset>
+
+                    <fieldset className="fields horizontal">
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            type="password"
+                            name="password"
+                            value={fields.password}
+                            maxLength={50}
+                            labelText="Password"
+                            validation={[validations.isEmpty, validations.isAlphaNumeric]}
+                        />
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            type="password"
+                            name="confirm_pass"
+                            value={fields.confirm_pass}
+                            maxLength={50}
+                            labelText="Confirm Password"
+                            equalTo={fields.password}
+                            validation={[validations.isEmpty, validations.isAlphaNumeric, validations.equalTo]}
+                        />
+                    </fieldset>
+
+                    <button className="button" disabled={!isFormValid}>Update Admin</button>
+                </form>
             </div>
         );
     }

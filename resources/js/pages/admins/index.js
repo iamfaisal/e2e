@@ -107,7 +107,7 @@ class Admins extends Component {
                 </header>
 
                 <div className="filter">
-                    <input type="text" placeholder="Search Admins" onChange={e => this.setfilter(e, "name")} />
+                    <input type="text" placeholder="Search Admins" onChange={e => this.setfilter(e, "email")} />
                 </div>
 
                 <div className="tablewrap">

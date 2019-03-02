@@ -41,7 +41,7 @@ class CreateCourse extends Component {
     }
 
     componentDidMount() {
-        read('regulations/', [])
+        read('regulations/', {})
             .then(res => {
                 this.setState({
                     regulations: res.data.regulations
@@ -51,7 +51,7 @@ class CreateCourse extends Component {
                 console.log(err);
             });
 
-        read('categories/', [])
+        read('categories/', {})
             .then(res => {
                 this.setState({
                     categories: res.data.categories

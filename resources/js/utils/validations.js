@@ -53,6 +53,11 @@ const ukPhoneLength = {
     error: "Invalid phone number"
 };
 
+const equalTo = {
+    type: "equalTo",
+    error: "Do not match"
+};
+
 export const validations = {
     isEmpty,
     isPoBox,
@@ -64,5 +69,6 @@ export const validations = {
     isNumber,
     isNumeric,
     usPhoneLength,
-    ukPhoneLength
+    ukPhoneLength,
+    equalTo
 };

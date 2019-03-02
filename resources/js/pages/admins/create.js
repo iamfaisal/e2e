@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
-import { create } from "../../helpers/resource";
+import Select from "../../common/Select";
+import { read, create } from "../../helpers/resource";
 
 class CreateAdmin extends Component {
     constructor(props) {
@@ -10,21 +11,43 @@ class CreateAdmin extends Component {
         this.state = {
             loading: false,
             fields: {
-                title: ""
+                first_name: "",
+                last_name: "",
+                email: "",
+                password: "",
+                roles: []
             },
+            roles: [],
             formValidationData: {},
             isFormValid: false
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
+        this.setRoles = this.setRoles.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        read('roles/', {})
+            .then(res => {
+                this.setState({
+                    roles: res.data.roles
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     handleChange(value) {
         let { fields } = this.state;
-        fields[event.target.name] = event.target.value;
-        this.setState({fields: fields});
+        if (event.target.files) {
+            fields[event.target.name] = event.target.files;
+        } else {
+            fields[event.target.name] = event.target.value;
+        }
+        this.setState({ fields: fields });
     }
 
     handleBlur(field) {
@@ -43,7 +66,7 @@ class CreateAdmin extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { fields, isFormValid, category } = this.state;
+        const { fields, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -51,10 +74,10 @@ class CreateAdmin extends Component {
             loading: true
         });
 
-        create('categories', {label: fields.title})
+        create('users', fields)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/categories")
+                    ? this.props.history.push("/users")
                     : this.setState({
                         loading: false,
                         isFormValid: false
@@ -62,41 +85,111 @@ class CreateAdmin extends Component {
             })
             .catch((err) => {
                 this.setState({
-                    formValidationData: {form: "Unable To Create Category"},
+                    formValidationData: {form: "Unable To Create User"},
                     loading: false,
                     isFormValid: false
                 })
             });
     }
 
+    setRoles(roles) {
+        let { fields } = this.state;
+        fields.roles = roles;
+        this.setState({
+            fields: fields
+        });
+        this.handleBlur({
+            key: "roles",
+            value: roles
+        });
+    }
+
     render() {
-        const {fields, loading, isFormValid, formValidationData } = this.state;
+        const { fields, roles, loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Create Category</h2>
+                    <h2>Create Admin</h2>
                 </header>
 
-                <div className="row">
-                    <div className="col-md-6">
-                        <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
-                        {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
-                            <fieldset className="fields horizontal">
-                                <TextField
-                                    onBlur={this.handleBlur}
-                                    onChange={this.handleChange}
-                                    name="title"
-                                    value={fields.title}
-                                    required={true}
-                                    labelText="Title"
-                                    validation={[validations.isEmpty]}
-                                />
-                            </fieldset>
-                            <button className="button" disabled={!isFormValid}>Create Category</button>
-                        </form>
-                    </div>
-                </div>
+                <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
+                    {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
+                    <fieldset className="fields horizontal">
+                        <TextField
+                            onBlur={isValid => this.handleBlur(isValid)}
+                            onChange={event => this.handleChange(event)}
+                            name="first_name"
+                            value={fields.first_name}
+                            required={true}
+                            maxLength={50}
+                            labelText="First Name"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={isValid => this.handleBlur(isValid)}
+                            onChange={event => this.handleChange(event)}
+                            name="last_name"
+                            value={fields.last_name}
+                            required={true}
+                            maxLength={50}
+                            labelText="Last Name"
+                            validation={[validations.isEmpty]}
+                        />
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="email"
+                            value={fields.email}
+                            required={true}
+                            maxLength={50}
+                            labelText="Email"
+                            validation={[validations.isEmail]}
+                        />
+                    </fieldset>
+
+                    <fieldset className="fields horizontal">
+                        <label>
+                            <span>Roles</span>
+                            <Select
+                                onChange={this.setRoles}
+                                name="roles[]"
+                                items={roles}
+                                multiple
+                                id={"id"}
+                                val={"label"}
+                            />
+                        </label>
+                    </fieldset>
+
+                    <fieldset className="fields horizontal">
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            type="password"
+                            name="password"
+                            value={fields.password}
+                            required={true}
+                            maxLength={50}
+                            labelText="Password"
+                            validation={[validations.isEmpty, validations.isAlphaNumeric]}
+                        />
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            type="password"
+                            name="confirm_pass"
+                            value={fields.confirm_pass}
+                            required={true}
+                            maxLength={50}
+                            labelText="Confirm Password"
+                            equalTo={fields.password}
+                            validation={[validations.isEmpty, validations.isAlphaNumeric, validations.equalTo]}
+                        />
+                    </fieldset>
+
+                    <button className="button" disabled={!isFormValid}>Create Admin</button>
+                </form>
             </div>
         );
     }
