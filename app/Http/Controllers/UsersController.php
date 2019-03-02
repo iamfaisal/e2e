@@ -17,9 +17,9 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-        $users = User::with(['roles' => function($q) use($request) {
+        $users = User::whereHas('roles', function ($q) use ($request) {
             $q->where('name', $request->role);
-        }, 'profile'])->get();
+        })->with(['roles', 'profile'])->get();
 
         return response()->json([
             'users' => $users
