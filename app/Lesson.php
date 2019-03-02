@@ -17,4 +17,19 @@ class Lesson extends Model
         'rsvp_link_text', 'rsvp_link_url', 'flyer', 'flyer_image', 'docs', 'roster', 'status',
         'is_approved', 'is_deleted', 'is_cancelled'
     ];
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function venue()
+    {
+        return $this->belongsTo(Venue::class);
+    }
 }
