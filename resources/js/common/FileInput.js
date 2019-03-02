@@ -95,6 +95,7 @@ class FileInput extends Component {
             url = URL.createObjectURL(file);
         } else {
             url = "/"+file.name;
+            url = url.replace("public/", "storage/");
         }
         return url;
     }
