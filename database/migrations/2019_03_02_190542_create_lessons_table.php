@@ -42,6 +42,22 @@ class CreateLessonsTable extends Migration
             $table->boolean('is_cancelled')->default(0);
             $table->timestamps();
         });
+
+        Schema::create('lesson_sponsor', function (Blueprint $table) {
+            $table->integer('lesson_id')->unsigned();
+            $table->integer('sponsor_id')->unsigned();
+            $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
+            $table->foreign('sponsor_id')->references('id')->on('sponsors')->onDelete('cascade');
+            $table->primary(['lesson_id', 'sponsor_id']);
+        });
+
+        Schema::create('lesson_student', function (Blueprint $table) {
+            $table->integer('lesson_id')->unsigned();
+            $table->integer('student_id')->unsigned();
+            $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
+            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade');
+            $table->primary(['lesson_id', 'student_id']);
+        });
     }
 
     /**
@@ -51,6 +67,8 @@ class CreateLessonsTable extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('lesson_student');
+        Schema::dropIfExists('lesson_sponsor');
         Schema::dropIfExists('lessons');
     }
 }
