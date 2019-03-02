@@ -412,8 +412,11 @@ table {
     margin-top: 20px;
     h3 {
       padding: 0 30px;
-      font-size: 12px;
+      font-size: 9px;
+      color: $color_bombay_approx;
       text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 5px;
     }
   }
   ul {
@@ -553,8 +556,8 @@ table {
 }
 @media(min-width: 992px) {
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 4px;
+    height: 4px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
@@ -562,7 +565,7 @@ table {
   ::-webkit-scrollbar-thumb {
     background: $color_ghost_approx;
     //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
-    border-radius: 10px;
+    border-radius: 0;
     &:hover {
       background: $color_french_gray_approx;
     }
