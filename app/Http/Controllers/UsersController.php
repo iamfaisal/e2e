@@ -43,7 +43,10 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return response()->json([
+            'user' => $user,
+            'profile' => $user->profile
+        ], 200);
     }
 
     /**
@@ -63,9 +66,13 @@ class UsersController extends Controller
      *
      * @param  User $user
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return response()->json([
+            'user' => 'success'
+        ], 200);
     }
 }

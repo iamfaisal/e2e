@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter } from "../../helpers/resource";
+import { getUserFullName } from "../../helpers/app";
 import DataTable from "react-data-table-component";
 
 class Admins extends Component {
@@ -78,7 +79,7 @@ class Admins extends Component {
         const columns = [
             {
                 name: 'Name',
-                selector: 'name',
+                cell: user => getUserFullName(user),
                 sortable: true,
             },
             {
@@ -88,7 +89,7 @@ class Admins extends Component {
             },
             {
                 name: 'Actions',
-                cell: row => this.renderActions(row),
+                cell: user => this.renderActions(user),
                 ignoreRowClick: true,
                 width: '100px',
             }

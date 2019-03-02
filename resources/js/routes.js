@@ -33,11 +33,6 @@ const routes = [
         exact: true
     },
     {
-        path: "/user/profile",
-        component: requireAuth(Profile),
-        exact: true
-    },
-    {
         path: "/login",
         component: Login,
     },

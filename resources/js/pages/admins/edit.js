@@ -11,7 +11,7 @@ class EditAdmin extends Component {
             id: props.match.params.category,
             loading: false,
             fields: {
-                title: ""
+                user: ""
             },
             formValidationData: {},
             isFormValid: false
@@ -24,10 +24,11 @@ class EditAdmin extends Component {
 
     componentDidMount() {
         const { id } = this.state;
-        read('categories/'+id, [])
+        read('users/'+id, [])
             .then(res => {
                 let { fields } = this.state;
-                fields.title = res.data.category.label;
+                fields.user = res.data.user;
+                fields.user.profile = res.data.profile;
                 this.setState({
                     fields: fields,
                     loading: false
