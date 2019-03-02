@@ -22,16 +22,6 @@ class SponsorsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -39,51 +29,94 @@ class SponsorsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [
+            'regulation_id' => $request->get('regulation'),
+            'user_id' => $request->get('user'),
+            'company' => $request->get('company'),
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
+            'email' => $request->get('email'),
+            'phone' => $request->get('phone'),
+            'extension' => $request->get('extension'),
+            'address' => $request->get('address'),
+            'city' => $request->get('city'),
+            'zip_code' => $request->get('zip_code')
+        ];
+        if($request->hasFile('avatar'))
+        {
+            $data['avatar'] = $request->file('avatar')->store('sponsors');
+        }
+        if($request->hasFile('logo'))
+        {
+            $data['logo'] = $request->file('logo')->store('sponsors');
+        }
+        $sponsor = Sponsor::create();
+        return response()->json([
+            'sponsor' => $sponsor
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Sponsor $sponsor
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Sponsor $sponsor)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json([
+            'sponsor' => $sponsor
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Sponsor $sponsor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Sponsor $sponsor)
     {
-        //
+        $data = [
+            'regulation_id' => $request->get('regulation'),
+            'user_id' => $request->get('user'),
+            'company' => $request->get('company'),
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->get('last_name'),
+            'email' => $request->get('email'),
+            'phone' => $request->get('phone'),
+            'extension' => $request->get('extension'),
+            'address' => $request->get('address'),
+            'city' => $request->get('city'),
+            'zip_code' => $request->get('zip_code')
+        ];
+        if($request->hasFile('avatar'))
+        {
+            $data['avatar'] = $request->file('avatar')->store('sponsors');
+        }
+        if($request->hasFile('logo'))
+        {
+            $data['logo'] = $request->file('logo')->store('sponsors');
+        }
+        $sponsor->update($data);
+        return response()->json([
+            'sponsor' => $sponsor
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Sponsor $sponsor
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Sponsor $sponsor)
     {
-        //
+        $sponsor->delete();
+        return response()->json([
+            'sponsor' => 'success'
+        ], 200);
     }
 }
