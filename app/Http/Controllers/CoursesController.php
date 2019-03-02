@@ -110,7 +110,12 @@ class CoursesController extends Controller
         ];
         if($request->hasFile('class_flyer_template'))
         {
-            $data['class_flyer_template'] = $request->file('class_flyer_template')->store('public/courses');
+            //$data['class_flyer_template'] = $request->file('class_flyer_template')->store('public/courses');
+            $file = $request->file('class_flyer_template');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path() . '/uploads/';
+            $file->move($destinationPath, $filename);
+            $data['class_flyer_template'] = $filename;
         }
         if($request->hasFile('class_docs_template'))
         {

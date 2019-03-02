@@ -90,14 +90,7 @@ class FileInput extends Component {
     }
 
     getFileURL(file) {
-	    let url = '';
-        if (file.name.search('/') < 0) {
-            url = URL.createObjectURL(file);
-        } else {
-            url = "/"+file.name;
-            url = url.replace("public/", "storage/");
-        }
-        return url;
+        return "/uploads/"+file.name;
     }
 
 	render() {
