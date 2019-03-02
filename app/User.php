@@ -83,4 +83,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(Profile::class);
     }
+
+    public function sponsors()
+    {
+        return $this->hasMany(Sponsor::class);
+    }
 }

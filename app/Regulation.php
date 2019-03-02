@@ -27,4 +27,9 @@ class Regulation extends Model
     {
         return $this->hasMany(Territory::class);
     }
+
+    public function sponsors()
+    {
+        return $this->hasMany(Sponsor::class);
+    }
 }
