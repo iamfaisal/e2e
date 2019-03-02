@@ -18,9 +18,9 @@ Route::group(['prefix' => 'auth'], function()
     Route::resource('regulations', 'RegulationsController')->except(['create', 'edit']);
     Route::resource('territories', 'TerritoriesController')->except(['create', 'edit']);
     // School Admin
-    Route::get('roles', 'RolesController@index');
+    Route::resource('classes', 'ClassesController')->except(['create', 'edit']);
     Route::resource('sponsors', 'SponsorsController')->except(['create', 'edit']);
     Route::resource('venues', 'VenuesController')->except(['create', 'edit']);
     Route::resource('licenses', 'LicensesController')->except(['create', 'edit']);
-    // Instructor
+    Route::get('roles', 'RolesController@index');
 });
