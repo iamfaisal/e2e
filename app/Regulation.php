@@ -32,4 +32,9 @@ class Regulation extends Model
     {
         return $this->hasMany(Sponsor::class);
     }
+
+    public function venues()
+    {
+        return $this->hasMany(Venue::class);
+    }
 }

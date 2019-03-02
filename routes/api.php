@@ -20,4 +20,5 @@ Route::group(['prefix' => 'auth'], function()
     // School Admin
     Route::get('roles', 'RolesController@index');
     Route::resource('sponsors', 'SponsorsController')->except(['create', 'edit']);
+    Route::resource('venues', 'VenuesController')->except(['create', 'edit']);
 });
