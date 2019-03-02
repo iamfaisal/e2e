@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Lesson;
 use Illuminate\Http\Request;
 
 class ClassesController extends Controller
@@ -13,17 +14,7 @@ class ClassesController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        // if school / admin return all, if instructor return only his
     }
 
     /**
@@ -40,21 +31,10 @@ class ClassesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Lesson $class
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function show(Lesson $class)
     {
         //
     }
@@ -63,10 +43,10 @@ class ClassesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Lesson $class
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Lesson $class)
     {
         //
     }
@@ -74,10 +54,10 @@ class ClassesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Lesson $class
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Lesson $class)
     {
         //
     }
