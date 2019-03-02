@@ -47,7 +47,7 @@ class RegulationsController extends Controller
         ];
         if($request->hasFile('regulations_doc'))
         {
-            $data['regulations_doc'] = $request->file('regulations_doc')->store('public/regulations');
+            $data['regulations_doc'] = $this->handleFileUpload($request->file('regulations_doc'));
         }
         $regulation = Regulation::create($data);
         return response()->json([
@@ -96,7 +96,7 @@ class RegulationsController extends Controller
         ];
         if($request->hasFile('regulations_doc'))
         {
-            $data['regulations_doc'] = $request->file('regulations_doc')->store('public/regulations');
+            $data['regulations_doc'] = $this->handleFileUpload($request->file('regulations_doc'));
         }
         $regulation->update($data);
         return response()->json([
@@ -117,5 +117,17 @@ class RegulationsController extends Controller
         return response()->json([
             'regulation' => 'success'
         ], 200);
+    }
+
+    /**
+     * @param $file
+     * @return string
+     */
+    private function handleFileUpload($file) {
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $path = '/uploads/regulations/';
+        $destinationPath = public_path() . $path;
+        $file->move($destinationPath, $filename);
+        return $path . $filename;
     }
 }

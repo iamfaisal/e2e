@@ -44,11 +44,11 @@ class SponsorsController extends Controller
         ];
         if($request->hasFile('avatar'))
         {
-            $data['avatar'] = $request->file('avatar')->store('public/sponsors');
+            $data['avatar'] = $this->handleFileUpload($request->file('avatar'));
         }
         if($request->hasFile('logo'))
         {
-            $data['logo'] = $request->file('logo')->store('public/sponsors');
+            $data['logo'] = $this->handleFileUpload($request->file('logo'));
         }
         $sponsor = Sponsor::create();
         return response()->json([
@@ -93,11 +93,11 @@ class SponsorsController extends Controller
         ];
         if($request->hasFile('avatar'))
         {
-            $data['avatar'] = $request->file('avatar')->store('public/sponsors');
+            $data['avatar'] = $this->handleFileUpload($request->file('avatar'));
         }
         if($request->hasFile('logo'))
         {
-            $data['logo'] = $request->file('logo')->store('public/sponsors');
+            $data['logo'] = $this->handleFileUpload($request->file('logo'));
         }
         $sponsor->update($data);
         return response()->json([
@@ -118,5 +118,17 @@ class SponsorsController extends Controller
         return response()->json([
             'sponsor' => 'success'
         ], 200);
+    }
+
+    /**
+     * @param $file
+     * @return string
+     */
+    private function handleFileUpload($file) {
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $path = '/uploads/sponsors/';
+        $destinationPath = public_path() . $path;
+        $file->move($destinationPath, $filename);
+        return $path . $filename;
     }
 }

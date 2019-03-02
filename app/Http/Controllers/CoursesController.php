@@ -53,15 +53,15 @@ class CoursesController extends Controller
         ];
         if($request->hasFile('class_flyer_template'))
         {
-            $data['class_flyer_template'] = $this->handleFileUpload($request->file('class_flyer_template'), 'courses');
+            $data['class_flyer_template'] = $this->handleFileUpload($request->file('class_flyer_template'));
         }
         if($request->hasFile('class_docs_template'))
         {
-            $data['class_docs_template'] = $this->handleFileUpload($request->file('class_docs_template'), 'courses');
+            $data['class_docs_template'] = $this->handleFileUpload($request->file('class_docs_template'));
         }
         if($request->hasFile('material'))
         {
-            $data['material'] = $this->handleFileUpload($request->file('material'), 'courses');
+            $data['material'] = $this->handleFileUpload($request->file('material'));
         }
         $course = Course::create($data);
 
@@ -110,15 +110,15 @@ class CoursesController extends Controller
         ];
         if($request->hasFile('class_flyer_template'))
         {
-            $data['class_flyer_template'] = $this->handleFileUpload($request->file('class_flyer_template'), 'courses');
+            $data['class_flyer_template'] = $this->handleFileUpload($request->file('class_flyer_template'));
         }
         if($request->hasFile('class_docs_template'))
         {
-            $data['class_docs_template'] = $this->handleFileUpload($request->file('class_docs_template'), 'courses');
+            $data['class_docs_template'] = $this->handleFileUpload($request->file('class_docs_template'));
         }
         if($request->hasFile('material'))
         {
-            $data['material'] = $this->handleFileUpload($request->file('material'), 'courses');
+            $data['material'] = $this->handleFileUpload($request->file('material'));
         }
         if($request->has('categories')) {
             $course->categories()->sync($request->categories);
@@ -146,9 +146,13 @@ class CoursesController extends Controller
         ], 200);
     }
 
-    private function handleFileUpload($file, $destination) {
+    /**
+     * @param $file
+     * @return string
+     */
+    private function handleFileUpload($file) {
         $filename = time() . '.' . $file->getClientOriginalExtension();
-        $path = '/uploads/'.$destination.'/';
+        $path = '/uploads/courses/';
         $destinationPath = public_path() . $path;
         $file->move($destinationPath, $filename);
         return $path . $filename;

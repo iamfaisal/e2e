@@ -57,7 +57,7 @@ class UsersController extends Controller
         ];
         if($request->hasFile('avatar'))
         {
-            $profileData['avatar'] = $request->file('avatar')->store('public/users');
+            $profileData['avatar'] = $this->handleFileUpload($request->file('avatar'));
         }
 
         $user = User::create($data);
@@ -125,7 +125,7 @@ class UsersController extends Controller
         ];
         if($request->hasFile('avatar'))
         {
-            $profileData['avatar'] = $request->file('avatar')->store('public/users');
+            $profileData['avatar'] = $this->handleFileUpload($request->file('avatar'));
         }
 
         $user->update($data);
@@ -155,5 +155,17 @@ class UsersController extends Controller
         return response()->json([
             'user' => 'success'
         ], 200);
+    }
+
+    /**
+     * @param $file
+     * @return string
+     */
+    private function handleFileUpload($file) {
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $path = '/uploads/users/';
+        $destinationPath = public_path() . $path;
+        $file->move($destinationPath, $filename);
+        return $path . $filename;
     }
 }
