@@ -151,6 +151,7 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
+        $user->profile()->delete();
         $user->delete();
         return response()->json([
             'user' => 'success'
