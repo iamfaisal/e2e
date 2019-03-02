@@ -32,7 +32,7 @@ export const links = [
     },
     // school admin
     {
-        name: "Current Classes",
+        name: "Classes",
         url: "/classes",
         icon: "ion-ios-albums",
         role: "admin"
