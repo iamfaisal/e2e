@@ -32,4 +32,14 @@ class Lesson extends Model
     {
         return $this->belongsTo(Venue::class);
     }
+
+    public function approval()
+    {
+        return $this->hasOne(Approval::class);
+    }
+
+    public function cancellation()
+    {
+        return $this->hasOne(Cancellation::class);
+    }
 }
