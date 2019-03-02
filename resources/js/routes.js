@@ -24,6 +24,14 @@ import Admins from "./pages/admins";
 import CreateAdmin from "./pages/admins/create";
 import EditAdmin from "./pages/admins/edit";
 
+import Sponsors from "./pages/sponsors";
+import CreateSponsor from "./pages/sponsors/create";
+import EditSponsor from "./pages/sponsors/edit";
+
+import Instructors from "./pages/instructors";
+import CreateInstructor from "./pages/instructors/create";
+import EditInstructor from "./pages/instructors/edit";
+
 import requireAuth from "./utils/requireAuth";
 
 const routes = [
@@ -117,6 +125,36 @@ const routes = [
     {
         path: "/users/edit/:category",
         component: requireAuth(EditAdmin),
+        exact: true
+    },
+    {
+        path: "/instructors",
+        component: requireAuth(Instructors),
+        exact: true
+    },
+    {
+        path: "/instructors/create",
+        component: requireAuth(CreateInstructor),
+        exact: true
+    },
+    {
+        path: "/instructors/edit/:instructor",
+        component: requireAuth(EditInstructor),
+        exact: true
+    },
+    {
+        path: "/sponsors",
+        component: requireAuth(Sponsors),
+        exact: true
+    },
+    {
+        path: "/sponsors/create",
+        component: requireAuth(CreateSponsor),
+        exact: true
+    },
+    {
+        path: "/sponsors/edit/:sponsor",
+        component: requireAuth(EditSponsor),
         exact: true
     }
 ]
