@@ -44,11 +44,11 @@ class SponsorsController extends Controller
         ];
         if($request->hasFile('avatar'))
         {
-            $data['avatar'] = $request->file('avatar')->store('sponsors');
+            $data['avatar'] = $request->file('avatar')->store('public/sponsors');
         }
         if($request->hasFile('logo'))
         {
-            $data['logo'] = $request->file('logo')->store('sponsors');
+            $data['logo'] = $request->file('logo')->store('public/sponsors');
         }
         $sponsor = Sponsor::create();
         return response()->json([
@@ -93,11 +93,11 @@ class SponsorsController extends Controller
         ];
         if($request->hasFile('avatar'))
         {
-            $data['avatar'] = $request->file('avatar')->store('sponsors');
+            $data['avatar'] = $request->file('avatar')->store('public/sponsors');
         }
         if($request->hasFile('logo'))
         {
-            $data['logo'] = $request->file('logo')->store('sponsors');
+            $data['logo'] = $request->file('logo')->store('public/sponsors');
         }
         $sponsor->update($data);
         return response()->json([

@@ -53,15 +53,15 @@ class CoursesController extends Controller
         ];
         if($request->hasFile('class_flyer_template'))
         {
-            $data['class_flyer_template'] = $request->file('class_flyer_template')->store('courses');
+            $data['class_flyer_template'] = $request->file('class_flyer_template')->store('public/courses');
         }
         if($request->hasFile('class_docs_template'))
         {
-            $data['class_docs_template'] = $request->file('class_docs_template')->store('courses');
+            $data['class_docs_template'] = $request->file('class_docs_template')->store('public/courses');
         }
         if($request->hasFile('material'))
         {
-            $data['material'] = $request->file('material')->store('courses');
+            $data['material'] = $request->file('material')->store('public/courses');
         }
         $course = Course::create($data);
 
@@ -110,15 +110,15 @@ class CoursesController extends Controller
         ];
         if($request->hasFile('class_flyer_template'))
         {
-            $data['class_flyer_template'] = $request->file('class_flyer_template')->store('courses');
+            $data['class_flyer_template'] = $request->file('class_flyer_template')->store('public/courses');
         }
         if($request->hasFile('class_docs_template'))
         {
-            $data['class_docs_template'] = $request->file('class_docs_template')->store('courses');
+            $data['class_docs_template'] = $request->file('class_docs_template')->store('public/courses');
         }
         if($request->hasFile('material'))
         {
-            $data['material'] = $request->file('material')->store('courses');
+            $data['material'] = $request->file('material')->store('public/courses');
         }
         if($request->has('categories')) {
             $course->categories()->sync($request->categories);

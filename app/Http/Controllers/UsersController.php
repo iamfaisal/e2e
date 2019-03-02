@@ -57,7 +57,7 @@ class UsersController extends Controller
         ];
         if($request->hasFile('avatar'))
         {
-            $profileData['avatar'] = $request->file('avatar')->store('users');
+            $profileData['avatar'] = $request->file('avatar')->store('public/users');
         }
 
         $user = User::create($data);
@@ -125,7 +125,7 @@ class UsersController extends Controller
         ];
         if($request->hasFile('avatar'))
         {
-            $profileData['avatar'] = $request->file('avatar')->store('users');
+            $profileData['avatar'] = $request->file('avatar')->store('public/users');
         }
 
         $user->update($data);

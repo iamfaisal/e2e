@@ -47,7 +47,7 @@ class RegulationsController extends Controller
         ];
         if($request->hasFile('regulations_doc'))
         {
-            $data['regulations_doc'] = $request->file('regulations_doc')->store('regulations');
+            $data['regulations_doc'] = $request->file('regulations_doc')->store('public/regulations');
         }
         $regulation = Regulation::create($data);
         return response()->json([
@@ -96,7 +96,7 @@ class RegulationsController extends Controller
         ];
         if($request->hasFile('regulations_doc'))
         {
-            $data['regulations_doc'] = $request->file('regulations_doc')->store('regulations');
+            $data['regulations_doc'] = $request->file('regulations_doc')->store('public/regulations');
         }
         $regulation->update($data);
         return response()->json([
