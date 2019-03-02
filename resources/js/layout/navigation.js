@@ -30,7 +30,6 @@ export const links = [
         icon: "ion-ios-people",
         role: "super-admin"
     },
-    /*
     // school admin
     {
         name: "Current Classes",
@@ -62,6 +61,7 @@ export const links = [
         icon: "ion-ios-people",
         role: "admin"
     },
+    /*
     // instructor
     {
         name: "Classes",

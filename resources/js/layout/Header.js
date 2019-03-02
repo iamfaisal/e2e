@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import { Link } from "react-router-dom";
-import { getAuthUserName, logout } from "../helpers/auth";
+import { getAuthUser, getAuthUserName, logout } from "../helpers/auth";
 import { asset } from "../helpers/app";
 import { is, getRoles } from "../helpers/acl";
 import classnames from "classnames";
@@ -79,7 +79,7 @@ class Header extends Component {
                         return roleLinks && roleLinks.length > 0 ? self.renderNavigation(role, roleLinks) : false;
                     })}
 
-                    <Link className="profile" to={"/user/profile"}>
+                    <Link className="profile" to={"/users/edit/"+getAuthUser().id}>
                         <img src={asset("images/user.jpg")}/>
                         <h4>{userName}</h4>
                     </Link>

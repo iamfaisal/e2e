@@ -29,6 +29,7 @@ class EditAdmin extends Component {
                 let { fields } = this.state;
                 fields.user = res.data.user;
                 fields.user.profile = res.data.profile;
+                fields.user.roles = res.data.roles;
                 this.setState({
                     fields: fields,
                     loading: false

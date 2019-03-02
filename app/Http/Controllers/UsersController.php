@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 
 class UsersController extends Controller
@@ -32,7 +34,45 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [
+            'name'      => explode('@', $request->email)[0],
+            'email'     => $request->email,
+            'password'  => Hash::make($request->password),
+        ];
+        $profileData = [
+            'first_name'        => $request->first_name,
+            'last_name'         => $request->last_name,
+            'sub_domain'        => $request->sub_domain,
+            'address'           => $request->address,
+            'city'              => $request->city,
+            'state'             => $request->state,
+            'zip_code'          => $request->zip_code,
+            'cell_phone'        => $request->cell_phone,
+            'work_phone'        => $request->work_phone,
+            'additional_name'   => $request->additional_name,
+            'additional_email'  => $request->additional_email,
+            'additional_name2'  => $request->additional_name2,
+            'additional_email2' => $request->additional_email2,
+            'info'              => $request->info
+        ];
+        if($request->hasFile('avatar'))
+        {
+            $profileData['avatar'] = $request->file('avatar')->store('users');
+        }
+
+        $user = User::create($data);
+        $profile = new Profile($profileData);
+        $user->profile()->save($profile);
+
+        if($request->has('roles')) {
+            $user->roles()->sync($request->roles);
+        }
+
+        return response()->json([
+            'user' => $user,
+            'profile' => $user->profile,
+            'roles' => $user->roles->pluck('id')
+        ], 200);
     }
 
     /**
@@ -45,7 +85,8 @@ class UsersController extends Controller
     {
         return response()->json([
             'user' => $user,
-            'profile' => $user->profile
+            'profile' => $user->profile,
+            'roles' => $user->roles->pluck('id')
         ], 200);
     }
 
@@ -58,7 +99,47 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $data = [
+            'name'      => explode('@', $request->email)[0],
+            'email'     => $request->email
+        ];
+        if($request->has('password'))
+        {
+            $data['password'] = Hash::make($request->password);
+        }
+        $profileData = [
+            'first_name'        => $request->first_name,
+            'last_name'         => $request->last_name,
+            'sub_domain'        => $request->sub_domain,
+            'address'           => $request->address,
+            'city'              => $request->city,
+            'state'             => $request->state,
+            'zip_code'          => $request->zip_code,
+            'cell_phone'        => $request->cell_phone,
+            'work_phone'        => $request->work_phone,
+            'additional_name'   => $request->additional_name,
+            'additional_email'  => $request->additional_email,
+            'additional_name2'  => $request->additional_name2,
+            'additional_email2' => $request->additional_email2,
+            'info'              => $request->info
+        ];
+        if($request->hasFile('avatar'))
+        {
+            $profileData['avatar'] = $request->file('avatar')->store('users');
+        }
+
+        $user->update($data);
+        $user->profile()->update($profileData);
+
+        if($request->has('roles')) {
+            $user->roles()->sync($request->roles);
+        }
+
+        return response()->json([
+            'user' => $user,
+            'profile' => $user->profile,
+            'roles' => $user->roles->pluck('id')
+        ], 200);
     }
 
     /**
