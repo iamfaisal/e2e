@@ -13,7 +13,6 @@ class EditMySponsor extends Component {
             id: props.match.params.sponsor,
             loading: false,
             fields: {
-                user: "",
                 company: "",
                 first_name: "",
                 last_name: "",
@@ -40,7 +39,6 @@ class EditMySponsor extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
-        this.setInstructor = this.setInstructor.bind(this);
         this.setRegulation = this.setRegulation.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -53,16 +51,6 @@ class EditMySponsor extends Component {
                 this.setState({
                     fields: res.data.sponsor,
                     loading: false
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-
-        read('users/', { params: { role: "instructor" } })
-            .then(res => {
-                this.setState({
-                    instructors: res.data.users
                 });
             })
             .catch((err) => {
@@ -102,7 +90,7 @@ class EditMySponsor extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { id, fields, isFormValid } = this.state;
+        const { id, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -131,18 +119,6 @@ class EditMySponsor extends Component {
             });
     }
 
-    setInstructor(instructor) {
-        let { fields } = this.state;
-        fields.user_id = instructor;
-        this.setState({
-            fields: fields
-        });
-        this.handleBlur({
-            key: "user",
-            value: instructor
-        });
-    }
-
     setRegulation(regulation) {
         let { fields } = this.state;
         fields.regulation_id = regulation;
@@ -156,7 +132,7 @@ class EditMySponsor extends Component {
     }
 
     render() {
-        const { fields, instructors, regulations, loading, isFormValid, formValidationData } = this.state;
+        const { fields, regulations, loading, isFormValid, formValidationData } = this.state;
 
         if (fields.first_name === "") return false;
 
@@ -168,17 +144,8 @@ class EditMySponsor extends Component {
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                     {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
+                    <input type="hidden" name="user" value="1" />
                     <fieldset className="fields horizontal">
-                        <label>
-                            <span>Instructor</span>
-                            <Select
-                                onChange={this.setInstructor}
-                                name="user"
-                                items={instructors}
-                                id={"id"}
-                                val={"name"}
-                            />
-                        </label>
                         <TextField
                             onBlur={isValid => this.handleBlur(isValid)}
                             onChange={event => this.handleChange(event)}

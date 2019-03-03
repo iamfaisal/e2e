@@ -1,22 +1,21 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter } from "../../helpers/resource";
 import DataTable from "react-data-table-component";
 
-class MySponsors extends Component {
+class MyVenues extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            sponsors: [],
-            instructors: [],
+            venues: [],
             filters: {},
             loader: true
         };
 
         this.renderLoader = this.renderLoader.bind(this);
         this.renderActions = this.renderActions.bind(this);
-        this.deleteSponsor = this.deleteSponsor.bind(this);
+        this.deleteVenue = this.deleteVenue.bind(this);
     }
 
     componentDidMount() {
@@ -26,18 +25,15 @@ class MySponsors extends Component {
     getData() {
         this.setState({loader: true});
 
-        read('sponsors', {params: {role: 'admin'}})
+        read('venues')
             .then(res => {
                 this.setState({
-                    sponsors: res.data.sponsors,
+                    venues: res.data.venues,
                     loader: false
                 });
             })
             .catch((err) => {
                 console.log(err);
-                this.setState({
-                    loader: true
-                });
             });
     }
 
@@ -47,18 +43,18 @@ class MySponsors extends Component {
         );
     }
 
-    renderActions(sponsor) {
+    renderActions(venue) {
         return (
             <div className="actions">
-                <Link className="ion-md-create" to={"/my-sponsors/edit/" + sponsor.id} />
-                <a className="ion-md-close" onClick={e => this.deleteSponsor(e, sponsor.id)} />
+                <Link className="ion-md-create" to={"/my-venues/edit/" + venue.id} />
+                <a className="ion-md-close" onClick={e => this.deleteVenue(e, venue.id)} />
             </div>
         );
     }
 
-    deleteSponsor(e, sponsor) {
-        if (confirm('Do you really want to delete this Sponsor?')) {
-            remove('sponsors/' + sponsor, {})
+    deleteVenue(e, venue) {
+        if (confirm('Do you really want to delete this Venue?')) {
+            remove('venues/' + venue, {})
             .then(res => {
                 this.getData();
             })
@@ -81,50 +77,45 @@ class MySponsors extends Component {
     }
 
     render() {
-        let { sponsors, filters, loader } = this.state;
+        let { venues, filters, loader } = this.state;
         const columns = [
             {
                 name: 'Name',
-                cell: user => { return user.first_name + " " + user.last_name },
+                selector: 'name',
                 sortable: true,
                 maxWidth: '200px'
             },
             {
-                name: 'Email',
-                selector: 'email',
-                sortable: true,
-            },
-            {
-                name: 'Company',
-                selector: 'company',
+                name: 'Address',
+                cell: venue => { return [venue.address, venue.city, venue.regulation.name + " " + venue.zip_code].join(", ") },
                 sortable: true,
             },
             {
                 name: 'Actions',
-                cell: user => this.renderActions(user),
+                cell: venue => this.renderActions(venue),
                 ignoreRowClick: true,
                 width: '100px'
             }
         ];
 
         if (Object.keys(filters).length) {
-            sponsors = filter(sponsors, filters);
+            venues = filter(venues, filters);
         }
 
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Sponsors</h2>
-                    <Link className="button" to={"/my-sponsors/create"}>Add New Sponsor</Link>
+                    <h2>Venues</h2>
+                    <Link className="button" to={"/my-venues/create"}>Add New Venue</Link>
                 </header>
 
                 <div className="filter">
-                    <input type="text" placeholder="Search Sponsors" onChange={e => this.setfilter(e, "email")} />
+                    <input type="text" placeholder="Search Sponsors" onChange={e => this.setfilter(e, "name")} />
                 </div>
 
                 <div className="tablewrap">
-                    {!loader && sponsors
-                        ? <DataTable columns={columns} data={sponsors} noHeader={true} pagination />
+                    {!loader && venues
+                        ? <DataTable columns={columns} data={venues} noHeader={true} pagination />
                         : this.renderLoader()}
                 </div>
             </div>
@@ -132,4 +123,4 @@ class MySponsors extends Component {
     }
 }
 
-export default MySponsors;
+export default MyVenues;

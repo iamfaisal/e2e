@@ -36,6 +36,14 @@ import Instructors from "./pages/instructors";
 import CreateInstructor from "./pages/instructors/create";
 import EditInstructor from "./pages/instructors/edit";
 
+import MyVenues from "./pages/my-venues";
+import CreateMyVenue from "./pages/my-venues/create";
+import EditMyVenue from "./pages/my-venues/edit";
+
+import MySponsors from "./pages/my-sponsors";
+import CreateMySponsor from "./pages/my-sponsors/create";
+import EditMySponsor from "./pages/my-sponsors/edit";
+
 import requireAuth from "./utils/requireAuth";
 
 const routes = [
@@ -132,21 +140,6 @@ const routes = [
         exact: true
     },
     {
-        path: "/sponsors",
-        component: requireAuth(Sponsors),
-        exact: true
-    },
-    {
-        path: "/sponsors/create",
-        component: requireAuth(CreateSponsor),
-        exact: true
-    },
-    {
-        path: "/sponsors/edit/:sponsor",
-        component: requireAuth(EditSponsor),
-        exact: true
-    },
-    {
         path: "/venues",
         component: requireAuth(Venues),
         exact: true
@@ -159,6 +152,21 @@ const routes = [
     {
         path: "/venues/edit/:venue",
         component: requireAuth(EditVenue),
+        exact: true
+    },
+    {
+        path: "/sponsors",
+        component: requireAuth(Sponsors),
+        exact: true
+    },
+    {
+        path: "/sponsors/create",
+        component: requireAuth(CreateSponsor),
+        exact: true
+    },
+    {
+        path: "/sponsors/edit/:sponsor",
+        component: requireAuth(EditSponsor),
         exact: true
     },
     {
@@ -175,7 +183,37 @@ const routes = [
         path: "/instructors/edit/:instructor",
         component: requireAuth(EditInstructor),
         exact: true
-    }
+    },
+    {
+        path: "/my-venues",
+        component: requireAuth(MyVenues),
+        exact: true
+    },
+    {
+        path: "/my-venues/create",
+        component: requireAuth(CreateMyVenue),
+        exact: true
+    },
+    {
+        path: "/my-venues/edit/:venue",
+        component: requireAuth(EditMyVenue),
+        exact: true
+    },
+    {
+        path: "/my-sponsors",
+        component: requireAuth(MySponsors),
+        exact: true
+    },
+    {
+        path: "/my-sponsors/create",
+        component: requireAuth(CreateMySponsor),
+        exact: true
+    },
+    {
+        path: "/my-sponsors/edit/:sponsor",
+        component: requireAuth(EditMySponsor),
+        exact: true
+    },
 ]
 
 export default routes
