@@ -24,6 +24,10 @@ import Admins from "./pages/admins";
 import CreateAdmin from "./pages/admins/create";
 import EditAdmin from "./pages/admins/edit";
 
+import Venues from "./pages/venues";
+import CreateVenue from "./pages/venues/create";
+import EditVenue from "./pages/venues/edit";
+
 import Sponsors from "./pages/sponsors";
 import CreateSponsor from "./pages/sponsors/create";
 import EditSponsor from "./pages/sponsors/edit";
@@ -128,21 +132,6 @@ const routes = [
         exact: true
     },
     {
-        path: "/instructors",
-        component: requireAuth(Instructors),
-        exact: true
-    },
-    {
-        path: "/instructors/create",
-        component: requireAuth(CreateInstructor),
-        exact: true
-    },
-    {
-        path: "/instructors/edit/:instructor",
-        component: requireAuth(EditInstructor),
-        exact: true
-    },
-    {
         path: "/sponsors",
         component: requireAuth(Sponsors),
         exact: true
@@ -155,6 +144,36 @@ const routes = [
     {
         path: "/sponsors/edit/:sponsor",
         component: requireAuth(EditSponsor),
+        exact: true
+    },
+    {
+        path: "/venues",
+        component: requireAuth(Venues),
+        exact: true
+    },
+    {
+        path: "/venues/create",
+        component: requireAuth(CreateVenue),
+        exact: true
+    },
+    {
+        path: "/venues/edit/:venue",
+        component: requireAuth(EditVenue),
+        exact: true
+    },
+    {
+        path: "/instructors",
+        component: requireAuth(Instructors),
+        exact: true
+    },
+    {
+        path: "/instructors/create",
+        component: requireAuth(CreateInstructor),
+        exact: true
+    },
+    {
+        path: "/instructors/edit/:instructor",
+        component: requireAuth(EditInstructor),
         exact: true
     }
 ]

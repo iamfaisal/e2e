@@ -5,7 +5,7 @@ import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
 import { read, update } from "../../helpers/resource";
 
-class EditSponsor extends Component {
+class EditMySponsor extends Component {
     constructor(props) {
         super(props);
 
@@ -298,4 +298,4 @@ class EditSponsor extends Component {
     }
 }
 
-export default EditSponsor;
+export default EditMySponsor;

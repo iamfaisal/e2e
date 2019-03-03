@@ -1,36 +1,26 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
-import FileInput from "../../common/FileInput";
 import { read, update } from "../../helpers/resource";
 
-class EditSponsor extends Component {
+class EditVenue extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            id: props.match.params.sponsor,
+            id: props.match.params.venue,
             loading: false,
             fields: {
-                user: "",
-                company: "",
-                first_name: "",
-                last_name: "",
-                email: "",
-                phone: "",
-                extension: "",
                 address: "",
                 city: "",
+                name: "",
                 regulation: "",
-                zip_code: "",
-                avatar: "",
-                logo: ""
+                user: "",
+                zip_code: ""
             },
             required_fields: {
-                first_name: "",
-                last_name: "",
-                email: ""
+                name: ""
             },
             instructors: [],
             regulations: [],
@@ -47,12 +37,11 @@ class EditSponsor extends Component {
 
     componentDidMount() {
         const { id } = this.state;
-        read('sponsors/'+id, [])
+
+        read('venues/' + id, {})
             .then(res => {
-                console.log(res.data);
                 this.setState({
-                    fields: res.data.sponsor,
-                    loading: false
+                    fields: res.data.venue
                 });
             })
             .catch((err) => {
@@ -82,41 +71,45 @@ class EditSponsor extends Component {
 
     handleChange(value) {
         let { fields } = this.state;
-        fields[event.target.name] = event.target.value;
-        this.setState({fields: fields});
+        if (event.target.files) {
+            fields[event.target.name] = event.target.files;
+        } else {
+            fields[event.target.name] = event.target.value;
+        }
+        this.setState({ fields: fields });
     }
 
     handleBlur(field) {
         let { formValidationData, required_fields } = this.state;
         formValidationData[field.key] = field.value;
-        this.setState({formValidationData: formValidationData});
+        this.setState({ formValidationData: formValidationData });
         let isFormValid = true;
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
         }
-        this.setState({isFormValid: isFormValid});
+        this.setState({ isFormValid: isFormValid });
     }
 
     handleSubmit(e) {
         e.preventDefault();
 
-        const { id, fields, isFormValid } = this.state;
+        const { id, isFormValid } = this.state;
 
         if (!isFormValid) return;
-        
+
         this.setState({
             loading: true
         });
-
+        
         let data = new FormData(e.target);
-        data.append("_method", "PUT");
+        data.append('_method', 'PUT');
 
-        update("users/" + id, data)
+        update('venues/' + id, data)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/sponsors")
+                    ? this.props.history.push("/venues")
                     : this.setState({
                         loading: false,
                         isFormValid: false
@@ -124,7 +117,7 @@ class EditSponsor extends Component {
             })
             .catch((err) => {
                 this.setState({
-                    formValidationData: { form: "Unable To Update Sponsor" },
+                    formValidationData: { form: "Unable To Update Venue" },
                     loading: false,
                     isFormValid: false
                 })
@@ -158,17 +151,27 @@ class EditSponsor extends Component {
     render() {
         const { fields, instructors, regulations, loading, isFormValid, formValidationData } = this.state;
 
-        if (fields.first_name === "") return false;
+        if (!fields.name) return false;
 
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Edit Sponsor</h2>
+                    <h2>Edit Venue</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                     {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="name"
+                            value={fields.name}
+                            maxLength={50}
+                            labelText="Name"
+                            required={true}
+                            validation={[validations.isEmpty]}
+                        />
                         <label>
                             <span>Instructor</span>
                             <Select
@@ -179,60 +182,6 @@ class EditSponsor extends Component {
                                 val={"name"}
                             />
                         </label>
-                        <TextField
-                            onBlur={isValid => this.handleBlur(isValid)}
-                            onChange={event => this.handleChange(event)}
-                            name="company"
-                            value={fields.company}
-                            maxLength={50}
-                            labelText="Company Name"
-                        />
-                        <TextField
-                            onBlur={isValid => this.handleBlur(isValid)}
-                            onChange={event => this.handleChange(event)}
-                            name="first_name"
-                            value={fields.first_name}
-                            required={true}
-                            maxLength={50}
-                            labelText="First Name"
-                            validation={[validations.isEmpty]}
-                        />
-                        <TextField
-                            onBlur={isValid => this.handleBlur(isValid)}
-                            onChange={event => this.handleChange(event)}
-                            name="last_name"
-                            value={fields.last_name}
-                            required={true}
-                            maxLength={50}
-                            labelText="Last Name"
-                            validation={[validations.isEmpty]}
-                        />
-                        <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
-                            name="email"
-                            value={fields.email}
-                            required={true}
-                            maxLength={50}
-                            labelText="Email"
-                            validation={[validations.isEmail]}
-                        />
-                        <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
-                            name="phone"
-                            value={fields.phone}
-                            maxLength={50}
-                            labelText="Phone"
-                        />
-                        <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
-                            name="extension"
-                            value={fields.extension}
-                            maxLength={50}
-                            labelText="Extension"
-                        />
                     </fieldset>
 
                     <fieldset className="fields horizontal">
@@ -272,30 +221,11 @@ class EditSponsor extends Component {
                         />
                     </fieldset>
 
-                    <div className="row">
-                        <div className="col-md-6 col-lg-4">
-                            <FileInput
-                                onChange={event => this.handleChange(event)}
-                                name="logo"
-                                labelText="Logo"
-                                value={fields.logo}
-                            />
-                        </div>
-                        <div className="col-md-6 col-lg-4">
-                            <FileInput
-                                onChange={event => this.handleChange(event)}
-                                name="avatar"
-                                labelText="Avatar"
-                                value={fields.avatar}
-                            />
-                        </div>
-                    </div>
-
-                    <button className="button" disabled={!isFormValid}>Update Sponsor</button>
+                    <button className="button" disabled={!isFormValid}>Update Venue</button>
                 </form>
             </div>
         );
     }
 }
 
-export default EditSponsor;
+export default EditVenue;

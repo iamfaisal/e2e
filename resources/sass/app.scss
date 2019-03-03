@@ -374,6 +374,72 @@ table {
     border: 1px solid $black_20;
   }
 }
+
+.uploader {
+	background: #fff;
+	border: 0;
+	border-radius: 5px;
+	margin: 0 0 30px;
+	padding: 30px;
+	box-shadow: 0 8px 60px rgba(0, 0, 0, 0.1);
+  text-align: center;
+
+  > span {
+    display: block;
+    color: $color_ebony_clay_approx;
+  }
+  
+  input {
+    display: none;
+  }
+
+  .sep {
+    padding: 0 10px;
+    color: inherit;
+  }
+
+  .button {
+    display: inline-block;
+    margin-top: 5px;
+    color: #fff;
+  }
+
+  .filenames {
+    text-align: left;
+    padding-top: 10px;
+
+    &:empty {
+      display: none;
+    }
+
+    figure {
+      display: block;
+      margin: 0;
+      margin: 5px 5px 0 0;
+      
+
+      img {
+        display: block;
+        margin: 0 auto;
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+      }
+
+      a {
+        display: block;
+        text-align: center
+      }
+
+      figcaption {
+        padding: 2px 6px;
+        border: 1px dashed rgba(0, 0, 0, .15);
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
 .sidebar {
   background: $white;
   position: fixed;
@@ -646,6 +712,9 @@ table {
     &:not(:last-child) {
       border-bottom: 1px solid $color_mystic_approx;
     }
+    border-radius: 0;
+    margin: 0;
+    box-shadow: none;
   }
   span {
     display: block;
@@ -929,71 +998,6 @@ form.loading {
   }
 }
 
-.uploader {
-	background: #fff;
-	border: 0;
-	border-radius: 5px;
-	margin: 0 0 30px;
-	padding: 30px;
-	box-shadow: 0 8px 60px rgba(0, 0, 0, 0.1);
-  text-align: center;
-
-  > span {
-    display: block;
-    color: $color_ebony_clay_approx;
-  }
-  
-  input {
-    display: none;
-  }
-
-  .sep {
-    padding: 0 10px;
-    color: inherit;
-  }
-
-  .button {
-    display: inline-block;
-    margin-top: 5px;
-    color: #fff;
-  }
-
-  .filenames {
-    text-align: left;
-    padding-top: 10px;
-
-    &:empty {
-      display: none;
-    }
-
-    figure {
-      display: block;
-      margin: 0;
-      margin: 5px 5px 0 0;
-      
-
-      img {
-        display: block;
-        margin: 0 auto;
-        width: 70px;
-        height: 70px;
-        object-fit: cover;
-      }
-
-      a {
-        display: block;
-        text-align: center
-      }
-
-      figcaption {
-        padding: 2px 6px;
-        border: 1px dashed rgba(0, 0, 0, .15);
-        border-radius: 4px;
-      }
-    }
-  }
-}
-
 .RichEditor-root textarea {
   display: none;
 }
@@ -1002,8 +1006,22 @@ form.loading {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-}
-.repeatActions button {
-  background: none;
-  border: none;
+  margin-bottom: 30px;
+
+  button {
+    background: #ee252f;
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+    width: 30px;
+    font-size: 24px;
+    line-height: 30px;
+    color: #fff;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  &.count-1 button:first-child {
+    display: none;
+  }
 }

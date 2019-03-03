@@ -4,7 +4,7 @@ import { read, remove, filter } from "../../helpers/resource";
 import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
 
-class Sponsors extends Component {
+class MySponsors extends Component {
     constructor(props) {
         super(props);
 
@@ -149,4 +149,4 @@ class Sponsors extends Component {
     }
 }
 
-export default Sponsors;
+export default MySponsors;

@@ -3,14 +3,13 @@ import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
-import { read, update } from "../../helpers/resource";
+import { read, create } from "../../helpers/resource";
 
-class EditSponsor extends Component {
+class CreateMySponsor extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            id: props.match.params.sponsor,
             loading: false,
             fields: {
                 user: "",
@@ -46,20 +45,7 @@ class EditSponsor extends Component {
     }
 
     componentDidMount() {
-        const { id } = this.state;
-        read('sponsors/'+id, [])
-            .then(res => {
-                console.log(res.data);
-                this.setState({
-                    fields: res.data.sponsor,
-                    loading: false
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-
-        read('users/', { params: { role: "instructor" } })
+        read('users/', {params: { role: "instructor" } })
             .then(res => {
                 this.setState({
                     instructors: res.data.users
@@ -82,8 +68,12 @@ class EditSponsor extends Component {
 
     handleChange(value) {
         let { fields } = this.state;
-        fields[event.target.name] = event.target.value;
-        this.setState({fields: fields});
+        if (event.target.files) {
+            fields[event.target.name] = event.target.files;
+        } else {
+            fields[event.target.name] = event.target.value;
+        }
+        this.setState({ fields: fields });
     }
 
     handleBlur(field) {
@@ -102,7 +92,7 @@ class EditSponsor extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { id, fields, isFormValid } = this.state;
+        const { fields, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -110,10 +100,7 @@ class EditSponsor extends Component {
             loading: true
         });
 
-        let data = new FormData(e.target);
-        data.append("_method", "PUT");
-
-        update("users/" + id, data)
+        create('sponsors', new FormData(e.target))
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/sponsors")
@@ -124,7 +111,7 @@ class EditSponsor extends Component {
             })
             .catch((err) => {
                 this.setState({
-                    formValidationData: { form: "Unable To Update Sponsor" },
+                    formValidationData: { form: "Unable To Create Sponsor" },
                     loading: false,
                     isFormValid: false
                 })
@@ -158,12 +145,10 @@ class EditSponsor extends Component {
     render() {
         const { fields, instructors, regulations, loading, isFormValid, formValidationData } = this.state;
 
-        if (fields.first_name === "") return false;
-
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Edit Sponsor</h2>
+                    <h2>Create Sponsor</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -221,7 +206,7 @@ class EditSponsor extends Component {
                             onBlur={(isValid) => this.handleBlur(isValid)}
                             onChange={(event) => this.handleChange(event)}
                             name="phone"
-                            value={fields.phone}
+                            required={true}
                             maxLength={50}
                             labelText="Phone"
                         />
@@ -278,7 +263,6 @@ class EditSponsor extends Component {
                                 onChange={event => this.handleChange(event)}
                                 name="logo"
                                 labelText="Logo"
-                                value={fields.logo}
                             />
                         </div>
                         <div className="col-md-6 col-lg-4">
@@ -286,16 +270,15 @@ class EditSponsor extends Component {
                                 onChange={event => this.handleChange(event)}
                                 name="avatar"
                                 labelText="Avatar"
-                                value={fields.avatar}
                             />
                         </div>
                     </div>
 
-                    <button className="button" disabled={!isFormValid}>Update Sponsor</button>
+                    <button className="button" disabled={!isFormValid}>Create Sponsor</button>
                 </form>
             </div>
         );
     }
 }
 
-export default EditSponsor;
+export default CreateMySponsor;

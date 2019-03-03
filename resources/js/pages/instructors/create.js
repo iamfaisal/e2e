@@ -16,6 +16,18 @@ class CreateInstructor extends Component {
                 first_name: "",
                 last_name: "",
                 email: "",
+                cell_phone: "",
+                work_phone: "",
+                sub_domain: "",
+                address: "",
+                city: "",
+                state: "",
+                zip_code: "",
+                additional_name: "",
+                additional_name2: "",
+                additional_email: "",
+                additional_email2: "",
+                info: "",
                 licenses: [{
                     regulation: "",
                     code: "",
@@ -26,35 +38,48 @@ class CreateInstructor extends Component {
             required_fields: {
                 first_name: "",
                 last_name: "",
-                email: "",
-                password: "",
-                confirm_pass: "",
-                roles: []
+                email: ""
             },
-            roles: [],
+            regulations: [],
             formValidationData: {},
             isFormValid: false
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
-        this.setRoles = this.setRoles.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
         this.addLicense = this.addLicense.bind(this);
         this.removeLicense = this.removeLicense.bind(this);
     }
 
     componentDidMount() {
-        read('roles/', {})
+        read('regulations/', {})
             .then(res => {
                 this.setState({
-                    roles: res.data.roles
+                    regulations: res.data.regulations
                 });
             })
             .catch((err) => {
                 console.log(err);
             });
+
+        // create('licenses', {
+        //     user: 9,
+        //     regulation: 1,
+        //     code: "hsfngkii",
+        //     certificate: "jfugfijkhic"
+        // }).then(res => {
+        //     console.log(res);
+        // });
+
+        // create('licenses', [{
+        //     user: 9,
+        //     regulation: 1,
+        //     code: "hsfngkii",
+        //     certificate: "jfugfijkhic"
+        // }]).then(res => {
+        //     console.log(res);
+        // });
     }
 
     handleChange(value) {
@@ -83,7 +108,7 @@ class CreateInstructor extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { fields, isFormValid } = this.state;
+        const { isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -91,10 +116,12 @@ class CreateInstructor extends Component {
             loading: true
         });
 
-        create('users', new FormData(e.target))
+        let data = new FormData(e.target);
+        data.append('roles[]', 3);
+        create('users', data)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/users")
+                    ? this.props.history.push("/instructors")
                     : this.setState({
                         loading: false,
                         isFormValid: false
@@ -102,23 +129,11 @@ class CreateInstructor extends Component {
             })
             .catch((err) => {
                 this.setState({
-                    formValidationData: {form: "Unable To Create User"},
+                    formValidationData: { form: "Unable To Create Instructor" },
                     loading: false,
                     isFormValid: false
                 })
             });
-    }
-
-    setRoles(roles) {
-        let { fields } = this.state;
-        fields.roles = roles;
-        this.setState({
-            fields: fields
-        });
-        this.handleBlur({
-            key: "roles",
-            value: roles
-        });
     }
 
     addLicense(e) {
@@ -147,12 +162,12 @@ class CreateInstructor extends Component {
     }
 
     render() {
-        const { fields, roles, loading, isFormValid, formValidationData } = this.state;
+        const { fields, regulations, loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Create Admin</h2>
+                    <h2>Create Instructor</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -202,48 +217,84 @@ class CreateInstructor extends Component {
                         <TextField
                             onBlur={(isValid) => this.handleBlur(isValid)}
                             onChange={(event) => this.handleChange(event)}
-                            name="password"
-                            value={fields.password}
+                            name="address"
+                            value={fields.address}
+                            maxLength={50}
+                            labelText="Street Address"
+                        />
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="city"
+                            value={fields.city}
+                            maxLength={50}
+                            labelText="City"
+                        />
+                        <label>
+                            <span>State</span>
+                            <Select
+                                name="state"
+                                items={regulations}
+                                id={"id"}
+                                val={"name"}
+                            />
+                        </label>
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="zip_code"
+                            value={fields.zip_code}
+                            maxLength={50}
+                            labelText="Zip Code"
+                        />
+                    </fieldset>
+
+                    <fieldset className="fields horizontal">
+                        <TextField
+                            onBlur={(isValid) => this.handleBlur(isValid)}
+                            onChange={(event) => this.handleChange(event)}
+                            name="cell_phone"
+                            value={fields.cell_phone}
                             maxLength={50}
                             labelText="Cell Phone"
                         />
                         <TextField
                             onBlur={(isValid) => this.handleBlur(isValid)}
                             onChange={(event) => this.handleChange(event)}
-                            name="password"
-                            value={fields.password}
+                            name="work_phone"
+                            value={fields.work_phone}
                             maxLength={50}
                             labelText="Work Phone"
                         />
                         <TextField
                             onBlur={(isValid) => this.handleBlur(isValid)}
                             onChange={(event) => this.handleChange(event)}
-                            name="password"
-                            value={fields.password}
+                            name="additional_name"
+                            value={fields.additional_name}
                             maxLength={50}
                             labelText="Additional Name (#1)"
                         />
                         <TextField
                             onBlur={(isValid) => this.handleBlur(isValid)}
                             onChange={(event) => this.handleChange(event)}
-                            name="password"
-                            value={fields.password}
+                            name="additional_email"
+                            value={fields.additional_email}
                             maxLength={50}
                             labelText="Additional Email Address (#1)"
                         />
                         <TextField
                             onBlur={(isValid) => this.handleBlur(isValid)}
                             onChange={(event) => this.handleChange(event)}
-                            name="password"
-                            value={fields.password}
+                            name="additional_name2"
+                            value={fields.additional_name2}
                             maxLength={50}
                             labelText="Additional Name (#2)"
                         />
                         <TextField
                             onBlur={(isValid) => this.handleBlur(isValid)}
                             onChange={(event) => this.handleChange(event)}
-                            name="password"
-                            value={fields.password}
+                            name="additional_email2"
+                            value={fields.additional_email2}
                             maxLength={50}
                             labelText="Additional Email Address (#2)"
                         />
@@ -253,11 +304,61 @@ class CreateInstructor extends Component {
                     <fieldset className="fields horizontal">
                         <TextArea
                             onChange={(event) => this.handleChange(event)}
-                            name="profile"
-                            value={fields.description}
+                            name="info"
+                            value={fields.info}
                             placeholder="Profile"
                         />
                     </fieldset>
+
+                    {fields.licenses.map((linense, i) => {
+                        return <fieldset key={i} className="fields horizontal">
+                            <label>
+                                <span>State</span>
+                                <Select
+                                    name="licenses[][regulation]"
+                                    items={regulations}
+                                    placeholder="Select Regulation"
+                                    id={"id"}
+                                    val={"name"}
+                                />
+                            </label>
+                            <TextField
+                                onBlur={(isValid) => this.handleBlur(isValid)}
+                                onChange={(event) => this.handleChange(event)}
+                                name="licenses[][code]"
+                                value={""}
+                                maxLength={50}
+                                labelText="License Number"
+                            />
+                            <TextField
+                                onBlur={(isValid) => this.handleBlur(isValid)}
+                                onChange={(event) => this.handleChange(event)}
+                                name="licenses[][expiration]"
+                                value={""}
+                                maxLength={50}
+                                labelText="Expiration"
+                            />
+                            <FileInput
+                                onChange={event => this.handleChange(event)}
+                                name="licenses[][certificate]"
+                                labelText="Certificate"
+                            />
+                        </fieldset>
+                    })}
+                    <div className={ "repeatActions count-" + fields.licenses.length }>
+                        <button className="ion-md-remove" onClick={this.removeLicense}></button>
+                        <button className="ion-md-add" onClick={this.addLicense}></button>
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-6 col-lg-4">
+                            <FileInput
+                                onChange={event => this.handleChange(event)}
+                                name="avatar"
+                                labelText="Avatar"
+                            />
+                        </div>
+                    </div>
 
                     <fieldset className="fields horizontal">
                         <TextField
@@ -285,47 +386,7 @@ class CreateInstructor extends Component {
                         />
                     </fieldset>
 
-                    <div className="row">
-                        <div className="col-md-6 col-lg-4">
-                            <FileInput
-                                onChange={event => this.handleChange(event)}
-                                name="avatar"
-                                labelText="Avatar"
-                            />
-                        </div>
-                    </div>
-
-                    {fields.licenses.map((linense, i) => {
-                        return <fieldset key={i} className="fields horizontal">
-                            <TextField
-                                onBlur={(isValid) => this.handleBlur(isValid)}
-                                onChange={(event) => this.handleChange(event)}
-                                name="licenses[][code]"
-                                value={""}
-                                maxLength={50}
-                                labelText="License Number"
-                            />
-                            <TextField
-                                onBlur={(isValid) => this.handleBlur(isValid)}
-                                onChange={(event) => this.handleChange(event)}
-                                name="licenses[][expiration]"
-                                value={""}
-                                maxLength={50}
-                                labelText="License Number"
-                            />
-                            <FileInput
-                                onChange={event => this.handleChange(event)}
-                                name="licenses[][certificate]"
-                                labelText="Certificate"
-                            />
-                        </fieldset>
-                    })}
-                    <div className="repeatActions">
-                        <button onClick={this.removeLicense}>-</button>
-                        <button onClick={this.addLicense}>+</button>
-                    </div>
-
-                    <button className="button" disabled={!isFormValid}>Create Admin</button>
+                    <button className="button" disabled={!isFormValid}>Create Instructor</button>
                 </form>
             </div>
         );

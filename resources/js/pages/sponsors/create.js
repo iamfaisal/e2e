@@ -45,7 +45,7 @@ class CreateSponsor extends Component {
     }
 
     componentDidMount() {
-        read('users/', {param: { role: "instructor" } })
+        read('users/', {params: { role: "instructor" } })
             .then(res => {
                 this.setState({
                     instructors: res.data.users

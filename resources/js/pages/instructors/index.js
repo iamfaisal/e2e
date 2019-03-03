@@ -99,8 +99,6 @@ class Instructors extends Component {
             instructors = filter(instructors, filters);
         }
 
-        console.log(instructors);
-
         return (
             <div>
                 <header className="pageheader">

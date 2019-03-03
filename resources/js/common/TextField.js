@@ -204,7 +204,7 @@ class TextField extends Component {
                     maxLength={maxLength}
                     disabled={disabled}
                     readOnly={readOnly}
-                    placeholder={placeholder || "Enter " + name}
+                    placeholder={placeholder || "Enter " + labelText.toLowerCase()}
                     className={classnames("form-control", { "is-invalid": !isValid })}
                 />
                 {icon && <i className={icon}/>}
