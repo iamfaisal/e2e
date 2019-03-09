@@ -28,6 +28,7 @@ class FileInput extends Component {
     }
 
 	onChange(event) {
+        console.log(event.target);
         this.setState({
             files: [...event.target.files]
         }, () => {
@@ -110,7 +111,7 @@ class FileInput extends Component {
         });
 
 		return (
-            <label htmlFor={id ? id : name} className={classnames('uploader', { "invalid": !isValid })}>
+            <label className={classnames('uploader', { "invalid": !isValid })}>
                 <h3>{labelText}</h3>
                 <span>Drag n Drop</span>
                 <span className="sep">-OR-</span>
@@ -130,7 +131,6 @@ class FileInput extends Component {
                 <input
                     onChange={this.onChange}
                     name={name}
-                    id={id ? id : name}
                     type="file"
                     multiple={multiple}
                     required={required}
