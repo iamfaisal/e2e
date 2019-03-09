@@ -150,6 +150,23 @@ class UsersController extends Controller
 
         if($request->has('roles')) {
             $user->roles()->sync($request->roles);
+            if (in_array(3, $request->roles) && $request->has('licenses')) {
+                $user->licenses()->delete();
+                foreach ($request->licenses as $license) {
+                    $licenseData = [
+                        'regulation_id' => $license['regulation'],
+                        'user_id' => $user->id,
+                        'code' => $license['code'],
+                        'expiration' => $license['expiration']
+                    ];
+                    if($_FILES[$license['certificate']]) {
+                        $licenseData['certificate'] = $this->handleFileUpload($license['certificate']);
+                    } else {
+                        $licenseData['certificate'] = $license['certificate'];
+                    }
+                    License::create($licenseData);
+                }
+            }
         }
 
         return response()->json([
@@ -169,6 +186,7 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         $user->profile()->delete();
+        $user->licenses()->delete();
         $user->delete();
         return response()->json([
             'user' => 'success'
