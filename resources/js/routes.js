@@ -36,6 +36,8 @@ import Instructors from "./pages/instructors";
 import CreateInstructor from "./pages/instructors/create";
 import EditInstructor from "./pages/instructors/edit";
 
+import Materials from "./pages/materials";
+
 import MyVenues from "./pages/my-venues";
 import CreateMyVenue from "./pages/my-venues/create";
 import EditMyVenue from "./pages/my-venues/edit";
@@ -187,6 +189,11 @@ const routes = [
     {
         path: "/my-venues",
         component: requireAuth(MyVenues),
+        exact: true
+    },
+    {
+        path: "/course-materials",
+        component: requireAuth(Materials),
         exact: true
     },
     {
