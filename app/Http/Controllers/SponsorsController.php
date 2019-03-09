@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Sponsor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SponsorsController extends Controller
 {
@@ -12,10 +13,15 @@ class SponsorsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user = auth('api')->user();
         $sponsors = Sponsor::with('regulation', 'user')
-                    ->orderBy('created_at', 'desc');
+            ->orderBy('created_at', 'desc')
+            ->when($user->isJust("instructor") && $request->fromInstructor, function ($query, $user) {
+                return $query->where('user_id', $user->id);
+            });
+
         return response()->json([
             'sponsors' => $sponsors->get()
         ], 200);

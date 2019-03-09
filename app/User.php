@@ -68,6 +68,11 @@ class User extends Authenticatable implements JWTSubject
         return !! $role->intersect($this->roles)->count();
     }
 
+    public function isJust($role) // expects the string
+    {
+        return $this->roles->count() === 1 && $this->roles->contains('name', $role);
+    }
+
     public function assign($role)
     {
         if (is_string($role)) {
