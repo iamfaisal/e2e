@@ -103,3 +103,21 @@ export function filter(data, filters) {
         return ok;
     });
 }
+
+export function formatDate(str) {
+    const date = new Date(str);
+    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "No", "Dec"];
+
+    let day = date.getDate();
+    let month = date.getMonth();
+    let year = date.getFullYear();
+
+    let hour = date.getHours();
+    let min = date.getMinutes();
+    let ampm = hour >= 12 ? 'pm' : 'am';
+
+    if (hour.toString().length == 1) hour = "0" + hour;
+    if (min.toString().length == 1) min = "0" + min;
+
+    return day + " " + months[month] + " " + year + ", " + hour + ":" + min + " " + ampm;
+}

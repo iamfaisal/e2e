@@ -28,6 +28,10 @@ import Venues from "./pages/venues";
 import CreateVenue from "./pages/venues/create";
 import EditVenue from "./pages/venues/edit";
 
+import Classes from "./pages/classes";
+import CreateClass from "./pages/classes/create";
+import EditClass from "./pages/classes/edit";
+
 import Sponsors from "./pages/sponsors";
 import CreateSponsor from "./pages/sponsors/create";
 import EditSponsor from "./pages/sponsors/edit";
@@ -139,6 +143,21 @@ const routes = [
     {
         path: "/users/edit/:category",
         component: requireAuth(EditAdmin),
+        exact: true
+    },
+    {
+        path: "/classes",
+        component: requireAuth(Classes),
+        exact: true
+    },
+    {
+        path: "/classes/create",
+        component: requireAuth(CreateClass),
+        exact: true
+    },
+    {
+        path: "/classes/edit/:class",
+        component: requireAuth(EditClass),
         exact: true
     },
     {
