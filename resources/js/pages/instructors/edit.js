@@ -43,7 +43,7 @@ class EditInstructor extends Component {
             },
             regulations: [],
             formValidationData: {},
-            isFormValid: false
+            isFormValid: true
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -116,6 +116,9 @@ class EditInstructor extends Component {
 
         let data = new FormData(e.target);
         data.append("_method", "PUT");
+        data.append('roles[]', 3);
+
+        console.log(data.getAll("licenses"));
         update('users/' + id, data)
             .then(res => {
                 res.status === 200
