@@ -16,7 +16,7 @@ class TextField extends Component {
             errorText: "",
             value: props.value ? props.value : "",
             initialValue: props.value ? props.value : ""
-		};
+        };
 	}
 
 	componentDidUpdate(prevProps) {
@@ -50,8 +50,8 @@ class TextField extends Component {
         this.setState({
             value: value
         }, () => {
-            if(this.props.onChange){
-                this.props.onChange(value);
+            if(this.props.onChange) {
+                this.props.onChange(value, this.isValid());
             }
         });
     }

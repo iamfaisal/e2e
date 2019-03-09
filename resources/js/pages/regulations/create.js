@@ -42,24 +42,28 @@ class CreateRegulation extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
+        this.validate = this.validate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(value) {
-        let { fields } = this.state;
+        let { fields, formValidationData } = this.state;
         if (event.target.files) {
             fields[event.target.name] = event.target.files;
         } else {
-            fields[event.target.name] = event.target.value;
+            fields[event.target.name] = value;
         }
-        this.setState({fields: fields});
+
+        formValidationData[event.target.name] = value;
+        this.setState({
+            fields: fields,
+            formValidationData: formValidationData
+        });
     }
 
-    handleBlur(field) {
+    validate(field) {
         let { formValidationData, required_fields } = this.state;
-        formValidationData[field.key] = field.value;
-        this.setState({formValidationData: formValidationData});
+        
         let isFormValid = true;
         for (let key in required_fields) {
             if (!formValidationData[key]) {
@@ -109,11 +113,10 @@ class CreateRegulation extends Component {
                     <h2>Create Regulation</h2>
                 </header>
 
-                <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
+                <form className={loading ? "loading" : ""} onInput={this.validate} onSubmit={this.handleSubmit}>
                 {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="name"
                             value={fields.name}
@@ -122,7 +125,6 @@ class CreateRegulation extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="abbreviation"
                             value={fields.abbreviation}
@@ -131,7 +133,6 @@ class CreateRegulation extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="commission_name"
                             value={fields.commission_name}
@@ -140,7 +141,6 @@ class CreateRegulation extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="commission_abbreviation"
                             value={fields.commission_abbreviation}

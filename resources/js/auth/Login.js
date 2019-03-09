@@ -38,7 +38,7 @@ class Login extends Component {
                 isFormValid = false;
             }
         }
-        this.setState({isFormValid: isFormValid});
+        this.setState({ isFormValid: isFormValid});
     }
 
     handleChange(value) {

@@ -62,24 +62,6 @@ class CreateInstructor extends Component {
             .catch((err) => {
                 console.log(err);
             });
-
-        // create('licenses', {
-        //     user: 9,
-        //     regulation: 1,
-        //     code: "hsfngkii",
-        //     certificate: "jfugfijkhic"
-        // }).then(res => {
-        //     console.log(res);
-        // });
-
-        // create('licenses', [{
-        //     user: 9,
-        //     regulation: 1,
-        //     code: "hsfngkii",
-        //     certificate: "jfugfijkhic"
-        // }]).then(res => {
-        //     console.log(res);
-        // });
     }
 
     handleChange(value) {

@@ -164,12 +164,10 @@ class EditInstructor extends Component {
 
         if (!fields.first_name) return false;
 
-        console.log(fields);
-
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Create Instructor</h2>
+                    <h2>Update Instructor</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -385,7 +383,7 @@ class EditInstructor extends Component {
                         />
                     </fieldset>
 
-                    <button className="button" disabled={!isFormValid}>Create Instructor</button>
+                    <button className="button" disabled={!isFormValid}>Update Instructor</button>
                 </form>
             </div>
         );

@@ -43,13 +43,13 @@ class EditRegulation extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
+        this.validate = this.validate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         const { id } = this.state;
-        read('regulations/'+id, [])
+        read('regulations/'+id, {})
             .then(res => {
                 this.setState({
                     fields: res.data.regulation,
@@ -61,27 +61,30 @@ class EditRegulation extends Component {
             });
     }
 
-    handleChange(value) {
-        let { fields } = this.state;
+    handleChange(value, valid) {
+        let { fields, formValidationData } = this.state;
         if (event.target.files) {
             fields[event.target.name] = event.target.files;
         } else {
-            fields[event.target.name] = event.target.value;
+            fields[event.target.name] = value;
         }
-        this.setState({fields: fields});
+        formValidationData[event.target.name] = valid;
+        this.setState({
+            fields: fields,
+            formValidationData: formValidationData
+        });
     }
 
-    handleBlur(field) {
+    validate(field) {
         let { formValidationData, required_fields } = this.state;
-        formValidationData[field.key] = field.value;
-        this.setState({formValidationData: formValidationData});
+
         let isFormValid = true;
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
         }
-        this.setState({isFormValid: isFormValid});
+        this.setState({ isFormValid: isFormValid });
     }
 
     handleSubmit(e) {
@@ -129,7 +132,7 @@ class EditRegulation extends Component {
                     <h2>Edit Regulation</h2>
                 </header>
 
-                <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
+                <form className={loading ? "loading" : ""} onInput={this.validate} onSubmit={this.handleSubmit}>
                 {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
                         <TextField
