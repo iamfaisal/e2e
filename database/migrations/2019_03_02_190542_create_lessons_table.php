@@ -21,8 +21,8 @@ class CreateLessonsTable extends Migration
             $table->foreign('course_id')->references('id')->on('courses');
             $table->integer('venue_id')->unsigned()->default(1);
             $table->foreign('venue_id')->references('id')->on('venues');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->integer('price');
             $table->integer('capacity');
             $table->string('alternate_instructor')->nullable();
