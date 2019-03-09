@@ -12,3 +12,7 @@ try {
     const token = JSON.parse(user).token;
     window.axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 } catch (e) {}
+
+$(window).unload(function(){
+    localStorage.removeItem("user");
+});
