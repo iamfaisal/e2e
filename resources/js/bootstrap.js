@@ -13,6 +13,6 @@ try {
     window.axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 } catch (e) {}
 
-$(window).unload(function(){
+$(window).on("onunload", function(){
     localStorage.removeItem("user");
 });
