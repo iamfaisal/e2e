@@ -16,11 +16,13 @@ class ClassesController extends Controller
     public function index(Request $request)
     {
         $user = auth('api')->user();
-        $classes = Lesson::with('course', 'user')
+        $classes = Lesson::with('course', 'user', 'venue')
             ->orderBy('created_at', 'desc')
             ->when($user->isJust("instructor") && $request->fromInstructor, function ($query) use($user) {
                 return $query->where('user_id', $user->id);
             });
+
+        // show only approved, show only cancelled
 
         return response()->json([
             'classes' => $classes->get()
