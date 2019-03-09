@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\License;
 use App\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -66,6 +67,21 @@ class UsersController extends Controller
 
         if($request->has('roles')) {
             $user->roles()->sync($request->roles);
+            if (in_array(3, $request->roles) && $request->has('licenses')) {
+                foreach ($request->licenses as $license) {
+                    $licenseData = [
+                        'regulation_id' => $license['regulation'],
+                        'user_id' => $user->id,
+                        'code' => $license['code'],
+                        'expiration' => $license['expiration']
+                    ];
+                    if($license['certificate'])
+                    {
+                        $licenseData['certificate'] = $this->handleFileUpload($license['certificate']);
+                    }
+                    License::create($licenseData);
+                }
+            }
         }
 
         return response()->json([
