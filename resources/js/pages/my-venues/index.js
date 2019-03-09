@@ -25,7 +25,7 @@ class MyVenues extends Component {
     getData() {
         this.setState({loader: true});
 
-        read('venues')
+        read('venues', {params: {fromInstructor: true}})
             .then(res => {
                 this.setState({
                     venues: res.data.venues,

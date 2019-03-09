@@ -26,7 +26,11 @@ class MySponsors extends Component {
     getData() {
         this.setState({loader: true});
 
+<<<<<<< HEAD
         read('sponsors', { params: { fromInstructor: true } })
+=======
+        read('sponsors', {params: {fromInstructor: true}})
+>>>>>>> 319c9db44721b07649d9b0fedee8cf645bbdb5fc
             .then(res => {
                 this.setState({
                     sponsors: res.data.sponsors,

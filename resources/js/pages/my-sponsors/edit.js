@@ -45,7 +45,7 @@ class EditMySponsor extends Component {
 
     componentDidMount() {
         const { id } = this.state;
-        read('sponsors/'+id, [])
+        read('sponsors', {params: {fromInstructor: true}})
             .then(res => {
                 console.log(res.data);
                 this.setState({
