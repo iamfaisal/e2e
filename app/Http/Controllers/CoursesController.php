@@ -40,7 +40,7 @@ class CoursesController extends Controller
             ->where("is_deleted", false);
         $regulations = Regulation::all();
         return response()->json([
-            'courses' => $courses->only(['code', 'title', 'class_flyer_template', 'material', 'regulation_id']),
+            'courses' => $courses,
             'regulations' => $regulations
         ], 200);
     }
