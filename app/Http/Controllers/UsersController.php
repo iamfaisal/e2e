@@ -6,6 +6,7 @@ use App\License;
 use App\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\User;
 
 class UsersController extends Controller
@@ -68,7 +69,7 @@ class UsersController extends Controller
         if($request->has('roles')) {
             $user->roles()->sync($request->roles);
             if (in_array(3, $request->roles) && $request->has('licenses')) {
-                foreach ($request->licenses as $license) {
+                foreach ($request->licenses as $key => $license) {
                     $licenseData = [
                         'regulation_id' => $license['regulation'],
                         'user_id' => $user->id,
@@ -152,17 +153,19 @@ class UsersController extends Controller
             $user->roles()->sync($request->roles);
             if (in_array(3, $request->roles) && $request->has('licenses')) {
                 $user->licenses()->delete();
-                foreach ($request->licenses as $license) {
+                foreach ($request->licenses as $index => $license) {
                     $licenseData = [
                         'regulation_id' => $license['regulation'],
                         'user_id' => $user->id,
                         'code' => $license['code'],
                         'expiration' => $license['expiration']
                     ];
-                    if(!empty($license['certificate_file'])) {
-                        $licenseData['certificate'] = $license['certificate_file'];
-                    } elseif($_FILES[$license['certificate']] || $_FILES[$license['certificate']]['error'] == UPLOAD_ERR_NO_FILE) {
+                    print_r($license);
+                    print_r($_FILES);
+                    if($_FILES['licenses']['name'][$index] && !empty($_FILES['licenses']['name'][$index]['certificate'])) {
                         $licenseData['certificate'] = $this->handleFileUpload($license['certificate']);
+                    } else {
+                        $licenseData['certificate'] = $license['certificate_file'];
                     }
                     License::create($licenseData);
                 }
@@ -173,7 +176,7 @@ class UsersController extends Controller
             'user' => $user,
             'profile' => $user->profile,
             'roles' => $user->roles->pluck('id')
-        ], 200);
+        ], 201);
     }
 
     /**
@@ -198,7 +201,8 @@ class UsersController extends Controller
      * @return string
      */
     private function handleFileUpload($file) {
-        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $filenameonly = str_replace($file->getClientOriginalExtension(), "", $file->getClientOriginalName());
+        $filename = time() . '-' . Str::slug($filenameonly, '-') .'.' . $file->getClientOriginalExtension();
         $path = '/uploads/users/';
         $destinationPath = public_path() . $path;
         $file->move($destinationPath, $filename);
