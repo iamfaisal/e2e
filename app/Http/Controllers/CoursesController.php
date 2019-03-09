@@ -36,7 +36,8 @@ class CoursesController extends Controller
     public function materials()
     {
         $courses = Course::with('regulation')
-            ->orderBy('created_at', 'desc')->get();
+            ->orderBy('created_at', 'desc')->get()
+            ->where("is_deleted", false);
         $regulations = Regulation::all();
         return response()->json([
             'courses' => $courses->only(['code', 'title', 'class_flyer_template', 'material', 'regulation_id']),
