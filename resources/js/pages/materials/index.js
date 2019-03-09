@@ -62,7 +62,7 @@ class Materials extends Component {
 
     render() {
         let { materials } = this.state;
-        const { filters, loader } = this.state;
+        const { filters, regulations, loader } = this.state;
         const columns = [
             {
                 name: 'Code',
@@ -76,9 +76,20 @@ class Materials extends Component {
                 sortable: true
             },
             {
-                name: 'Material',
-                selector: 'expiration_date',
+                name: 'State',
+                selector: 'regulation.abbreviation',
                 sortable: true,
+            },
+            {
+                name: 'Material',
+                cell: row => {
+                    return <div className="material_actions">
+                        <a href={row.class_flyer_template} target="_blank">Flyer</a>
+                        &nbsp;|&nbsp;
+                        <a href={row.material} target="_blank">Material</a>
+                    </div>
+                },
+                ignoreRowClick: true,
                 maxWidth: '120px'
             }
         ];
@@ -94,6 +105,7 @@ class Materials extends Component {
                 </header>
 
                 <div className="filter">
+                    <Select items={regulations} placeholder="Select Regulation" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")} />
                     <input type="text" placeholder="Course Code" onChange={e => this.setfilter(e, "code")} />
                 </div>
 
