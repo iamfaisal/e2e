@@ -297,7 +297,7 @@ class CreateInstructor extends Component {
                             <label>
                                 <span>State</span>
                                 <Select
-                                    name="licenses[][regulation]"
+                                    name="licenses[regulation][]"
                                     items={regulations}
                                     placeholder="Select Regulation"
                                     id={"id"}
@@ -307,7 +307,7 @@ class CreateInstructor extends Component {
                             <TextField
                                 onBlur={(isValid) => this.handleBlur(isValid)}
                                 onChange={(event) => this.handleChange(event)}
-                                name="licenses[][code]"
+                                name="licenses[code][]"
                                 value={""}
                                 maxLength={50}
                                 labelText="License Number"
@@ -315,14 +315,14 @@ class CreateInstructor extends Component {
                             <TextField
                                 onBlur={(isValid) => this.handleBlur(isValid)}
                                 onChange={(event) => this.handleChange(event)}
-                                name="licenses[][expiration]"
+                                name="licenses[expiration][]"
                                 value={""}
                                 maxLength={50}
                                 labelText="Expiration"
                             />
                             <FileInput
                                 onChange={event => this.handleChange(event)}
-                                name="licenses[][certificate]"
+                                name="licenses[certificate][]"
                                 labelText="Certificate"
                             />
                         </fieldset>
