@@ -83,6 +83,7 @@ class FileInput extends Component {
     }
 
     getFileType(filename) {
+        if (filename == "") return filename;
         var images = ["jpg", "jpeg", "png", "gif", "svg", "webp"];
         let ext = /[^.]+$/.exec(filename)[0];
         if (images.indexOf(ext) > -1) ext = "image/"+ext;
