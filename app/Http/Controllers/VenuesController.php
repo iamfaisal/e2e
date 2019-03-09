@@ -10,12 +10,18 @@ class VenuesController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $user = auth('api')->user();
         $venues = Venue::with('regulation', 'user')
-            ->orderBy('created_at', 'desc');
+            ->orderBy('created_at', 'desc')
+            ->when($user->isJust("instructor") && $request->fromInstructor, function ($query) use($user) {
+                return $query->where('user_id', $user->id);
+            });
+
         return response()->json([
             'venues' => $venues->get()
         ], 200);
