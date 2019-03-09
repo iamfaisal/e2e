@@ -18,7 +18,7 @@ class SponsorsController extends Controller
         $user = auth('api')->user();
         $sponsors = Sponsor::with('regulation', 'user')
             ->orderBy('created_at', 'desc')
-            ->when($user->isJust("instructor") && $request->fromInstructor, function ($query, $user) {
+            ->when($user->isJust("instructor") && $request->fromInstructor, function ($query) use($user) {
                 return $query->where('user_id', $user->id);
             });
 
