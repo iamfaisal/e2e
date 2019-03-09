@@ -10,11 +10,21 @@ class ClassesController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // if school / admin return all, if instructor return only his
+        $user = auth('api')->user();
+        $classes = Lesson::with('course', 'user')
+            ->orderBy('created_at', 'desc')
+            ->when($user->isJust("instructor") && $request->fromInstructor, function ($query) use($user) {
+                return $query->where('user_id', $user->id);
+            });
+
+        return response()->json([
+            'classes' => $classes->get()
+        ], 200);
     }
 
     /**

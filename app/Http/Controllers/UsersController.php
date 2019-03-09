@@ -159,10 +159,10 @@ class UsersController extends Controller
                         'code' => $license['code'],
                         'expiration' => $license['expiration']
                     ];
-                    if($_FILES[$license['certificate']]) {
+                    if(!empty($license['certificate_file'])) {
+                        $licenseData['certificate'] = $license['certificate_file'];
+                    } elseif($_FILES[$license['certificate']] || $_FILES[$license['certificate']]['error'] == UPLOAD_ERR_NO_FILE) {
                         $licenseData['certificate'] = $this->handleFileUpload($license['certificate']);
-                    } else {
-                        $licenseData['certificate'] = $license['certificate'];
                     }
                     License::create($licenseData);
                 }
