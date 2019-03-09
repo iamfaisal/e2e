@@ -43,7 +43,7 @@ class EditInstructor extends Component {
             },
             regulations: [],
             formValidationData: {},
-            isFormValid: true
+            isFormValid: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -60,7 +60,7 @@ class EditInstructor extends Component {
             .then(res => {
                 let { fields } = this.state;
                 fields.email = res.data.user.email;
-                fields.licenses = res.data.licenses;
+                if (res.data.licenses.length) fields.licenses = res.data.licenses;
                 this.setState({
                     fields: { ...fields, ...res.data.profile }
                 });
@@ -106,7 +106,7 @@ class EditInstructor extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { id, isFormValid } = this.state;
+        const { id, fields, isFormValid } = this.state;
 
         if (!isFormValid) return;
 
@@ -118,7 +118,6 @@ class EditInstructor extends Component {
         data.append("_method", "PUT");
         data.append('roles[]', 3);
 
-        console.log(data.getAll("licenses"));
         update('users/' + id, data)
             .then(res => {
                 res.status === 200
@@ -348,6 +347,11 @@ class EditInstructor extends Component {
                                 onChange={event => this.handleChange(event)}
                                 name={"licenses[" + i + "][certificate]"}
                                 labelText="Certificate"
+                                value={license["certificate"]}
+                            />
+                            <input
+                                type="hidden"
+                                name={"licenses[" + i + "][certificate_file]"}
                                 value={license["certificate"]}
                             />
                         </fieldset>
