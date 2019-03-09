@@ -33,6 +33,16 @@ class CoursesController extends Controller
         ], 200);
     }
 
+    public function materials()
+    {
+        $courses = Course::orderBy('created_at', 'desc')->get();
+        $regulations = Regulation::all();
+        return response()->json([
+            'courses' => $courses->only(['code', 'title', 'class_flyer_template', 'material', 'regulation_id']),
+            'regulations' => $regulations
+        ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
