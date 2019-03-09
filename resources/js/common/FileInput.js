@@ -28,7 +28,6 @@ class FileInput extends Component {
     }
 
 	onChange(event) {
-        console.log(event.target);
         this.setState({
             files: [...event.target.files]
         }, () => {

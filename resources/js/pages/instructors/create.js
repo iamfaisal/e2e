@@ -292,7 +292,7 @@ class CreateInstructor extends Component {
                         />
                     </fieldset>
 
-                    {fields.licenses.map((linense, i) => {
+                    {fields.licenses.map((license, i) => {
                         return <fieldset key={i} className="fields horizontal">
                             <label>
                                 <span>State</span>

@@ -60,7 +60,7 @@ class EditInstructor extends Component {
             .then(res => {
                 let { fields } = this.state;
                 fields.email = res.data.user.email;
-
+                fields.licenses = res.data.licenses;
                 this.setState({
                     fields: { ...fields, ...res.data.profile }
                 });
@@ -162,7 +162,7 @@ class EditInstructor extends Component {
     render() {
         const { fields, regulations, loading, isFormValid, formValidationData } = this.state;
 
-        if (!fields.first_name) return false;
+        if (!fields.email) return false;
 
         return (
             <div>
@@ -310,38 +310,42 @@ class EditInstructor extends Component {
                         />
                     </fieldset>
 
-                    {fields.licenses.map((linense, i) => {
+                    {fields.licenses.map((license, i) => {
                         return <fieldset key={i} className="fields horizontal">
                             <label>
                                 <span>State</span>
                                 <Select
-                                    name="licenses[][regulation]"
+                                    name={"licenses[" + i + "][regulation]"}
                                     items={regulations}
                                     placeholder="Select Regulation"
                                     id={"id"}
                                     val={"name"}
+                                    value={license["regulation_id"]}
                                 />
                             </label>
                             <TextField
                                 onBlur={(isValid) => this.handleBlur(isValid)}
                                 onChange={(event) => this.handleChange(event)}
-                                name="licenses[][code]"
+                                name={"licenses[" + i + "][code]"}
                                 value={""}
                                 maxLength={50}
                                 labelText="License Number"
+                                value={license["code"]}
                             />
                             <TextField
                                 onBlur={(isValid) => this.handleBlur(isValid)}
                                 onChange={(event) => this.handleChange(event)}
-                                name="licenses[][expiration]"
+                                name={"licenses[" + i + "][expiration]"}
                                 value={""}
                                 maxLength={50}
                                 labelText="Expiration"
+                                value={license["expiration"]}
                             />
                             <FileInput
                                 onChange={event => this.handleChange(event)}
-                                name="licenses[][certificate]"
+                                name={"licenses[" + i + "][certificate]"}
                                 labelText="Certificate"
+                                value={license["certificate"]}
                             />
                         </fieldset>
                     })}
