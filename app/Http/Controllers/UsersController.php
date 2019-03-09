@@ -102,6 +102,7 @@ class UsersController extends Controller
         return response()->json([
             'user' => $user,
             'profile' => $user->profile,
+            'licenses' => $user->licenses,
             'roles' => $user->roles->pluck('id')
         ], 200);
     }
