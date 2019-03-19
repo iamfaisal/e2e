@@ -16,6 +16,10 @@ class ResetPassword extends Component {
 				"password": "",
 				"password_confirmation": ""
 			},
+			required_fields: {
+				"password": "",
+				"password_confirmation": ""
+			},
 			formValidationData: {
 				"token": true
 			},
@@ -24,7 +28,6 @@ class ResetPassword extends Component {
 
 		this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleFields = this.handleFields.bind(this);
 	}
 
 	componentDidMount() {
@@ -55,24 +58,34 @@ class ResetPassword extends Component {
 		});
 	}
 
-	handleFields(field) {
-		let { formValidationData, fields } = this.state;
-		formValidationData[field.key] = field.value;
-		this.setState({formValidationData: formValidationData});
+	handleChange(name, value, valid) {
+		let { fields, formValidationData } = this.state;
+		if (event && event.target.files) {
+			fields[name] = event.target.files;
+		} else {
+			fields[name] = value;
+		}
+
+		formValidationData[name] = valid;
+		this.setState({
+			fields: fields,
+			formValidationData: formValidationData
+		});
+
+		this.validate();
+	}
+
+	validate() {
+		let { formValidationData, required_fields } = this.state;
+
 		let isFormValid = true;
-		for (let key in fields) {
+		for (let key in required_fields) {
 			if (!formValidationData[key]) {
 				isFormValid = false;
 			}
 		}
-		this.setState({isFormValid: isFormValid});
+		this.setState({ isFormValid: isFormValid });
 	}
-
-	handleChange() {
-		let { fields } = this.state;
-		fields[event.target.name] = event.target.value;
-		this.setState({fields: fields});
-    }
 
 	handleSubmit(event) {
 		event.preventDefault();
@@ -119,8 +132,7 @@ class ResetPassword extends Component {
 						{formValidationData.form && <div className={alertClass}>{formValidationData.form}</div>}
 						<div className="fields">
 							<TextField
-								onBlur={(isValid) => this.handleFields(isValid)}
-								onChange={(event) => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="password"
 								type="password"
 								value={fields.password}
@@ -131,8 +143,7 @@ class ResetPassword extends Component {
 								validation={[validations.isEmpty, validations.isAlphaNumeric]}
 								icon="ion-md-lock"/>
 							<TextField
-								onBlur={(isValid) => this.handleFields(isValid)}
-								onChange={(event) => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="password_confirmation"
 								type="password"
 								value={fields.password_confirmation}

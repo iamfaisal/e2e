@@ -35,7 +35,6 @@ class CreateCourse extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
         this.changeRegulation = this.changeRegulation.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -62,27 +61,33 @@ class CreateCourse extends Component {
             });
     }
 
-    handleChange(value) {
-        let { fields } = this.state;
-        if (event.target.files) {
-            fields[event.target.name] = event.target.files;
+    handleChange(name, value, valid) {
+        let { fields, formValidationData } = this.state;
+        if (event && event.target.files) {
+            fields[name] = event.target.files;
         } else {
-            fields[event.target.name] = event.target.value;
+            fields[name] = value;
         }
-        this.setState({fields: fields});
+
+        formValidationData[name] = valid;
+        this.setState({
+            fields: fields,
+            formValidationData: formValidationData
+        });
+
+        this.validate();
     }
 
-    handleBlur(field) {
+    validate() {
         let { formValidationData, required_fields } = this.state;
-        formValidationData[field.key] = field.value;
-        this.setState({formValidationData: formValidationData});
+
         let isFormValid = true;
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
         }
-        this.setState({isFormValid: isFormValid});
+        this.setState({ isFormValid: isFormValid });
     }
 
     changeRegulation(value) {
@@ -137,7 +142,6 @@ class CreateCourse extends Component {
                 {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="title"
                             value={fields.title}
@@ -157,35 +161,30 @@ class CreateCourse extends Component {
                             />
                         </label>
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="number"
                             value={fields.number}
                             labelText="Number"
                         />
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="code"
                             value={fields.code}
                             labelText="Code"
                         />
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="hours"
                             value={fields.hours}
                             labelText="Hours"
                         />
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="expiration_date"
                             value={fields.expiration_date}
                             labelText="Expiration Date"
                         />
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="commercial_link"
                             value={fields.commercial_link}

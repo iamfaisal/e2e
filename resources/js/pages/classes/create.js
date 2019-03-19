@@ -73,14 +73,17 @@ class CreateClass extends Component {
             });
     }
 
-    handleChange(value) {
+    handleChange(name, value, valid) {
         let { fields } = this.state;
-        if (event.target.files) {
-            fields[event.target.name] = event.target.files;
+        if (event && event.target.files) {
+            fields[name] = event.target.files;
         } else {
-            fields[event.target.name] = event.target.value;
+            fields[name] = value;
         }
-        this.setState({fields: fields});
+
+        this.setState({
+            fields: fields
+        });
     }
 
     handleSubmit(e) {

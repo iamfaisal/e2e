@@ -12,35 +12,50 @@ class Profile extends Component {
         this.state = {
             isLoading: false,
             fields: {
-                "first_name": "",
-                "last_name": ""
+                first_name: "",
+                last_name: ""
+            },
+            required_fields: {
+                first_name: "",
+                last_name: ""
             },
             formValidationData: {},
-            isFormValid: false
+            isFormValid: true
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleFields = this.handleFields.bind(this);
     }
 
-    handleFields(field) {
-        let { formValidationData, fields } = this.state;
-        formValidationData[field.key] = field.value;
-        this.setState({formValidationData: formValidationData});
+    handleChange(name, value, valid) {
+        let { fields, formValidationData } = this.state;
+        if (event && event.target.files) {
+            fields[name] = event.target.files;
+        } else {
+            fields[name] = value;
+        }
+
+        formValidationData[name] = valid;
+        this.setState({
+            fields: fields,
+            formValidationData: formValidationData
+        });
+
+        console.log(fields);
+
+        this.validate();
+    }
+
+    validate() {
+        let { formValidationData, required_fields } = this.state;
+
         let isFormValid = true;
-        for (let key in fields) {
+        for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
         }
-        this.setState({isFormValid: isFormValid});
-    }
-
-    handleChange(value) {
-        let { fields } = this.state;
-        fields[event.target.name] = event.target.value;
-        this.setState({fields: fields});
+        this.setState({ isFormValid: isFormValid });
     }
 
     handleSubmit(event) {
@@ -72,8 +87,7 @@ class Profile extends Component {
                     <legend>Basic information</legend>
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={(isValid) => this.handleFields(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="first_name"
                             value={user.profile.first_name}
                             required={true}
@@ -82,8 +96,7 @@ class Profile extends Component {
                             validation={[validations.isEmpty]}
                             icon="ion-ios-person"/>
                         <TextField
-                            onBlur={(isValid) => this.handleFields(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="last_name"
                             value={user.profile.last_name}
                             required={true}
@@ -97,8 +110,7 @@ class Profile extends Component {
                         <legend>Instructor's profile</legend>
                         <fieldset className="fields horizontal">
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="sub_domain"
                                 value={user.profile.sub_domain}
                                 required={true}
@@ -106,8 +118,7 @@ class Profile extends Component {
                                 labelText="Subdomain (ex. sallysmith.psre.com)"
                                 validation={[validations.isEmpty]}/>
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="email"
                                 value={user.email}
                                 required={true}
@@ -115,8 +126,7 @@ class Profile extends Component {
                                 labelText="Email"
                                 validation={[validations.isEmail]}/>
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="address"
                                 value={user.profile.address}
                                 required={true}
@@ -124,8 +134,7 @@ class Profile extends Component {
                                 labelText="Street Address"
                                 validation={[validations.isEmpty]}/>
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="city"
                                 value={user.profile.city}
                                 required={true}
@@ -133,8 +142,7 @@ class Profile extends Component {
                                 labelText="City"
                                 validation={[validations.isEmpty]}/>
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="state"
                                 value={user.profile.state}
                                 required={true}
@@ -142,8 +150,7 @@ class Profile extends Component {
                                 labelText="State"
                                 validation={[validations.isEmpty]}/>
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="zip_code"
                                 value={user.profile.zip_code}
                                 required={true}
@@ -151,8 +158,7 @@ class Profile extends Component {
                                 labelText="Zip Code"
                                 validation={[validations.isPostalCode]}/>
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="cell_phone"
                                 value={user.profile.cell_phone}
                                 required={true}
@@ -160,8 +166,7 @@ class Profile extends Component {
                                 labelText="Cell Phone"
                                 validation={[validations.isMobilePhone]}/>
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="work_phone"
                                 value={user.profile.work_phone}
                                 required={true}
@@ -171,8 +176,7 @@ class Profile extends Component {
                         </fieldset>
                         <fieldset className="fields horizontal">
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="additional_name"
                                 value={user.profile.additional_name}
                                 required={true}
@@ -180,8 +184,7 @@ class Profile extends Component {
                                 labelText="Additional Name (#1)"
                                 validation={[validations.isEmpty]}/>
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="additional_email"
                                 value={user.profile.additional_email}
                                 required={true}
@@ -189,8 +192,7 @@ class Profile extends Component {
                                 labelText="Additional Email (#1)"
                                 validation={[validations.isEmail]}/>
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="additional_name2"
                                 value={user.profile.additional_name2}
                                 required={true}
@@ -198,8 +200,7 @@ class Profile extends Component {
                                 labelText="Additional Name (#2)"
                                 validation={[validations.isEmpty]}/>
                             <TextField
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="additional_email2"
                                 value={user.profile.additional_email2}
                                 required={true}
@@ -209,8 +210,7 @@ class Profile extends Component {
                         </fieldset>
                         <fieldset className="fields horizontal">
                             <TextArea
-                                onBlur={(isValid) => this.handleFields(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="info"
                                 value={user.profile.info}
                                 required={true}

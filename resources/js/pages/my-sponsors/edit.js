@@ -38,7 +38,6 @@ class EditMySponsor extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
         this.setRegulation = this.setRegulation.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -68,23 +67,33 @@ class EditMySponsor extends Component {
             });
     }
 
-    handleChange(value) {
-        let { fields } = this.state;
-        fields[event.target.name] = event.target.value;
-        this.setState({fields: fields});
+    handleChange(name, value, valid) {
+        let { fields, formValidationData } = this.state;
+        if (event && event.target.files) {
+            fields[name] = event.target.files;
+        } else {
+            fields[name] = value;
+        }
+
+        formValidationData[name] = valid;
+        this.setState({
+            fields: fields,
+            formValidationData: formValidationData
+        });
+
+        this.validate();
     }
 
-    handleBlur(field) {
+    validate() {
         let { formValidationData, required_fields } = this.state;
-        formValidationData[field.key] = field.value;
-        this.setState({formValidationData: formValidationData});
+
         let isFormValid = true;
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
         }
-        this.setState({isFormValid: isFormValid});
+        this.setState({ isFormValid: isFormValid });
     }
 
     handleSubmit(e) {
@@ -147,16 +156,14 @@ class EditMySponsor extends Component {
                     <input type="hidden" name="user" value="1" />
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={isValid => this.handleBlur(isValid)}
-                            onChange={event => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="company"
                             value={fields.company}
                             maxLength={50}
                             labelText="Company Name"
                         />
                         <TextField
-                            onBlur={isValid => this.handleBlur(isValid)}
-                            onChange={event => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="first_name"
                             value={fields.first_name}
                             required={true}
@@ -165,8 +172,7 @@ class EditMySponsor extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={isValid => this.handleBlur(isValid)}
-                            onChange={event => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="last_name"
                             value={fields.last_name}
                             required={true}
@@ -175,8 +181,7 @@ class EditMySponsor extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="email"
                             value={fields.email}
                             required={true}
@@ -185,16 +190,14 @@ class EditMySponsor extends Component {
                             validation={[validations.isEmail]}
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="phone"
                             value={fields.phone}
                             maxLength={50}
                             labelText="Phone"
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="extension"
                             value={fields.extension}
                             maxLength={50}
@@ -204,16 +207,14 @@ class EditMySponsor extends Component {
 
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="address"
                             value={fields.address}
                             maxLength={50}
                             labelText="Street Address"
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="city"
                             value={fields.city}
                             maxLength={50}
@@ -230,8 +231,7 @@ class EditMySponsor extends Component {
                             />
                         </label>
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="zip_code"
                             value={fields.zip_code}
                             maxLength={50}

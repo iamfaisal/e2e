@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import TextArea from "../../common/TextArea";
-import Select from "../../common/Select";
 import CheckBox from "../../common/CheckBox";
 import FileInput from "../../common/FileInput";
 import { create } from "../../helpers/resource";
@@ -42,26 +41,27 @@ class CreateRegulation extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.validate = this.validate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(value) {
+    handleChange(name, value, valid) {
         let { fields, formValidationData } = this.state;
-        if (event.target.files) {
-            fields[event.target.name] = event.target.files;
+        if (event && event.target.files) {
+            fields[name] = event.target.files;
         } else {
-            fields[event.target.name] = value;
+            fields[name] = value;
         }
 
-        formValidationData[event.target.name] = value;
+        formValidationData[name] = valid;
         this.setState({
             fields: fields,
             formValidationData: formValidationData
         });
+
+        this.validate();
     }
 
-    validate(field) {
+    validate() {
         let { formValidationData, required_fields } = this.state;
         
         let isFormValid = true;
@@ -113,7 +113,7 @@ class CreateRegulation extends Component {
                     <h2>Create Regulation</h2>
                 </header>
 
-                <form className={loading ? "loading" : ""} onInput={this.validate} onSubmit={this.handleSubmit}>
+                <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                 {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
                         <TextField

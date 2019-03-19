@@ -43,11 +43,10 @@ class EditInstructor extends Component {
             },
             regulations: [],
             formValidationData: {},
-            isFormValid: false
+            isFormValid: true
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.addLicense = this.addLicense.bind(this);
         this.removeLicense = this.removeLicense.bind(this);
@@ -80,20 +79,26 @@ class EditInstructor extends Component {
             });
     }
 
-    handleChange(value) {
-        let { fields } = this.state;
-        if (event.target.files) {
-            fields[event.target.name] = event.target.files;
+    handleChange(name, value, valid) {
+        let { fields, formValidationData } = this.state;
+        if (event && event.target.files) {
+            fields[name] = event.target.files;
         } else {
-            fields[event.target.name] = event.target.value;
+            fields[name] = value;
         }
-        this.setState({ fields: fields });
+
+        formValidationData[name] = valid;
+        this.setState({
+            fields: fields,
+            formValidationData: formValidationData
+        });
+
+        this.validate();
     }
 
-    handleBlur(field) {
+    validate() {
         let { formValidationData, required_fields } = this.state;
-        formValidationData[field.key] = field.value;
-        this.setState({ formValidationData: formValidationData });
+
         let isFormValid = true;
         for (let key in required_fields) {
             if (!formValidationData[key]) {
@@ -176,8 +181,7 @@ class EditInstructor extends Component {
                     {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={isValid => this.handleBlur(isValid)}
-                            onChange={event => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="first_name"
                             value={fields.first_name}
                             required={true}
@@ -186,8 +190,7 @@ class EditInstructor extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={isValid => this.handleBlur(isValid)}
-                            onChange={event => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="last_name"
                             value={fields.last_name}
                             required={true}
@@ -196,8 +199,7 @@ class EditInstructor extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="email"
                             value={fields.email}
                             required={true}
@@ -206,8 +208,7 @@ class EditInstructor extends Component {
                             validation={[validations.isEmail]}
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="sub_domain"
                             value={fields.sub_domain}
                             maxLength={50}
@@ -217,16 +218,14 @@ class EditInstructor extends Component {
 
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="address"
                             value={fields.address}
                             maxLength={50}
                             labelText="Street Address"
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="city"
                             value={fields.city}
                             maxLength={50}
@@ -242,8 +241,7 @@ class EditInstructor extends Component {
                             />
                         </label>
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="zip_code"
                             value={fields.zip_code}
                             maxLength={50}
@@ -253,48 +251,42 @@ class EditInstructor extends Component {
 
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="cell_phone"
                             value={fields.cell_phone}
                             maxLength={50}
                             labelText="Cell Phone"
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="work_phone"
                             value={fields.work_phone}
                             maxLength={50}
                             labelText="Work Phone"
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="additional_name"
                             value={fields.additional_name}
                             maxLength={50}
                             labelText="Additional Name (#1)"
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="additional_email"
                             value={fields.additional_email}
                             maxLength={50}
                             labelText="Additional Email Address (#1)"
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="additional_name2"
                             value={fields.additional_name2}
                             maxLength={50}
                             labelText="Additional Name (#2)"
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="additional_email2"
                             value={fields.additional_email2}
                             maxLength={50}
@@ -326,8 +318,7 @@ class EditInstructor extends Component {
                                 />
                             </label>
                             <TextField
-                                onBlur={(isValid) => this.handleBlur(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name={"licenses[" + i + "][code]"}
                                 value={""}
                                 maxLength={50}
@@ -335,8 +326,7 @@ class EditInstructor extends Component {
                                 value={license["code"]}
                             />
                             <TextField
-                                onBlur={(isValid) => this.handleBlur(isValid)}
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name={"licenses[" + i + "][expiration]"}
                                 value={""}
                                 maxLength={50}
@@ -374,8 +364,7 @@ class EditInstructor extends Component {
 
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             type="password"
                             name="password"
                             value={fields.password}
@@ -383,8 +372,7 @@ class EditInstructor extends Component {
                             labelText="Password"
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             type="password"
                             name="confirm_pass"
                             value={fields.confirm_pass}

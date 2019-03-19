@@ -17,27 +17,36 @@ class CreateCategory extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(value) {
-        let { fields } = this.state;
-        fields[event.target.name] = event.target.value;
-        this.setState({fields: fields});
+    handleChange(name, value, valid) {
+        let { fields, formValidationData } = this.state;
+        if (event && event.target.files) {
+            fields[name] = event.target.files;
+        } else {
+            fields[name] = value;
+        }
+
+        formValidationData[name] = valid;
+        this.setState({
+            fields: fields,
+            formValidationData: formValidationData
+        });
+
+        this.validate();
     }
 
-    handleBlur(field) {
+    validate() {
         let { formValidationData, fields } = this.state;
-        formValidationData[field.key] = field.value;
-        this.setState({formValidationData: formValidationData});
+
         let isFormValid = true;
         for (let key in fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
         }
-        this.setState({isFormValid: isFormValid});
+        this.setState({ isFormValid: isFormValid });
     }
 
     handleSubmit(e) {
@@ -84,7 +93,6 @@ class CreateCategory extends Component {
                         {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                             <fieldset className="fields horizontal">
                                 <TextField
-                                    onBlur={this.handleBlur}
                                     onChange={this.handleChange}
                                     name="title"
                                     value={fields.title}

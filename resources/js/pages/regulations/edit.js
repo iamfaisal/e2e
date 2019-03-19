@@ -43,7 +43,6 @@ class EditRegulation extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.validate = this.validate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -61,21 +60,24 @@ class EditRegulation extends Component {
             });
     }
 
-    handleChange(value, valid) {
+    handleChange(name, value, valid) {
         let { fields, formValidationData } = this.state;
         if (event.target.files) {
-            fields[event.target.name] = event.target.files;
+            fields[name] = event.target.files;
         } else {
-            fields[event.target.name] = value;
+            fields[name] = value;
         }
-        formValidationData[event.target.name] = valid;
+
+        formValidationData[name] = valid;
         this.setState({
             fields: fields,
             formValidationData: formValidationData
         });
+
+        this.validate();
     }
 
-    validate(field) {
+    validate() {
         let { formValidationData, required_fields } = this.state;
 
         let isFormValid = true;
@@ -132,11 +134,10 @@ class EditRegulation extends Component {
                     <h2>Edit Regulation</h2>
                 </header>
 
-                <form className={loading ? "loading" : ""} onInput={this.validate} onSubmit={this.handleSubmit}>
+                <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                 {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="name"
                             value={fields.name}
@@ -145,7 +146,6 @@ class EditRegulation extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="abbreviation"
                             value={fields.abbreviation}
@@ -154,7 +154,6 @@ class EditRegulation extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="commission_name"
                             value={fields.commission_name}
@@ -163,7 +162,6 @@ class EditRegulation extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="commission_abbreviation"
                             value={fields.commission_abbreviation}

@@ -19,27 +19,36 @@ class ForgotPassword extends Component {
 
 		this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleFields = this.handleFields.bind(this);
 	}
 
-	handleFields(field) {
+	handleChange(name, value, valid) {
+		let { fields, formValidationData } = this.state;
+		if (event && event.target.files) {
+			fields[name] = event.target.files;
+		} else {
+			fields[name] = value;
+		}
+
+		formValidationData[name] = valid;
+		this.setState({
+			fields: fields,
+			formValidationData: formValidationData
+		});
+
+		this.validate();
+	}
+
+	validate() {
 		let { formValidationData, fields } = this.state;
-		formValidationData[field.key] = field.value;
-		this.setState({formValidationData: formValidationData});
+
 		let isFormValid = true;
 		for (let key in fields) {
 			if (!formValidationData[key]) {
 				isFormValid = false;
 			}
 		}
-		this.setState({isFormValid: isFormValid});
+		this.setState({ isFormValid: isFormValid });
 	}
-
-	handleChange() {
-		let { fields } = this.state;
-		fields[event.target.name] = event.target.value;
-		this.setState({fields: fields});
-    }
 
 	handleSubmit(event) {
 		event.preventDefault();
@@ -73,7 +82,7 @@ class ForgotPassword extends Component {
 		if (getAuthUser()) this.props.history.push("/");
         const { fields, isFormValid, formValidationData } = this.state;
         const alertClass = classnames("alert alert-success", { "alert-danger": !isFormValid });
-		
+
         return (
 			<section className="login">
 				<div className="container">
@@ -82,8 +91,7 @@ class ForgotPassword extends Component {
 						{formValidationData.form && <div className={alertClass}>{formValidationData.form}</div>}
 						<div className="fields">
 							<TextField
-								onBlur={(isValid) => this.handleFields(isValid)}
-								onChange={(event) => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="email"
 								value={fields.email}
 								required={true}

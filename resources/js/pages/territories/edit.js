@@ -44,7 +44,7 @@ class EditTerritory extends Component {
                 console.log(err);
             });
 
-        read('regulations/', [])
+        read('regulations/', {})
             .then(res => {
                 this.setState({
                     regulations: res.data.regulations,
@@ -55,27 +55,33 @@ class EditTerritory extends Component {
             });
     }
 
-    handleChange(value) {
-        let { fields } = this.state;
-        if (event.target.files) {
-            fields[event.target.name] = event.target.files;
+    handleChange(name, value, valid) {
+        let { fields, formValidationData } = this.state;
+        if (event && event.target.files) {
+            fields[name] = event.target.files;
         } else {
-            fields[event.target.name] = event.target.value;
+            fields[name] = value;
         }
-        this.setState({fields: fields});
+
+        formValidationData[name] = valid;
+        this.setState({
+            fields: fields,
+            formValidationData: formValidationData
+        });
+
+        this.validate();
     }
 
-    handleBlur(field) {
+    validate() {
         let { formValidationData, required_fields } = this.state;
-        formValidationData[field.key] = field.value;
-        this.setState({formValidationData: formValidationData});
+
         let isFormValid = true;
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
         }
-        this.setState({isFormValid: isFormValid});
+        this.setState({ isFormValid: isFormValid });
     }
 
     changeRegulation(value) {
@@ -134,7 +140,6 @@ class EditTerritory extends Component {
                 {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={this.handleBlur}
                             onChange={this.handleChange}
                             name="name"
                             value={fields.name}

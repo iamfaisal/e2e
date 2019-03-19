@@ -57,27 +57,33 @@ class CreateVenue extends Component {
             });
     }
 
-    handleChange(value) {
-        let { fields } = this.state;
-        if (event.target.files) {
-            fields[event.target.name] = event.target.files;
+    handleChange(name, value, valid) {
+        let { fields, formValidationData } = this.state;
+        if (event && event.target.files) {
+            fields[name] = event.target.files;
         } else {
-            fields[event.target.name] = event.target.value;
+            fields[name] = value;
         }
-        this.setState({ fields: fields });
+
+        formValidationData[name] = valid;
+        this.setState({
+            fields: fields,
+            formValidationData: formValidationData
+        });
+
+        this.validate();
     }
 
-    handleBlur(field) {
+    validate() {
         let { formValidationData, required_fields } = this.state;
-        formValidationData[field.key] = field.value;
-        this.setState({formValidationData: formValidationData});
+
         let isFormValid = true;
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
         }
-        this.setState({isFormValid: isFormValid});
+        this.setState({ isFormValid: isFormValid });
     }
 
     handleSubmit(e) {
@@ -146,8 +152,7 @@ class CreateVenue extends Component {
                     {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="name"
                             value={fields.name}
                             maxLength={50}
@@ -167,16 +172,14 @@ class CreateVenue extends Component {
 
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="address"
                             value={fields.address}
                             maxLength={50}
                             labelText="Street Address"
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="city"
                             value={fields.city}
                             maxLength={50}
@@ -193,8 +196,7 @@ class CreateVenue extends Component {
                             />
                         </label>
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="zip_code"
                             value={fields.zip_code}
                             maxLength={50}

@@ -17,7 +17,11 @@ class TextField extends Component {
             value: props.value ? props.value : "",
             initialValue: props.value ? props.value : ""
         };
-	}
+    }
+
+    componentDidMount() {
+        this.props.onChange(this.props.name, this.state.value, this.isValid());
+    }
 
 	componentDidUpdate(prevProps) {
         if (
@@ -51,7 +55,7 @@ class TextField extends Component {
             value: value
         }, () => {
             if(this.props.onChange) {
-                this.props.onChange(value, this.isValid());
+                this.props.onChange(this.props.name, value, this.isValid());
             }
         });
     }
@@ -62,14 +66,14 @@ class TextField extends Component {
             value: this.state.value ? this.state.value.trim() : "",
             initialValue: this.state.value ? this.state.value.trim() : ""
         }, () => {
-            const result = this.isValid();
+            const result = this.isValid(true);
             if(this.props.onBlur) {
                 this.props.onBlur({key: name, value: result});
             }
         });
     }
 
-	isValid() {
+	isValid(showError) {
         let value = this.state.value ? this.state.value : "";
         let result = true;
         let error = "";
@@ -147,7 +151,7 @@ class TextField extends Component {
 
         this.setState({
             isValid: result,
-            errorText: error
+            errorText: showError ? error : ""
         });
 
         return result;

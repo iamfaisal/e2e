@@ -37,7 +37,6 @@ class EditClass extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
         this.changeRegulation = this.changeRegulation.bind(this);
         this.changeCategories = this.changeCategories.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -46,7 +45,7 @@ class EditClass extends Component {
     componentDidMount() {
         const { id } = this.state;
 
-        read('courses/'+id, [])
+        read('courses/'+id, {})
             .then(res => {
                 let { course } = res.data;
                 let cats = [];
@@ -63,7 +62,7 @@ class EditClass extends Component {
                 console.log(err);
             });
 
-        read('regulations/', [])
+        read('regulations/', {})
             .then(res => {
                 this.setState({
                     regulations: res.data.regulations,
@@ -73,7 +72,7 @@ class EditClass extends Component {
                 console.log(err);
             });
 
-        read('categories/', [])
+        read('categories/', {})
             .then(res => {
                 this.setState({
                     categories: res.data.categories
@@ -92,19 +91,6 @@ class EditClass extends Component {
             fields[event.target.name] = event.target.value;
         }
         this.setState({fields: fields});
-    }
-
-    handleBlur(field) {
-        let { formValidationData, required_fields } = this.state;
-        formValidationData[field.key] = field.value;
-        this.setState({formValidationData: formValidationData});
-        let isFormValid = true;
-        for (let key in required_fields) {
-            if (!formValidationData[key]) {
-                isFormValid = false;
-            }
-        }
-        this.setState({isFormValid: isFormValid});
     }
 
     changeRegulation(value) {

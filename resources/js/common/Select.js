@@ -11,6 +11,11 @@ class Select extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
+    componentDidMount() {
+        let { name } = this.props;
+        this.props.onChange(name.replace("[]", ""), this.state.value, this.state.value ? true : false);
+    }
+
     onChange(event) {
         let value = event.target.value;
         if (this.props.multiple) {
@@ -24,7 +29,8 @@ class Select extends Component {
             value: value
         }, () => {
             if(this.props.onChange){
-                this.props.onChange(value);
+                let { name } = this.props;
+                this.props.onChange(name.replace("[]", ""), value, value ? true : false);
             }
         });
     }

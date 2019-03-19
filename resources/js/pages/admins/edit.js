@@ -29,18 +29,17 @@ class EditAdmin extends Component {
             },
             roles: [],
             formValidationData: {},
-            isFormValid: false
+            isFormValid: true
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
         this.setRoles = this.setRoles.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         const { id } = this.state;
-        read('users/'+id, [])
+        read('users/'+id, {})
             .then(res => {
                 let { fields } = this.state;
 
@@ -70,23 +69,33 @@ class EditAdmin extends Component {
             });
     }
 
-    handleChange(value) {
-        let { fields } = this.state;
-        fields[event.target.name] = event.target.value;
-        this.setState({fields: fields});
+    handleChange(name, value, valid) {
+        let { fields, formValidationData } = this.state;
+        if (event && event.target.files) {
+            fields[name] = event.target.files;
+        } else {
+            fields[name] = value;
+        }
+
+        formValidationData[name] = valid;
+        this.setState({
+            fields: fields,
+            formValidationData: formValidationData
+        });
+
+        this.validate();
     }
 
-    handleBlur(field) {
+    validate() {
         let { formValidationData, required_fields } = this.state;
-        formValidationData[field.key] = field.value;
-        this.setState({formValidationData: formValidationData});
+
         let isFormValid = true;
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
             }
         }
-        this.setState({isFormValid: isFormValid});
+        this.setState({ isFormValid: isFormValid });
     }
 
     handleSubmit(e) {
@@ -127,10 +136,6 @@ class EditAdmin extends Component {
         this.setState({
             fields: fields
         });
-        this.handleBlur({
-            key: "roles",
-            value: roles
-        });
     }
 
     render() {
@@ -148,8 +153,7 @@ class EditAdmin extends Component {
                     {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={isValid => this.handleBlur(isValid)}
-                            onChange={event => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="first_name"
                             value={fields.first_name}
                             required={true}
@@ -158,8 +162,7 @@ class EditAdmin extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={isValid => this.handleBlur(isValid)}
-                            onChange={event => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="last_name"
                             value={fields.last_name}
                             required={true}
@@ -168,8 +171,7 @@ class EditAdmin extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="email"
                             value={fields.email}
                             required={true}
@@ -183,7 +185,7 @@ class EditAdmin extends Component {
                         <label>
                             <span>Roles</span>
                             <Select
-                                onChange={this.setRoles}
+                                onChange={this.handleChange}
                                 name="roles[]"
                                 items={roles}
                                 value={fields.roles}
@@ -196,8 +198,7 @@ class EditAdmin extends Component {
 
                     <fieldset className="fields horizontal">
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             type="password"
                             name="password"
                             value={fields.password}
@@ -206,8 +207,7 @@ class EditAdmin extends Component {
                             validation={[validations.isAlphaNumeric]}
                         />
                         <TextField
-                            onBlur={(isValid) => this.handleBlur(isValid)}
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             type="password"
                             name="confirm_pass"
                             value={fields.confirm_pass}
