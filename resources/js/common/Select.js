@@ -13,7 +13,7 @@ class Select extends Component {
 
     componentDidMount() {
         let { name } = this.props;
-        if (name) {
+        if (name && this.props.onChange) {
             this.props.onChange(name.replace("[]", ""), this.state.value, this.state.value ? true : false);
         }
     }
