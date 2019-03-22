@@ -14,7 +14,7 @@ class Select extends Component {
     componentDidMount() {
         let { name } = this.props;
         if (name && this.props.onChange) {
-            this.props.onChange(name.replace("[]", ""), this.state.value, this.state.value ? true : false);
+            this.props.onChange(name.replace("[]", ""), this.state.value, !!this.state.value);
         }
     }
 
@@ -33,9 +33,9 @@ class Select extends Component {
             if(this.props.onChange){
                 let { name } = this.props;
                 if (name) {
-                    this.props.onChange(name.replace("[]", ""), value, value ? true : false);
+                    this.props.onChange(name.replace("[]", ""), value, !!value);
                 } else {
-                    this.props.onChange(value, value ? true : false);
+                    this.props.onChange(value, !!value);
                 }
             }
         });
