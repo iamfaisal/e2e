@@ -25,14 +25,14 @@ class Regulations extends Component {
     getData() {
         this.setState({ loader: true });
 
-        read('regulations', [])
+        read('regulations', {})
             .then(res => {
                 this.setState({
                     regulations: res.data.regulations,
                     loader: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
                 this.setState({
                     loader: true
@@ -57,7 +57,7 @@ class Regulations extends Component {
 
     deleteRegulation(e, reg) {
         if (confirm('Do you really want to delete this Regulation?')) {
-            remove('regulations/'+reg, [])
+            remove('regulations/'+reg, {})
             .then(res => {
                 this.getData();
             })

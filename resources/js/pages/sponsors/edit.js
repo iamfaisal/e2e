@@ -39,23 +39,19 @@ class EditSponsor extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
-        this.setInstructor = this.setInstructor.bind(this);
-        this.setRegulation = this.setRegulation.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         const { id } = this.state;
-        read('sponsors/'+id, [])
+        read('sponsors/'+id, {})
             .then(res => {
-                console.log(res.data);
                 this.setState({
                     fields: res.data.sponsor,
                     loading: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
 
@@ -65,7 +61,7 @@ class EditSponsor extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
 
@@ -75,12 +71,13 @@ class EditSponsor extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }
 
     handleChange(name, value, valid) {
+        console.log(this.state);
         let { fields, formValidationData } = this.state;
         if (event && event.target.files) {
             fields[name] = event.target.files;
@@ -112,7 +109,7 @@ class EditSponsor extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { id, fields, isFormValid } = this.state;
+        const { id, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -132,37 +129,15 @@ class EditSponsor extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
+                let { formValidationData } = this.state;
+                formValidationData.form = "Unable To Update Sponsor";
                 this.setState({
-                    formValidationData: { form: "Unable To Update Sponsor" },
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })
             });
-    }
-
-    setInstructor(instructor) {
-        let { fields } = this.state;
-        fields.user_id = instructor;
-        this.setState({
-            fields: fields
-        });
-        this.handleBlur({
-            key: "user",
-            value: instructor
-        });
-    }
-
-    setRegulation(regulation) {
-        let { fields } = this.state;
-        fields.regulation_id = regulation;
-        this.setState({
-            fields: fields
-        });
-        this.handleBlur({
-            key: "regulation",
-            value: regulation
-        });
     }
 
     render() {
@@ -182,7 +157,7 @@ class EditSponsor extends Component {
                         <label>
                             <span>Instructor</span>
                             <Select
-                                onChange={this.setInstructor}
+                                onChange={this.handleChange}
                                 name="user"
                                 items={instructors}
                                 id={"id"}
@@ -231,7 +206,7 @@ class EditSponsor extends Component {
                             labelText="Phone"
                         />
                         <TextField
-                            onChange={this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="extension"
                             value={fields.extension}
                             maxLength={50}
@@ -257,7 +232,7 @@ class EditSponsor extends Component {
                         <label>
                             <span>State</span>
                             <Select
-                                onChange={this.setRegulation}
+                                onChange={this.handleChange}
                                 name="regulation"
                                 items={regulations}
                                 id={"id"}
@@ -265,7 +240,7 @@ class EditSponsor extends Component {
                             />
                         </label>
                         <TextField
-                            onChange={his.handleChange}
+                            onChange={this.handleChange}
                             name="zip_code"
                             value={fields.zip_code}
                             maxLength={50}

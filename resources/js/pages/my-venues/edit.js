@@ -28,7 +28,6 @@ class EditMyVenue extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.setRegulation = this.setRegulation.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -119,24 +118,14 @@ class EditMyVenue extends Component {
                     });
             })
             .catch((err) => {
+                let { formValidationData } = this.state;
+                formValidationData.form = "Unable To Update Venue";
                 this.setState({
-                    formValidationData: { form: "Unable To Update Venue" },
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })
             });
-    }
-
-    setRegulation(regulation) {
-        let { fields } = this.state;
-        fields.regulation_id = regulation;
-        this.setState({
-            fields: fields
-        });
-        this.handleBlur({
-            key: "regulation",
-            value: regulation
-        });
     }
 
     render() {
@@ -185,7 +174,7 @@ class EditMyVenue extends Component {
                         <label>
                             <span>State</span>
                             <Select
-                                onChange={this.setRegulation}
+                                onChange={this.handleChange}
                                 name="regulation"
                                 items={regulations}
                                 id={"id"}

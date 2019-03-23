@@ -76,7 +76,7 @@ class CreateRegulation extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { fields, isFormValid, category } = this.state;
+        const { isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -93,7 +93,7 @@ class CreateRegulation extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Create Regulation";
                 this.setState({

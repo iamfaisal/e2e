@@ -23,19 +23,19 @@ class Territories extends Component {
     componentDidMount() {
         this.getData();
 
-        read('regulations/', [])
+        read('regulations/', {})
             .then(res => {
                 this.setState({
                     regulations: res.data.regulations,
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }
 
     getData() {
-        read('territories', [])
+        read('territories', {})
             .then(res => {
                 this.setState({
                     territories: res.data.territories,
@@ -71,7 +71,7 @@ class Territories extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
         }

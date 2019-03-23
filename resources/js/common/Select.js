@@ -30,7 +30,7 @@ class Select extends Component {
         this.setState({
             value: value
         }, () => {
-            if(this.props.onChange){
+            if(this.props.onChange) {
                 let { name } = this.props;
                 if (name) {
                     this.props.onChange(name.replace("[]", ""), value, !!value);

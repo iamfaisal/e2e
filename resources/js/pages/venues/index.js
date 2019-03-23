@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter } from "../../helpers/resource";
 import Select from "../../common/Select";
@@ -29,7 +29,7 @@ class Venues extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }
@@ -44,7 +44,7 @@ class Venues extends Component {
                     loader: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }

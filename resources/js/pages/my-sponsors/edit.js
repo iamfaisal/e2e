@@ -38,13 +38,12 @@ class EditMySponsor extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.setRegulation = this.setRegulation.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
         const { id } = this.state;
-        read('sponsors', {params: {fromInstructor: true}})
+        read('sponsors/'+id, {params: {fromInstructor: true}})
             .then(res => {
                 console.log(res.data);
                 this.setState({
@@ -52,7 +51,7 @@ class EditMySponsor extends Component {
                     loading: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
 
@@ -62,7 +61,7 @@ class EditMySponsor extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }
@@ -119,25 +118,15 @@ class EditMySponsor extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
+                let { formValidationData } = this.state;
+                formValidationData.form = "Unable To Update Sponsor";
                 this.setState({
-                    formValidationData: { form: "Unable To Update Sponsor" },
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })
             });
-    }
-
-    setRegulation(regulation) {
-        let { fields } = this.state;
-        fields.regulation_id = regulation;
-        this.setState({
-            fields: fields
-        });
-        this.handleBlur({
-            key: "regulation",
-            value: regulation
-        });
     }
 
     render() {
@@ -223,7 +212,7 @@ class EditMySponsor extends Component {
                         <label>
                             <span>State</span>
                             <Select
-                                onChange={this.setRegulation}
+                                onChange={this.handleChange}
                                 name="regulation"
                                 items={regulations}
                                 id={"id"}

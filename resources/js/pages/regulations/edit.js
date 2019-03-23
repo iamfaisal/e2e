@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import TextArea from "../../common/TextArea";
-import Select from "../../common/Select";
 import CheckBox from "../../common/CheckBox";
 import FileInput from "../../common/FileInput";
 import { read, update } from "../../helpers/resource";
@@ -55,7 +54,7 @@ class EditRegulation extends Component {
                     loading: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }
@@ -112,7 +111,7 @@ class EditRegulation extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Update Regulation";
                 this.setState({

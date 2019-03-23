@@ -33,7 +33,6 @@ class EditAdmin extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.setRoles = this.setRoles.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -101,7 +100,7 @@ class EditAdmin extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { id, fields, isFormValid } = this.state;
+        const { id, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -122,20 +121,14 @@ class EditAdmin extends Component {
                     });
             })
             .catch((err) => {
+                let { formValidationData } = this.state;
+                formValidationData.form = "Unable To Update User";
                 this.setState({
-                    formValidationData: {form: "Unable To Update User"},
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })
             });
-    }
-
-    setRoles(roles) {
-        let { fields } = this.state;
-        fields.roles = roles;
-        this.setState({
-            fields: fields
-        });
     }
 
     render() {

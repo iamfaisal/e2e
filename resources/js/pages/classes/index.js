@@ -94,7 +94,7 @@ class Classes extends Component {
                 .then(res => {
                     this.getData();
                 })
-                .catch((err) => {
+                .catch(err => {
                     console.log(err);
                 });
         }

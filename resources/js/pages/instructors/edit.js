@@ -133,8 +133,10 @@ class EditInstructor extends Component {
                     });
             })
             .catch((err) => {
+                let { formValidationData } = this.state;
+                formValidationData.form = "Unable To Update Instructor";
                 this.setState({
-                    formValidationData: { form: "Unable To Update Instructor" },
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })

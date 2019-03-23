@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import { Link } from "react-router-dom";
-import { read, remove, filter } from "../../helpers/resource";
+import { read, filter } from "../../helpers/resource";
 import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
 

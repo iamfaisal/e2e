@@ -103,9 +103,11 @@ class EditCategory extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
+                let { formValidationData } = this.state;
+                formValidationData.form = "Unable To Update Category";
                 this.setState({
-                    formValidationData: {form: "Unable To Update Category"},
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })

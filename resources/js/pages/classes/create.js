@@ -1,9 +1,6 @@
 import React, {Component} from "react";
-import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
-import TextArea from "../../common/TextArea";
 import Select from "../../common/Select";
-import FileInput from "../../common/FileInput";
 import { read, create } from "../../helpers/resource";
 
 class CreateClass extends Component {
@@ -48,7 +45,7 @@ class CreateClass extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
 
@@ -58,7 +55,7 @@ class CreateClass extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
 
@@ -68,12 +65,12 @@ class CreateClass extends Component {
                     venues: res.data.venues
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }
 
-    handleChange(name, value, valid) {
+    handleChange(name, value) {
         let { fields } = this.state;
         if (event && event.target.files) {
             fields[name] = event.target.files;

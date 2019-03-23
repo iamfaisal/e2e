@@ -35,7 +35,6 @@ class CreateCourse extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.changeRegulation = this.changeRegulation.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -88,14 +87,6 @@ class CreateCourse extends Component {
             }
         }
         this.setState({ isFormValid: isFormValid });
-    }
-
-    changeRegulation(value) {
-        let { fields } = this.state;
-        fields.regulation_id = value;
-        this.setState({
-            fields: fields
-        });
     }
 
     handleSubmit(e) {
@@ -152,7 +143,7 @@ class CreateCourse extends Component {
                         <label>
                             <span>Regulation</span>
                             <Select
-                                onChange={this.changeRegulation}
+                                onChange={this.handleChange}
                                 name="regulation_id"
                                 items={regulations}
                                 placeholder="Select Regulation"
@@ -196,7 +187,7 @@ class CreateCourse extends Component {
                         <label>
                             <span>Categories</span>
                             <Select
-                                onChange={this.changeRegulation}
+                                onChange={this.handleChange}
                                 name="categories[]"
                                 items={categories}
                                 multiple

@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter } from "../../helpers/resource";
 import { getUserFullName } from "../../helpers/app";

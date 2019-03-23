@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import { read, create } from "../../helpers/resource";
@@ -27,7 +26,6 @@ class CreateVenue extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.setRegulation = this.setRegulation.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -38,7 +36,7 @@ class CreateVenue extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }
@@ -92,37 +90,15 @@ class CreateVenue extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
+                let { formValidationData } = this.state;
+                formValidationData.form = "Unable To Create Venue";
                 this.setState({
-                    formValidationData: { form: "Unable To Create Venue" },
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })
             });
-    }
-
-    setInstructor(instructor) {
-        let { fields } = this.state;
-        fields.user_id = instructor;
-        this.setState({
-            fields: fields
-        });
-        this.handleBlur({
-            key: "user",
-            value: instructor
-        });
-    }
-
-    setRegulation(regulation) {
-        let { fields } = this.state;
-        fields.regulation_id = regulation;
-        this.setState({
-            fields: fields
-        });
-        this.handleBlur({
-            key: "regulation",
-            value: regulation
-        });
     }
 
     render() {
@@ -167,7 +143,7 @@ class CreateVenue extends Component {
                         <label>
                             <span>State</span>
                             <Select
-                                onChange={this.setRegulation}
+                                onChange={this.handleChange}
                                 name="regulation"
                                 items={regulations}
                                 id={"id"}

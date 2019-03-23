@@ -70,8 +70,10 @@ class CreateCategory extends Component {
                     });
             })
             .catch((err) => {
+                let { formValidationData } = this.state;
+                formValidationData.form = "Unable To Create Category";
                 this.setState({
-                    formValidationData: {form: "Unable To Create Category"},
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })

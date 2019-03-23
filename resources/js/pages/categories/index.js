@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter } from "../../helpers/resource";
 import DataTable from "react-data-table-component";
@@ -25,14 +25,14 @@ class Categories extends Component {
     getData() {
         this.setState({loader: true});
 
-        read('categories', [])
+        read('categories', {})
             .then(res => {
                 this.setState({
                     categories: res.data.categories,
                     loader: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
                 this.setState({
                     loader: true

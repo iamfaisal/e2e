@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter } from "../../helpers/resource";
 import DataTable from "react-data-table-component";
@@ -32,7 +32,7 @@ class MyVenues extends Component {
                     loader: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }

@@ -25,22 +25,20 @@ class EditTerritory extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.changeRegulation = this.changeRegulation.bind(this);
     }
 
     componentDidMount() {
         const { id } = this.state;
 
-        read('territories/'+id, [])
+        read('territories/'+id, {})
             .then(res => {
                 this.setState({
                     fields: res.data.territory,
                     loading: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
 
@@ -50,7 +48,7 @@ class EditTerritory extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }
@@ -84,18 +82,10 @@ class EditTerritory extends Component {
         this.setState({ isFormValid: isFormValid });
     }
 
-    changeRegulation(value) {
-        let { fields } = this.state;
-        fields.regulation = value;
-        this.setState({
-            fields: fields
-        });
-    }
-
     handleSubmit(e) {
         e.preventDefault();
 
-        const { id, fields, isFormValid, category } = this.state;
+        const { id, fields, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -114,7 +104,7 @@ class EditTerritory extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Update Territory";
                 this.setState({

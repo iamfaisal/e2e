@@ -24,13 +24,11 @@ class CreateTerritory extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleBlur = this.handleBlur.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.changeRegulation = this.changeRegulation.bind(this);
     }
 
     componentDidMount() {
-        read('regulations/', [])
+        read('regulations/', {})
             .then(res => {
                 let { regulations } = res.data;
                 let { fields } = this.state;
@@ -76,18 +74,10 @@ class CreateTerritory extends Component {
         this.setState({ isFormValid: isFormValid });
     }
 
-    changeRegulation(value) {
-        let { fields } = this.state;
-        fields.regulation = value;
-        this.setState({
-            fields: fields
-        });
-    }
-
     handleSubmit(e) {
         e.preventDefault();
 
-        const { fields, isFormValid, category } = this.state;
+        const { fields, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -104,7 +94,7 @@ class CreateTerritory extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Create Territory";
                 this.setState({
@@ -138,7 +128,8 @@ class CreateTerritory extends Component {
                         <label>
                             <span>Regulation</span>
                             <Select
-                                onChange={this.changeRegulation}
+                                onChange={this.handleChange}
+                                name="regulation"
                                 items={regulations}
                                 id={"id"}
                                 val={"name"}

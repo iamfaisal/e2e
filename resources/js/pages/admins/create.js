@@ -32,7 +32,6 @@ class CreateAdmin extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.setRoles = this.setRoles.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -80,7 +79,7 @@ class CreateAdmin extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { fields, isFormValid } = this.state;
+        const { isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -98,20 +97,14 @@ class CreateAdmin extends Component {
                     });
             })
             .catch((err) => {
+                let { formValidationData } = this.state;
+                formValidationData.form = "Unable To Create User";
                 this.setState({
-                    formValidationData: {form: "Unable To Create User"},
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })
             });
-    }
-
-    setRoles(roles) {
-        let { fields } = this.state;
-        fields.roles = roles;
-        this.setState({
-            fields: fields
-        });
     }
 
     render() {
@@ -159,7 +152,7 @@ class CreateAdmin extends Component {
                         <label>
                             <span>Roles</span>
                             <Select
-                                onChange={this.setRoles}
+                                onChange={this.handleChange}
                                 name="roles[]"
                                 items={roles}
                                 multiple

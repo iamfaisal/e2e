@@ -87,6 +87,7 @@ class CreateInstructor extends Component {
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
+                console.log(formValidationData, key);
             }
         }
         this.setState({ isFormValid: isFormValid });
@@ -115,8 +116,10 @@ class CreateInstructor extends Component {
                     });
             })
             .catch((err) => {
+                let { formValidationData } = this.state;
+                formValidationData.form = "Unable To Create Instructor";
                 this.setState({
-                    formValidationData: { form: "Unable To Create Instructor" },
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })
@@ -338,7 +341,6 @@ class CreateInstructor extends Component {
                             type="password"
                             name="password"
                             value={fields.password}
-                            required={true}
                             maxLength={50}
                             labelText="Password"
                             validation={[validations.isEmpty, validations.isAlphaNumeric]}
@@ -348,7 +350,6 @@ class CreateInstructor extends Component {
                             type="password"
                             name="confirm_pass"
                             value={fields.confirm_pass}
-                            required={true}
                             maxLength={50}
                             labelText="Confirm Password"
                             equalTo={fields.password}

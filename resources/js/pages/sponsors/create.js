@@ -38,8 +38,6 @@ class CreateSponsor extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.setInstructor = this.setInstructor.bind(this);
-        this.setRegulation = this.setRegulation.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -60,7 +58,7 @@ class CreateSponsor extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }
@@ -115,28 +113,14 @@ class CreateSponsor extends Component {
                     });
             })
             .catch((err) => {
+                let { formValidationData } = this.state;
+                formValidationData.form = "Unable To Create Sponsor";
                 this.setState({
-                    formValidationData: { form: "Unable To Create Sponsor" },
+                    formValidationData: formValidationData,
                     loading: false,
                     isFormValid: false
                 })
             });
-    }
-
-    setInstructor(instructor) {
-        let { fields } = this.state;
-        fields.user_id = instructor;
-        this.setState({
-            fields: fields
-        });
-    }
-
-    setRegulation(regulation) {
-        let { fields } = this.state;
-        fields.regulation_id = regulation;
-        this.setState({
-            fields: fields
-        });
     }
 
     render() {
@@ -154,7 +138,7 @@ class CreateSponsor extends Component {
                         <label>
                             <span>Instructor</span>
                             <Select
-                                onChange={this.setInstructor}
+                                onChange={this.handleChange}
                                 name="user"
                                 items={instructors}
                                 id={"id"}
@@ -229,7 +213,7 @@ class CreateSponsor extends Component {
                         <label>
                             <span>State</span>
                             <Select
-                                onChange={this.setRegulation}
+                                onChange={this.handleChange}
                                 name="regulation"
                                 items={regulations}
                                 id={"id"}

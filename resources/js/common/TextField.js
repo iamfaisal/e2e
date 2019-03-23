@@ -20,7 +20,9 @@ class TextField extends Component {
     }
 
     componentDidMount() {
-        this.props.onChange(this.props.name, this.state.value, this.isValid());
+        if (this.props.onChange) {
+            this.props.onChange(this.props.name, this.state.value, this.isValid());
+        }
     }
 
 	componentDidUpdate(prevProps) {
