@@ -140,8 +140,9 @@ class EditTerritory extends Component {
                         <label>
                             <span>Regulation</span>
                             <Select
-                                onChange={this.changeRegulation}
+                                onChange={this.handleChange}
                                 items={regulations}
+                                name="regulation"
                                 id={"id"}
                                 val={"name"}
                                 value={fields.regulation_id}

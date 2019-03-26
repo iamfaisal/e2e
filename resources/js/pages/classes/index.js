@@ -122,7 +122,7 @@ class Classes extends Component {
     render() {
         let { classes } = this.state;
         const { filters, courses, instructors, loader } = this.state;
-        console.log(classes);
+
         const columns = [
             {
                 name: 'Course',

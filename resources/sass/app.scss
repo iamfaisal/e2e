@@ -132,10 +132,10 @@ small {
   background: $color_alizarin_crimson_approx;
   //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
   border-radius: 5px;
-  padding: 0 12px;
+  padding: 2px 12px 0;
   font-family: inherit;
   font-size: 14px;
-  line-height: 36px;
+  line-height: 34px;
   color: $white;
   border: 1px solid $black_12;
   border-bottom-width: 2px;
@@ -290,14 +290,18 @@ select:not([multiple]) {
     white-space: nowrap;
     font-weight: bold;
   }
+  
+  nav {
+    white-space: nowrap;
 
-  nav select {
-    min-width: 50px;
-    box-sizing: border-box;
-    margin-bottom: 0;
+    select {
+      min-width: 50px;
+      box-sizing: border-box;
+      margin-bottom: 0;
 
-    + svg {
-      display: none;
+      + svg {
+        display: none;
+      }
     }
   }
 }
@@ -372,6 +376,8 @@ table {
     //Instead of the line below you could use @include border-radius($radius, $vertical-radius)
     border-radius: 50%;
     border: 1px solid $black_20;
+    object-fit: cover;
+    object-position: 50% 25%;
   }
 }
 
@@ -672,6 +678,9 @@ table {
   }
 }
 @media(max-width: 767px) {
+  h2 {
+	  font-size: 28px;
+  }
   .sidebar {
     header {
       display: none;

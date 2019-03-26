@@ -10,7 +10,8 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sidebar: true
+            sidebar: true,
+            sidebar_open: false
         };
 
         this.handleLogout = this.handleLogout.bind(this);
@@ -23,8 +24,12 @@ class Header extends Component {
     }
 
     handleSidebarToggle() {
-        const { sidebar } = this.state;
-        this.setState({sidebar: !sidebar});
+        const { sidebar, sidebar_open } = this.state;
+        if (window.innerWidth >= 768) {
+            this.setState({ sidebar: !sidebar });
+        } else {
+            this.setState({ sidebar_open: !sidebar_open });
+        }
     }
 
     renderNavigation(role, roleLinks) {
@@ -47,8 +52,9 @@ class Header extends Component {
 
     render() {
         const { sidebar } = this.state;
+        let { sidebar_open } = this.state;
         const self = this;
-        const sidebarClass = classnames("sidebar", { "collapse": !sidebar })
+        const sidebarClass = classnames("sidebar", { "collapse": !sidebar }, { "open": sidebar_open });
         const userName = getAuthUserName();
 
         return (
@@ -60,7 +66,7 @@ class Header extends Component {
                     <div className="actions">
                         <a href="#" className="profile"><img src={asset("images/user.jpg")}/></a>
                         <a href="javascript:void(0)" onClick={this.handleLogout} className="logout ion-md-log-out"/>
-                        <a href="#" className="ion-md-more"/>
+                        <a className="ion-md-more" onClick={this.handleSidebarToggle} />
                     </div>
                 </header>
                 <aside className={sidebarClass}>
