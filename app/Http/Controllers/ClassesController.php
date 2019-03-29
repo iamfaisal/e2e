@@ -74,7 +74,8 @@ class ClassesController extends Controller
     public function show(Lesson $class)
     {
         return response()->json([
-            'class' => $class
+            'class' => $class,
+            'sponsors' => $class->sponsors
         ], 200);
     }
 
