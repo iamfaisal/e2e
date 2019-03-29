@@ -154,7 +154,10 @@ class ClassesController extends Controller
         $approval = new Approval($approvalData);
         $class->approval()->save($approval);
 
-        $data = ['status' => $request->get('status')];
+        $data = [
+            'status' => $request->get('status'),
+            'is_approved' => $request->get('status') === "Approved"
+        ];
         if($request->hasFile('flyer'))
         {
             $data['flyer'] = $this->handleFileUpload($request->file('flyer'));
@@ -185,7 +188,10 @@ class ClassesController extends Controller
         $class->cancellation()->delete();
         $cancellation = new Cancellation($cancellationData);
         $class->cancellation()->save($cancellation);
-        $class->update(['status' => 'Cancelled']);
+        $class->update([
+            'status' => 'Cancelled',
+            'is_cancelled' => $request->get('status') === "Cancelled"
+        ]);
         return response()->json([
             'class' => $class
         ], 200);
