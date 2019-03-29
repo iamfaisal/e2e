@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClassesController extends Controller
 {
@@ -15,7 +16,7 @@ class ClassesController extends Controller
      */
     public function index(Request $request)
     {
-        $user = auth('api')->user();
+        $user = Auth::Guard('api')->user();
         $classes = Lesson::with('course', 'user', 'venue')
             ->orderBy('created_at', 'desc')
             ->when($user->isJust("instructor") && $request->fromInstructor, function ($query) use($user) {
@@ -100,6 +101,8 @@ class ClassesController extends Controller
             'status' => 'New'
         ];
         $class->update($data);
+        // handle sponsors
+
         return response()->json([
             'class' => $class
         ], 200);
