@@ -40,6 +40,10 @@ import Instructors from "./pages/instructors";
 import CreateInstructor from "./pages/instructors/create";
 import EditInstructor from "./pages/instructors/edit";
 
+import MyClasses from "./pages/my-classes";
+import CreateMyClass from "./pages/my-classes/create";
+import EditMyClass from "./pages/my-classes/edit";
+
 import Materials from "./pages/materials";
 
 import MyVenues from "./pages/my-venues";
@@ -206,13 +210,28 @@ const routes = [
         exact: true
     },
     {
-        path: "/my-venues",
-        component: requireAuth(MyVenues),
+        path: "/my-classes",
+        component: requireAuth(MyClasses),
+        exact: true
+    },
+    {
+        path: "/my-classes/create",
+        component: requireAuth(CreateMyClass),
+        exact: true
+    },
+    {
+        path: "/my-classes/edit/:class",
+        component: requireAuth(EditMyClass),
         exact: true
     },
     {
         path: "/course-materials",
         component: requireAuth(Materials),
+        exact: true
+    },
+    {
+        path: "/my-venues",
+        component: requireAuth(MyVenues),
         exact: true
     },
     {

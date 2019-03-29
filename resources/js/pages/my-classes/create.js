@@ -1,22 +1,20 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import { read, create } from "../../helpers/resource";
 
-class EditClass extends Component {
+class CreateClass extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            id: props.match.params.class,
             loading: false,
-            dataLoaded: false,
             fields: {
                 instructor: "",
                 course_id: "",
                 venue_id: "",
-                start_date: "",
-                end_date: "",
+                start_date_time: "",
+                end_date_time: "",
                 price: "",
                 capacity: "",
                 alternate_instructor: "",
@@ -41,20 +39,6 @@ class EditClass extends Component {
     }
 
     componentDidMount() {
-        const { id } = this.state;
-
-        read('classes/' + id, {})
-            .then(res => {
-                this.setState({
-                    loaded: true,
-                    fields: res.data.class,
-                    dataLoaded: true
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-
         read('courses/', {})
             .then(res => {
                 this.setState({
@@ -115,7 +99,7 @@ class EditClass extends Component {
                         isFormValid: false
                     });
             })
-            .catch(err => {
+            .catch((err) => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Create Class";
                 this.setState({
@@ -127,18 +111,16 @@ class EditClass extends Component {
     }
 
     render() {
-        const { dataLoaded, fields, courses, instructors, venues, loading, isFormValid, formValidationData } = this.state;
-        
-        if (!dataLoaded) return false;
+        const { fields, courses, instructors, venues, loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Edit Class</h2>
+                    <h2>Create Class</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
-                    {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
+                {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
                         <label>
                             <span>Course</span>
@@ -179,13 +161,13 @@ class EditClass extends Component {
                         <TextField
                             onChange={this.handleChange}
                             name="start_date_time"
-                            value={fields.start_date}
+                            value={fields.start_date_time}
                             labelText="Start"
                         />
                         <TextField
                             onChange={this.handleChange}
                             name="end_date_time"
-                            value={fields.end_date}
+                            value={fields.end_date_time}
                             labelText="End"
                         />
                         <TextField
@@ -242,11 +224,11 @@ class EditClass extends Component {
                         />
                     </fieldset>
 
-                    <button className="button">Update Class</button>
+                    <button className="button">Create Class</button>
                 </form>
             </div>
         );
     }
 }
 
-export default EditClass;
+export default CreateClass;

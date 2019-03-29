@@ -15,8 +15,8 @@ class EditClass extends Component {
                 instructor: "",
                 course_id: "",
                 venue_id: "",
-                start_date: "",
-                end_date: "",
+                start_date_time: "",
+                end_date_time: "",
                 price: "",
                 capacity: "",
                 alternate_instructor: "",
@@ -45,10 +45,11 @@ class EditClass extends Component {
 
         read('classes/' + id, {})
             .then(res => {
+                console.log(res.data);
                 this.setState({
                     loaded: true,
                     fields: res.data.class,
-                    dataLoaded: true
+                    loading: false
                 });
             })
             .catch((err) => {
@@ -115,7 +116,7 @@ class EditClass extends Component {
                         isFormValid: false
                     });
             })
-            .catch(err => {
+            .catch((err) => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Create Class";
                 this.setState({
@@ -179,13 +180,13 @@ class EditClass extends Component {
                         <TextField
                             onChange={this.handleChange}
                             name="start_date_time"
-                            value={fields.start_date}
+                            value={fields.start_date_time}
                             labelText="Start"
                         />
                         <TextField
                             onChange={this.handleChange}
                             name="end_date_time"
-                            value={fields.end_date}
+                            value={fields.end_date_time}
                             labelText="End"
                         />
                         <TextField
