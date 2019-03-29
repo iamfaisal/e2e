@@ -91,6 +91,14 @@ export function setAuthTokenInLocalStorage(user, token, acl) {
     }
 }
 
+export function handleSession(response) {
+    if (response && response.message && response.message === "Request failed with status code 500") {
+        setAuthTokenInLocalStorage();
+        setAuthorizationToken();
+        window.location.reload();
+    }
+}
+
 export function logout() {
     axios.post("/api/auth/logout")
         .then((response) => {

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { handleSession } from "./auth";
 
 export function create(dataType, params, files) {
     let headers = {};
@@ -33,6 +34,7 @@ export function read(dataType, params, files) {
             res(response);
         })
         .catch((err) => {
+            handleSession(err);
             rej(err);
         })
     })
