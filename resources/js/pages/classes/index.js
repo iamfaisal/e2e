@@ -24,7 +24,7 @@ class Classes extends Component {
     }
 
     componentDidMount() {
-        this.getData();
+        this.getData({});
 
         read('courses/', {})
             .then(res => {
@@ -47,10 +47,10 @@ class Classes extends Component {
             });
     }
 
-    getData() {
+    getData(params = {}) {
         this.setState({ loader: true });
 
-        read('classes', {})
+        read('classes', params)
             .then(res => {
                 this.setState({
                     classes: res.data.classes,
@@ -114,10 +114,11 @@ class Classes extends Component {
     }
 
     toggleArchived(e) {
-        let { filters } = this.state;
-        filters["is_deleted"] = "0";
-        if (e.target.checked) filters["is_deleted"] = "1";
-        this.setState({ filters: filters });
+        if (e.target.checked) {
+            this.getData({ params: { archived: true } });
+        } else {
+            this.getData({});
+        }
     }
 
     render() {

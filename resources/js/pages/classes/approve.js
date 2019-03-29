@@ -4,7 +4,7 @@ import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
 import { read, create } from "../../helpers/resource";
 
-class EditClass extends Component {
+class ApproveClass extends Component {
     constructor(props) {
         super(props);
 
@@ -290,11 +290,13 @@ class EditClass extends Component {
                         </div>
                     </div>
 
-                    <button className="button">Update Class</button>
+                    <button className="button">Need Review</button>
+                    <button className="button">Submit To State</button>
+                    <button className="button">Approve Class</button>
                 </form>
             </div>
         );
     }
 }
 
-export default EditClass;
+export default ApproveClass;
