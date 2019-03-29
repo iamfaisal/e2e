@@ -24,6 +24,7 @@ class ClassesController extends Controller
         $user = Auth::Guard('api')->user();
         $classes = Lesson::with('course', 'user', 'venue')
             ->orderBy('created_at', 'desc')
+            ->where('is_deleted', false)
             ->when($request->archived, function ($query) use($currentDateTime) {
                 return $query->where('end_date', '<', $currentDateTime);
             }, function ($query) use($currentDateTime) {
@@ -206,7 +207,9 @@ class ClassesController extends Controller
      */
     public function destroy(Lesson $class)
     {
-        $class->delete();
+        $class->update([
+            'is_deleted' => true
+        ]);
         return response()->json([
             'class' => 'success'
         ], 200);
