@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class ClassesController extends Controller
 {
@@ -16,9 +17,11 @@ class ClassesController extends Controller
      */
     public function index(Request $request)
     {
+        $currentDateTime = Carbon::now()->toDateTimeString();
         $user = Auth::Guard('api')->user();
         $classes = Lesson::with('course', 'user', 'venue')
             ->orderBy('created_at', 'desc')
+            ->where('end_date', '>=', $currentDateTime)
             ->when($user->isJust("instructor") && $request->fromInstructor, function ($query) use($user) {
                 return $query->where('user_id', $user->id);
             });
@@ -102,7 +105,17 @@ class ClassesController extends Controller
         ];
         $class->update($data);
         // handle sponsors
-
+        if($request->has('sponsors')) {
+            $class->sponsors()->sync($request->sponsors);
+        }
+        if($request->hasFile('flyer'))
+        {
+            $data['flyer'] = $this->handleFileUpload($request->file('flyer'));
+        }
+        if($request->hasFile('flyer_image'))
+        {
+            $data['flyer_image'] = $this->handleFileUpload($request->file('flyer_image'));
+        }
         return response()->json([
             'class' => $class
         ], 200);
@@ -121,5 +134,18 @@ class ClassesController extends Controller
         return response()->json([
             'class' => 'success'
         ], 200);
+    }
+
+    /**
+     * @param $file
+     * @return string
+     */
+    private function handleFileUpload($file) {
+        $filenameonly = str_replace($file->getClientOriginalExtension(), "", $file->getClientOriginalName());
+        $filename = time() . '-' . Str::slug($filenameonly, '-') .'.' . $file->getClientOriginalExtension();
+        $path = '/uploads/classes/';
+        $destinationPath = public_path() . $path;
+        $file->move($destinationPath, $filename);
+        return $path . $filename;
     }
 }

@@ -163,7 +163,8 @@ class CoursesController extends Controller
      * @return string
      */
     private function handleFileUpload($file) {
-        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $filenameonly = str_replace($file->getClientOriginalExtension(), "", $file->getClientOriginalName());
+        $filename = time() . '-' . Str::slug($filenameonly, '-') .'.' . $file->getClientOriginalExtension();
         $path = '/uploads/courses/';
         $destinationPath = public_path() . $path;
         $file->move($destinationPath, $filename);
