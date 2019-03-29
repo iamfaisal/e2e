@@ -137,7 +137,6 @@ class ClassesController extends Controller
     {
         $approvalData = [
             'lesson_id' => $class->id,
-            'class_date' => $request->get('class_date') ? true : false,
             'start_time' => $request->get('start_time') ? true : false,
             'end_time' => $request->get('end_time') ? true : false,
             'course' => $request->get('course') ? true : false,

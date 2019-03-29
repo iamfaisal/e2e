@@ -12,7 +12,7 @@ class Approval extends Model
      * @var array
      */
     protected $fillable = [
-        'lesson_id', 'class_date', 'start_time', 'end_time', 'course', 'venue', 'price',
+        'lesson_id', 'start_time', 'end_time', 'course', 'venue', 'price',
         'capacity', 'alternate_instructor', 'guest_speaker', 'sponsors', 'flyer_image', 'notes',
     ];
 
