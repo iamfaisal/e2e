@@ -16,7 +16,6 @@ class CreateCancellationsTable extends Migration
         Schema::create('cancellations', function (Blueprint $table) {
             $table->integer('lesson_id')->unsigned()->nullable();
             $table->foreign('lesson_id')->references('id')->on('lessons');
-            $table->text('notes')->nullable();
             $table->text('reason')->nullable();
             $table->timestamps();
         });
