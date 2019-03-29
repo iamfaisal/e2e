@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
-import { read, create } from "../../helpers/resource";
+import { read, update } from "../../helpers/resource";
 
 class EditClass extends Component {
     constructor(props) {
@@ -117,6 +117,8 @@ class EditClass extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
+        const { id } = this.state;
+
         this.setState({
             loading: true
         });
@@ -124,7 +126,7 @@ class EditClass extends Component {
         let data = new FormData(e.target);
         data.append("_method", "PUT");
 
-        create('classes', data, true)
+        update('classes/' + id, data, true)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/classes")
