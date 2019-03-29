@@ -12,7 +12,7 @@ class Cancellation extends Model
      * @var array
      */
     protected $fillable = [
-        'lesson_id', 'notes',
+        'lesson_id', 'notes', 'reason'
     ];
 
     public function lesson()

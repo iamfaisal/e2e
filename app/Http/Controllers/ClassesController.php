@@ -185,7 +185,10 @@ class ClassesController extends Controller
     public function cancel(Request $request)
     {
         $class = Lesson::find($request->class_id);
-        $cancellationData = ['notes' => $request->get('notes')];
+        $cancellationData = [
+            'notes' => $request->get('notes'),
+            'reason' => $request->get('reason')
+        ];
         $class->cancellation()->delete();
         $cancellation = new Cancellation($cancellationData);
         $class->cancellation()->save($cancellation);
