@@ -134,7 +134,7 @@ class ClassesController extends Controller
      */
     public function approve(Request $request)
     {
-        $class = Lesson::find($request->id);
+        $class = Lesson::find($request->class_id);
         $approvalData = [
             'lesson_id' => $class->id,
             'start_time' => $request->get('start_time') ? true : false,
@@ -180,7 +180,7 @@ class ClassesController extends Controller
      */
     public function cancel(Request $request)
     {
-        $class = Lesson::find($request->id);
+        $class = Lesson::find($request->class_id);
         $cancellationData = ['notes' => $request->get('notes')];
         $class->cancellation()->delete();
         $cancellation = new Cancellation($cancellationData);
