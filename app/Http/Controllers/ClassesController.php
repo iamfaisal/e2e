@@ -27,7 +27,7 @@ class ClassesController extends Controller
                 return $query->where('user_id', $user->id);
             });
 
-        // show only approved, show only cancelled
+        // show only approved, show only cancelled, show archived
 
         return response()->json([
             'classes' => $classes->get()
@@ -105,10 +105,6 @@ class ClassesController extends Controller
             'status' => 'New'
         ];
         $class->update($data);
-        // handle sponsors
-        if($request->has('sponsors')) {
-            $class->sponsors()->sync($request->sponsors);
-        }
         if($request->hasFile('flyer'))
         {
             $data['flyer'] = $this->handleFileUpload($request->file('flyer'));
@@ -116,6 +112,9 @@ class ClassesController extends Controller
         if($request->hasFile('flyer_image'))
         {
             $data['flyer_image'] = $this->handleFileUpload($request->file('flyer_image'));
+        }
+        if($request->has('sponsors')) {
+            $class->sponsors()->sync($request->sponsors);
         }
         return response()->json([
             'class' => $class
