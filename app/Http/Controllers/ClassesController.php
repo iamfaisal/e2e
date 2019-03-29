@@ -163,9 +163,9 @@ class ClassesController extends Controller
         {
             $data['flyer_image'] = $this->handleFileUpload($request->file('flyer_image'));
         }
-        if($request->hasFile('doc'))
+        if($request->hasFile('docs'))
         {
-            $data['doc'] = $this->handleFileUpload($request->file('doc'));
+            $data['docs'] = $this->handleFileUpload($request->file('docs'));
         }
         $class->update($data);
 
