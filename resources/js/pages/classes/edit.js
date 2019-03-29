@@ -121,7 +121,10 @@ class EditClass extends Component {
             loading: true
         });
 
-        create('classes', new FormData(e.target), true)
+        let data = new FormData(e.target);
+        data.append("_method", "PUT");
+
+        create('classes', data, true)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/classes")
