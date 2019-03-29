@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TextField from "../../common/TextField";
-import Select from "../../common/Select";
+import TextArea from "../../common/TextArea";
+import CheckBox from "../../common/CheckBox";
 import FileInput from "../../common/FileInput";
 import { read, create } from "../../helpers/resource";
 
@@ -89,16 +90,6 @@ class ApproveClass extends Component {
             .catch(err => {
                 console.log(err);
             });
-
-        read('sponsors', { params: { role: 'admin' } })
-            .then(res => {
-                this.setState({
-                    sponsors: res.data.sponsors
-                });
-            })
-            .catch(err => {
-                console.log(err);
-            });
     }
 
     handleChange(name, value) {
@@ -141,135 +132,116 @@ class ApproveClass extends Component {
             });
     }
 
+    getItem(ar, id) {
+        let item = {};
+        if (ar.length) {
+            item = ar.filter(itm => itm.id == id);
+            if (item.length) item = item[0];
+        }
+        return item;
+    }
+
     render() {
         const { dataLoaded, fields, courses, instructors, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
         
         if (!dataLoaded) return false;
 
+        const instructor = this.getItem(instructors, fields.user_id);
+        const course = this.getItem(courses, fields.course_id);
+        const venue = this.getItem(venues, fields.venue_id);
+
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Edit Class</h2>
+                    <h2>Approve Class</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                     {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
-                    <fieldset className="fields horizontal">
-                        <label>
-                            <span>Course</span>
-                            <Select
-                                onChange={v => fields.course = v}
-                                name="course"
-                                items={courses}
-                                id="id"
-                                val="title"
-                            />
-                        </label>
-                        <label>
-                            <span>Instructor</span>
-                            <Select
-                                onChange={v => fields.instructor = v}
-                                name="instructor"
-                                items={instructors}
-                                id="id"
-                                val="name"
-                            />
-                        </label>
-                        <label>
-                            <span>Venue</span>
-                            <Select
-                                onChange={v => fields.venue = v}
-                                name="venue"
-                                items={venues}
-                                id="id"
-                                val="name"
-                            />
-                        </label>
-                        <TextField
-                            onChange={this.handleChange}
-                            name="capacity"
-                            value={fields.capacity}
-                            labelText="Capacity"
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="start_date_time"
-                            value={fields.start_date}
-                            labelText="Start"
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="end_date_time"
-                            value={fields.end_date}
-                            labelText="End"
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="price"
-                            value={fields.price}
-                            labelText="Cost"
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="alternate_instructor"
-                            value={fields.alternate_instructor}
-                            labelText="Alternate Instructor"
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="guest_speaker"
-                            value={fields.guest_speaker}
-                            labelText="Guest Speaker"
-                        />
-                    </fieldset>
 
-                    <legend>RSVP Contact Information</legend>
-                    <fieldset className="fields horizontal">
-                        <TextField
-                            onChange={this.handleChange}
-                            name="rsvp_contact"
-                            value={fields.rsvp_contact}
-                            labelText="Name"
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="rsvp_email"
-                            value={fields.rsvp_email}
-                            labelText="Email"
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="rsvp_phone"
-                            value={fields.rsvp_phone}
-                            labelText="Phone"
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="rsvp_link_text"
-                            value={fields.rsvp_link_text}
-                            labelText="Link Text"
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="rsvp_link_url"
-                            value={fields.rsvp_link_url}
-                            labelText="Link URL"
-                        />
-                    </fieldset>
+                    <ul className="fieldsList">
+                        <li>
+                            <b>Instructor:</b>
+                            <span>{instructor.name}</span>
+                            <CheckBox name="instructor" labelText="Needs Attention" />
+                        </li>
+                        <li>
+                            <b>Start Time:</b>
+                            <span>{fields.start_date}</span>
+                            <CheckBox name="start_date" labelText="Needs Attention" />
+                        </li>
+                        <li>
+                            <b>End Time:</b>
+                            <span>{fields.end_date}</span>
+                            <CheckBox name="end_date" labelText="Needs Attention" />
+                        </li>
+                        <li>
+                            <b>Course:</b>
+                            <span>{course.title}</span>
+                            <CheckBox name="course" labelText="Needs Attention" />
+                        </li>
+                        <li>
+                            <b>Venue:</b>
+                            <span>{venue.name}</span>
+                            <CheckBox name="venue" labelText="Needs Attention" />
+                        </li>
+                        <li>
+                            <b>Cost:</b>
+                            <span>{fields.price}</span>
+                            <CheckBox name="price" labelText="Needs Attention" />
+                        </li>
+                        <li>
+                            <b>Capacity:</b>
+                            <span>{fields.capacity}</span>
+                            <CheckBox name="capacity" labelText="Needs Attention" />
+                        </li>
+                        <li>
+                            <b>Alternate Instructor:</b>
+                            <span>{fields.alternate_instructor}</span>
+                            <CheckBox name="alternate_instructor" labelText="Needs Attention" />
+                        </li>
+                        <li>
+                            <b>Guest Speaker:</b>
+                            <span>{fields.guest_speaker}</span>
+                            <CheckBox name="guest_speaker" labelText="Needs Attention" />
+                        </li>
+                    </ul>
 
-                    <legend>Sponsors</legend>
-                    <fieldset className="fields horizontal">
-                        <label>
-                            <Select
-                                onChange={v => fields.course = v}
-                                name="sponsors[]"
-                                items={sponsors}
-                                id="id"
-                                val="first_name|last_name"
-                                multiple={true}
-                            />
-                        </label>
-                    </fieldset>
+                    <div className="class_id_gen">
+                        <TextField
+                            onChange={this.handleChange}
+                            name="class_id"
+                            value={fields.class_id}
+                            labelText="State Class ID"
+                        />
+                        <button className="button">Generate ID</button>
+                    </div>
+
+                    <legend>Sponsors <CheckBox name="sponsor" labelText="Needs Attention" /></legend>
+                    <div className="tablewrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Company</th>
+                                    <th>Contact Name</th>
+                                    <th>Email Address</th>
+                                    <th>Phone Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    fields.sponsors.map((sponsor, i) => {
+                                        return <tr key={i}>
+                                            <td>{sponsor.company}</td>
+                                            <td>{sponsor.first_name + " " + sponsor.last_name}</td>
+                                            <td>{sponsor.address}</td>
+                                            <td>{sponsor.phone}</td>
+                                        </tr>
+                                    })
+                                }
+                            </tbody>
+                        </table>
+                    </div>
 
                     <div className="row">
                         <div className="col-lg-4">
@@ -279,6 +251,7 @@ class ApproveClass extends Component {
                                 labelText="Class Flyer"
                                 value={fields.flyer}
                             />
+                            <CheckBox name="flyer" labelText="Needs Attention" />
                         </div>
                         <div className="col-lg-4">
                             <FileInput
@@ -287,12 +260,32 @@ class ApproveClass extends Component {
                                 labelText="Class Flyer Image"
                                 value={fields.flyer_image}
                             />
+                            <CheckBox name="flyer_image" labelText="Needs Attention" />
+                        </div>
+                        <div className="col-lg-4">
+                            <FileInput
+                                onChange={(event) => this.handleChange(event)}
+                                name="flyer_docs"
+                                labelText="Class Docs"
+                                value={fields.flyer_docs}
+                            />
                         </div>
                     </div>
 
-                    <button className="button">Need Review</button>
-                    <button className="button">Submit To State</button>
-                    <button className="button">Approve Class</button>
+                    <legend>Notes to Instructor</legend>
+                    <fieldset className="fields horizontal">
+                        <TextArea
+                            onChange={(event) => this.handleChange(event)}
+                            name="notes"
+                            value={fields.notes}
+                        />
+                    </fieldset>
+
+                    <div className="button-group">
+                        <button className="button">Need Review</button>
+                        <button className="button">Submit To State</button>
+                        <button className="button">Approve Class</button>
+                    </div>
                 </form>
             </div>
         );
