@@ -248,6 +248,8 @@ select:not([multiple]) {
   //Instead of the line below you could use @include box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
   box-shadow: 0 2px 8px $black_7_5;
   overflow-x: auto;
+  margin-bottom: 30px;
+
   .loader {
     width: 30px;
     height: 30px;
@@ -1059,4 +1061,70 @@ form.loading {
 	color: #fff;
 	margin-left: 10px;
 	cursor: pointer;
+}
+
+.fieldsList {
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+  font-size: 18px;
+}
+.fieldsList li {
+  display: flex;
+  padding: 3px 0;
+}
+.fieldsList li b {
+  min-width: 200px;
+}
+.fieldsList li label {
+  margin-left: auto;
+  user-select: none;
+  font-size: 16px;
+}
+.fieldsList li label span {
+  &:before, &:after {
+    margin-top: 2px;
+  }
+}
+
+legend .checkbox {
+  float: right;
+	font-size: 16px;
+	font-weight: 400;
+  color: $color_storm_gray_approx;
+
+  span {
+    &:before, &:after {
+      margin-top: 2px;
+    }
+  }
+}
+
+.button-group .button:not(:last-child) {
+  margin-right: 15px;
+}
+
+.uploader + .checkbox {
+  display: flex;
+	justify-content: center;
+	position: relative;
+	top: -15px;
+}
+
+.class_id_gen {
+  display: flex;
+  margin-bottom: 30px;
+}
+.class_id_gen span {
+  display: none;
+}
+.class_id_gen label {
+  flex-grow: 1;
+}
+.class_id_gen input {
+  height: 40px !important;
+  margin-bottom: 0 !important;
+}
+.class_id_gen button {
+  margin-left: 10px;
 }
