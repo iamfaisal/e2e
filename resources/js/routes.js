@@ -31,6 +31,7 @@ import EditVenue from "./pages/venues/edit";
 import Classes from "./pages/classes";
 import CreateClass from "./pages/classes/create";
 import EditClass from "./pages/classes/edit";
+import ApproveClass from "./pages/classes/approve";
 
 import Sponsors from "./pages/sponsors";
 import CreateSponsor from "./pages/sponsors/create";
@@ -162,6 +163,11 @@ const routes = [
     {
         path: "/classes/edit/:class",
         component: requireAuth(EditClass),
+        exact: true
+    },
+    {
+        path: "/classes/approve/:class",
+        component: requireAuth(ApproveClass),
         exact: true
     },
     {

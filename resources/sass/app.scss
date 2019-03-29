@@ -1038,3 +1038,25 @@ form.loading {
 .material_actions a {
   color: #ee252f;
 }
+
+.addItem {
+	margin: 10px 0 20px;
+	display: flex;
+	align-items: center;
+}
+.addItem select {
+	max-width: 300px;
+	margin: 0;
+}
+.addItem button {
+	background: #ee252f;
+	border: none;
+	border-radius: 50%;
+	padding: 0;
+	width: 24px;
+	font-size: 15px;
+	line-height: 24px;
+	color: #fff;
+	margin-left: 10px;
+	cursor: pointer;
+}

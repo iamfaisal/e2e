@@ -74,6 +74,7 @@ class Classes extends Component {
     renderActions(course) {
         return (
             <div className="actions">
+                <Link className="ion-md-checkmark" to={"/classes/approve/" + course.id} />
                 <Link className="ion-md-create" to={"/classes/edit/" + course.id} />
                 <a className="ion-md-close" onClick={e => this.deleteClass(e, course.id)} />
             </div>

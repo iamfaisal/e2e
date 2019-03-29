@@ -69,7 +69,9 @@ class Select extends Component {
                     items.map((item, i) => {
                         return (
                             <option key={i} value={item[id]}>
-                                {item[val]}
+                                {val.split('|').map(element => {
+                                    return item[element] + " ";
+                                })}
                             </option>
                         )
                     })
