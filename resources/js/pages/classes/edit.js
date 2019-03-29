@@ -272,6 +272,7 @@ class EditClass extends Component {
                                 id="id"
                                 val="first_name|last_name"
                                 multiple={true}
+                                value={fields.sponsors.map(({ id }) => id)}
                             />
                         </label>
                     </fieldset>
