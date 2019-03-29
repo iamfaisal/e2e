@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Regulation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class RegulationsController extends Controller
 {

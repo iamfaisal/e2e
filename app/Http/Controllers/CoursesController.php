@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Category;
 use App\Regulation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Course;
 
 class CoursesController extends Controller

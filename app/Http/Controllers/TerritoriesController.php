@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Territory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TerritoriesController extends Controller
 {
