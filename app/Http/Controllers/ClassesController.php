@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Approval;
 use App\Lesson;
+use App\Approval;
+use App\Cancellation;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 
 class ClassesController extends Controller
 {
@@ -154,7 +155,7 @@ class ClassesController extends Controller
         $approval = new Approval($approvalData);
         $class->approval()->save($approval);
 
-        $data = ['status' => 'Approved'];
+        $data = ['status' => $request->get('status')];
         if($request->hasFile('flyer'))
         {
             $data['flyer'] = $this->handleFileUpload($request->file('flyer'));
@@ -181,7 +182,11 @@ class ClassesController extends Controller
      */
     public function cancel(Request $request, Lesson $class)
     {
-
+        $cancellationData = ['notes' => $request->get('notes')];
+        $class->cancellation()->delete();
+        $cancellation = new Cancellation($cancellationData);
+        $class->cancellation()->save($cancellation);
+        $class->update(['status' => 'Cancelled']);
         return response()->json([
             'class' => $class
         ], 200);
