@@ -22,9 +22,10 @@ class ClassesController extends Controller
         $user = Auth::Guard('api')->user();
         $classes = Lesson::with('course', 'user', 'venue')
             ->orderBy('created_at', 'desc')
-            ->where('end_date', '>=', $currentDateTime)
             ->when($request->archived, function ($query) use($currentDateTime) {
                 return $query->where('end_date', '<', $currentDateTime);
+            }, function ($query) use($currentDateTime) {
+                return $query->where('end_date', '>=', $currentDateTime);
             })
             ->when($user->isJust("instructor") && $request->fromInstructor, function ($query) use($user) {
                 return $query->where('user_id', $user->id);
