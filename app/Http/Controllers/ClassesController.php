@@ -104,7 +104,6 @@ class ClassesController extends Controller
             'rsvp_link_url' => $request->get('rsvp_link_url'),
             'status' => 'New'
         ];
-        $class->update($data);
         if($request->hasFile('flyer'))
         {
             $data['flyer'] = $this->handleFileUpload($request->file('flyer'));
@@ -116,6 +115,7 @@ class ClassesController extends Controller
         if($request->has('sponsors')) {
             $class->sponsors()->sync($request->sponsors);
         }
+        $class->update($data);
         return response()->json([
             'class' => $class
         ], 200);
