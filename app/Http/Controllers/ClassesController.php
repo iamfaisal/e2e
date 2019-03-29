@@ -130,11 +130,11 @@ class ClassesController extends Controller
 
     /**
      * @param Request $request
-     * @param Lesson $class
      * @return \Illuminate\Http\JsonResponse
      */
-    public function approve(Request $request, Lesson $class)
+    public function approve(Request $request)
     {
+        $class = Lesson::find($request->id);
         $approvalData = [
             'lesson_id' => $class->id,
             'start_time' => $request->get('start_time') ? true : false,
@@ -176,11 +176,11 @@ class ClassesController extends Controller
 
     /**
      * @param Request $request
-     * @param Lesson $class
      * @return \Illuminate\Http\JsonResponse
      */
-    public function cancel(Request $request, Lesson $class)
+    public function cancel(Request $request)
     {
+        $class = Lesson::find($request->id);
         $cancellationData = ['notes' => $request->get('notes')];
         $class->cancellation()->delete();
         $cancellation = new Cancellation($cancellationData);
