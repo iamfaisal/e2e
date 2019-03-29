@@ -146,7 +146,7 @@ class ClassesController extends Controller
             'alternate_instructor' => $request->get('alternate_instructor') ? true : false,
             'guest_speaker' => $request->get('guest_speaker') ? true : false,
             'sponsors' => $request->get('sponsors') ? true : false,
-            'flyer_image' => $request->get('flyer_image') ? true : false,
+            'flyer_image' => $request->get('flyer_image_cb') ? true : false,
             'notes' => $request->get('notes')
         ];
 
