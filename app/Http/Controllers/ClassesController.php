@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Approval;
 use App\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -121,6 +122,66 @@ class ClassesController extends Controller
             $class->sponsors()->sync($request->sponsors);
         }
         $class->update($data);
+        return response()->json([
+            'class' => $class
+        ], 200);
+    }
+
+    /**
+     * @param Request $request
+     * @param Lesson $class
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function approve(Request $request, Lesson $class)
+    {
+        $approvalData = [
+            'lesson_id' => $class->id,
+            'class_date' => $request->get('class_date') ? true : false,
+            'start_time' => $request->get('start_time') ? true : false,
+            'end_time' => $request->get('end_time') ? true : false,
+            'course' => $request->get('course') ? true : false,
+            'venue' => $request->get('venue') ? true : false,
+            'price' => $request->get('price') ? true : false,
+            'capacity' => $request->get('capacity') ? true : false,
+            'alternate_instructor' => $request->get('alternate_instructor') ? true : false,
+            'guest_speaker' => $request->get('guest_speaker') ? true : false,
+            'sponsors' => $request->get('sponsors') ? true : false,
+            'flyer_image' => $request->get('flyer_image') ? true : false,
+            'notes' => $request->get('notes')
+        ];
+
+        $class->approval()->delete();
+        $approval = new Approval($approvalData);
+        $class->approval()->save($approval);
+
+        $data = ['status' => 'Approved'];
+        if($request->hasFile('flyer'))
+        {
+            $data['flyer'] = $this->handleFileUpload($request->file('flyer'));
+        }
+        if($request->hasFile('flyer_image'))
+        {
+            $data['flyer_image'] = $this->handleFileUpload($request->file('flyer_image'));
+        }
+        if($request->hasFile('doc'))
+        {
+            $data['doc'] = $this->handleFileUpload($request->file('doc'));
+        }
+        $class->update($data);
+
+        return response()->json([
+            'class' => $class
+        ], 200);
+    }
+
+    /**
+     * @param Request $request
+     * @param Lesson $class
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function cancel(Request $request, Lesson $class)
+    {
+
         return response()->json([
             'class' => $class
         ], 200);

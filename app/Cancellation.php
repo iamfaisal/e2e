@@ -14,4 +14,9 @@ class Cancellation extends Model
     protected $fillable = [
         'lesson_id', 'notes',
     ];
+
+    public function lesson()
+    {
+        return $this->belongsTo(Lesson::class);
+    }
 }
