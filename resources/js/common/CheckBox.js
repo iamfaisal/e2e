@@ -15,8 +15,8 @@ class CheckBox extends Component {
         this.setState({
             value: value
         }, () => {
-            if(this.props.onChange){
-                this.props.onChange(event);
+            if(this.props.onChange) {
+                this.props.onChange(event, value);
             }
         });
     }

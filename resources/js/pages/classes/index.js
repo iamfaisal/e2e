@@ -71,27 +71,20 @@ class Classes extends Component {
         );
     }
 
-    renderActions(course) {
+    renderActions(clss) {
         return (
             <div className="actions">
-                <Link className="ion-md-checkmark" to={"/classes/approve/" + course.id} />
-                <Link className="ion-md-create" to={"/classes/edit/" + course.id} />
-                <a className="ion-md-close" onClick={e => this.deleteClass(e, course.id)} />
+                <Link className="ion-md-checkmark" to={"/classes/approve/" + clss.id} />
+                <Link className="ion-md-create" to={"/classes/edit/" + clss.id} />
+                <Link className="ion-md-hand" to={"/classes/cancel/" + clss.id} />
+                <a className="ion-md-close" onClick={e => this.deleteClass(e, clss.id)} />
             </div>
         );
     }
 
-    renderCategories(course) {
-        let categories = [];
-        course.categories.map((category) => {
-            categories.push(category.label);
-        });
-        return categories.join(", ");
-    }
-
-    deleteClass(e, course) {
+    deleteClass(e, clss) {
         if (confirm('Do you really want to delete this Class?')) {
-            remove('classes/' + course, {})
+            remove('classes/' + clss, {})
                 .then(res => {
                     this.getData();
                 })
@@ -147,7 +140,7 @@ class Classes extends Component {
                 name: 'Actions',
                 cell: row => this.renderActions(row),
                 ignoreRowClick: true,
-                width: '100px',
+                width: '120px',
             }
         ];
 
@@ -164,7 +157,7 @@ class Classes extends Component {
 
                 <div className="filter">
                     <Select items={courses} placeholder="Select Course" id="id" val={"title"} onChange={value => this.setfilter(value, "course.id")} />
-                    <Select items={instructors} placeholder="Select Instuctor" id="id" val="name" onChange={value => this.setfilter(value, "user.id")} />
+                    <Select items={instructors} placeholder="Select Instructor" id="id" val="name" onChange={value => this.setfilter(value, "user.id")} />
 
                     <br />
 

@@ -3,14 +3,13 @@ import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import { read, create } from "../../helpers/resource";
 
-class CreateClass extends Component {
+class CreateMyClass extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             loading: false,
             fields: {
-                instructor: "",
                 course_id: "",
                 venue_id: "",
                 start_date_time: "",
@@ -29,7 +28,6 @@ class CreateClass extends Component {
                 docs: ""
             },
             courses: [],
-            instructors: [],
             venues: [],
             formValidationData: {}
         };
@@ -43,16 +41,6 @@ class CreateClass extends Component {
             .then(res => {
                 this.setState({
                     courses: res.data.courses
-                });
-            })
-            .catch(err => {
-                console.log(err);
-            });
-
-        read('users', { params: { role: 'instructor' } })
-            .then(res => {
-                this.setState({
-                    instructors: res.data.users
                 });
             })
             .catch(err => {
@@ -111,7 +99,7 @@ class CreateClass extends Component {
     }
 
     render() {
-        const { fields, courses, instructors, venues, loading, isFormValid, formValidationData } = this.state;
+        const { fields, courses, venues, loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
@@ -130,16 +118,6 @@ class CreateClass extends Component {
                                 items={courses}
                                 id="id"
                                 val="title"
-                            />
-                        </label>
-                        <label>
-                            <span>Instructor</span>
-                            <Select
-                                onChange={v => fields.instructor = v}
-                                name="instructor"
-                                items={instructors}
-                                id="id"
-                                val="name"
                             />
                         </label>
                         <label>
@@ -231,4 +209,4 @@ class CreateClass extends Component {
     }
 }
 
-export default CreateClass;
+export default CreateMyClass;

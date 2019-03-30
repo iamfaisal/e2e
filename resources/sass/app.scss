@@ -180,11 +180,9 @@ select:not([multiple]) {
   //Instead of the line below you could use @include user-select($select)
   user-select: none;
   margin-bottom: 10px;
+  overflow: hidden;
   input {
-    position: absolute;
-    left: 20px;
-    top: 100%;
-    opacity: 0;
+    display: none;
     &:not(:checked) + span:after {
       opacity: 0;
     }
@@ -751,7 +749,8 @@ table {
     line-height: 1;
     color: $color_french_gray_approx;
   }
-  input:not([type=checkbox]):not([type=radio]) {
+  input:not([type=checkbox]):not([type=radio]),
+  textarea {
     width: 100%;
     height: auto;
     border: 0;
@@ -829,8 +828,13 @@ table {
 figure:last-child {
   margin-bottom: 0;
 }
-input:not([type=radio]):not([type=checkbox]) {
+input:not([type=radio]):not([type=checkbox]),
+textarea {
   @extend %extend_2;
+}
+textarea {
+  resize: none;
+  min-height: 92px;
 }
 
 .RichEditor-root {

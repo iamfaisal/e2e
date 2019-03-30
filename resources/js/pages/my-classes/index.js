@@ -4,17 +4,14 @@ import { read, remove, filter, formatDate } from "../../helpers/resource";
 import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
 
-class Classes extends Component {
+class MyClasses extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             classes: [],
             courses: [],
-            instructors: [],
-            filters: {
-                is_deleted: "0"
-            },
+            filters: {},
             loader: true
         };
 
@@ -24,7 +21,7 @@ class Classes extends Component {
     }
 
     componentDidMount() {
-        this.getData();
+        this.getData({});
 
         read('courses/', {})
             .then(res => {
@@ -35,22 +32,14 @@ class Classes extends Component {
             .catch((err) => {
                 console.log(err);
             });
-
-        read('users', { params: { role: 'instructor' } })
-            .then(res => {
-                this.setState({
-                    instructors: res.data.users
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
     }
 
-    getData() {
+    getData(params = {}) {
         this.setState({ loader: true });
 
-        read('classes', {})
+        params.fromInstructor = true;
+
+        read('classes', { params: params })
             .then(res => {
                 this.setState({
                     classes: res.data.classes,
@@ -71,26 +60,19 @@ class Classes extends Component {
         );
     }
 
-    renderActions(course) {
+    renderActions(clss) {
         return (
             <div className="actions">
-                <Link className="ion-md-create" to={"/classes/edit/" + course.id} />
-                <a className="ion-md-close" onClick={e => this.deleteClass(e, course.id)} />
+                <Link className="ion-md-create" to={"/my-classes/edit/" + clss.id} />
+                <Link className="ion-md-hand" to={"/my-classes/cancel/" + clss.id} />
+                <a className="ion-md-close" onClick={e => this.deleteClass(e, clss.id)} />
             </div>
         );
     }
 
-    renderCategories(course) {
-        let categories = [];
-        course.categories.map((category) => {
-            categories.push(category.label);
-        });
-        return categories.join(", ");
-    }
-
-    deleteClass(e, course) {
+    deleteClass(e, clss) {
         if (confirm('Do you really want to delete this Class?')) {
-            remove('classes/' + course, {})
+            remove('classes/' + clss, {})
                 .then(res => {
                     this.getData();
                 })
@@ -113,15 +95,16 @@ class Classes extends Component {
     }
 
     toggleArchived(e) {
-        let { filters } = this.state;
-        filters["is_deleted"] = "0";
-        if (e.target.checked) filters["is_deleted"] = "1";
-        this.setState({ filters: filters });
+        if (e.target.checked) {
+            this.getData({ archived: true });
+        } else {
+            this.getData({});
+        }
     }
 
     render() {
         let { classes } = this.state;
-        const { filters, courses, instructors, loader } = this.state;
+        const { filters, courses, loader } = this.state;
 
         const columns = [
             {
@@ -145,7 +128,7 @@ class Classes extends Component {
                 name: 'Actions',
                 cell: row => this.renderActions(row),
                 ignoreRowClick: true,
-                width: '100px',
+                width: '120px',
             }
         ];
 
@@ -157,12 +140,11 @@ class Classes extends Component {
             <div>
                 <header className="pageheader">
                     <h2>Classes</h2>
-                    <Link className="button" to={"/classes/create"}>Add New Class</Link>
+                    <Link className="button" to={"/my-classes/create"}>Add New Class</Link>
                 </header>
 
                 <div className="filter">
                     <Select items={courses} placeholder="Select Course" id="id" val={"title"} onChange={value => this.setfilter(value, "course.id")} />
-                    <Select items={instructors} placeholder="Select Instuctor" id="id" val="name" onChange={value => this.setfilter(value, "user.id")} />
 
                     <br />
 
@@ -182,4 +164,4 @@ class Classes extends Component {
     }
 }
 
-export default Classes;
+export default MyClasses;
