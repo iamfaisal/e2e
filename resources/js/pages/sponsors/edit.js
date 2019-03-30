@@ -121,7 +121,7 @@ class EditSponsor extends Component {
         let data = new FormData(e.target);
         data.append("_method", "PUT");
 
-        update("users/" + id, data)
+        update("sponsors/" + id, data)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/sponsors")
