@@ -160,7 +160,7 @@ class ClassesController extends Controller
 
         $data = [
             'status' => $request->get('status'),
-            'is_approved' => $request->get('status') === "Approved"
+            'is_approved' => $request->get('status') === "Approved" ? true : false
         ];
         if($request->hasFile('flyer'))
         {
@@ -194,7 +194,7 @@ class ClassesController extends Controller
         $class->cancellation()->save($cancellation);
         $class->update([
             'status' => 'Cancelled',
-            'is_cancelled' => $request->get('status') === "Cancelled"
+            'is_cancelled' => true
         ]);
         return response()->json([
             'class' => $class
