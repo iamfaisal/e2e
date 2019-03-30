@@ -106,7 +106,7 @@ class MyClasses extends Component {
     }
 
     toggleArchived(e) {
-        if (e.target.checked) {
+        if (e === true || e.target.checked) {
             this.getData({ archived: true });
         } else {
             this.getData({});
@@ -122,7 +122,7 @@ class MyClasses extends Component {
     }
 
     render() {
-        let { classes, canAddNew } = this.state;
+        let { archived_cb, classes, canAddNew } = this.state;
         const { filters, courses, loader } = this.state;
 
         const columns = [
@@ -156,7 +156,7 @@ class MyClasses extends Component {
                     <h2>Classes</h2>
                     {canAddNew
                     ? <Link className="button" to={"/my-classes/create"}>Add New Class</Link>
-                    : <Link className="button" to={"/my-classes/create"}>Upload rosters to add a new class</Link>}
+                        : <button className="button" onClick={() => { if (archived_cb) archived_cb.checked = true; this.toggleArchived(true) }}>Upload rosters to add a new class</button>}
                 </header>
 
                 <div className="filter">
@@ -165,7 +165,7 @@ class MyClasses extends Component {
                     <br />
 
                     <label className="checkbox">
-                        <input type="checkbox" onChange={e => this.toggleArchived(e)} />
+                        <input type="checkbox" ref={el => this.state.archived_cb = el} onChange={e => this.toggleArchived(e)} />
                         <span>Show archived</span>
                     </label>
 
