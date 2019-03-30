@@ -12,7 +12,7 @@ class EditSponsor extends Component {
         this.state = {
             id: props.match.params.sponsor,
             loading: false,
-            loaded: true,
+            loaded: false,
             fields: {
                 user: "",
                 company: "",
