@@ -37,9 +37,9 @@ class CreateLessonsTable extends Migration
             $table->string('docs')->nullable();
             $table->string('roster')->nullable();
             $table->string('status');
-            $table->boolean('is_approved')->default(0);
-            $table->boolean('is_deleted')->default(0);
-            $table->boolean('is_cancelled')->default(0);
+            $table->boolean('is_approved')->default(false);
+            $table->boolean('is_deleted')->default(false);
+            $table->boolean('is_cancelled')->default(false);
             $table->timestamps();
         });
 
