@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { getAuthUser, getAuthUserName, logout } from "../helpers/auth";
-import { asset } from "../helpers/app";
+import { asset, getUserAvatar } from "../helpers/app";
 import { getRoles } from "../helpers/acl";
 import { links } from "./navigation";
 
@@ -55,6 +55,7 @@ class Header extends Component {
         let { sidebar_open } = this.state;
         const self = this;
         const sidebarClass = classnames("sidebar", { "collapse": !sidebar }, { "open": sidebar_open });
+        const user = getAuthUser();
         const userName = getAuthUserName();
 
         return (
@@ -86,8 +87,8 @@ class Header extends Component {
                         return roleLinks && roleLinks.length > 0 ? self.renderNavigation(role, roleLinks) : false;
                     })}
 
-                    <Link className="profile" to={"/users/edit/"+getAuthUser().id}>
-                        <img src={asset("images/user.jpg")}/>
+                    <Link className="profile" to={"/users/edit/"+user.id}>
+                        <img src={getUserAvatar(user)} alt={userName}/>
                         <h4>{userName}</h4>
                     </Link>
                 </aside>

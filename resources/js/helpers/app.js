@@ -1,5 +1,6 @@
-export function asset(resource) {
-    return window.location.origin + "/" + resource;
+export function asset(resource, hideTrailingSlash = false) {
+    const trailingSlash = !hideTrailingSlash ? "/" : "";
+    return window.location.origin + trailingSlash + resource;
 }
 
 export function getUserFullName(user) {
@@ -9,6 +10,14 @@ export function getUserFullName(user) {
         return firstName && lastName ? firstName + " " + lastName : user.name;
     }
     return user.name;
+}
+
+export function getUserAvatar(user) {
+    let avatar = "/images/user.jpg";
+    if (user && user.profile.avatar) {
+        avatar = user.profile.avatar;
+    }
+    return asset(avatar, true);
 }
 
 export function getuser() {
