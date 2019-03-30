@@ -15,11 +15,11 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
         $this->user = Auth::Guard('api')->user();
-        if (!$this->user) {
-            return response()->json([
-                'unauthenticated' => true
-            ], 403);
-        }
+//        if (!$this->user) {
+//            return response()->json([
+//                'unauthenticated' => true
+//            ], 403);
+//        }
     }
 
     /**
