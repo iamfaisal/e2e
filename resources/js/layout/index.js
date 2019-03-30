@@ -10,16 +10,24 @@ class Layout extends Component {
         super(props)
 
         this.state = {
-            page: props.location.pathname.split("/")[1]
+            page: props.location.pathname.split("/")[1],
+            sidebar: true
         }
+
+        this.sidebarHandler = this.sidebarHandler.bind(this);
+    }
+
+    sidebarHandler (change) {
+        this.setState({sidebar: change});
     }
 
     render() {
         const currentUser = getAuthUser();
-        const mainWrapperClass = classnames({"content": currentUser});
+        const { sidebar } = this.state;
+        const mainWrapperClass = classnames({"content": currentUser}, {"full": !sidebar});
         return (
             <Fragment>
-                {currentUser && <Header page={this.state.page}/>}
+                {currentUser && <Header sidebar={this.sidebarHandler} page={this.state.page}/>}
                 <main className={mainWrapperClass}>
                     {this.props.children}
                 </main>

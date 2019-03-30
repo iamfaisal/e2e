@@ -27,6 +27,7 @@ class Header extends Component {
         const { sidebar, sidebar_open } = this.state;
         if (window.innerWidth >= 768) {
             this.setState({ sidebar: !sidebar });
+            this.props.sidebar(!sidebar);
         } else {
             this.setState({ sidebar_open: !sidebar_open });
         }
