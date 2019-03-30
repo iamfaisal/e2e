@@ -37,7 +37,8 @@ class ApproveClass extends Component {
             courses: [],
             instructors: [],
             venues: [],
-            formValidationData: {}
+            formValidationData: {},
+            status: "Needs Review"
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -49,7 +50,6 @@ class ApproveClass extends Component {
 
         read('classes/' + id, {})
             .then(res => {
-                console.log(res.data);
                 let { fields } = this.state;
                 this.setState({
                     loaded: true,
@@ -108,11 +108,16 @@ class ApproveClass extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
+        let { status } = this.state;
+
         this.setState({
             loading: true
         });
 
-        create('classes', new FormData(e.target), true)
+        let data = new FormData(e.target);
+        data.append("status", status);
+
+        create('classes/approve', data, true)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/classes")
@@ -142,7 +147,7 @@ class ApproveClass extends Component {
     }
 
     render() {
-        const { dataLoaded, fields, courses, instructors, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
+        const { id, dataLoaded, fields, courses, instructors, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
         
         if (!dataLoaded) return false;
 
@@ -163,17 +168,16 @@ class ApproveClass extends Component {
                         <li>
                             <b>Instructor:</b>
                             <span>{instructor.name}</span>
-                            <CheckBox name="instructor" labelText="Needs Attention" />
                         </li>
                         <li>
                             <b>Start Time:</b>
                             <span>{fields.start_date}</span>
-                            <CheckBox name="start_date" labelText="Needs Attention" />
+                            <CheckBox name="start_time" labelText="Needs Attention" />
                         </li>
                         <li>
                             <b>End Time:</b>
                             <span>{fields.end_date}</span>
-                            <CheckBox name="end_date" labelText="Needs Attention" />
+                            <CheckBox name="end_time" labelText="Needs Attention" />
                         </li>
                         <li>
                             <b>Course:</b>
@@ -217,7 +221,7 @@ class ApproveClass extends Component {
                         <button className="button">Generate ID</button>
                     </div>
 
-                    <legend>Sponsors <CheckBox name="sponsor" labelText="Needs Attention" /></legend>
+                    <legend>Sponsors <CheckBox name="sponsors" labelText="Needs Attention" /></legend>
                     <div className="tablewrap">
                         <table>
                             <thead>
@@ -251,7 +255,7 @@ class ApproveClass extends Component {
                                 labelText="Class Flyer"
                                 value={fields.flyer}
                             />
-                            <CheckBox name="flyer" labelText="Needs Attention" />
+                            <CheckBox name="flyer_image_cb" labelText="Needs Attention" />
                         </div>
                         <div className="col-lg-4">
                             <FileInput
@@ -260,14 +264,13 @@ class ApproveClass extends Component {
                                 labelText="Class Flyer Image"
                                 value={fields.flyer_image}
                             />
-                            <CheckBox name="flyer_image" labelText="Needs Attention" />
                         </div>
                         <div className="col-lg-4">
                             <FileInput
                                 onChange={(event) => this.handleChange(event)}
-                                name="flyer_docs"
+                                name="docs"
                                 labelText="Class Docs"
-                                value={fields.flyer_docs}
+                                value={fields.docs}
                             />
                         </div>
                     </div>
@@ -282,10 +285,12 @@ class ApproveClass extends Component {
                     </fieldset>
 
                     <div className="button-group">
-                        <button className="button">Need Review</button>
-                        <button className="button">Submit To State</button>
-                        <button className="button">Approve Class</button>
+                        <button className="button" onClick={() => { this.state.status = "Needs Review"}}>Need Review</button>
+                        <button className="button" onClick={() => { this.state.status = "Submit"}}>Submit To State</button>
+                        <button className="button" onClick={() => { this.state.status = "Approved"}}>Approve Class</button>
                     </div>
+
+                    <input type="hidden" name="class_id" value={id} />
                 </form>
             </div>
         );

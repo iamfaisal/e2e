@@ -32,6 +32,7 @@ import Classes from "./pages/classes";
 import CreateClass from "./pages/classes/create";
 import EditClass from "./pages/classes/edit";
 import ApproveClass from "./pages/classes/approve";
+import CancelClass from "./pages/classes/cancel";
 
 import Sponsors from "./pages/sponsors";
 import CreateSponsor from "./pages/sponsors/create";
@@ -168,6 +169,11 @@ const routes = [
     {
         path: "/classes/approve/:class",
         component: requireAuth(ApproveClass),
+        exact: true
+    },
+    {
+        path: "/classes/cancel/:class",
+        component: requireAuth(CancelClass),
         exact: true
     },
     {
