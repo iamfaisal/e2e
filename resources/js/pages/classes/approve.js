@@ -286,7 +286,7 @@ class ApproveClass extends Component {
 
                     <div className="button-group">
                         <button className="button" onClick={() => { this.state.status = "Needs Review"}}>Need Review</button>
-                        <button className="button" onClick={() => { this.state.status = "Submit"}}>Submit To State</button>
+                        <button className="button" onClick={() => { this.state.status = "Submitted"}}>Submit To State</button>
                         <button className="button" onClick={() => { this.state.status = "Approved"}}>Approve Class</button>
                     </div>
 

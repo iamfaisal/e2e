@@ -4,6 +4,7 @@ import TextField from "../../common/TextField";
 import TextArea from "../../common/TextArea";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
+import DatePicker from "react-datepicker";
 import { read, create } from "../../helpers/resource";
 
 class CreateCourse extends Component {
@@ -61,6 +62,8 @@ class CreateCourse extends Component {
     }
 
     handleChange(name, value, valid) {
+        console.log(arguments);
+
         let { fields, formValidationData } = this.state;
         if (event && event.target.files) {
             fields[name] = event.target.files;
@@ -128,6 +131,15 @@ class CreateCourse extends Component {
                 <header className="pageheader">
                     <h2>Create Course</h2>
                 </header>
+
+                <DatePicker
+                    onChange={this.handleChange}
+                    showTimeSelect
+                    timeFormat="HH:mm"
+                    timeIntervals={15}
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                    timeCaption="time"
+                />
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                 {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
