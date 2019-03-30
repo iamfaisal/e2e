@@ -54,6 +54,22 @@ class ClassesController extends Controller
         ], 200);
     }
 
+    public function hasPendingRosters()
+    {
+        $currentDateTime = Carbon::now()->toDateTimeString();
+        $user = $this->user;
+        $classes = Lesson::with('user')
+                ->orderBy('created_at', 'desc')
+                ->where('is_deleted', false)
+                ->where('end_date', '<', $currentDateTime)
+                ->where('user_id', $user->id)
+                ->where('status', '!=', 'Complete')
+                ->where('roster', '==', '');
+            return response()->json([
+                'classes' => $classes->get()
+            ], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

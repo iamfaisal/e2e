@@ -18,6 +18,7 @@ Route::group(['prefix' => 'auth'], function()
     Route::post('classes/approve', 'ClassesController@approve');
     Route::post('classes/cancel', 'ClassesController@cancel');
     Route::post('classes/roster', 'ClassesController@roster');
+    Route::get('classes/hasPendingRosters', 'ClassesController@hasPendingRosters');
     Route::resource('classes', 'ClassesController')->except(['create', 'edit']);
     Route::resource('sponsors', 'SponsorsController')->except(['create', 'edit']);
     Route::resource('venues', 'VenuesController')->except(['create', 'edit']);
