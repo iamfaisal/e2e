@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { getAuthUser, getAuthUserName, logout } from "../helpers/auth";
 import { asset, getUserAvatar } from "../helpers/app";
-import { getRoles } from "../helpers/acl";
+import { getRoles, isJustInstructor } from "../helpers/acl";
 import { links } from "./navigation";
 
 class Header extends Component {
@@ -57,6 +57,7 @@ class Header extends Component {
         const sidebarClass = classnames("sidebar", { "collapse": !sidebar }, { "open": sidebar_open });
         const user = getAuthUser();
         const userName = getAuthUserName();
+        const editProfileRoute = isJustInstructor() ? "instructors" : "users";
 
         return (
             <div>
@@ -87,7 +88,7 @@ class Header extends Component {
                         return roleLinks && roleLinks.length > 0 ? self.renderNavigation(role, roleLinks) : false;
                     })}
 
-                    <Link className="profile" to={"/users/edit/"+user.id}>
+                    <Link className="profile" to={"/"+editProfileRoute+"/edit/"+user.id}>
                         <img src={getUserAvatar(user)} alt={userName}/>
                         <h4>{userName}</h4>
                     </Link>

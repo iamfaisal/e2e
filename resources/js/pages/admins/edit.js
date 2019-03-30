@@ -3,6 +3,7 @@ import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
+import { is } from "../../helpers/acl"
 import { read, update } from "../../helpers/resource";
 
 class EditAdmin extends Component {
@@ -175,6 +176,7 @@ class EditAdmin extends Component {
                         />
                     </fieldset>
 
+                    {is("admin") &&
                     <fieldset className="fields horizontal">
                         <label>
                             <span>Roles</span>
@@ -189,6 +191,8 @@ class EditAdmin extends Component {
                             />
                         </label>
                     </fieldset>
+                    }
+
 
                     <fieldset className="fields horizontal">
                         <TextField

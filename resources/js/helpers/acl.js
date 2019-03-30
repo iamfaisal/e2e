@@ -14,6 +14,11 @@ export function is(role) {
     return !!data[role];
 }
 
+export function isJustInstructor() {
+    const data = decodeAclData();
+    return !!data["instructor"] && getRoles().length === 1;
+}
+
 export function getRoles() {
     const data = decodeAclData();
     return Object.keys(data);
