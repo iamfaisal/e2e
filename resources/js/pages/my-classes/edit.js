@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
-import { read, create } from "../../helpers/resource";
+import FileInput from "../../common/FileInput";
+import { read, update } from "../../helpers/resource";
 
-class EditClass extends Component {
+class EditMyClass extends Component {
     constructor(props) {
         super(props);
 
@@ -12,11 +13,10 @@ class EditClass extends Component {
             loading: false,
             dataLoaded: false,
             fields: {
-                instructor: "",
                 course_id: "",
                 venue_id: "",
-                start_date_time: "",
-                end_date_time: "",
+                start_date: "",
+                end_date: "",
                 price: "",
                 capacity: "",
                 alternate_instructor: "",
@@ -26,12 +26,13 @@ class EditClass extends Component {
                 rsvp_email: "",
                 rsvp_link_text: "",
                 rsvp_link_url: "",
+                sponsors: [],
                 flyer: "",
                 flyer_image: "",
-                docs: ""
+                docs: "",
             },
+            sponsors: [],
             courses: [],
-            instructors: [],
             venues: [],
             formValidationData: {}
         };
@@ -46,10 +47,11 @@ class EditClass extends Component {
         read('classes/' + id, {})
             .then(res => {
                 console.log(res.data);
+                let { fields } = this.state;
                 this.setState({
                     loaded: true,
-                    fields: res.data.class,
-                    loading: false
+                    fields: { ...fields, ...res.data.class },
+                    dataLoaded: true
                 });
             })
             .catch((err) => {
@@ -66,20 +68,20 @@ class EditClass extends Component {
                 console.log(err);
             });
 
-        read('users', { params: { role: 'instructor' } })
+        read('venues', {})
             .then(res => {
                 this.setState({
-                    instructors: res.data.users
+                    venues: res.data.venues
                 });
             })
             .catch(err => {
                 console.log(err);
             });
 
-        read('venues', {})
+        read('sponsors', { params: { role: 'admin' } })
             .then(res => {
                 this.setState({
-                    venues: res.data.venues
+                    sponsors: res.data.sponsors
                 });
             })
             .catch(err => {
@@ -103,11 +105,16 @@ class EditClass extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
+        const { id } = this.state;
+
         this.setState({
             loading: true
         });
 
-        create('classes', new FormData(e.target), true)
+        let data = new FormData(e.target);
+        data.append("_method", "PUT");
+
+        update('classes/' + id, data, true)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/classes")
@@ -116,7 +123,7 @@ class EditClass extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Create Class";
                 this.setState({
@@ -128,7 +135,7 @@ class EditClass extends Component {
     }
 
     render() {
-        const { dataLoaded, fields, courses, instructors, venues, loading, isFormValid, formValidationData } = this.state;
+        const { dataLoaded, fields, courses, instructors, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
         
         if (!dataLoaded) return false;
 
@@ -152,16 +159,6 @@ class EditClass extends Component {
                             />
                         </label>
                         <label>
-                            <span>Instructor</span>
-                            <Select
-                                onChange={v => fields.instructor = v}
-                                name="instructor"
-                                items={instructors}
-                                id="id"
-                                val="name"
-                            />
-                        </label>
-                        <label>
                             <span>Venue</span>
                             <Select
                                 onChange={v => fields.venue = v}
@@ -180,13 +177,13 @@ class EditClass extends Component {
                         <TextField
                             onChange={this.handleChange}
                             name="start_date_time"
-                            value={fields.start_date_time}
+                            value={fields.start_date}
                             labelText="Start"
                         />
                         <TextField
                             onChange={this.handleChange}
                             name="end_date_time"
-                            value={fields.end_date_time}
+                            value={fields.end_date}
                             labelText="End"
                         />
                         <TextField
@@ -243,6 +240,40 @@ class EditClass extends Component {
                         />
                     </fieldset>
 
+                    <legend>Sponsors</legend>
+                    <fieldset className="fields horizontal">
+                        <label>
+                            <Select
+                                onChange={v => fields.course = v}
+                                name="sponsors[]"
+                                items={sponsors}
+                                id="id"
+                                val="first_name|last_name"
+                                multiple={true}
+                                value={fields.sponsors.map(({ id }) => id)}
+                            />
+                        </label>
+                    </fieldset>
+
+                    <div className="row">
+                        <div className="col-lg-4">
+                            <FileInput
+                                onChange={(event) => this.handleChange(event)}
+                                name="flyer"
+                                labelText="Class Flyer"
+                                value={fields.flyer}
+                            />
+                        </div>
+                        <div className="col-lg-4">
+                            <FileInput
+                                onChange={(event) => this.handleChange(event)}
+                                name="flyer_image"
+                                labelText="Class Flyer Image"
+                                value={fields.flyer_image}
+                            />
+                        </div>
+                    </div>
+
                     <button className="button">Update Class</button>
                 </form>
             </div>
@@ -250,4 +281,4 @@ class EditClass extends Component {
     }
 }
 
-export default EditClass;
+export default EditMyClass;
