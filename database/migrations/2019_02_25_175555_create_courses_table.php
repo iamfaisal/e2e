@@ -17,7 +17,7 @@ class CreateCoursesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->integer('regulation_id')->unsigned()->default(1);
-            $table->foreign('regulation_id')->references('id')->on('regulations');
+            $table->foreign('regulation_id')->references('id')->on('regulations')->onDelete('cascade');
             $table->string('number')->nullable();
             $table->string('code')->nullable();
             $table->integer('hours')->nullable();

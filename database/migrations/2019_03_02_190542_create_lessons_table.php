@@ -16,11 +16,11 @@ class CreateLessonsTable extends Migration
         Schema::create('lessons', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('course_id')->unsigned()->default(1);
-            $table->foreign('course_id')->references('id')->on('courses');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->integer('venue_id')->unsigned()->default(1);
-            $table->foreign('venue_id')->references('id')->on('venues');
+            $table->foreign('venue_id')->references('id')->on('venues')->onDelete('cascade');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->integer('price');

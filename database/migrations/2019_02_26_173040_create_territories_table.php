@@ -17,7 +17,7 @@ class CreateTerritoriesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('regulation_id')->unsigned()->default(1);
-            $table->foreign('regulation_id')->references('id')->on('regulations');
+            $table->foreign('regulation_id')->references('id')->on('regulations')->onDelete('cascade');
             $table->string('zip_codes');
             $table->timestamps();
         });

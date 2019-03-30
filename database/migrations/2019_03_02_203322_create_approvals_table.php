@@ -15,7 +15,7 @@ class CreateApprovalsTable extends Migration
     {
         Schema::create('approvals', function (Blueprint $table) {
             $table->integer('lesson_id')->unsigned()->nullable();
-            $table->foreign('lesson_id')->references('id')->on('lessons');
+            $table->foreign('lesson_id')->references('id')->on('lessons')->onDelete('cascade');
             $table->boolean('start_time')->default(false);
             $table->boolean('end_time')->default(false);
             $table->boolean('course')->default(false);

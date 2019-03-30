@@ -16,9 +16,9 @@ class CreateLicensesTable extends Migration
         Schema::create('licenses', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->default(1);
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('regulation_id')->unsigned()->default(1);
-            $table->foreign('regulation_id')->references('id')->on('regulations');
+            $table->foreign('regulation_id')->references('id')->on('regulations')->onDelete('cascade');
             $table->string('code');
             $table->string('certificate');
             $table->date('expiration');
