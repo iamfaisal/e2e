@@ -95,7 +95,6 @@ export function handleSession(response) {
     if (response && response.message && response.message === "Request failed with status code 500") {
         setAuthTokenInLocalStorage();
         setAuthorizationToken();
-        window.location.reload();
     }
 }
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleSession } from "./auth";
+import { logout } from "./auth";
 
 export function create(dataType, params, files) {
     let headers = {};
@@ -34,7 +34,6 @@ export function read(dataType, params, files) {
             res(response);
         })
         .catch((err) => {
-            handleSession(err);
             rej(err);
         })
     })
@@ -70,6 +69,15 @@ export function remove(dataType, params) {
             })
     })
 }
+
+axios.interceptors.response.use((response) => {
+    return response;
+}, function (error) {
+    if (error.response.status === 500) {
+        logout()
+    }
+    return Promise.reject(error.response);
+});
 
 export function filter(data, filters) {
     return data.filter(item => {

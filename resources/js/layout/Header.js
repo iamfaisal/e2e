@@ -1,9 +1,9 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import { Link } from "react-router-dom";
+import classnames from "classnames";
 import { getAuthUser, getAuthUserName, logout } from "../helpers/auth";
 import { asset } from "../helpers/app";
-import { is, getRoles } from "../helpers/acl";
-import classnames from "classnames";
+import { getRoles } from "../helpers/acl";
 import { links } from "./navigation";
 
 class Header extends Component {
