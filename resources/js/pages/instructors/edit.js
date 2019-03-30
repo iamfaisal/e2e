@@ -319,7 +319,7 @@ class EditInstructor extends Component {
                     </fieldset>
 
                     {fields.licenses.map((license, i) => {
-                        if (license.expiration.constructor != Date) {
+                        if (license.expiration && license.expiration.constructor !== Date) {
                             license.expiration = new Date(license.expiration);
                         }
                         return <fieldset key={i} className="fields horizontal">
@@ -345,7 +345,7 @@ class EditInstructor extends Component {
                             <label>
                                 <span>Expiration</span>
                                 <DatePicker
-                                    selected={license.expiration}
+                                    selected={license.expiration || new Date()}
                                     onChange={d => this.setLicenseDate(i, d)}
                                     dateFormat="MMMM d, yyyy"
                                 />
