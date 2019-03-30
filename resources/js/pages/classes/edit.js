@@ -231,7 +231,7 @@ class EditClass extends Component {
                         <TextField
                             onChange={this.handleChange}
                             name="price"
-                            value={fields.price}
+                            value={fields.price ? fields.price : "0"}
                             labelText="Cost"
                         />
                         <TextField
