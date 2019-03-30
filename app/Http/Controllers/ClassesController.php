@@ -19,6 +19,7 @@ class ClassesController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('auth:api');
         $this->user = Auth::Guard('api')->user();
         if (!$this->user) {
             return response()->json([
