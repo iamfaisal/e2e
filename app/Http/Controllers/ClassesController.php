@@ -43,6 +43,8 @@ class ClassesController extends Controller
             })
             ->when($request->cancelled, function ($query) {
                 return $query->where('is_cancelled', true);
+            }, function ($query) use($currentDateTime) {
+                return $query->where('is_cancelled', false);
             })
             ->when($request->fromInstructor, function ($query) use($user) {
                 return $query->where('user_id', $user->id);
