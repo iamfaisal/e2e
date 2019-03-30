@@ -19,13 +19,12 @@ class UsersController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
         $this->user = Auth::Guard('api')->user();
-//        if (!$this->user) {
-//            return response()->json([
-//                'unauthenticated' => true
-//            ], 403);
-//        }
+        if (!$this->user) {
+            return response()->json([
+                'unauthenticated' => true
+            ], 403);
+        }
     }
 
     /**
