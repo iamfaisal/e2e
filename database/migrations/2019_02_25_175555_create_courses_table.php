@@ -20,7 +20,7 @@ class CreateCoursesTable extends Migration
             $table->foreign('regulation_id')->references('id')->on('regulations')->onDelete('cascade');
             $table->string('number')->nullable();
             $table->string('code')->nullable();
-            $table->integer('hours')->nullable();
+            $table->float('hours')->nullable();
             $table->text('description')->nullable();
             $table->date('expiration_date')->nullable();
             $table->string('class_flyer_template')->nullable();
