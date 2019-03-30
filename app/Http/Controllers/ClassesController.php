@@ -108,6 +108,7 @@ class ClassesController extends Controller
      */
     public function update(Request $request, Lesson $class)
     {
+        $status = $class->status === "Needs Review" ? "Updated" : $class->status;
         $data = [
             'user_id' => $request->get('instructor'),
             'course_id' => $request->get('course'),
@@ -123,7 +124,7 @@ class ClassesController extends Controller
             'rsvp_email' => $request->get('rsvp_email'),
             'rsvp_link_text' => $request->get('rsvp_link_text'),
             'rsvp_link_url' => $request->get('rsvp_link_url'),
-            'status' => 'New'
+            'status' => $status
         ];
         if($request->hasFile('flyer'))
         {
