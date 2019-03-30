@@ -24,7 +24,7 @@ class CreateLessonsTable extends Migration
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->integer('price');
-            $table->integer('capacity');
+            $table->integer('capacity')->nullable();
             $table->string('alternate_instructor')->nullable();
             $table->string('guest_speaker')->nullable();
             $table->string('rsvp_contact')->nullable();
