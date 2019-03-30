@@ -4,7 +4,8 @@ import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
 import TextArea from "../../common/TextArea";
-import { read, update } from "../../helpers/resource";
+import DatePicker from "react-datepicker";
+import { read, update, dateToString } from "../../helpers/resource";
 
 class EditInstructor extends Component {
     constructor(props) {
@@ -51,6 +52,7 @@ class EditInstructor extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.addLicense = this.addLicense.bind(this);
         this.removeLicense = this.removeLicense.bind(this);
+        this.setLicenseDate = this.setLicenseDate.bind(this);
     }
 
     componentDidMount() {
@@ -165,6 +167,14 @@ class EditInstructor extends Component {
 
         let { fields } = this.state;
         fields.licenses.pop();
+        this.setState({
+            fields: fields
+        });
+    }
+
+    setLicenseDate(i, date) {
+        let { fields } = this.state;
+        fields.licenses[i].expiration = date;
         this.setState({
             fields: fields
         });
@@ -309,6 +319,9 @@ class EditInstructor extends Component {
                     </fieldset>
 
                     {fields.licenses.map((license, i) => {
+                        if (license.expiration.constructor != Date) {
+                            license.expiration = new Date(license.expiration);
+                        }
                         return <fieldset key={i} className="fields horizontal">
                             <label>
                                 <span>State</span>
@@ -329,14 +342,19 @@ class EditInstructor extends Component {
                                 labelText="License Number"
                                 value={license["code"]}
                             />
-                            <TextField
-                                onChange={this.handleChange}
-                                name={"licenses[" + i + "][expiration]"}
-                                value={""}
-                                maxLength={50}
-                                labelText="Expiration"
-                                value={license["expiration"]}
-                            />
+                            <label>
+                                <span>Expiration</span>
+                                <DatePicker
+                                    selected={license.expiration}
+                                    onChange={d => this.setLicenseDate(i, d)}
+                                    dateFormat="MMMM d, yyyy"
+                                />
+                                <input
+                                    type="hidden"
+                                    name={"licenses[" + i + "][expiration]"}
+                                    value={dateToString(license.expiration)}
+                                />
+                            </label>
                             <FileInput
                                 onChange={event => this.handleChange(event)}
                                 name={"licenses[" + i + "][certificate]"}

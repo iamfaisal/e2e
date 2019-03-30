@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
-import { read, update } from "../../helpers/resource";
+import DatePicker from "react-datepicker";
+import { read, update, dateToString } from "../../helpers/resource";
 
 class EditClass extends Component {
     constructor(props) {
@@ -148,6 +149,13 @@ class EditClass extends Component {
         const { loaded, fields, courses, instructors, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
         
         if (!loaded) return false;
+        
+        if (fields.start_date.constructor !== Date) {
+            fields.start_date = new Date(fields.start_date);
+        }
+        if (fields.end_date.constructor !== Date) {
+            fields.end_date = new Date(fields.end_date);
+        }
 
         return (
             <div>
@@ -194,18 +202,32 @@ class EditClass extends Component {
                             value={fields.capacity}
                             labelText="Capacity"
                         />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="start_date_time"
-                            value={fields.start_date}
-                            labelText="Start"
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="end_date_time"
-                            value={fields.end_date}
-                            labelText="End"
-                        />
+                        <label>
+                            <span>Start</span>
+                            <DatePicker
+                                selected={fields.start_date}
+                                onChange={d => this.handleChange("start_date", d)}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={30}
+                                dateFormat="MMMM d, yyyy h:mm aa"
+                                timeCaption="time"
+                            />
+                            <input type="hidden" name="start_date_time" value={dateToString(fields.start_date, true)} />
+                        </label>
+                        <label>
+                            <span>End</span>
+                            <DatePicker
+                                selected={fields.end_date}
+                                onChange={d => this.handleChange("end_date", d)}
+                                showTimeSelect
+                                timeFormat="HH:mm"
+                                timeIntervals={30}
+                                dateFormat="MMMM d, yyyy h:mm aa"
+                                timeCaption="time"
+                            />
+                            <input type="hidden" name="end_date_time" value={dateToString(fields.end_date, true)} />
+                        </label>
                         <TextField
                             onChange={this.handleChange}
                             name="price"

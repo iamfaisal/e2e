@@ -135,6 +135,8 @@ export function formatDate(str) {
 }
 
 export function dateToString(date, time) {
+    if (!date) return "";
+
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();

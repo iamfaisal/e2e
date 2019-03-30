@@ -5,7 +5,7 @@ import TextArea from "../../common/TextArea";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
 import DatePicker from "react-datepicker";
-import { read, update } from "../../helpers/resource";
+import { read, update, dateToString } from "../../helpers/resource";
 
 class EditCourse extends Component {
     constructor(props) {
@@ -201,12 +201,15 @@ class EditCourse extends Component {
                             value={fields.hours}
                             labelText="Hours"
                         />
-                        <DatePicker
-                            selected={fields.expiration_date}
-                            onChange={d => this.handleChange("expiration_date", d)}
-                            dateFormat="MMMM d, yyyy"
-                        />
-                        <input type="hidden" name="expiration_date" value={dateToString(fields.expiration_date)} />
+                        <label>
+                            <span>Expiration Date</span>
+                            <DatePicker
+                                selected={fields.expiration_date}
+                                onChange={d => this.handleChange("expiration_date", d)}
+                                dateFormat="MMMM d, yyyy"
+                            />
+                            <input type="hidden" name="expiration_date" value={dateToString(fields.expiration_date)} />
+                        </label>
                         <TextField
                             onChange={this.handleChange}
                             name="commercial_link"

@@ -4,7 +4,8 @@ import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
 import TextArea from "../../common/TextArea";
-import { read, create } from "../../helpers/resource";
+import DatePicker from "react-datepicker";
+import { read, create, dateToString } from "../../helpers/resource";
 
 class CreateInstructor extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class CreateInstructor extends Component {
                     regulation: "",
                     code: "",
                     certificate: "",
-                    expiration: ""
+                    expiration: new Date
                 }]
             },
             required_fields: {
@@ -49,6 +50,7 @@ class CreateInstructor extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.addLicense = this.addLicense.bind(this);
         this.removeLicense = this.removeLicense.bind(this);
+        this.setLicenseDate = this.setLicenseDate.bind(this);
     }
 
     componentDidMount() {
@@ -87,7 +89,6 @@ class CreateInstructor extends Component {
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
-                console.log(formValidationData, key);
             }
         }
         this.setState({ isFormValid: isFormValid });
@@ -134,7 +135,7 @@ class CreateInstructor extends Component {
             regulation: "",
             code: "",
             certificate: "",
-            expiration: ""
+            expiration: new Date
         });
         this.setState({
             fields: fields
@@ -146,6 +147,14 @@ class CreateInstructor extends Component {
 
         let { fields } = this.state;
         fields.licenses.pop();
+        this.setState({
+            fields: fields
+        });
+    }
+
+    setLicenseDate(i, date) {
+        let { fields } = this.state;
+        fields.licenses[i].expiration = date;
         this.setState({
             fields: fields
         });
@@ -306,13 +315,19 @@ class CreateInstructor extends Component {
                                 maxLength={50}
                                 labelText="License Number"
                             />
-                            <TextField
-                                onChange={this.handleChange}
-                                name={"licenses[" + i + "][expiration]"}
-                                value={""}
-                                maxLength={50}
-                                labelText="Expiration"
-                            />
+                            <label>
+                                <span>Expiration</span>
+                                <DatePicker
+                                    selected={license.expiration}
+                                    onChange={d => this.setLicenseDate(i, d)}
+                                    dateFormat="MMMM d, yyyy"
+                                />
+                                <input
+                                    type="hidden"
+                                    name={"licenses[" + i + "][expiration]"}
+                                    value={dateToString(license.expiration)}
+                                />
+                            </label>
                             <FileInput
                                 onChange={event => this.handleChange(event)}
                                 name={"licenses[" + i + "][certificate]"}
