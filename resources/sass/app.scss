@@ -1131,3 +1131,26 @@ legend .checkbox {
 .class_id_gen button {
   margin-left: 10px;
 }
+
+.roaster-actions {
+  font-size: 12px !important;
+  span {
+    display: none;
+  }
+  a + span {
+    display: inline;
+  }
+  label {
+    display: inline-block;
+    cursor: pointer;
+    &:hover {
+      color: $color_alizarin_crimson_approx;
+    }
+  }
+  a ~ label {
+    margin-left: 10px;
+  }
+  input[type=file] {
+    display: none;
+  }
+}

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { read, remove, filter, formatDate } from "../../helpers/resource";
 import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
+import { update } from "../../helpers/resource";
 
 class Classes extends Component {
     constructor(props) {
@@ -15,12 +16,14 @@ class Classes extends Component {
             filters: {
                 is_deleted: "0"
             },
-            loader: true
+            loader: true,
+            archived: false
         };
 
         this.renderLoader = this.renderLoader.bind(this);
         this.renderActions = this.renderActions.bind(this);
         this.deleteClass = this.deleteClass.bind(this);
+        this.uploadRoster = this.uploadRoster.bind(this);
     }
 
     componentDidMount() {
@@ -32,7 +35,7 @@ class Classes extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
 
@@ -42,7 +45,7 @@ class Classes extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
     }
@@ -72,14 +75,38 @@ class Classes extends Component {
     }
 
     renderActions(clss) {
-        return (
-            <div className="actions">
-                <Link className="ion-md-checkmark" to={"/classes/approve/" + clss.id} />
-                <Link className="ion-md-create" to={"/classes/edit/" + clss.id} />
-                <Link className="ion-md-hand" to={"/classes/cancel/" + clss.id} />
-                <a className="ion-md-close" onClick={e => this.deleteClass(e, clss.id)} />
-            </div>
-        );
+        if (this.state.archived) {
+            return (
+                <form className="actions roaster-actions">
+                    <input type="hidden" name="class_id" value={clss.id} />
+                    {clss.roster ? <Link to={clss.roster} target="_blank">View Roaster</Link> : ""}
+                    <span>|</span>
+                    <label>
+                        <input type="file" name="roster" onChange={this.uploadRoster} />
+                        Upload Roaster
+                    </label>
+                </form>
+            );
+        } else {
+            return (
+                <div className="actions">
+                    <Link className="ion-md-checkmark" to={"/classes/approve/" + clss.id} />
+                    <Link className="ion-md-create" to={"/classes/edit/" + clss.id} />
+                    <Link className="ion-md-hand" to={"/classes/cancel/" + clss.id} />
+                    <a className="ion-md-close" onClick={e => this.deleteClass(e, clss.id)} />
+                </div>
+            );
+        }
+    }
+
+    uploadRoster(e) {
+        update('classes/roster', new FormData(e.target.form), true)
+            .then(res => {
+                window.location.reload();
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     deleteClass(e, clss) {
@@ -107,6 +134,8 @@ class Classes extends Component {
     }
 
     toggleArchived(e) {
+        this.setState({ archived: e.target.checked });
+
         if (e.target.checked) {
             this.getData({ params: { archived: true } });
         } else {
@@ -135,7 +164,8 @@ class Classes extends Component {
             {
                 name: 'instructor',
                 cell: row => { return row.user.name },
-                sortable: true
+                sortable: true,
+                width: '120px',
             },
             {
                 name: 'Date',
@@ -148,7 +178,7 @@ class Classes extends Component {
                 name: 'Actions',
                 cell: row => this.renderActions(row),
                 ignoreRowClick: true,
-                width: '120px',
+                width: this.state.archived ? '220px' : '120px',
             }
         ];
 
