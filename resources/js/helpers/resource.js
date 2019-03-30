@@ -76,7 +76,7 @@ axios.interceptors.response.use((response) => {
     if (400 < error.response.status && error.response.status < 500) {
         setAuthTokenInLocalStorage();
         setAuthorizationToken();
-        window.location.reload();
+        window.location.href = "/login";
     }
     return Promise.reject(error.response);
 });

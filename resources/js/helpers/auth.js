@@ -97,5 +97,5 @@ export function logout() {
             setAuthTokenInLocalStorage();
             setAuthorizationToken();
         });
-    window.location.reload();
+    window.location.href = "/login";
 }
