@@ -81,18 +81,22 @@ class UsersController extends Controller
         if($request->has('roles')) {
             $user->roles()->sync($request->roles);
             if (in_array(3, $request->roles) && $request->has('licenses')) {
-                foreach ($request->licenses as $key => $license) {
-                    $licenseData = [
-                        'regulation_id' => $license['regulation'],
-                        'user_id' => $user->id,
-                        'code' => $license['code'],
-                        'expiration' => $license['expiration']
-                    ];
-                    if($license['certificate'])
-                    {
-                        $licenseData['certificate'] = $this->handleFileUpload($license['certificate']);
+                $user->licenses()->delete();
+                foreach ($request->licenses as $index => $license) {
+                    if (!empty($license['regulation']) && !empty($license['code']) && !empty($license['expiration'])) {
+                        $licenseData = [
+                            'regulation_id' => $license['regulation'],
+                            'user_id' => $user->id,
+                            'code' => $license['code'],
+                            'expiration' => $license['expiration']
+                        ];
+                        if($_FILES['licenses']['name'][$index] && !empty($_FILES['licenses']['name'][$index]['certificate'])) {
+                            $licenseData['certificate'] = $this->handleFileUpload($license['certificate']);
+                        } else {
+                            $licenseData['certificate'] = $license['certificate_file'];
+                        }
+                        License::create($licenseData);
                     }
-                    License::create($licenseData);
                 }
             }
         }
@@ -166,20 +170,20 @@ class UsersController extends Controller
             if (in_array(3, $request->roles) && $request->has('licenses')) {
                 $user->licenses()->delete();
                 foreach ($request->licenses as $index => $license) {
-                    $licenseData = [
-                        'regulation_id' => $license['regulation'],
-                        'user_id' => $user->id,
-                        'code' => $license['code'],
-                        'expiration' => $license['expiration']
-                    ];
-                    print_r($license);
-                    print_r($_FILES);
-                    if($_FILES['licenses']['name'][$index] && !empty($_FILES['licenses']['name'][$index]['certificate'])) {
-                        $licenseData['certificate'] = $this->handleFileUpload($license['certificate']);
-                    } else {
-                        $licenseData['certificate'] = $license['certificate_file'];
+                    if (!empty($license['regulation']) && !empty($license['code']) && !empty($license['expiration'])) {
+                        $licenseData = [
+                            'regulation_id' => $license['regulation'],
+                            'user_id' => $user->id,
+                            'code' => $license['code'],
+                            'expiration' => $license['expiration']
+                        ];
+                        if ($_FILES['licenses']['name'][$index] && !empty($_FILES['licenses']['name'][$index]['certificate'])) {
+                            $licenseData['certificate'] = $this->handleFileUpload($license['certificate']);
+                        } else {
+                            $licenseData['certificate'] = $license['certificate_file'];
+                        }
+                        License::create($licenseData);
                     }
-                    License::create($licenseData);
                 }
             }
         }
