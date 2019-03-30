@@ -52,7 +52,7 @@ class EditRegulation extends Component {
             .then(res => {
                 this.setState({
                     fields: res.data.regulation,
-                    loading: false
+                    loaded: true
                 });
             })
             .catch(err => {
