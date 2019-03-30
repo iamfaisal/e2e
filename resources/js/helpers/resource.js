@@ -133,3 +133,18 @@ export function formatDate(str) {
 
     return day + " " + months[month] + " " + year + ", " + hour + ":" + min + " " + ampm;
 }
+
+export function dateToString(date, time) {
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    let hour = date.getHours();
+    let min = date.getMinutes();
+
+    if (time) {
+        return year + "-" + month + "-" + day + " " + hour + ":" + min + ":00";
+    } else {
+        return year + "-" + month + "-" + day;
+    }
+}

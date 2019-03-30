@@ -5,7 +5,7 @@ import TextArea from "../../common/TextArea";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
 import DatePicker from "react-datepicker";
-import { read, create } from "../../helpers/resource";
+import { read, create, dateToString } from "../../helpers/resource";
 
 class CreateCourse extends Component {
     constructor(props) {
@@ -20,7 +20,7 @@ class CreateCourse extends Component {
                 code: "",
                 hours: "",
                 description: "",
-                expiration_date: "",
+                expiration_date: new Date,
                 class_flyer_template: "",
                 class_docs_template: "",
                 material: "",
@@ -62,9 +62,8 @@ class CreateCourse extends Component {
     }
 
     handleChange(name, value, valid) {
-        console.log(arguments);
-
         let { fields, formValidationData } = this.state;
+    
         if (event && event.target.files) {
             fields[name] = event.target.files;
         } else {
@@ -132,15 +131,6 @@ class CreateCourse extends Component {
                     <h2>Create Course</h2>
                 </header>
 
-                <DatePicker
-                    onChange={this.handleChange}
-                    showTimeSelect
-                    timeFormat="HH:mm"
-                    timeIntervals={15}
-                    dateFormat="MMMM d, yyyy h:mm aa"
-                    timeCaption="time"
-                />
-
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                 {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     <fieldset className="fields horizontal">
@@ -181,12 +171,15 @@ class CreateCourse extends Component {
                             value={fields.hours}
                             labelText="Hours"
                         />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="expiration_date"
-                            value={fields.expiration_date}
-                            labelText="Expiration Date"
-                        />
+                        <label>
+                            <span>Expiration Date</span>
+                            <DatePicker
+                                selected={fields.expiration_date}
+                                onChange={d => this.handleChange("expiration_date", d)}
+                                dateFormat="MMMM d, yyyy"
+                            />
+                            <input type="hidden" name="expiration_date" value={dateToString(fields.expiration_date)} />
+                        </label>
                         <TextField
                             onChange={this.handleChange}
                             name="commercial_link"

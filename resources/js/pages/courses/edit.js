@@ -4,6 +4,7 @@ import TextField from "../../common/TextField";
 import TextArea from "../../common/TextArea";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
+import DatePicker from "react-datepicker";
 import { read, update } from "../../helpers/resource";
 
 class EditCourse extends Component {
@@ -150,6 +151,10 @@ class EditCourse extends Component {
 
         if (!loaded) return false;
 
+        if (fields.expiration_date.constructor !== Date) {
+            fields.expiration_date = new Date(fields.expiration_date);
+        }
+
         return (
             <div>
                 <header className="pageheader">
@@ -196,12 +201,12 @@ class EditCourse extends Component {
                             value={fields.hours}
                             labelText="Hours"
                         />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="expiration_date"
-                            value={fields.expiration_date}
-                            labelText="Expiration Date"
+                        <DatePicker
+                            selected={fields.expiration_date}
+                            onChange={d => this.handleChange("expiration_date", d)}
+                            dateFormat="MMMM d, yyyy"
                         />
+                        <input type="hidden" name="expiration_date" value={dateToString(fields.expiration_date)} />
                         <TextField
                             onChange={this.handleChange}
                             name="commercial_link"
