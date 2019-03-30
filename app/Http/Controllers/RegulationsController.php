@@ -4,10 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Regulation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class RegulationsController extends Controller
 {
+    private $user;
+
+    /**
+     * constructor function.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->user = Auth::Guard('api')->user();
+        if (!$this->user) {
+            return response()->json([
+                'unauthenticated' => true
+            ], 403);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *

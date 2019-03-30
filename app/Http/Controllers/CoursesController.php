@@ -6,10 +6,27 @@ use App\Category;
 use App\Regulation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use App\Course;
 
 class CoursesController extends Controller
 {
+    private $user;
+
+    /**
+     * constructor function.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->user = Auth::Guard('api')->user();
+        if (!$this->user) {
+            return response()->json([
+                'unauthenticated' => true
+            ], 403);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *

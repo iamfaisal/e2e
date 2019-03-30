@@ -9,6 +9,22 @@ use Illuminate\Support\Facades\Auth;
 
 class SponsorsController extends Controller
 {
+    private $user;
+
+    /**
+     * constructor function.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->user = Auth::Guard('api')->user();
+        if (!$this->user) {
+            return response()->json([
+                'unauthenticated' => true
+            ], 403);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +33,7 @@ class SponsorsController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::Guard('api')->user();
+        $user = $this->user;
         $sponsors = Sponsor::with('regulation', 'user')
             ->orderBy('created_at', 'desc')
             ->when($request->fromInstructor, function ($query) use($user) {

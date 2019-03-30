@@ -8,6 +8,22 @@ use Illuminate\Support\Facades\Auth;
 
 class VenuesController extends Controller
 {
+    private $user;
+
+    /**
+     * constructor function.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->user = Auth::Guard('api')->user();
+        if (!$this->user) {
+            return response()->json([
+                'unauthenticated' => true
+            ], 403);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +32,7 @@ class VenuesController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::Guard('api')->user();
+        $user = $this->user;
         $venues = Venue::with('regulation', 'user')
             ->orderBy('created_at', 'desc')
             ->when($request->fromInstructor, function ($query) use($user) {

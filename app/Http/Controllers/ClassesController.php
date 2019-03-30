@@ -12,6 +12,22 @@ use Carbon\Carbon;
 
 class ClassesController extends Controller
 {
+    private $user;
+
+    /**
+     * constructor function.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->user = Auth::Guard('api')->user();
+        if (!$this->user) {
+            return response()->json([
+                'unauthenticated' => true
+            ], 403);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +37,7 @@ class ClassesController extends Controller
     public function index(Request $request)
     {
         $currentDateTime = Carbon::now()->toDateTimeString();
-        $user = Auth::Guard('api')->user();
+        $user = $this->user;
         $classes = Lesson::with('course', 'user', 'venue')
             ->orderBy('created_at', 'desc')
             ->where('is_deleted', false)
@@ -36,9 +52,6 @@ class ClassesController extends Controller
             ->when($request->fromInstructor, function ($query) use($user) {
                 return $query->where('user_id', $user->id);
             });
-
-        // show only approved, show only cancelled, show archived
-
         return response()->json([
             'classes' => $classes->get()
         ], 200);

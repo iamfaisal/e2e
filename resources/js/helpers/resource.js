@@ -73,8 +73,8 @@ export function remove(dataType, params) {
 axios.interceptors.response.use((response) => {
     return response;
 }, function (error) {
-    if (error.response.status === 500) {
-        //logout()
+    if (error.response.status === 403) {
+        logout()
     }
     return Promise.reject(error.response);
 });
