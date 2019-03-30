@@ -30,7 +30,7 @@ class ClassesController extends Controller
             }, function ($query) use($currentDateTime) {
                 return $query->where('end_date', '>=', $currentDateTime);
             })
-            ->when($user->isJust("instructor") && $request->fromInstructor, function ($query) use($user) {
+            ->when($request->fromInstructor, function ($query) use($user) {
                 return $query->where('user_id', $user->id);
             });
 
