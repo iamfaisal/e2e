@@ -188,7 +188,7 @@ class UsersController extends Controller
             'user' => $user,
             'profile' => $user->profile,
             'roles' => $user->roles->pluck('id')
-        ], 201);
+        ], 200);
     }
 
     /**
