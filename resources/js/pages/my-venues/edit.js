@@ -12,6 +12,7 @@ class EditMyVenue extends Component {
         this.state = {
             id: props.match.params.venue,
             loading: false,
+            loaded: false,
             user: getuser(),
             fields: {
                 address: "",
@@ -39,7 +40,8 @@ class EditMyVenue extends Component {
         read('venues/' + id, {})
             .then(res => {
                 this.setState({
-                    fields: res.data.venue
+                    fields: res.data.venue,
+                    loaded: true
                 });
             })
             .catch((err) => {
@@ -131,9 +133,9 @@ class EditMyVenue extends Component {
     }
 
     render() {
-        const { user, fields, regulations, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, user, fields, regulations, loading, isFormValid, formValidationData } = this.state;
 
-        if (!fields.name) return false;
+        if (!loaded) return false;
 
         return (
             <div>

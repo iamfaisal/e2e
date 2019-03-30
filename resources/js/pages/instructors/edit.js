@@ -13,6 +13,7 @@ class EditInstructor extends Component {
         this.state = {
             id: props.match.params.instructor,
             loading: false,
+            loaded: false,
             fields: {
                 first_name: "",
                 last_name: "",
@@ -61,7 +62,8 @@ class EditInstructor extends Component {
                 fields.email = res.data.user.email;
                 if (res.data.licenses.length) fields.licenses = res.data.licenses;
                 this.setState({
-                    fields: { ...fields, ...res.data.profile }
+                    fields: { ...fields, ...res.data.profile },
+                    loaded: true
                 });
             })
             .catch((err) => {
@@ -169,9 +171,9 @@ class EditInstructor extends Component {
     }
 
     render() {
-        const { fields, regulations, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, fields, regulations, loading, isFormValid, formValidationData } = this.state;
 
-        if (!fields.email) return false;
+        if (!loaded) return false;
 
         return (
             <div>

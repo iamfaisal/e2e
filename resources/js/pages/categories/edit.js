@@ -10,6 +10,7 @@ class EditCategory extends Component {
         this.state = {
             id: props.match.params.category,
             loading: false,
+            loaded: false,
             fields: {
                 title: ""
             },
@@ -30,7 +31,7 @@ class EditCategory extends Component {
                 fields.title = res.data.category.label;
                 this.setState({
                     fields: fields,
-                    loading: false
+                    loaded: true
                 });
             })
             .catch((err) => {
@@ -115,9 +116,9 @@ class EditCategory extends Component {
     }
 
     render() {
-        const {fields, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, fields, loading, isFormValid, formValidationData } = this.state;
 
-        if (fields.title === "") return false;
+        if (!loaded) return false;
 
         return (
             <div>

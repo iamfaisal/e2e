@@ -51,8 +51,7 @@ class EditMyClass extends Component {
                 let { fields } = this.state;
                 this.setState({
                     loaded: true,
-                    fields: { ...fields, ...res.data.class },
-                    dataLoaded: true
+                    fields: { ...fields, ...res.data.class }
                 });
             })
             .catch(err => {

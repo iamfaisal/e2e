@@ -13,6 +13,7 @@ class EditMySponsor extends Component {
         this.state = {
             id: props.match.params.sponsor,
             loading: false,
+            loaded: false,
             user: getuser(),
             fields: {
                 company: "",
@@ -50,7 +51,7 @@ class EditMySponsor extends Component {
                 console.log(res.data);
                 this.setState({
                     fields: res.data.sponsor,
-                    loading: false
+                    loaded: true
                 });
             })
             .catch(err => {
@@ -132,9 +133,9 @@ class EditMySponsor extends Component {
     }
 
     render() {
-        const { user, fields, regulations, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, user, fields, regulations, loading, isFormValid, formValidationData } = this.state;
 
-        if (fields.first_name === "") return false;
+        if (!loaded) return false;
 
         return (
             <div>

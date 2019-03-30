@@ -12,6 +12,7 @@ class EditAdmin extends Component {
         this.state = {
             id: props.match.params.category,
             loading: false,
+            loaded: false,
             fields: {
                 first_name: "",
                 last_name: "",
@@ -50,7 +51,7 @@ class EditAdmin extends Component {
 
                 this.setState({
                     fields: fields,
-                    loading: false
+                    loaded: true
                 });
             })
             .catch((err) => {
@@ -132,9 +133,9 @@ class EditAdmin extends Component {
     }
 
     render() {
-        const { fields, roles, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, fields, roles, loading, isFormValid, formValidationData } = this.state;
 
-        if (fields.first_name === "") return false;
+        if (!loaded) return false;
 
         return (
             <div>

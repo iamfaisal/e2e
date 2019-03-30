@@ -13,6 +13,7 @@ class EditRegulation extends Component {
         this.state = {
             id: props.match.params.regulation,
             loading: false,
+            loaded: false,
             fields: {
                 name: "",
                 abbreviation: "",
@@ -123,9 +124,9 @@ class EditRegulation extends Component {
     }
 
     render() {
-        const {fields, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, fields, loading, isFormValid, formValidationData } = this.state;
 
-        if (!fields.id) return false;
+        if (!loaded) return false;
 
         return (
             <div>

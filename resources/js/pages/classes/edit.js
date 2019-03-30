@@ -11,7 +11,7 @@ class EditClass extends Component {
         this.state = {
             id: props.match.params.class,
             loading: false,
-            dataLoaded: false,
+            loaded: false,
             fields: {
                 instructor: "",
                 course_id: "",
@@ -48,15 +48,13 @@ class EditClass extends Component {
 
         read('classes/' + id, {})
             .then(res => {
-                console.log(res.data);
                 let { fields } = this.state;
                 this.setState({
                     loaded: true,
                     fields: { ...fields, ...res.data.class },
-                    dataLoaded: true
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
 
@@ -147,9 +145,9 @@ class EditClass extends Component {
     }
 
     render() {
-        const { dataLoaded, fields, courses, instructors, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, fields, courses, instructors, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
         
-        if (!dataLoaded) return false;
+        if (!loaded) return false;
 
         return (
             <div>

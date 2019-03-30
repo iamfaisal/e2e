@@ -11,6 +11,7 @@ class EditTerritory extends Component {
         this.state = {
             id: props.match.params.territory,
             loading: false,
+            loaded: false,
             fields: {
                 name: "",
                 regulation: "",
@@ -35,7 +36,7 @@ class EditTerritory extends Component {
             .then(res => {
                 this.setState({
                     fields: res.data.territory,
-                    loading: false
+                    loaded: true
                 });
             })
             .catch(err => {
@@ -116,9 +117,9 @@ class EditTerritory extends Component {
     }
 
     render() {
-        const { fields, regulations, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, fields, regulations, loading, isFormValid, formValidationData } = this.state;
 
-        if (!fields.name) return false;
+        if (!loaded) return false;
 
         return (
             <div>

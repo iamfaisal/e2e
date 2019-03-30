@@ -13,6 +13,7 @@ class EditCourse extends Component {
         this.state = {
             id: props.match.params.course,
             loading: false,
+            loaded: false,
             fields: {
                 title: "",
                 regulation_id: "",
@@ -53,7 +54,7 @@ class EditCourse extends Component {
                 course.categories = cats;
                 this.setState({
                     fields: course,
-                    loading: false
+                    loaded: true
                 });
             })
             .catch((err) => {
@@ -145,9 +146,9 @@ class EditCourse extends Component {
     }
 
     render() {
-        const { fields, regulations, categories, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, fields, regulations, categories, loading, isFormValid, formValidationData } = this.state;
 
-        if (!fields.id) return false;
+        if (!loaded) return false;
 
         return (
             <div>

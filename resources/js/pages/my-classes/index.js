@@ -104,7 +104,7 @@ class MyClasses extends Component {
 
     toggleCancelled(e) {
         if (e.target.checked) {
-            his.getData({ cancelled: true });
+            this.getData({ cancelled: true });
         } else {
             this.getData({});
         }
