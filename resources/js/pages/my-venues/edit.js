@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
+import { getuser } from "../../helpers/app";
 import { read, update } from "../../helpers/resource";
 
 class EditMyVenue extends Component {
@@ -11,6 +12,7 @@ class EditMyVenue extends Component {
         this.state = {
             id: props.match.params.venue,
             loading: false,
+            user: getuser(),
             fields: {
                 address: "",
                 city: "",
@@ -129,7 +131,7 @@ class EditMyVenue extends Component {
     }
 
     render() {
-        const { fields, regulations, loading, isFormValid, formValidationData } = this.state;
+        const { user, fields, regulations, loading, isFormValid, formValidationData } = this.state;
 
         if (!fields.name) return false;
 
@@ -142,7 +144,7 @@ class EditMyVenue extends Component {
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                     {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     
-                    <input type="hidden" name="user" value="1" />
+                    <input type="hidden" name="user" value={user.id} />
 
                     <fieldset className="fields horizontal">
                         <TextField

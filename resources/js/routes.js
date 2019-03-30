@@ -45,6 +45,7 @@ import EditInstructor from "./pages/instructors/edit";
 import MyClasses from "./pages/my-classes";
 import CreateMyClass from "./pages/my-classes/create";
 import EditMyClass from "./pages/my-classes/edit";
+import CancelMyClass from "./pages/my-classes/cancel";
 
 import Materials from "./pages/materials";
 
@@ -234,6 +235,11 @@ const routes = [
     {
         path: "/my-classes/edit/:class",
         component: requireAuth(EditMyClass),
+        exact: true
+    },
+    {
+        path: "/my-classes/cancel/:class",
+        component: requireAuth(CancelMyClass),
         exact: true
     },
     {

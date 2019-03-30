@@ -3,6 +3,7 @@ import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
+import { getuser } from "../../helpers/app";
 import { read, create } from "../../helpers/resource";
 
 class CreateMySponsor extends Component {
@@ -11,6 +12,7 @@ class CreateMySponsor extends Component {
 
         this.state = {
             loading: false,
+            user: getuser(),
             fields: {
                 company: "",
                 first_name: "",
@@ -113,7 +115,7 @@ class CreateMySponsor extends Component {
     }
 
     render() {
-        const { fields, regulations, loading, isFormValid, formValidationData } = this.state;
+        const { user, fields, regulations, loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
@@ -123,7 +125,8 @@ class CreateMySponsor extends Component {
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                     {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
-                    <input type="hidden" name="user" value="1" />
+                    <input type="hidden" name="user" value={user.id} />
+
                     <fieldset className="fields horizontal">
                         <TextField
                             onChange={this.handleChange}

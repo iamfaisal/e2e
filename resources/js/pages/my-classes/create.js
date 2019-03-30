@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
+import { getuser } from "../../helpers/app";
 import { read, create } from "../../helpers/resource";
 
 class CreateMyClass extends Component {
@@ -9,6 +10,7 @@ class CreateMyClass extends Component {
 
         this.state = {
             loading: false,
+            user: getuser(),
             fields: {
                 course_id: "",
                 venue_id: "",
@@ -81,7 +83,7 @@ class CreateMyClass extends Component {
         create('classes', new FormData(e.target), true)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/classes")
+                    ? this.props.history.push("/my-classes")
                     : this.setState({
                         loading: false,
                         isFormValid: false
@@ -99,7 +101,7 @@ class CreateMyClass extends Component {
     }
 
     render() {
-        const { fields, courses, venues, loading, isFormValid, formValidationData } = this.state;
+        const { user, fields, courses, venues, loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
@@ -109,6 +111,8 @@ class CreateMyClass extends Component {
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                 {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
+                    <input type="hidden" name="instructor" value={user.id} />
+                    
                     <fieldset className="fields horizontal">
                         <label>
                             <span>Course</span>

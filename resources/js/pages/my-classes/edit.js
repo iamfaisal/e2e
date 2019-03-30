@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
+import { getuser } from "../../helpers/app";
 import { read, update } from "../../helpers/resource";
 
 class EditMyClass extends Component {
@@ -11,7 +12,8 @@ class EditMyClass extends Component {
         this.state = {
             id: props.match.params.class,
             loading: false,
-            dataLoaded: false,
+            loaded: false,
+            user: getuser(),
             fields: {
                 course_id: "",
                 venue_id: "",
@@ -46,7 +48,6 @@ class EditMyClass extends Component {
 
         read('classes/' + id, {})
             .then(res => {
-                console.log(res.data);
                 let { fields } = this.state;
                 this.setState({
                     loaded: true,
@@ -54,7 +55,7 @@ class EditMyClass extends Component {
                     dataLoaded: true
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
             });
 
@@ -117,7 +118,7 @@ class EditMyClass extends Component {
         update('classes/' + id, data, true)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/classes")
+                    ? this.props.history.push("/my-classes")
                     : this.setState({
                         loading: false,
                         isFormValid: false
@@ -135,9 +136,9 @@ class EditMyClass extends Component {
     }
 
     render() {
-        const { dataLoaded, fields, courses, instructors, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, user, fields, courses, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
         
-        if (!dataLoaded) return false;
+        if (!loaded) return false;
 
         return (
             <div>
@@ -147,6 +148,8 @@ class EditMyClass extends Component {
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                     {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
+                    <input type="hidden" name="instructor" value={user.id} />
+
                     <fieldset className="fields horizontal">
                         <label>
                             <span>Course</span>

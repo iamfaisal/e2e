@@ -74,7 +74,7 @@ axios.interceptors.response.use((response) => {
     return response;
 }, function (error) {
     if (error.response.status === 500) {
-        logout()
+        //logout()
     }
     return Promise.reject(error.response);
 });
