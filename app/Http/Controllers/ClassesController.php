@@ -21,11 +21,6 @@ class ClassesController extends Controller
     {
         $this->middleware('auth:api');
         $this->user = Auth::Guard('api')->user();
-        if (!$this->user) {
-            return response()->json([
-                'unauthenticated' => true
-            ], 403);
-        }
     }
 
     /**

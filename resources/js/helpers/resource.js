@@ -1,5 +1,5 @@
 import axios from "axios";
-import { logout } from "./auth";
+import { setAuthTokenInLocalStorage,setAuthorizationToken } from "./auth";
 
 export function create(dataType, params, files) {
     let headers = {};
@@ -73,8 +73,10 @@ export function remove(dataType, params) {
 axios.interceptors.response.use((response) => {
     return response;
 }, function (error) {
-    if (error.response.status === 403) {
-        logout()
+    if (400 < error.response.status && error.response.status < 500) {
+        setAuthTokenInLocalStorage();
+        setAuthorizationToken();
+        window.location.reload();
     }
     return Promise.reject(error.response);
 });
