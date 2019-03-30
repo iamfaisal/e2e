@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
+import { getuser } from "../../helpers/app";
 import { read, create } from "../../helpers/resource";
 
 class CreateVenue extends Component {
@@ -9,6 +10,7 @@ class CreateVenue extends Component {
 
         this.state = {
             loading: false,
+            user: getuser(),
             fields: {
                 address: "",
                 city: "",
@@ -102,7 +104,7 @@ class CreateVenue extends Component {
     }
 
     render() {
-        const { fields, regulations, loading, isFormValid, formValidationData } = this.state;
+        const { user, fields, regulations, loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
@@ -113,7 +115,7 @@ class CreateVenue extends Component {
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                     {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
                     
-                    <input type="hidden" name="user" value="1" />
+                    <input type="hidden" name="user" value={user.id} />
 
                     <fieldset className="fields horizontal">
                         <TextField

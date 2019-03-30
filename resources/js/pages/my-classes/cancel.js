@@ -64,7 +64,7 @@ class CancelMyClass extends Component {
         create('classes/cancel', data, true)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/classes")
+                    ? this.props.history.push("/my-classes")
                     : this.setState({
                         loading: false,
                         isFormValid: false

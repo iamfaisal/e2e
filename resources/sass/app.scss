@@ -180,7 +180,6 @@ select:not([multiple]) {
   //Instead of the line below you could use @include user-select($select)
   user-select: none;
   margin-bottom: 10px;
-  overflow: hidden;
   input {
     display: none;
     &:not(:checked) + span:after {

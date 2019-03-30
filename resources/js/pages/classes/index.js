@@ -114,6 +114,14 @@ class Classes extends Component {
         }
     }
 
+    toggleCancelled(e) {
+        if (e.target.checked) {
+            this.getData({ params: { cancelled: true } });
+        } else {
+            this.getData({});
+        }
+    }
+
     render() {
         let { classes } = this.state;
         const { filters, courses, instructors, loader } = this.state;
@@ -164,6 +172,11 @@ class Classes extends Component {
                     <label className="checkbox">
                         <input type="checkbox" onChange={e => this.toggleArchived(e)} />
                         <span>Show archived</span>
+                    </label>
+
+                    <label className="checkbox">
+                        <input type="checkbox" onChange={e => this.toggleCancelled(e)} />
+                        <span>Show cancelled</span>
                     </label>
                 </div>
 
