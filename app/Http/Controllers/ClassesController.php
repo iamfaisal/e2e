@@ -212,6 +212,26 @@ class ClassesController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function roster(Request $request)
+    {
+        $class = Lesson::find($request->class_id);
+        if($request->hasFile('roster'))
+        {
+            $roster = $this->handleFileUpload($request->file('roster'));
+            $class->update([
+                'status' => 'Complete',
+                'roster' => $roster
+            ]);
+        }
+        return response()->json([
+            'class' => $class
+        ], 200);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  Lesson $class
