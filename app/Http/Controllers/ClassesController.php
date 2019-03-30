@@ -64,10 +64,10 @@ class ClassesController extends Controller
                 ->where('end_date', '<', $currentDateTime)
                 ->where('user_id', $user->id)
                 ->where('status', '!=', 'Complete')
-                ->where('roster', '==', '');
-            return response()->json([
-                'classes' => $classes->get()
-            ], 200);
+                ->where('roster', null);
+        return response()->json([
+            'classes' => $classes->get()
+        ], 200);
     }
 
     /**

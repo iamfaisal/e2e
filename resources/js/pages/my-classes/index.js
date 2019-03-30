@@ -12,7 +12,8 @@ class MyClasses extends Component {
             classes: [],
             courses: [],
             filters: {},
-            loader: true
+            loader: true,
+            canAddNew: false
         };
 
         this.renderLoader = this.renderLoader.bind(this);
@@ -29,7 +30,17 @@ class MyClasses extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch((err) => {
+            .catch(err => {
+                console.log(err);
+            });
+
+        read('classes/hasPendingRosters', {})
+            .then(res => {
+                this.setState({
+                    canAddNew: res.data.classes.length ? false : true
+                });
+            })
+            .catch(err => {
                 console.log(err);
             });
     }
@@ -111,7 +122,7 @@ class MyClasses extends Component {
     }
 
     render() {
-        let { classes } = this.state;
+        let { classes, canAddNew } = this.state;
         const { filters, courses, loader } = this.state;
 
         const columns = [
@@ -143,7 +154,9 @@ class MyClasses extends Component {
             <div>
                 <header className="pageheader">
                     <h2>Classes</h2>
-                    <Link className="button" to={"/my-classes/create"}>Add New Class</Link>
+                    {canAddNew
+                    ? <Link className="button" to={"/my-classes/create"}>Add New Class</Link>
+                    : <Link className="button" to={"/my-classes/create"}>Upload rosters to add a new class</Link>}
                 </header>
 
                 <div className="filter">
