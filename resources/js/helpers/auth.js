@@ -8,7 +8,7 @@ export function login(credentials) {
                 setAuthorizationToken(response.data.access_token);
                 res(response);
             })
-            .catch((err) => {
+            .catch(err => {
                 rej(err);
             })
     })
@@ -20,7 +20,7 @@ export function forgotPassword(credentials) {
             .then((response) => {
                 res(response);
             })
-            .catch((err) => {
+            .catch(err => {
                 rej(err);
             })
 	})
@@ -32,7 +32,7 @@ export function resetPassword(credentials) {
             .then((response) => {
                 res(response);
             })
-            .catch((err) => {
+            .catch(err => {
                 rej(err);
             })
     })
@@ -44,7 +44,7 @@ export function getEmailFromToken(credentials) {
             .then((response) => {
                 res(response);
             })
-            .catch((err) => {
+            .catch(err => {
                 rej(err);
             })
     })

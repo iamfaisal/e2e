@@ -33,7 +33,7 @@ class MySponsors extends Component {
                     loader: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
                 this.setState({
                     loader: true
@@ -62,9 +62,7 @@ class MySponsors extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
         }
     }
 

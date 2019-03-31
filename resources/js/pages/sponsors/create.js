@@ -48,9 +48,7 @@ class CreateSponsor extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('regulations', {})
             .then(res => {
@@ -58,9 +56,7 @@ class CreateSponsor extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value, valid) {
@@ -112,7 +108,7 @@ class CreateSponsor extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Create Sponsor";
                 this.setState({

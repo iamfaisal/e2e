@@ -58,9 +58,7 @@ class EditCourse extends Component {
                     loaded: true
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('regulations/', {})
             .then(res => {
@@ -68,9 +66,7 @@ class EditCourse extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('categories/', {})
             .then(res => {
@@ -78,9 +74,7 @@ class EditCourse extends Component {
                     categories: res.data.categories
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value, valid) {
@@ -135,7 +129,7 @@ class EditCourse extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Update Course";
                 this.setState({

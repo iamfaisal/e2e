@@ -14,7 +14,7 @@ export function create(dataType, params, files) {
         .then((response) => {
             res(response);
         })
-        .catch((err) => {
+        .catch(err => {
             rej(err);
         })
     })
@@ -33,7 +33,7 @@ export function read(dataType, params, files) {
         .then((response) => {
             res(response);
         })
-        .catch((err) => {
+        .catch(err => {
             rej(err);
         })
     })
@@ -52,7 +52,7 @@ export function update(dataType, params, files) {
         .then((response) => {
             res(response);
         })
-        .catch((err) => {
+        .catch(err => {
             rej(err);
         })
     })
@@ -64,7 +64,7 @@ export function remove(dataType, params) {
             .then((response) => {
                 res(response);
             })
-            .catch((err) => {
+            .catch(err => {
                 rej(err);
             })
     })

@@ -35,9 +35,7 @@ class Classes extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('users', { params: { role: 'instructor' } })
             .then(res => {
@@ -45,9 +43,7 @@ class Classes extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     getData(params = {}) {
@@ -60,7 +56,7 @@ class Classes extends Component {
                     loader: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
                 this.setState({
                     loader: true
@@ -104,9 +100,7 @@ class Classes extends Component {
             .then(res => {
                 window.location.reload();
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     deleteClass(e, clss) {

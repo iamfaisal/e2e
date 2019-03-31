@@ -35,9 +35,7 @@ class CancelClass extends Component {
                     dataLoaded: true
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value) {

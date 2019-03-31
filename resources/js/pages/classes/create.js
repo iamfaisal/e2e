@@ -46,9 +46,7 @@ class CreateClass extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('users', { params: { role: 'instructor' } })
             .then(res => {
@@ -56,9 +54,7 @@ class CreateClass extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('venues', {})
             .then(res => {
@@ -66,9 +62,7 @@ class CreateClass extends Component {
                     venues: res.data.venues
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value) {
@@ -100,7 +94,7 @@ class CreateClass extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Create Class";
                 this.setState({

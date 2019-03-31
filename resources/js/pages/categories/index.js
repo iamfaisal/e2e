@@ -61,9 +61,7 @@ class Categories extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
         }
     }
 

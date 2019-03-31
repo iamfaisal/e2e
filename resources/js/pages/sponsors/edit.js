@@ -52,9 +52,7 @@ class EditSponsor extends Component {
                     loaded: true
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('users/', { params: { role: "instructor" } })
             .then(res => {
@@ -62,9 +60,7 @@ class EditSponsor extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('regulations', {})
             .then(res => {
@@ -72,13 +68,10 @@ class EditSponsor extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value, valid) {
-        console.log(this.state);
         let { fields, formValidationData } = this.state;
         if (event && event.target.files) {
             fields[name] = event.target.files;

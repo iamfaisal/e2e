@@ -32,9 +32,7 @@ class MyVenues extends Component {
                     loader: false
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     renderLoader() {
@@ -58,9 +56,7 @@ class MyVenues extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
         }
     }
 

@@ -60,9 +60,7 @@ class CreateInstructor extends Component {
                     regulations: res.data.regulations
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value, valid) {
@@ -116,7 +114,7 @@ class CreateInstructor extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Create Instructor";
                 this.setState({

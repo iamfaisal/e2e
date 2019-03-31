@@ -46,9 +46,7 @@ class CreateMyClass extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('venues', {})
             .then(res => {
@@ -56,9 +54,7 @@ class CreateMyClass extends Component {
                     venues: res.data.venues
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value) {
@@ -90,7 +86,7 @@ class CreateMyClass extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Create Class";
                 this.setState({

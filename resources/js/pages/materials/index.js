@@ -26,14 +26,13 @@ class Materials extends Component {
 
         read('materials', {})
             .then(res => {
-                console.log(res.data);
                 this.setState({
                     materials: res.data.courses,
                     regulations: res.data.regulations,
                     loader: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
                 this.setState({
                     loader: true

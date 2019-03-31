@@ -44,9 +44,7 @@ class EditMyVenue extends Component {
                     loaded: true
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('users/', { params: { role: "instructor" } })
             .then(res => {
@@ -54,9 +52,7 @@ class EditMyVenue extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('regulations', {})
             .then(res => {
@@ -64,9 +60,7 @@ class EditMyVenue extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value, valid) {
@@ -121,7 +115,7 @@ class EditMyVenue extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Update Venue";
                 this.setState({

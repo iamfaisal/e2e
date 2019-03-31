@@ -55,9 +55,7 @@ class EditClass extends Component {
                     fields: { ...fields, ...res.data.class },
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('courses/', {})
             .then(res => {
@@ -65,9 +63,7 @@ class EditClass extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('users', { params: { role: 'instructor' } })
             .then(res => {
@@ -75,9 +71,7 @@ class EditClass extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('venues', {})
             .then(res => {
@@ -85,9 +79,7 @@ class EditClass extends Component {
                     venues: res.data.venues
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('sponsors', { params: { role: 'admin' } })
             .then(res => {
@@ -95,9 +87,7 @@ class EditClass extends Component {
                     sponsors: res.data.sponsors
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value) {

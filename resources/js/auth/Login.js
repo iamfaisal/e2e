@@ -84,7 +84,7 @@ class Login extends Component {
                     if (res.status === 200) {
                         this.props.history.push("/");
                     }
-                }).catch((err) => {
+                }).catch(err => {
                 this.setState({
                     formValidationData: {form: "Invalid email or password."},
                     isLoading: false,

@@ -41,8 +41,6 @@ class Profile extends Component {
             formValidationData: formValidationData
         });
 
-        console.log(fields);
-
         this.validate();
     }
 

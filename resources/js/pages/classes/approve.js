@@ -57,9 +57,7 @@ class ApproveClass extends Component {
                     dataLoaded: true
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('courses/', {})
             .then(res => {
@@ -67,9 +65,7 @@ class ApproveClass extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('users', { params: { role: 'instructor' } })
             .then(res => {
@@ -77,9 +73,7 @@ class ApproveClass extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('venues', {})
             .then(res => {
@@ -87,9 +81,7 @@ class ApproveClass extends Component {
                     venues: res.data.venues
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value) {

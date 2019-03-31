@@ -49,7 +49,7 @@ class ResetPassword extends Component {
 					fields: fields,
 					formValidationData: formValidationData
 				});
-			}).catch((err) => {
+			}).catch(err => {
 			this.setState({
 				formValidationData: {form: "Invalid request token."},
 				isLoading: false,
@@ -108,7 +108,7 @@ class ResetPassword extends Component {
 						isLoading: false,
 						isFormValid: true
 					});
-				}).catch((err) => {
+				}).catch(err => {
 				this.setState({
 					formValidationData: {form: "Unable process this request."},
 					isLoading: false,

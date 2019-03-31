@@ -42,9 +42,7 @@ class CreateAdmin extends Component {
                     roles: res.data.roles
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value, valid) {
@@ -96,7 +94,7 @@ class CreateAdmin extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Create User";
                 this.setState({

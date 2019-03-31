@@ -48,15 +48,12 @@ class EditMySponsor extends Component {
         const { id } = this.state;
         read('sponsors/'+id, {params: {fromInstructor: true}})
             .then(res => {
-                console.log(res.data);
                 this.setState({
                     fields: res.data.sponsor,
                     loaded: true
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('regulations', {})
             .then(res => {
@@ -64,9 +61,7 @@ class EditMySponsor extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value, valid) {

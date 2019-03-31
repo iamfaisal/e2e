@@ -68,7 +68,7 @@ class ForgotPassword extends Component {
 						isLoading: false,
 						isFormValid: true
 					});
-				}).catch((err) => {
+				}).catch(err => {
 					this.setState({
 						formValidationData: {form: "Unable to send reset link."},
 						isLoading: false,

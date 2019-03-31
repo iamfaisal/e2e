@@ -30,9 +30,7 @@ class MyClasses extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('classes/hasPendingRosters', {})
             .then(res => {
@@ -40,9 +38,7 @@ class MyClasses extends Component {
                     canAddNew: res.data.classes.length ? false : true
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     getData(params = {}) {
@@ -57,7 +53,7 @@ class MyClasses extends Component {
                     loader: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
                 this.setState({
                     loader: true

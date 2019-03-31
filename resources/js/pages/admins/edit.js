@@ -55,9 +55,7 @@ class EditAdmin extends Component {
                     loaded: true
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
 
         read('roles/', {})
             .then(res => {
@@ -65,9 +63,7 @@ class EditAdmin extends Component {
                     roles: res.data.roles
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value, valid) {
@@ -122,7 +118,7 @@ class EditAdmin extends Component {
                         isFormValid: false
                     });
             })
-            .catch((err) => {
+            .catch(err => {
                 let { formValidationData } = this.state;
                 formValidationData.form = "Unable To Update User";
                 this.setState({

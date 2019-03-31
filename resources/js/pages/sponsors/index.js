@@ -29,9 +29,7 @@ class Sponsors extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     getData() {
@@ -44,7 +42,7 @@ class Sponsors extends Component {
                     loader: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
                 this.setState({
                     loader: true
@@ -73,9 +71,7 @@ class Sponsors extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch((err) => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
         }
     }
 

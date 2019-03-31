@@ -39,7 +39,7 @@ class Courses extends Component {
                     loader: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
                 this.setState({
                     loader: true
@@ -76,7 +76,7 @@ class Courses extends Component {
                 .then(res => {
                     this.getData();
                 })
-                .catch((err) => {
+                .catch(err => {
                     console.log(err);
                 });
         }

@@ -29,9 +29,7 @@ class Territories extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     getData() {
@@ -42,7 +40,7 @@ class Territories extends Component {
                     loader: false
                 });
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
                 this.setState({
                     loader: true
@@ -71,9 +69,7 @@ class Territories extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
         }
     }
 

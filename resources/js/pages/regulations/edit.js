@@ -55,9 +55,7 @@ class EditRegulation extends Component {
                     loaded: true
                 });
             })
-            .catch(err => {
-                console.log(err);
-            });
+            .catch(err => console.log(err));
     }
 
     handleChange(name, value, valid) {
