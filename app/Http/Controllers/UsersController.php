@@ -119,8 +119,8 @@ class UsersController extends Controller
     public function show(User $user)
     {
         $regulations = $user->licenses->pluck('regulation_id');
-        $courses = Course::whereIn('regulation_id', $regulations)->orderBy('created_at', 'desc');
-        $territories = Territory::whereIn('regulation_id', $regulations)->orderBy('created_at', 'desc');
+        $courses = Course::whereIn('regulation_id', $regulations)->orderBy('created_at', 'desc')->get();
+        $territories = Territory::whereIn('regulation_id', $regulations)->orderBy('created_at', 'desc')->get();
         return response()->json([
             'user' => $user,
             'profile' => $user->profile,
