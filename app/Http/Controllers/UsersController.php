@@ -231,7 +231,7 @@ class UsersController extends Controller
 
     public function revertStatus(User $user)
     {
-        $status = $user->status == 1 ? 0 : 1;
+        $status = $user->status ? false : true;
         $user->update(['status' => $status]);
         return response()->json([
             'user' => 'success'
