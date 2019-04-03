@@ -16,3 +16,9 @@ try {
 $(window).on("onunload", function(){
     localStorage.removeItem("user");
 });
+
+$(window).on("load", function(){
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+});
