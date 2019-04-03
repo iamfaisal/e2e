@@ -19,8 +19,16 @@ export function isJustInstructor() {
     return !!data["instructor"] && getRoles().length === 1;
 }
 
+export function isJustStudent() {
+    const data = decodeAclData();
+    return !!data["student"] && getRoles().length === 1;
+}
+
 export function routeToDashboard() {
     let dashboard = "/";
+    if (isJustStudent()) {
+        dashboard = "/student-classes";
+    }
     if (isJustInstructor()) {
         dashboard = "/my-classes";
     }
