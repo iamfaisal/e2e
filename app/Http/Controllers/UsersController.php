@@ -83,7 +83,6 @@ class UsersController extends Controller
         $user->profile()->save($profile);
 
         if($request->has('roles')) {
-            $user->roles()->sync($request->roles);
             if (in_array(3, $request->roles) && $request->has('licenses')) {
                 $user->licenses()->delete();
                 foreach ($request->licenses as $index => $license) {
@@ -102,6 +101,8 @@ class UsersController extends Controller
                         License::create($licenseData);
                     }
                 }
+            } else {
+                $user->roles()->sync($request->roles);
             }
         }
 
@@ -178,7 +179,6 @@ class UsersController extends Controller
         $user->profile()->update($profileData);
 
         if($request->has('roles')) {
-            $user->roles()->sync($request->roles);
             if (in_array(3, $request->roles) && $request->has('licenses')) {
                 $user->licenses()->delete();
                 foreach ($request->licenses as $index => $license) {
@@ -197,6 +197,8 @@ class UsersController extends Controller
                         License::create($licenseData);
                     }
                 }
+            } else {
+                $user->roles()->sync($request->roles);
             }
             if (in_array(3, $request->roles))
             {
@@ -229,18 +231,26 @@ class UsersController extends Controller
         ], 200);
     }
 
-    public function revertStatus($userID)
-    {
+    private function canUserPerformOn($userID, $checkSelf = false) {
         $currentUser = $this->user;
         $user = User::find($userID);
-        $status = $user->status == 1 ? 0 : 1;
+        $checkSelf = $checkSelf ? $currentUser->id !== $user->id : true;
         if (
-            ($currentUser->hasRole("super-admin") && !$user->hasRole("super-admin") &&
-                $currentUser->id !== $user->id)
+            ($currentUser->hasRole("super-admin") && !$user->hasRole("super-admin") && $checkSelf)
             ||
-            ($currentUser->hasRole("admin") && !$user->hasRole("admin") &&
-                $currentUser->id !== $user->id)
+            ($currentUser->hasRole("admin") && !$user->hasRole("admin") && $checkSelf)
         ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function revertStatus($userID)
+    {
+        if ($this->canUserPerformOn($userID, true)) {
+            $user = User::find($userID);
+            $status = $user->status == 1 ? 0 : 1;
             $user->update(['status' => $status]);
             return response()->json([
                 'user' => 'success'
@@ -250,7 +260,6 @@ class UsersController extends Controller
                 'user' => 'error'
             ], 501);
         }
-
     }
 
     /**
