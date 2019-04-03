@@ -31,12 +31,12 @@ class CreateCoursesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('course_teacher', function (Blueprint $table) {
+        Schema::create('course_user', function (Blueprint $table) {
             $table->integer('course_id')->unsigned();
-            $table->integer('teacher_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
-            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
-            $table->primary(['course_id', 'teacher_id']);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->primary(['course_id', 'user_id']);
         });
     }
 
@@ -47,7 +47,7 @@ class CreateCoursesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_teacher');
+        Schema::dropIfExists('course_user');
         Schema::dropIfExists('courses');
     }
 }

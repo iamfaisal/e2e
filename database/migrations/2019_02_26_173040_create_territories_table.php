@@ -22,12 +22,12 @@ class CreateTerritoriesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('teacher_territory', function (Blueprint $table) {
+        Schema::create('territory_user', function (Blueprint $table) {
             $table->integer('territory_id')->unsigned();
-            $table->integer('teacher_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->foreign('territory_id')->references('id')->on('territories')->onDelete('cascade');
-            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
-            $table->primary(['teacher_id', 'territory_id', ]);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->primary(['territory_id', 'user_id']);
         });
     }
 
@@ -38,7 +38,7 @@ class CreateTerritoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teacher_territory');
+        Schema::dropIfExists('territory_user');
         Schema::dropIfExists('territories');
     }
 }
