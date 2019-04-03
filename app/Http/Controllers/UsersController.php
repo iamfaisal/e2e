@@ -232,7 +232,7 @@ class UsersController extends Controller
     public function revertStatus($userID)
     {
         $user = User::find($userID);
-        $status = $user->status ? false : true;
+        $status = $user->status == 1 ? 0 : 1;
         $user->update(['status' => $status]);
         return response()->json([
             'user' => 'success'
