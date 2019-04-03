@@ -42,7 +42,7 @@ class Course extends Model
         return $this->hasMany(Lesson::class);
     }
 
-    public function teachers()
+    public function users()
     {
         return $this->belongsToMany(User::class);
     }
