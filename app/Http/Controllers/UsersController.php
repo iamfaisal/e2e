@@ -194,6 +194,10 @@ class UsersController extends Controller
             {
                 $user->courses()->sync($request->courses);
             }
+            if (in_array(3, $request->roles) && $request->has('territories'))
+            {
+                $user->territories()->sync($request->territories);
+            }
         }
 
         return response()->json([
