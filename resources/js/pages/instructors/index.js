@@ -29,7 +29,6 @@ class Instructors extends Component {
 
         read('users', { params: { role: 'instructor'}})
             .then(res => {
-                console.log(res.data.users);
                 this.setState({
                     instructors: res.data.users,
                     loader: false
@@ -61,8 +60,9 @@ class Instructors extends Component {
     }
 
     toggleStatus(e, instructor) {
-        create('/users/status' + instructor.id, {}).then(res => {
+        create('users/status', { userID: instructor.id }).then(res => {
             instructor.status = !instructor.status;
+            this.setState({});
         }).catch(err => console.log(err));
     }
 

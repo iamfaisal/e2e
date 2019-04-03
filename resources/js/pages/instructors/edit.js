@@ -69,10 +69,11 @@ class EditInstructor extends Component {
             .then(res => {
                 let { fields } = this.state;
                 fields.email = res.data.user.email;
+                fields.status = res.data.user.status;
                 if (res.data.licenses.length) fields.licenses = res.data.licenses;
                 if (res.data.user_courses.length) fields.courses = res.data.user_courses;
                 if (res.data.user_territories.length) fields.territories = res.data.user_territories;
-
+                
                 this.setState({
                     fields: {...fields, ...res.data.profile},
                     courses: res.data.courses,
@@ -195,8 +196,6 @@ class EditInstructor extends Component {
         const { loaded, fields, regulations, territories, courses, loading, isFormValid, formValidationData } = this.state;
 
         if (!loaded) return false;
-
-        console.log(fields);
 
         return (
             <div>
