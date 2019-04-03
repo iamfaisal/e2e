@@ -142,13 +142,27 @@ small {
   border-bottom-width: 2px;
   text-align: center;
   cursor: pointer;
-  &.secondary {
-    background: $white;
-    color: $color_ebony_clay_approx;
-  }
+  
   &:hover {
     background: $color_monza_approx;
     color: $white;
+  }
+
+  &.secondary {
+    background: $white;
+    color: $color_ebony_clay_approx;
+
+    &:hover {
+      background: #eaecf6;
+      color: $color_ebony_clay_approx;
+    }
+  }
+
+  &.green {
+    background: #5fb962;
+    &:hover {
+      background: #4caf50;
+    }
   }
 
   &:disabled {

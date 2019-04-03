@@ -36,7 +36,9 @@ class EditInstructor extends Component {
                     code: "",
                     certificate: "",
                     expiration: ""
-                }]
+                }],
+                territories: [],
+                courses: []
             },
             required_fields: {
                 first_name: "",
@@ -44,8 +46,11 @@ class EditInstructor extends Component {
                 email: ""
             },
             regulations: [],
+            territories: [],
+            courses: [],
             formValidationData: {},
-            isFormValid: true
+            isFormValid: true,
+            status: "update"
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -63,20 +68,29 @@ class EditInstructor extends Component {
                 let { fields } = this.state;
                 fields.email = res.data.user.email;
                 if (res.data.licenses.length) fields.licenses = res.data.licenses;
+                if (res.data.user_courses.length) fields.courses = res.data.user_courses;
                 this.setState({
-                    fields: { ...fields, ...res.data.profile },
+                    fields: {
+                        ...fields,
+                        ...res.data.profile,
+                        courses: res.data.courses
+                    },
                     loaded: true
                 });
             })
             .catch(err => console.log(err));
 
-        read('regulations/', {})
-            .then(res => {
-                this.setState({
-                    regulations: res.data.regulations
-                });
-            })
-            .catch(err => console.log(err));
+        read('regulations/', {}).then(res => {
+            this.setState({
+                regulations: res.data.regulations
+            });
+        }).catch(err => console.log(err));
+
+        read('territories', {}).then(res => {
+            this.setState({
+                territories: res.data.territories
+            });
+        }).catch(err => console.log(err));
     }
 
     handleChange(name, value, valid) {
@@ -111,7 +125,7 @@ class EditInstructor extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { id, fields, isFormValid } = this.state;
+        const { id, status, isFormValid } = this.state;
 
         if (!isFormValid) return;
 
@@ -122,6 +136,7 @@ class EditInstructor extends Component {
         let data = new FormData(e.target);
         data.append("_method", "PUT");
         data.append('roles[]', 3);
+        data.append("status", status);
 
         update('users/' + id, data)
             .then(res => {
@@ -177,7 +192,7 @@ class EditInstructor extends Component {
     }
 
     render() {
-        const { loaded, fields, regulations, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, fields, regulations, territories, courses, loading, isFormValid, formValidationData } = this.state;
 
         if (!loaded) return false;
 
@@ -368,6 +383,36 @@ class EditInstructor extends Component {
                         <button className="ion-md-remove" onClick={this.removeLicense}></button>
                         <button className="ion-md-add" onClick={this.addLicense}></button>
                     </div>
+                    
+                    <legend>Territories</legend>
+                    <fieldset className="fields horizontal">
+                        <label>
+                            <Select
+                                onChange={this.handleChange}
+                                name="territories[]"
+                                items={territories}
+                                value={fields.territories}
+                                multiple
+                                id={"id"}
+                                val={"name"}
+                            />
+                        </label>
+                    </fieldset>
+
+                    <legend>Courses</legend>
+                    <fieldset className="fields horizontal">
+                        <label>
+                            <Select
+                                onChange={this.handleChange}
+                                name="courses[]"
+                                items={courses}
+                                value={fields.courses}
+                                multiple
+                                id={"id"}
+                                val={"title"}
+                            />
+                        </label>
+                    </fieldset>
 
                     <div className="row">
                         <div className="col-md-6 col-lg-4">
@@ -400,7 +445,11 @@ class EditInstructor extends Component {
                         />
                     </fieldset>
 
-                    <button className="button" disabled={!isFormValid}>Update Instructor</button>
+                    <div className="button-group">
+                        <button className="button" disabled={!isFormValid} onClick={() => { this.state.status = "update" }}>Update Instructor</button>
+                        <button className="button green" onClick={() => { this.state.status = "approve" }}>Approve Instructor</button>
+                        <button className="button secondary" onClick={() => { this.state.status = "archive" }}>Archive Instructor</button>
+                    </div>
                 </form>
             </div>
         );
