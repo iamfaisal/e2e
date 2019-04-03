@@ -1,8 +1,6 @@
 import Login from "./auth/Login";
 import ForgotPassword from "./auth/ForgotPassword";
 import ResetPassword from "./auth/ResetPassword";
-import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
 
 import Courses from "./pages/courses";
 import CreateCourse from "./pages/courses/create";
@@ -60,11 +58,6 @@ import EditMySponsor from "./pages/my-sponsors/edit";
 import requireAuth from "./utils/requireAuth";
 
 const routes = [
-    {
-        path: "/",
-        component: requireAuth(Dashboard),
-        exact: true
-    },
     {
         path: "/login",
         component: Login,
