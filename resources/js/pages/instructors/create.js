@@ -5,6 +5,7 @@ import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
 import TextArea from "../../common/TextArea";
 import DatePicker from "react-datepicker";
+import CheckBox from "../../common/CheckBox";
 import { read, create, dateToString } from "../../helpers/resource";
 
 class CreateInstructor extends Component {
@@ -34,7 +35,8 @@ class CreateInstructor extends Component {
                     code: "",
                     certificate: "",
                     expiration: new Date
-                }]
+                }],
+                status: false
             },
             required_fields: {
                 first_name: "",
@@ -369,6 +371,12 @@ class CreateInstructor extends Component {
                             validation={[validations.isEmpty, validations.isAlphaNumeric, validations.equalTo]}
                         />
                     </fieldset>
+
+                    <CheckBox
+                        onChange={this.handleChange}
+                        name="status"
+                        value={fields.status}
+                        labelText="Approved?" /><br />
 
                     <button className="button" disabled={!isFormValid}>Create Instructor</button>
                 </form>

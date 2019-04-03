@@ -57,7 +57,7 @@ class EditMyClass extends Component {
             })
             .catch(err => console.log(err));
 
-        read('courses/', {})
+        read('classes/my-courses', {})
             .then(res => {
                 this.setState({
                     courses: res.data.courses

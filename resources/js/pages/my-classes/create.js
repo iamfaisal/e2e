@@ -40,7 +40,7 @@ class CreateMyClass extends Component {
     }
 
     componentDidMount() {
-        read('courses/', {})
+        read('classes/my-courses', {})
             .then(res => {
                 this.setState({
                     courses: res.data.courses

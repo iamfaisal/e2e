@@ -5,6 +5,7 @@ import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
 import TextArea from "../../common/TextArea";
 import DatePicker from "react-datepicker";
+import CheckBox from "../../common/CheckBox";
 import { read, update, dateToString } from "../../helpers/resource";
 
 class EditInstructor extends Component {
@@ -38,7 +39,8 @@ class EditInstructor extends Component {
                     expiration: ""
                 }],
                 territories: [],
-                courses: []
+                courses: [],
+                status: false
             },
             required_fields: {
                 first_name: "",
@@ -50,7 +52,7 @@ class EditInstructor extends Component {
             courses: [],
             formValidationData: {},
             isFormValid: true,
-            status: "update"
+            status: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -124,7 +126,7 @@ class EditInstructor extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { id, status, isFormValid } = this.state;
+        const { id, isFormValid } = this.state;
 
         if (!isFormValid) return;
 
@@ -135,7 +137,6 @@ class EditInstructor extends Component {
         let data = new FormData(e.target);
         data.append("_method", "PUT");
         data.append('roles[]', 3);
-        data.append("status", status);
 
         update('users/' + id, data)
             .then(res => {
@@ -194,6 +195,8 @@ class EditInstructor extends Component {
         const { loaded, fields, regulations, territories, courses, loading, isFormValid, formValidationData } = this.state;
 
         if (!loaded) return false;
+
+        console.log(fields);
 
         return (
             <div>
@@ -444,11 +447,13 @@ class EditInstructor extends Component {
                         />
                     </fieldset>
 
-                    <div className="button-group">
-                        <button className="button" disabled={!isFormValid} onClick={() => { this.state.status = "update" }}>Update Instructor</button>
-                        <button className="button green" onClick={() => { this.state.status = "approve" }}>Approve Instructor</button>
-                        <button className="button secondary" onClick={() => { this.state.status = "archive" }}>Archive Instructor</button>
-                    </div>
+                    <CheckBox
+                        onChange={this.handleChange}
+                        name="status"
+                        value={fields.status}
+                        labelText="Approved?" /><br />
+
+                    <button className="button" disabled={!isFormValid} onClick={() => { this.state.status = "update" }}>Update Instructor</button>
                 </form>
             </div>
         );

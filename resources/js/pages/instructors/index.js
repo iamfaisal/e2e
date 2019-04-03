@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
-import { read, remove, filter } from "../../helpers/resource";
+import { read, remove, create, filter } from "../../helpers/resource";
 import { getUserFullName } from "../../helpers/app";
 import DataTable from "react-data-table-component";
 
@@ -17,6 +17,7 @@ class Instructors extends Component {
         this.renderLoader = this.renderLoader.bind(this);
         this.renderActions = this.renderActions.bind(this);
         this.deleteInstructor = this.deleteInstructor.bind(this);
+        this.toggleStatus = this.toggleStatus.bind(this);
     }
 
     componentDidMount() {
@@ -28,6 +29,7 @@ class Instructors extends Component {
 
         read('users', { params: { role: 'instructor'}})
             .then(res => {
+                console.log(res.data.users);
                 this.setState({
                     instructors: res.data.users,
                     loader: false
@@ -48,12 +50,20 @@ class Instructors extends Component {
     }
 
     renderActions(instructor) {
+        let classname = instructor.status == 1 ? "hand" : "checkmark";
         return (
             <div className="actions">
+                <a className={"ion-md-" + classname} onClick={e => this.toggleStatus(e, instructor)} />
                 <Link className="ion-md-create" to={"/instructors/edit/" + instructor.id} />
                 <a className="ion-md-close" onClick={e => this.deleteInstructor(e, instructor.id)} />
             </div>
         );
+    }
+
+    toggleStatus(e, instructor) {
+        create('/users/status' + instructor.id, {}).then(res => {
+            instructor.status = !instructor.status;
+        }).catch(err => console.log(err));
     }
 
     deleteInstructor(e, instructor) {
