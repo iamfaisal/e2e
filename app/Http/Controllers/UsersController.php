@@ -235,8 +235,11 @@ class UsersController extends Controller
         $user = User::find($userID);
         $status = $user->status == 1 ? 0 : 1;
         if (
-            ($currentUser->hasRole("super-admin") && !$user->hasRole("super-admin") && $currentUser->id !== $user->id) ||
-            ($currentUser->hasRole("admin") && !$user->hasRole("admin") && $currentUser->id !== $user->id)
+            ($currentUser->hasRole("super-admin") && !$user->hasRole("super-admin") &&
+                $currentUser->id !== $user->id)
+            ||
+            ($currentUser->hasRole("admin") && !$user->hasRole("admin") &&
+                $currentUser->id !== $user->id)
         ) {
             $user->update(['status' => $status]);
             return response()->json([
