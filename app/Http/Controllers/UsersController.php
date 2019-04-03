@@ -234,7 +234,8 @@ class UsersController extends Controller
         $status = $user->status ? false : true;
         $user->update(['status' => $status]);
         return response()->json([
-            'user' => 'success'
+            'newStatus' => $status,
+            'user' => $user
         ], 200);
     }
 
