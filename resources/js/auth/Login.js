@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { login, getAuthUser } from "../helpers/auth";
+import { login, getAuthUser, setAuthTokenInLocalStorage, setAuthorizationToken } from "../helpers/auth";
 import { validations } from "../utils/validations";
 import TextField from "../common/TextField";
 import CheckBox from "../common/CheckBox";
@@ -82,14 +82,24 @@ class Login extends Component {
             login(userData)
                 .then(res => {
                     if (res.status === 200) {
-                        this.props.history.push("/");
+                        if(res.data.status === 1) {
+                            this.props.history.push("/");
+                        } else {
+                            this.setState({
+                                formValidationData: {form: "Your account has been temporarily blocked."},
+                                isLoading: false,
+                                isFormValid: false
+                            });
+                            setAuthTokenInLocalStorage();
+                            setAuthorizationToken();
+                        }
                     }
                 }).catch(err => {
-                this.setState({
-                    formValidationData: {form: "Invalid email or password."},
-                    isLoading: false,
-                    isFormValid: false
-                });
+                    this.setState({
+                        formValidationData: {form: "Invalid email or password."},
+                        isLoading: false,
+                        isFormValid: false
+                    });
             });
         }
     }

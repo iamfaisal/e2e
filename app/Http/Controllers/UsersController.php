@@ -229,9 +229,8 @@ class UsersController extends Controller
         ], 200);
     }
 
-    public function revertStatus($userID)
+    public function revertStatus(User $user)
     {
-        $user = User::find($userID);
         $status = $user->status == 1 ? 0 : 1;
         $user->update(['status' => $status]);
         return response()->json([
