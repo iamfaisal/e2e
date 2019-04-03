@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\License;
 use App\Profile;
 use Illuminate\Http\Request;
@@ -116,10 +117,13 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
+        $regulations = $user->licenses->pluck('regulation_id');
+        $courses = Course::whereIn('regulation_id', $regulations)->orderBy('created_at', 'desc');
         return response()->json([
             'user' => $user,
             'profile' => $user->profile,
             'licenses' => $user->licenses,
+            'courses' => $courses,
             'roles' => $user->roles->pluck('id')
         ], 200);
     }
