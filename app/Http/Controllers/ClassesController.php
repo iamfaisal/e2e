@@ -55,9 +55,9 @@ class ClassesController extends Controller
         ], 200);
     }
 
-    public function userCoursesOnly($userID)
+    public function userCoursesOnly()
     {
-        $user = User::find($userID);
+        $user = $this->user;
         return response()->json([
             'courses' => $user->courses
         ], 200);
