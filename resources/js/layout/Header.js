@@ -67,7 +67,9 @@ class Header extends Component {
                         <img src={asset("images/logo.png")}/>
                     </Link>
                     <div className="actions">
-                        <a href="#" className="profile"><img src={asset("images/user.jpg")}/></a>
+                        <Link className="profile" to={"/" + editProfileRoute + "/edit/" + user.id}>
+                            <img src={getUserAvatar(user)} alt={userName} />
+                        </Link>
                         <a href="javascript:void(0)" onClick={this.handleLogout} className="logout ion-md-log-out"/>
                         <a className="ion-md-more" onClick={this.handleSidebarToggle} />
                     </div>
