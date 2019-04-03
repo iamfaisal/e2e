@@ -231,13 +231,24 @@ class UsersController extends Controller
 
     public function revertStatus($userID)
     {
+        $currentUser = $this->user;
         $user = User::find($userID);
         $status = $user->status == 1 ? 0 : 1;
-        $user->update(['status' => $status]);
-        return response()->json([
-            'userID', $userID,
-            'user' => 'success'
-        ], 200);
+        if (
+            ($currentUser->hasRole("super-admin") && !$user->hasRole("super-admin")) ||
+            ($currentUser->hasRole("admin") && !$user->hasRole("admin")) ||
+            ($currentUser->id !== $user->id)
+        ) {
+            $user->update(['status' => $status]);
+            return response()->json([
+                'user' => 'success'
+            ], 200);
+        } else {
+            return response()->json([
+                'user' => 'error'
+            ], 501);
+        }
+
     }
 
     /**
