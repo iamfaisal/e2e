@@ -229,13 +229,10 @@ class UsersController extends Controller
         ], 200);
     }
 
-    public function revertStatus(User $user)
+    public function revertStatus($userID)
     {
-        $status = $user->status ? false : true;
-        $user->update(['status' => $status]);
         return response()->json([
-            'newStatus' => $status,
-            'user' => $user
+            'newStatus' => $userID
         ], 200);
     }
 
