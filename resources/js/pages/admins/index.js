@@ -52,7 +52,7 @@ class Admins extends Component {
         return (
             <div className="actions">
                 <a className={"ion-md-" + classname} onClick={e => this.toggleStatus(e, user)} />
-                <Link className="ion-md-create" to={"/users/edit/" + user.id} />
+                <Link data-toggle="tooltip" title="Edit" className="ion-md-create" to={"/users/edit/" + user.id} />
                 <a className="ion-md-close" onClick={e => this.deleteAdmin(e, user.id)} />
             </div>
         );

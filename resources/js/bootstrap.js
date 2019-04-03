@@ -16,7 +16,3 @@ try {
 $(window).on("onunload", function(){
     localStorage.removeItem("user");
 });
-
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip()
-})
