@@ -50,11 +50,15 @@ class Instructors extends Component {
 
     renderActions(instructor) {
         let classname = instructor.status == 1 ? "hand" : "checkmark";
+        let tooltip = instructor.status == 1 ? "Cancel" : "Approve";
         return (
             <div className="actions">
-                <a className={"ion-md-" + classname} onClick={e => this.toggleStatus(e, instructor)} />
-                <Link className="ion-md-create" to={"/instructors/edit/" + instructor.id} />
-                <a className="ion-md-close" onClick={e => this.deleteInstructor(e, instructor.id)} />
+                <a className={"ion-md-" + classname} onClick={e => this.toggleStatus(e, instructor)}
+                    data-toggle="tooltip" title={tooltip + " Instructor"} />
+                <Link className="ion-md-create" to={"/instructors/edit/" + instructor.id}
+                    data-toggle="tooltip" title="Edit Instructor" />
+                <a className="ion-md-close" onClick={e => this.deleteInstructor(e, instructor.id)}
+                    data-toggle="tooltip" title="Delete Instructor" />
             </div>
         );
     }
