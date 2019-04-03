@@ -19,6 +19,7 @@ class UsersTableSeeder extends Seeder
             'name' => 'terrye',
             'email' => 'tiannetta@amerifirst.us',
             'password' => bcrypt('secret'),
+            'status' => true,
             'email_verified_at' => Carbon::now()
         ]);
         $user = User::find(1);
