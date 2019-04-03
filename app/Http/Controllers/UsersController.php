@@ -190,6 +190,10 @@ class UsersController extends Controller
                     }
                 }
             }
+            if (in_array(3, $request->roles) && $request->has('courses'))
+            {
+                $user->courses()->sync($request->courses);
+            }
         }
 
         return response()->json([
