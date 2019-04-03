@@ -235,6 +235,7 @@ class UsersController extends Controller
         $status = $user->status == 1 ? 0 : 1;
         $user->update(['status' => $status]);
         return response()->json([
+            'userID', $userID,
             'user' => 'success'
         ], 200);
     }
