@@ -54,7 +54,9 @@ class UsersController extends Controller
             'name'      => explode('@', $request->email)[0],
             'email'     => $request->email,
             'password'  => Hash::make($request->password),
+            'status'    => $request->status ? true : false
         ];
+
         $profileData = [
             'first_name'        => $request->first_name,
             'last_name'         => $request->last_name,
@@ -144,7 +146,8 @@ class UsersController extends Controller
     {
         $data = [
             'name'      => explode('@', $request->email)[0],
-            'email'     => $request->email
+            'email'     => $request->email,
+            'status'    => $request->status ? true : false
         ];
         if($request->has('password'))
         {
@@ -221,6 +224,16 @@ class UsersController extends Controller
         $user->profile()->delete();
         $user->licenses()->delete();
         $user->delete();
+        return response()->json([
+            'user' => 'success'
+        ], 200);
+    }
+
+    public function revertStatus($userID)
+    {
+        $user = User::find($userID);
+        $status = $user->status ? false : true;
+        $user->update(['status' => $status]);
         return response()->json([
             'user' => 'success'
         ], 200);
