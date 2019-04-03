@@ -31,6 +31,8 @@ class CreateProfilesTable extends Migration
             $table->string('additional_email2')->nullable();
             $table->text('info')->nullable();
             $table->string('avatar')->nullable();
+            $table->string('application_docs')->nullable();
+            $table->string('custom_flyer')->nullable();
             $table->timestamps();
         });
     }

@@ -77,6 +77,14 @@ class UsersController extends Controller
         {
             $profileData['avatar'] = $this->handleFileUpload($request->file('avatar'));
         }
+        if($request->hasFile('application_docs'))
+        {
+            $profileData['application_docs'] = $this->handleFileUpload($request->file('application_docs'));
+        }
+        if($request->hasFile('custom_flyer'))
+        {
+            $profileData['custom_flyer'] = $this->handleFileUpload($request->file('custom_flyer'));
+        }
 
         $user = User::create($data);
         $profile = new Profile($profileData);
@@ -173,6 +181,14 @@ class UsersController extends Controller
         if($request->hasFile('avatar'))
         {
             $profileData['avatar'] = $this->handleFileUpload($request->file('avatar'));
+        }
+        if($request->hasFile('application_docs'))
+        {
+            $profileData['application_docs'] = $this->handleFileUpload($request->file('application_docs'));
+        }
+        if($request->hasFile('custom_flyer'))
+        {
+            $profileData['custom_flyer'] = $this->handleFileUpload($request->file('custom_flyer'));
         }
 
         $user->update($data);
