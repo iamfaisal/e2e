@@ -69,12 +69,11 @@ class EditInstructor extends Component {
                 fields.email = res.data.user.email;
                 if (res.data.licenses.length) fields.licenses = res.data.licenses;
                 if (res.data.user_courses.length) fields.courses = res.data.user_courses;
+                if (res.data.user_territories.length) fields.territories = res.data.user_territories;
+
                 this.setState({
-                    fields: {
-                        ...fields,
-                        ...res.data.profile,
-                        courses: res.data.courses
-                    },
+                    fields: {...fields, ...res.data.profile},
+                    courses: res.data.courses,
                     loaded: true
                 });
             })
