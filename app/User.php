@@ -84,6 +84,17 @@ class User extends Authenticatable implements JWTSubject
         return $this->roles()->save($role);
     }
 
+    public function enroll($lesson)
+    {
+        if (is_integer($lesson)) {
+            return $this->enrollments()->save(
+                Lesson::find($lesson)
+            );
+        }
+
+        return $this->enrollments()->save($lesson);
+    }
+
     public function profile()
     {
         return $this->hasOne(Profile::class);
@@ -112,6 +123,11 @@ class User extends Authenticatable implements JWTSubject
     public function classes()
     {
         return $this->belongsToMany(Lesson::class);
+    }
+
+    public function enrollments()
+    {
+        return $this->belongsToMany(Lesson::class, 'lesson_student', 'student_id', 'lesson_id');
     }
 
     public function courses()

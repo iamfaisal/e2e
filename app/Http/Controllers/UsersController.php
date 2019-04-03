@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Lesson;
 use App\License;
 use App\Profile;
 use App\Territory;
@@ -21,7 +22,7 @@ class UsersController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api', ['except' => ['enroll']]);
         $this->user = Auth::Guard('api')->user();
     }
 
@@ -274,6 +275,22 @@ class UsersController extends Controller
         } else {
             return response()->json([
                 'user' => 'error'
+            ], 501);
+        }
+    }
+
+    public function enroll($userID, $classID)
+    {
+        $student = User::find($userID);
+        $class   = Lesson::find($classID);
+        if ($student && $class) {
+            $enrollment = $student->enroll($class);
+            return response()->json([
+                'response' => $enrollment
+            ], 200);
+        } else {
+            return response()->json([
+                'response' => 'Requested resource could not be found!'
             ], 501);
         }
     }
