@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { login, getAuthUser } from "../helpers/auth";
+import { routeToDashboard } from "../helpers/acl";
 import { validations } from "../utils/validations";
 import TextField from "../common/TextField";
 import CheckBox from "../common/CheckBox";
@@ -82,7 +83,7 @@ class Login extends Component {
             login(userData)
                 .then(res => {
                     if (res.status === 200) {
-                        this.props.history.push("/");
+                        this.props.history.push(routeToDashboard());
                     }
                 }).catch(err => {
                     const message = err.status === 501 ? "Your account has been temporarily blocked." : "Invalid email or password.";

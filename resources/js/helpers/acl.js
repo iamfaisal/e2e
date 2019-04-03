@@ -19,6 +19,20 @@ export function isJustInstructor() {
     return !!data["instructor"] && getRoles().length === 1;
 }
 
+export function routeToDashboard() {
+    let dashboard = "/";
+    if (isJustInstructor()) {
+        dashboard = "/my-classes";
+    }
+    if (is("school-admin")) {
+        dashboard = "/classes";
+    }
+    if (is("super-admin")) {
+        dashboard = "/courses";
+    }
+    return dashboard;
+}
+
 export function getRoles() {
     const data = decodeAclData();
     return Object.keys(data);
