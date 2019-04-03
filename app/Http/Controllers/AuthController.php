@@ -34,7 +34,7 @@ class AuthController extends Controller
         $do_remember = request('remember_me');
 
         if (! $token = auth('api')->attempt($credentials, $do_remember)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized'], 500);
         }
 
         return $this->respondWithToken($token);
@@ -107,7 +107,7 @@ class AuthController extends Controller
         );
         return $response == Password::RESET_LINK_SENT
             ? response()->json(['message' => 'Reset link sent to your email.'], 201)
-            : response()->json(['message' => 'Unable to send reset link.'], 401);
+            : response()->json(['message' => 'Unable to send reset link.'], 500);
     }
 
     /**
@@ -127,7 +127,7 @@ class AuthController extends Controller
         );
         return $response == Password::PASSWORD_RESET
             ? response()->json(['message' => 'Password reset successful.'], 201)
-            : response()->json(['message' => 'Password reset failed.'], 401);
+            : response()->json(['message' => 'Password reset failed.'], 500);
     }
 
     /**
@@ -146,6 +146,6 @@ class AuthController extends Controller
         }
         return $email
             ? response()->json(['message' => $email], 201)
-            : response()->json(['message' => 'Password reset failed.'], 401);
+            : response()->json(['message' => 'Password reset failed.'], 500);
     }
 }

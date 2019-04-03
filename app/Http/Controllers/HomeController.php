@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    private $user;
-
     /**
-     * constructor function.
+     * Create a new controller instance.
+     *
+     * @return void
      */
     public function __construct()
     {
-        $this->middleware('auth:api');
-        $this->user = Auth::Guard('api')->user();
+        $this->middleware('auth');
     }
 
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
