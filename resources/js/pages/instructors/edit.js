@@ -33,6 +33,9 @@ class EditInstructor extends Component {
                 additional_email: "",
                 additional_email2: "",
                 info: "",
+                avatar: "",
+                application_docs: "",
+                custom_flyer: "",
                 licenses: [{
                     regulation: "",
                     code: "",
@@ -331,7 +334,6 @@ class EditInstructor extends Component {
                         />
                     </fieldset>
 
-                    
                     {!isJustInstructor() ? <Fragment>
                         {fields.licenses.map((license, i) => {
                             if (license.expiration && license.expiration.constructor !== Date) {
@@ -417,7 +419,7 @@ class EditInstructor extends Component {
                                 />
                             </label>
                         </fieldset>
-                    </Fragment> : ''}
+                    </Fragment> : ""}
 
                     <div className="row">
                         <div className="col-md-6 col-lg-4">
@@ -428,6 +430,24 @@ class EditInstructor extends Component {
                                 value={fields.avatar}
                             />
                         </div>
+                        {!isJustInstructor() ? <Fragment>
+                            <div className="col-md-6 col-lg-4">
+                                <FileInput
+                                    onChange={event => this.handleChange(event)}
+                                    name="application_docs"
+                                    labelText="Application Docs"
+                                    value={fields.application_docs}
+                                />
+                            </div>
+                            <div className="col-md-6 col-lg-4">
+                                <FileInput
+                                    onChange={event => this.handleChange(event)}
+                                    name="custom_flyer"
+                                    labelText="Custom Flyer"
+                                    value={fields.custom_flyer}
+                                />
+                            </div>
+                        </Fragment> : ""}
                     </div>
 
                     <fieldset className="fields horizontal">
