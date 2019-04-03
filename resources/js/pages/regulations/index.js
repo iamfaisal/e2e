@@ -49,8 +49,10 @@ class Regulations extends Component {
     renderActions(regulation) {
         return (
             <div className="actions">
-                <Link className="ion-md-create" to={"/regulations/edit/" + regulation.id} />
-                <a className="ion-md-close" onClick={e => this.deleteRegulation(e, regulation.id)} />
+                <Link className="ion-md-create" to={"/regulations/edit/" + regulation.id}
+                    data-toggle="tooltip" title="Edit Regulation" />
+                <a className="ion-md-close" onClick={e => this.deleteRegulation(e, regulation.id)}
+                    data-toggle="tooltip" title="Delete Regulation" />
             </div>
         );
     }

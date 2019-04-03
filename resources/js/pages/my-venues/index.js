@@ -44,8 +44,10 @@ class MyVenues extends Component {
     renderActions(venue) {
         return (
             <div className="actions">
-                <Link className="ion-md-create" to={"/my-venues/edit/" + venue.id} />
-                <a className="ion-md-close" onClick={e => this.deleteVenue(e, venue.id)} />
+                <Link className="ion-md-create" to={"/my-venues/edit/" + venue.id}
+                    data-toggle="tooltip" title="Edit Venue" />
+                <a className="ion-md-close" onClick={e => this.deleteVenue(e, venue.id)}
+                    data-toggle="tooltip" title="Delete Venue" />
             </div>
         );
     }

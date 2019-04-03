@@ -57,8 +57,10 @@ class Territories extends Component {
     renderActions(territory) {
         return (
             <div className="actions">
-                <Link className="ion-md-create" to={"/territories/edit/" + territory.id} />
-                <a className="ion-md-close" onClick={e => this.deleteTerritory(e, territory.id)} />
+                <Link className="ion-md-create" to={"/territories/edit/" + territory.id}
+                    data-toggle="tooltip" title="Edit Territory" />
+                <a className="ion-md-close" onClick={e => this.deleteTerritory(e, territory.id)}
+                    data-toggle="tooltip" title="Delete Territory" />
             </div>
         );
     }

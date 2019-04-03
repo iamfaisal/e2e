@@ -59,8 +59,10 @@ class Sponsors extends Component {
     renderActions(sponsor) {
         return (
             <div className="actions">
-                <Link className="ion-md-create" to={"/sponsors/edit/" + sponsor.id} />
-                <a className="ion-md-close" onClick={e => this.deleteSponsor(e, sponsor.id)} />
+                <Link className="ion-md-create" to={"/sponsors/edit/" + sponsor.id}
+                    data-toggle="tooltip" title="Edit Sponsor" />
+                <a className="ion-md-close" onClick={e => this.deleteSponsor(e, sponsor.id)}
+                    data-toggle="tooltip" title="Delete Sponsor" />
             </div>
         );
     }

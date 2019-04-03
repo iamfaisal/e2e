@@ -56,8 +56,10 @@ class Courses extends Component {
     renderActions(course) {
         return (
             <div className="actions">
-                <Link className="ion-md-create" to={"/courses/edit/" + course.id} />
-                <a className="ion-md-close" onClick={e => this.deleteCourse(e, course.id)} />
+                <Link className="ion-md-create" to={"/courses/edit/" + course.id}
+                    data-toggle="tooltip" title="Edit Course" />
+                <a className="ion-md-close" onClick={e => this.deleteCourse(e, course.id)}
+                    data-toggle="tooltip" title="Delete Course" />
             </div>
         );
     }
