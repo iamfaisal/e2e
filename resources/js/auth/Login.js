@@ -97,7 +97,7 @@ class Login extends Component {
     }
 
     render() {
-        if (getAuthUser()) this.props.history.push("/");
+        if (getAuthUser()) this.props.history.push(routeToDashboard());
         const { fields, isFormValid, formValidationData } = this.state;
 
         return (

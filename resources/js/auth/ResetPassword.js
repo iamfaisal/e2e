@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import classnames from "classnames";
 import {resetPassword, getEmailFromToken, getAuthUser} from "../helpers/auth";
+import { routeToDashboard } from "../helpers/acl";
 import TextField from "../common/TextField";
 import { validations } from "../utils/validations";
 
@@ -120,7 +121,7 @@ class ResetPassword extends Component {
 	}
 
     render() {
-		if (getAuthUser()) this.props.history.push("/");
+		if (getAuthUser()) this.props.history.push(routeToDashboard());
         const { fields, isFormValid, formValidationData } = this.state;
         const alertClass = classnames("alert alert-success", { "alert-danger": !isFormValid });
 		

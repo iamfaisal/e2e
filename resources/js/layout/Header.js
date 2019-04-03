@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { getAuthUser, getAuthUserName, logout } from "../helpers/auth";
 import { asset, getUserAvatar } from "../helpers/app";
-import { getRoles, isJustInstructor } from "../helpers/acl";
+import { getRoles, isJustInstructor, routeToDashboard } from "../helpers/acl";
 import { links } from "./navigation";
 
 class Header extends Component {
@@ -63,7 +63,7 @@ class Header extends Component {
         return (
             <div>
                 <header className="header">
-                    <Link className="logo" to={"/"}>
+                    <Link className="logo" to={routeToDashboard()}>
                         <img src={asset("images/logo.png")}/>
                     </Link>
                     <div className="actions">
@@ -76,7 +76,7 @@ class Header extends Component {
                 </header>
                 <aside className={sidebarClass}>
                     <header>
-                        <Link className="logo" to={"/"}>
+                        <Link className="logo" to={routeToDashboard()}>
                             <img src={asset("images/logo.png")}/>
                             <img src={asset("images/icon.png")}/>
                         </Link>

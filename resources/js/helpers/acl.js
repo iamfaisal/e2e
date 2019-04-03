@@ -24,7 +24,7 @@ export function routeToDashboard() {
     if (isJustInstructor()) {
         dashboard = "/my-classes";
     }
-    if (is("school-admin")) {
+    if (is("admin")) {
         dashboard = "/classes";
     }
     if (is("super-admin")) {
