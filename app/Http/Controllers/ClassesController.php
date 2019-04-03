@@ -63,14 +63,6 @@ class ClassesController extends Controller
         ], 200);
     }
 
-    public function userTerritoriesOnly($userID)
-    {
-        $user = User::find($userID);
-        return response()->json([
-            'courses' => $user->territories
-        ], 200);
-    }
-
     public function hasPendingRosters()
     {
         $currentDateTime = Carbon::now()->toDateTimeString();
