@@ -60,10 +60,10 @@ class Instructors extends Component {
     }
 
     toggleStatus(e, instructor) {
-        create('users/status', { userID: instructor.id }).then(res => {
+        read('users/status/'+instructor.id, {}).then(res => {
             instructor.status = !instructor.status;
             this.setState({});
-        }).catch(err => console.log(err));
+        }).catch(err => alert("You do not have sufficient permissions to perform this task."));
     }
 
     deleteInstructor(e, instructor) {
