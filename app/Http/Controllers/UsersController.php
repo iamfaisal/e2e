@@ -123,6 +123,8 @@ class UsersController extends Controller
         $territories = Territory::whereIn('regulation_id', $regulations)->orderBy('created_at', 'desc')->get();
         return response()->json([
             'user' => $user,
+            'user_courses' => $user->courses(),
+            'user_territories' => $user->territories(),
             'profile' => $user->profile,
             'licenses' => $user->licenses,
             'courses' => $courses,
