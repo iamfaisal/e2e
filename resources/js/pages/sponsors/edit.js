@@ -152,6 +152,7 @@ class EditSponsor extends Component {
                             <span>Instructor</span>
                             <Select
                                 onChange={this.handleChange}
+                                value={fields.user_id}
                                 name="user"
                                 items={instructors}
                                 id={"id"}
@@ -227,6 +228,7 @@ class EditSponsor extends Component {
                             <span>State</span>
                             <Select
                                 onChange={this.handleChange}
+                                value={fields.regulation_id}
                                 name="regulation"
                                 items={regulations}
                                 id={"id"}

@@ -109,7 +109,7 @@ class Courses extends Component {
                 name: 'ID',
                 selector: 'id',
                 sortable: true,
-                width: '50px'
+                width: '60px'
             },
             {
                 name: 'Title',

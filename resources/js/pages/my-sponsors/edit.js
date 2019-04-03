@@ -212,6 +212,7 @@ class EditMySponsor extends Component {
                             <span>State</span>
                             <Select
                                 onChange={this.handleChange}
+                                value={fields.regulation_id}
                                 name="regulation"
                                 items={regulations}
                                 id={"id"}

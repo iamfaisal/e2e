@@ -17,6 +17,7 @@ class EditClass extends Component {
                 instructor: "",
                 course_id: "",
                 venue_id: "",
+                user_id: "",
                 start_date: "",
                 end_date: "",
                 price: "",
@@ -147,6 +148,8 @@ class EditClass extends Component {
             fields.end_date = new Date(fields.end_date);
         }
 
+        console.log(fields);
+
         return (
             <div>
                 <header className="pageheader">
@@ -159,7 +162,8 @@ class EditClass extends Component {
                         <label>
                             <span>Course</span>
                             <Select
-                                onChange={v => fields.course = v}
+                                onChange={v => fields.course_id = v}
+                                value={fields.course_id}
                                 name="course"
                                 items={courses}
                                 id="id"
@@ -169,7 +173,8 @@ class EditClass extends Component {
                         <label>
                             <span>Instructor</span>
                             <Select
-                                onChange={v => fields.instructor = v}
+                                onChange={v => fields.user_id = v}
+                                value={fields.user_id}
                                 name="instructor"
                                 items={instructors}
                                 id="id"
@@ -179,7 +184,8 @@ class EditClass extends Component {
                         <label>
                             <span>Venue</span>
                             <Select
-                                onChange={v => fields.venue = v}
+                                onChange={v => fields.venue_id = v}
+                                value={fields.venue_id}
                                 name="venue"
                                 items={venues}
                                 id="id"

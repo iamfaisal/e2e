@@ -154,7 +154,8 @@ class EditMyClass extends Component {
                         <label>
                             <span>Course</span>
                             <Select
-                                onChange={v => fields.course = v}
+                                onChange={v => fields.course_id = v}
+                                value={fields.course_id}
                                 name="course"
                                 items={courses}
                                 id="id"
@@ -164,7 +165,8 @@ class EditMyClass extends Component {
                         <label>
                             <span>Venue</span>
                             <Select
-                                onChange={v => fields.venue = v}
+                                onChange={v => fields.venue_id = v}
+                                value={fields.venue_id}
                                 name="venue"
                                 items={venues}
                                 id="id"
