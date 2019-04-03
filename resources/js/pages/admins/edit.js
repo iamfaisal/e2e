@@ -3,6 +3,7 @@ import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
+import CheckBox from "../../common/CheckBox";
 import { is } from "../../helpers/acl"
 import { read, update } from "../../helpers/resource";
 
@@ -21,7 +22,8 @@ class EditAdmin extends Component {
                 password: "",
                 confirm_pass: "",
                 roles: [],
-                avatar: ""
+                avatar: "",
+                status: false
             },
             required_fields: {
                 first_name: "",
@@ -47,6 +49,7 @@ class EditAdmin extends Component {
                 fields.first_name = res.data.profile.first_name;
                 fields.last_name = res.data.profile.last_name;
                 fields.email = res.data.user.email;
+                fields.status = res.data.user.status;
                 fields.roles = res.data.roles;
                 fields.avatar = res.data.profile.avatar;
 
@@ -222,6 +225,12 @@ class EditAdmin extends Component {
                             />
                         </div>
                     </div>
+
+                    <CheckBox
+                        onChange={this.handleChange}
+                        name="status"
+                        value={fields.status}
+                        labelText="Approved?" /><br />
 
                     <button className="button" disabled={!isFormValid}>Update Admin</button>
                 </form>

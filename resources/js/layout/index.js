@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 import { getAuthUser } from "../helpers/auth";
+import { is } from "../helpers/acl";
 
 import Header from "./Header";
 
@@ -25,6 +26,7 @@ class Layout extends Component {
         const currentUser = getAuthUser();
         const { sidebar } = this.state;
         const mainWrapperClass = classnames({"content": currentUser}, {"full": !sidebar});
+
         return (
             <Fragment>
                 {currentUser && <Header sidebar={this.sidebarHandler} page={this.state.page}/>}

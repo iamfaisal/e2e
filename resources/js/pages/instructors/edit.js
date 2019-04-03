@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
@@ -6,6 +6,7 @@ import FileInput from "../../common/FileInput";
 import TextArea from "../../common/TextArea";
 import DatePicker from "react-datepicker";
 import CheckBox from "../../common/CheckBox";
+import { isJustInstructor } from "../../helpers/acl";
 import { read, update, dateToString } from "../../helpers/resource";
 
 class EditInstructor extends Component {
@@ -330,90 +331,93 @@ class EditInstructor extends Component {
                         />
                     </fieldset>
 
-                    {fields.licenses.map((license, i) => {
-                        if (license.expiration && license.expiration.constructor !== Date) {
-                            license.expiration = new Date(license.expiration);
-                        }
-                        return <fieldset key={i} className="fields horizontal">
-                            <label>
-                                <span>State</span>
-                                <Select
-                                    name={"licenses[" + i + "][regulation]"}
-                                    items={regulations}
-                                    placeholder="Select Regulation"
-                                    id={"id"}
-                                    val={"name"}
-                                    value={license["regulation_id"]}
+                    
+                    {!isJustInstructor() ? <Fragment>
+                        {fields.licenses.map((license, i) => {
+                            if (license.expiration && license.expiration.constructor !== Date) {
+                                license.expiration = new Date(license.expiration);
+                            }
+                            return <fieldset key={i} className="fields horizontal">
+                                <label>
+                                    <span>State</span>
+                                    <Select
+                                        name={"licenses[" + i + "][regulation]"}
+                                        items={regulations}
+                                        placeholder="Select Regulation"
+                                        id={"id"}
+                                        val={"name"}
+                                        value={license["regulation_id"]}
+                                    />
+                                </label>
+                                <TextField
+                                    onChange={this.handleChange}
+                                    name={"licenses[" + i + "][code]"}
+                                    value={""}
+                                    maxLength={50}
+                                    labelText="License Number"
+                                    value={license["code"]}
                                 />
-                            </label>
-                            <TextField
-                                onChange={this.handleChange}
-                                name={"licenses[" + i + "][code]"}
-                                value={""}
-                                maxLength={50}
-                                labelText="License Number"
-                                value={license["code"]}
-                            />
-                            <label>
-                                <span>Expiration</span>
-                                <DatePicker
-                                    selected={license.expiration || new Date()}
-                                    onChange={d => this.setLicenseDate(i, d)}
-                                    dateFormat="MMMM d, yyyy"
+                                <label>
+                                    <span>Expiration</span>
+                                    <DatePicker
+                                        selected={license.expiration || new Date()}
+                                        onChange={d => this.setLicenseDate(i, d)}
+                                        dateFormat="MMMM d, yyyy"
+                                    />
+                                    <input
+                                        type="hidden"
+                                        name={"licenses[" + i + "][expiration]"}
+                                        value={dateToString(license.expiration)}
+                                    />
+                                </label>
+                                <FileInput
+                                    onChange={event => this.handleChange(event)}
+                                    name={"licenses[" + i + "][certificate]"}
+                                    labelText="Certificate"
+                                    value={license["certificate"]}
                                 />
                                 <input
                                     type="hidden"
-                                    name={"licenses[" + i + "][expiration]"}
-                                    value={dateToString(license.expiration)}
+                                    name={"licenses[" + i + "][certificate_file]"}
+                                    value={license["certificate"]}
+                                />
+                            </fieldset>
+                        })}
+                        <div className={"repeatActions count-" + fields.licenses.length}>
+                            <button className="ion-md-remove" onClick={this.removeLicense}></button>
+                            <button className="ion-md-add" onClick={this.addLicense}></button>
+                        </div>
+
+                        <legend>Territories</legend>
+                        <fieldset className="fields horizontal">
+                            <label>
+                                <Select
+                                    onChange={this.handleChange}
+                                    name="territories[]"
+                                    items={territories}
+                                    value={fields.territories}
+                                    multiple
+                                    id={"id"}
+                                    val={"name"}
                                 />
                             </label>
-                            <FileInput
-                                onChange={event => this.handleChange(event)}
-                                name={"licenses[" + i + "][certificate]"}
-                                labelText="Certificate"
-                                value={license["certificate"]}
-                            />
-                            <input
-                                type="hidden"
-                                name={"licenses[" + i + "][certificate_file]"}
-                                value={license["certificate"]}
-                            />
                         </fieldset>
-                    })}
-                    <div className={"repeatActions count-" + fields.licenses.length}>
-                        <button className="ion-md-remove" onClick={this.removeLicense}></button>
-                        <button className="ion-md-add" onClick={this.addLicense}></button>
-                    </div>
-                    
-                    <legend>Territories</legend>
-                    <fieldset className="fields horizontal">
-                        <label>
-                            <Select
-                                onChange={this.handleChange}
-                                name="territories[]"
-                                items={territories}
-                                value={fields.territories}
-                                multiple
-                                id={"id"}
-                                val={"name"}
-                            />
-                        </label>
-                    </fieldset>
 
-                    <legend>Courses</legend>
-                    <fieldset className="fields horizontal">
-                        <label>
-                            <Select
-                                onChange={this.handleChange}
-                                name="courses[]"
-                                items={courses}
-                                value={fields.courses}
-                                multiple
-                                id={"id"}
-                                val={"title"}
-                            />
-                        </label>
-                    </fieldset>
+                        <legend>Courses</legend>
+                        <fieldset className="fields horizontal">
+                            <label>
+                                <Select
+                                    onChange={this.handleChange}
+                                    name="courses[]"
+                                    items={courses}
+                                    value={fields.courses}
+                                    multiple
+                                    id={"id"}
+                                    val={"title"}
+                                />
+                            </label>
+                        </fieldset>
+                    </Fragment> : ''}
 
                     <div className="row">
                         <div className="col-md-6 col-lg-4">

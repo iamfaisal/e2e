@@ -3,6 +3,7 @@ import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
+import CheckBox from "../../common/CheckBox";
 import { read, create } from "../../helpers/resource";
 
 class CreateAdmin extends Component {
@@ -16,7 +17,8 @@ class CreateAdmin extends Component {
                 last_name: "",
                 email: "",
                 password: "",
-                roles: []
+                roles: [],
+                status: false
             },
             required_fields: {
                 first_name: "",
@@ -193,6 +195,12 @@ class CreateAdmin extends Component {
                             />
                         </div>
                     </div>
+
+                    <CheckBox
+                        onChange={this.handleChange}
+                        name="status"
+                        value={fields.status}
+                        labelText="Approved?" /><br />
 
                     <button className="button" disabled={!isFormValid}>Create Admin</button>
                 </form>

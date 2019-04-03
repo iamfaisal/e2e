@@ -48,8 +48,10 @@ class Admins extends Component {
     }
 
     renderActions(user) {
+        let classname = user.status == 1 ? "hand" : "checkmark";
         return (
             <div className="actions">
+                <a className={"ion-md-" + classname} onClick={e => this.toggleStatus(e, user)} />
                 <Link className="ion-md-create" to={"/users/edit/" + user.id} />
                 <a className="ion-md-close" onClick={e => this.deleteAdmin(e, user.id)} />
             </div>
@@ -64,6 +66,13 @@ class Admins extends Component {
             })
             .catch(err => console.log(err));
         }
+    }
+
+    toggleStatus(e, user) {
+        read('users/status/' + user.id, {}).then(res => {
+            user.status = !user.status;
+            this.setState({});
+        }).catch(err => alert("You do not have sufficient permissions to perform this task."));
     }
 
     setfilter(e, key) {
