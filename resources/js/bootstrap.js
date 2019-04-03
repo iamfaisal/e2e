@@ -17,8 +17,6 @@ $(window).on("onunload", function(){
     localStorage.removeItem("user");
 });
 
-$(window).on("load", function(){
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
+$("body").on("mouseenter", ".tablewrap", function(){
+    $('[data-toggle="tooltip"]').tooltip();
 });

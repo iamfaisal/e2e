@@ -48,12 +48,12 @@ class Admins extends Component {
     }
 
     renderActions(user) {
-        let classname = user.status == 1 ? "hand" : "checkmark";
+        let classname = user.status === 1 ? "hand" : "checkmark";
         return (
             <div className="actions">
-                <a className={"ion-md-" + classname} onClick={e => this.toggleStatus(e, user)} />
-                <Link data-toggle="tooltip" title="Edit" className="ion-md-create" to={"/users/edit/" + user.id} />
-                <a className="ion-md-close" onClick={e => this.deleteAdmin(e, user.id)} />
+                <a data-toggle="tooltip" title={user.status === 1 ? "Cancel Admin" : "Approve Admin"} className={"ion-md-" + classname} onClick={e => this.toggleStatus(e, user)} />
+                <Link data-toggle="tooltip" title="Edit Admin" className="ion-md-create" to={"/users/edit/" + user.id} />
+                <a data-toggle="tooltip" title="Delete Admin" className="ion-md-close" onClick={e => this.deleteAdmin(e, user.id)} />
             </div>
         );
     }

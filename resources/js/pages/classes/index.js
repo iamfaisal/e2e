@@ -86,10 +86,10 @@ class Classes extends Component {
         } else {
             return (
                 <div className="actions">
-                    <Link className="ion-md-checkmark" to={"/classes/approve/" + clss.id} />
-                    <Link className="ion-md-create" to={"/classes/edit/" + clss.id} />
-                    <Link className="ion-md-hand" to={"/classes/cancel/" + clss.id} />
-                    <a className="ion-md-close" onClick={e => this.deleteClass(e, clss.id)} />
+                    <Link data-toggle="tooltip" title="Approve Class" className="ion-md-checkmark" to={"/classes/approve/" + clss.id} />
+                    <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id} />
+                    <Link data-toggle="tooltip" title="Cancel Class" className="ion-md-hand" to={"/classes/cancel/" + clss.id} />
+                    <a data-toggle="tooltip" title="Delete Class" className="ion-md-close" onClick={e => this.deleteClass(e, clss.id)} />
                 </div>
             );
         }

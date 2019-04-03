@@ -49,8 +49,8 @@ class Categories extends Component {
     renderActions(category) {
         return (
             <div className="actions">
-                <Link className="ion-md-create" to={"/categories/edit/" + category.id} />
-                <a className="ion-md-close" onClick={e => this.deleteCategory(e, category.id)} />
+                <Link data-toggle="tooltip" title="Edit Category" className="ion-md-create" to={"/categories/edit/" + category.id} />
+                <a data-toggle="tooltip" title="Delete Category" className="ion-md-close" onClick={e => this.deleteCategory(e, category.id)} />
             </div>
         );
     }
