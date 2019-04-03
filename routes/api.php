@@ -18,6 +18,8 @@ Route::group(['prefix' => 'auth'], function()
     Route::post('classes/approve', 'ClassesController@approve');
     Route::post('classes/cancel', 'ClassesController@cancel');
     Route::post('classes/roster', 'ClassesController@roster');
+    Route::get('classes/my-courses', 'ClassesController@userCoursesOnly');
+    Route::get('classes/my-territories', 'ClassesController@userTerritoriesOnly');
     Route::get('classes/hasPendingRosters', 'ClassesController@hasPendingRosters');
     Route::resource('classes', 'ClassesController')->except(['create', 'edit']);
     Route::resource('sponsors', 'SponsorsController')->except(['create', 'edit']);

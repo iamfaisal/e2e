@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Lesson;
 use App\Approval;
 use App\Cancellation;
+use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,22 @@ class ClassesController extends Controller
             });
         return response()->json([
             'classes' => $classes->get()
+        ], 200);
+    }
+
+    public function userCoursesOnly($userID)
+    {
+        $user = User::find($userID);
+        return response()->json([
+            'courses' => $user->courses
+        ], 200);
+    }
+
+    public function userTerritoriesOnly($userID)
+    {
+        $user = User::find($userID);
+        return response()->json([
+            'courses' => $user->territories
         ], 200);
     }
 
