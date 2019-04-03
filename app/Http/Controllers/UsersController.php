@@ -195,12 +195,9 @@ class UsersController extends Controller
                     }
                 }
             }
-            if (in_array(3, $request->roles) && $request->has('courses'))
+            if (in_array(3, $request->roles))
             {
                 $user->courses()->sync($request->courses);
-            }
-            if (in_array(3, $request->roles) && $request->has('territories'))
-            {
                 $user->territories()->sync($request->territories);
             }
         }
