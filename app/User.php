@@ -49,6 +49,22 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    public function routeNotificationForMail()
+    {
+        return $this->emailsToArray();
+    }
+
+    private function emailsToArray() {
+        $userEmails = [$this->email];
+        if(!is_null($email = $this->profile->additional_email)) {
+            $userEmails[] = $email;
+        }
+        if(!is_null($email = $this->profile->additional_email2)) {
+            $userEmails[] = $email;
+        }
+        return $userEmails;
+    }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class);

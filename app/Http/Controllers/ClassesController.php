@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Lesson;
 use App\Approval;
 use App\Cancellation;
+use App\Notifications\ClassCreated;
 use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -105,6 +106,7 @@ class ClassesController extends Controller
             'status' => 'New'
         ];
         $lesson = Lesson::create($data);
+        $this->user->notify(new ClassCreated($lesson));
         return response()->json([
             'class' => $lesson
         ], 200);
