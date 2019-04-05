@@ -1,12 +1,13 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import DatePicker from "react-datepicker";
-import { read, create, dateToString } from "../../helpers/resource";
+import { read, create, dateToString, addDays } from "../../helpers/resource";
 
 class CreateClass extends Component {
     constructor(props) {
         super(props);
+
 
         this.state = {
             loading: false,
@@ -14,8 +15,8 @@ class CreateClass extends Component {
                 instructor: "",
                 course_id: "",
                 venue_id: "",
-                start_date_time: new Date,
-                end_date_time: new Date,
+                start_date_time: addDays(new Date, 16),
+                end_date_time: addDays(new Date, 16),
                 price: "",
                 capacity: "",
                 alternate_instructor: "",
@@ -161,6 +162,7 @@ class CreateClass extends Component {
                                 showTimeSelect
                                 timeFormat="HH:mm"
                                 timeIntervals={30}
+                                minDate={addDays(new Date, 16)}
                                 dateFormat="MMMM d, yyyy h:mm aa"
                                 timeCaption="time"
                             />
@@ -175,6 +177,7 @@ class CreateClass extends Component {
                                 timeFormat="HH:mm"
                                 timeIntervals={30}
                                 dateFormat="MMMM d, yyyy h:mm aa"
+                                minDate={addDays(new Date, 16)}
                                 timeCaption="time"
                             />
                             <input type="hidden" name="end_date_time" value={dateToString(fields.end_date_time, true)} />

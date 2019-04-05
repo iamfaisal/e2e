@@ -150,3 +150,8 @@ export function dateToString(date, time) {
         return year + "-" + month + "-" + day;
     }
 }
+
+export function addDays(date, days) {
+    date.setDate(date.getDate() + days);
+    return date;
+}
