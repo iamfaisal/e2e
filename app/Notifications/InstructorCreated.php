@@ -11,14 +11,16 @@ class InstructorCreated extends Notification
 {
     use Queueable;
 
+    public $name;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($name)
     {
-        //
+        $this->$name = $name;
     }
 
     /**
@@ -42,7 +44,8 @@ class InstructorCreated extends Notification
     {
         return (new MailMessage)
                     ->subject('PSRE: Welcome to the system')
-                    ->markdown('mail.instructor.created');
+                    ->greeting('Hello ' . $this->name .',')
+                    ->line('Your new instructor profile has been created for PSRE. Congrats!!');
     }
 
     /**
