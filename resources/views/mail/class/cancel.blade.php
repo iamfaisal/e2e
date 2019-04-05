@@ -19,9 +19,7 @@
         | The instructor or a designated representative **MUST BE** present at the class location 15 minutes prior to the class start time and remain for 15 minutes past the start time to inform anyone that may show up of the class cancellation. |
     @endcomponent
 
-    Please contact the E2E Team at
-    [educate2earn@amerifirst.us](mailto:educate2earn@amerifirst.us) with any
-    questions.
+    Please contact the E2E Team at [educate2earn@amerifirst.us](mailto:educate2earn@amerifirst.us) with any questions.
 
 Thanks,<br>
 {{ config('app.name') }}

@@ -19,9 +19,7 @@
 
     *The E2E Team will review your request and notify you within 2 business days of the status of this class.*
 
-    Please contact the E2E Team at
-    [educate2earn@amerifirst.us](mailto:educate2earn@amerifirst.us) with any
-    questions.
+    Please contact the E2E Team at [educate2earn@amerifirst.us](mailto:educate2earn@amerifirst.us) with any questions.
 
 Thanks,<br>
 {{ config('app.name') }}
