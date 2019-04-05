@@ -230,7 +230,7 @@ class UsersController extends Controller
                 $user->courses()->sync($request->courses);
                 $user->territories()->sync($request->territories);
                 $user->notify(new InstructorUpdated($profileData['first_name']));
-                if (count($request->courses)) {
+                if ($request->courses) {
                     foreach ($request->courses as $courseID) {
                         $course = Course::find($courseID);
                         $user->notify(new InstructorNewCourse($profileData['first_name'], $course));
