@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Course;
 use App\Lesson;
 use App\License;
+use App\Notifications\InstructorCreated;
 use App\Profile;
 use App\Territory;
 use Illuminate\Http\Request;
@@ -110,6 +111,7 @@ class UsersController extends Controller
                         License::create($licenseData);
                     }
                 }
+                $user->notify(new InstructorCreated());
             } else {
                 $user->roles()->sync($request->roles);
             }
