@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Course;
 use App\Lesson;
 use App\License;
+use App\Notifications\InstructorApproval;
 use App\Notifications\InstructorCreated;
 use App\Notifications\InstructorUpdated;
 use App\Profile;
@@ -273,6 +274,9 @@ class UsersController extends Controller
             $user = User::find($userID);
             $status = $user->status == 1 ? 0 : 1;
             $user->update(['status' => $status]);
+            if ($user->status == 1) {
+                $user->notify(new InstructorApproval($user->profile->first_name));
+            }
             return response()->json([
                 'user' => 'success'
             ], 200);
