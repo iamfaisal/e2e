@@ -7,11 +7,19 @@
     Your CE class request has been received and will be reviewed by the E2E Team within 2 business days.
 
     @component('mail::table')
-        | ------------- |:--------------------------------:|
-        | CE Course Code| {{ $data->course->course_code }} |
-        | CE Class Date | {{ $data->start_date }}          |
-        | Instructor    | {{ $data->user->name }}          |
+        |                 |                                  |
+        | --------------- | -------------------------------- |
+        | CE Course Code  | {{ $data->course->course_code }} |
+        | CE Class Date   | {{ $data->start_date }}          |
+        | Instructor      | {{ $data->user->name }}          |
+        | Status          | **This class CANNOT BE APPROVED and needs your IMMEDIATE attention. Please login to the E2E system and review this class submission.** |
     @endcomponent
+
+    ###Action Required
+    **Once all issues are resolved, resubmit the request to
+    E2E within the state mandated registration window**
+    + AZ requires 16 calendar days advance registration.
+    + All other states require 10 calendar days advance registration.
 
     Please contact the E2E Team at
     [educate2earn@amerifirst.us](mailto:educate2earn@amerifirst.us) with any
