@@ -56,6 +56,12 @@ class ClassesController extends Controller
             ->when($request->fromInstructor, function ($query) use($user) {
                 return $query->where('user_id', $user->id);
             });
+        if ($request->archived && $classes->exists()) {
+            foreach ($classes->get() as $class) {
+                $classData = $class->load('user');
+                $classData->user->notify(new ClassNeedsRosterToInstructor());
+            }
+        }
         return response()->json([
             'classes' => $classes->get()
         ], 200);
@@ -81,7 +87,10 @@ class ClassesController extends Controller
                 ->where('status', '!=', 'Complete')
                 ->where('roster', null);
         if ($classes->exists()) {
-            $this->user->notify(new ClassNeedsRosterToInstructor());
+            foreach ($classes->get() as $class) {
+                $classData = $class->load('user');
+                $classData->user->notify(new ClassNeedsRosterToInstructor());
+            }
         }
         return response()->json([
             'classes' => $classes->get()
@@ -114,7 +123,8 @@ class ClassesController extends Controller
             'status' => 'New'
         ];
         $lesson = Lesson::create($data);
-        $this->user->notify(new ClassCreated($lesson->load('course', 'user')));
+        $lessonData = $lesson->load('course', 'user');
+        $lessonData->user->notify(new ClassCreated($lessonData));
         return response()->json([
             'class' => $lesson
         ], 200);
@@ -174,7 +184,8 @@ class ClassesController extends Controller
         }
         $class->update($data);
         if ($class->status === "Updated") {
-            $this->user->notify(new ClassUpdated($class->load('course', 'user')));
+            $lessonData = $class->load('course', 'user');
+            $lessonData->user->notify(new ClassUpdated($lessonData));
         }
         return response()->json([
             'class' => $class
@@ -226,13 +237,16 @@ class ClassesController extends Controller
         $class->update($data);
 
         if ($class->status === "Submitted") {
-            $this->user->notify(new ClassSubmitToState($class->load('course', 'user')));
+            $lessonData = $class->load('course', 'user');
+            $lessonData->user->notify(new ClassSubmitToState($lessonData));
         }
         if ($class->status === "Needs Review") {
-            $this->user->notify(new ClassNeedReview($class->load('course', 'user')));
+            $lessonData = $class->load('course', 'user');
+            $lessonData->user->notify(new ClassNeedReview($lessonData));
         }
         if ($class->status === "Approved") {
-            $this->user->notify(new ClassApproval($class->load('course', 'user')));
+            $lessonData = $class->load('course', 'user');
+            $lessonData->user->notify(new ClassApproval($lessonData));
         }
 
         return response()->json([
@@ -255,7 +269,8 @@ class ClassesController extends Controller
             'status' => 'Cancelled',
             'is_cancelled' => true
         ]);
-        $this->user->notify(new ClassCancellation($class->load('course', 'user')));
+        $lessonData = $class->load('course', 'user');
+        $lessonData->user->notify(new ClassCancellation($lessonData));
         return response()->json([
             'class' => $class
         ], 200);
