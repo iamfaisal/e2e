@@ -11,14 +11,16 @@ class ClassUpdated extends Notification
 {
     use Queueable;
 
+    public $lesson;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($lesson)
     {
-        //
+        $this->lesson = $lesson;
     }
 
     /**
@@ -41,9 +43,8 @@ class ClassUpdated extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject('CE Class Has Been Updated')
+                    ->markdown('mail.class.review', ['data' => $this->lesson]);
     }
 
     /**
