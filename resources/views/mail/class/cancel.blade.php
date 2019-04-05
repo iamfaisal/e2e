@@ -6,14 +6,14 @@
 
     @component('mail::table')
         |                |                                  |
-        | -------------  | -------------------------------- |
+        | -------------  |:-------------------------------- |
         | CE Course Code | {{ $data->course->course_code }} |
         | CE Class Date  | {{ $data->start_date }}          |
         | Instructor     | {{ $data->user->name }}          |
     @endcomponent
 
     @component('mail::table')
-        | Class Cancellation Policy: |
+        | Class Cancellation Policy |
         | -------------------------- |
         | The instructor must immediately notify all students who have registered for the class. |
         | The instructor or a designated representative **MUST BE** present at the class location 15 minutes prior to the class start time and remain for 15 minutes past the start time to inform anyone that may show up of the class cancellation. |

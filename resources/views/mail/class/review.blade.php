@@ -6,7 +6,7 @@
 
     @component('mail::table')
         |                |                                  |
-        | -------------- | -------------------------------- |
+        | -------------- |:-------------------------------- |
         | CE Course Code | {{ $data->course->course_code }} |
         | CE Class Date  | {{ $data->start_date }}          |
         | Instructor     | {{ $data->user->name }}          |
