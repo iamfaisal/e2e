@@ -7,6 +7,7 @@ use App\Approval;
 use App\Cancellation;
 use App\Notifications\ClassCancellation;
 use App\Notifications\ClassCreated;
+use App\Notifications\ClassSubmitToState;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -213,6 +214,10 @@ class ClassesController extends Controller
             $data['docs'] = $this->handleFileUpload($request->file('docs'));
         }
         $class->update($data);
+
+        if ($class->status === "Submitted") {
+            $this->user->notify(new ClassSubmitToState($class->load('course', 'user')));
+        }
 
         return response()->json([
             'class' => $class
