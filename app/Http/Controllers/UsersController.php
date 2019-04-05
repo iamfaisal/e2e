@@ -5,10 +5,6 @@ namespace App\Http\Controllers;
 use App\Course;
 use App\Lesson;
 use App\License;
-use App\Notifications\InstructorApproval;
-use App\Notifications\InstructorCreated;
-use App\Notifications\InstructorNewLicense;
-use App\Notifications\InstructorUpdated;
 use App\Profile;
 use App\Territory;
 use Illuminate\Http\Request;
@@ -16,6 +12,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\User;
+use App\Notifications\InstructorApproval;
+use App\Notifications\InstructorCreated;
+use App\Notifications\InstructorNewCourse;
+use App\Notifications\InstructorNewLicense;
+use App\Notifications\InstructorUpdated;
 
 class UsersController extends Controller
 {
@@ -229,6 +230,12 @@ class UsersController extends Controller
                 $user->courses()->sync($request->courses);
                 $user->territories()->sync($request->territories);
                 $user->notify(new InstructorUpdated($profileData['first_name']));
+                if (count($request->courses)) {
+                    foreach ($request->courses as $courseID) {
+                        $course = Course::find($courseID);
+                        $user->notify(new InstructorNewCourse($profileData['first_name'], $course));
+                    }
+                }
             }
         }
 
