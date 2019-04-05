@@ -6,7 +6,6 @@ use App\Lesson;
 use App\Approval;
 use App\Cancellation;
 use App\Notifications\ClassCreated;
-use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
