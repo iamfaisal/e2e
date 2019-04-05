@@ -41,7 +41,6 @@ class ClassCreated extends Notification
     {
         return (new MailMessage)
                     ->subject('Notification Subject')
-                    ->greeting('This message does not constitute final class approval. It’s important you do not begin marketing the class until you receive the final CE class approval email.')
                     ->markdown('mail.class.created', ['data' => $this->lesson]);
     }
 
