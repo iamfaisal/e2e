@@ -6,6 +6,7 @@ use App\Course;
 use App\Lesson;
 use App\License;
 use App\Notifications\InstructorCreated;
+use App\Notifications\InstructorUpdated;
 use App\Profile;
 use App\Territory;
 use Illuminate\Http\Request;
@@ -223,6 +224,7 @@ class UsersController extends Controller
             {
                 $user->courses()->sync($request->courses);
                 $user->territories()->sync($request->territories);
+                $user->notify(new InstructorUpdated($profileData['first_name']));
             }
         }
 
