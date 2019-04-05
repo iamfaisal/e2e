@@ -20,7 +20,7 @@ class InstructorUpdated extends Notification
      */
     public function __construct($name)
     {
-        $this->$name = $name;
+        $this->name = $name;
     }
 
     /**

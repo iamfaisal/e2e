@@ -7,6 +7,7 @@ use App\Lesson;
 use App\License;
 use App\Notifications\InstructorApproval;
 use App\Notifications\InstructorCreated;
+use App\Notifications\InstructorNewLicense;
 use App\Notifications\InstructorUpdated;
 use App\Profile;
 use App\Territory;
@@ -110,6 +111,7 @@ class UsersController extends Controller
                         } else {
                             $licenseData['certificate'] = $license['certificate_file'];
                         }
+                        $user->notify(new InstructorNewLicense($profileData['first_name'], $licenseData['code']));
                         License::create($licenseData);
                     }
                 }
@@ -212,6 +214,7 @@ class UsersController extends Controller
                         ];
                         if ($_FILES['licenses']['name'][$index] && !empty($_FILES['licenses']['name'][$index]['certificate'])) {
                             $licenseData['certificate'] = $this->handleFileUpload($license['certificate']);
+                            $user->notify(new InstructorNewLicense($profileData['first_name'], $license['code']));
                         } else {
                             $licenseData['certificate'] = $license['certificate_file'];
                         }
