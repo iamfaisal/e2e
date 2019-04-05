@@ -15,9 +15,12 @@ class ClassCreated extends Notification
      *
      * @return void
      */
-    public function __construct()
+
+    public $lesson;
+
+    public function __construct($lesson)
     {
-        //
+        $this->lesson = $lesson;
     }
 
     /**

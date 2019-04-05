@@ -105,7 +105,7 @@ class ClassesController extends Controller
             'status' => 'New'
         ];
         $lesson = Lesson::create($data);
-        $this->user->notify(new ClassCreated($lesson));
+        $this->user->notify(new ClassCreated($lesson->load('course', 'user')));
         return response()->json([
             'class' => $lesson
         ], 200);
