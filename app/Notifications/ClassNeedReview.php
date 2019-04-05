@@ -43,7 +43,7 @@ class ClassNeedReview extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('CE Class Has Been Submitted for Processing')
+                    ->subject('Class IS NOT Approved - Immediate Action Require')
                     ->markdown('mail.class.review', ['data' => $this->lesson]);
     }
 
