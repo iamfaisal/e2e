@@ -4,6 +4,7 @@
 
 Your CE class request has been received and will be reviewed by the E2E Team within 2 business days.
 
+<<<<<<< HEAD
 @component('mail::table')
 |                |                                  |
 | -------------- | -------------------------------- |
@@ -12,6 +13,16 @@ Your CE class request has been received and will be reviewed by the E2E Team wit
 | Instructor     | {{ $data->user->name }}          |
 | Status         | **This class CANNOT BE APPROVED and needs your IMMEDIATE attention. Please login to the E2E system and review this class submission.** |
 @endcomponent
+=======
+    @component('mail::table')
+        |                |                                  |
+        | -------------- |:-------------------------------- |
+        | CE Course Code | {{ $data->course->course_code }} |
+        | CE Class Date  | {{ $data->start_date }}          |
+        | Instructor     | {{ $data->user->name }}          |
+        | Status         | **This class CANNOT BE APPROVED and needs your IMMEDIATE attention. Please login to the E2E system and review this class submission.** |
+    @endcomponent
+>>>>>>> 6b4bd44a81f0c9e185291563519d57884bbc97a9
 
 ### Action Required
 **Once all issues are resolved, resubmit the request to

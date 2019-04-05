@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Lesson;
 use App\Approval;
 use App\Cancellation;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use App\Notifications\ClassApproval;
 use App\Notifications\ClassCancellation;
 use App\Notifications\ClassCreated;
@@ -12,10 +16,6 @@ use App\Notifications\ClassNeedReview;
 use App\Notifications\ClassNeedsRosterToInstructor;
 use App\Notifications\ClassSubmitToState;
 use App\Notifications\ClassUpdated;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class ClassesController extends Controller
 {

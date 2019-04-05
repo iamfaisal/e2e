@@ -20,7 +20,7 @@ class InstructorCreated extends Notification
      */
     public function __construct($name)
     {
-        $this->$name = $name;
+        $this->name = $name;
     }
 
     /**
@@ -44,7 +44,7 @@ class InstructorCreated extends Notification
     {
         return (new MailMessage)
                     ->subject('PSRE: Welcome to the system')
-                    ->greeting('Hello ' . $this->name .',')
+                    ->greeting('Hello ' . $this->name . ',')
                     ->line('Your new instructor profile has been created for PSRE. Congrats!!');
     }
 

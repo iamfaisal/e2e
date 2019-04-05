@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Course;
 use App\Lesson;
 use App\License;
-use App\Notifications\InstructorCreated;
 use App\Profile;
 use App\Territory;
 use Illuminate\Http\Request;
@@ -13,6 +12,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\User;
+use App\Notifications\InstructorApproval;
+use App\Notifications\InstructorCreated;
+use App\Notifications\InstructorNewCourse;
+use App\Notifications\InstructorNewLicense;
+use App\Notifications\InstructorUpdated;
 
 class UsersController extends Controller
 {
@@ -108,6 +112,7 @@ class UsersController extends Controller
                         } else {
                             $licenseData['certificate'] = $license['certificate_file'];
                         }
+                        $user->notify(new InstructorNewLicense($profileData['first_name'], $licenseData['code']));
                         License::create($licenseData);
                     }
                 }
@@ -210,6 +215,7 @@ class UsersController extends Controller
                         ];
                         if ($_FILES['licenses']['name'][$index] && !empty($_FILES['licenses']['name'][$index]['certificate'])) {
                             $licenseData['certificate'] = $this->handleFileUpload($license['certificate']);
+                            $user->notify(new InstructorNewLicense($profileData['first_name'], $license['code']));
                         } else {
                             $licenseData['certificate'] = $license['certificate_file'];
                         }
@@ -223,6 +229,13 @@ class UsersController extends Controller
             {
                 $user->courses()->sync($request->courses);
                 $user->territories()->sync($request->territories);
+                $user->notify(new InstructorUpdated($profileData['first_name']));
+                if ($request->courses) {
+                    foreach ($request->courses as $courseID) {
+                        $course = Course::find($courseID);
+                        $user->notify(new InstructorNewCourse($profileData['first_name'], $course));
+                    }
+                }
             }
         }
 
@@ -271,6 +284,9 @@ class UsersController extends Controller
             $user = User::find($userID);
             $status = $user->status == 1 ? 0 : 1;
             $user->update(['status' => $status]);
+            if ($user->status == 1) {
+                $user->notify(new InstructorApproval($user->profile->first_name));
+            }
             return response()->json([
                 'user' => 'success'
             ], 200);

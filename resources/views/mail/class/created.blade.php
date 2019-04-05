@@ -4,6 +4,7 @@
 
 Your CE class request has been received and will be reviewed by the E2E Team within 2 business days.
 
+<<<<<<< HEAD
 @component('mail::table')
 |                |                                  |
 | -------------  | -------------------------------- |
@@ -11,6 +12,15 @@ Your CE class request has been received and will be reviewed by the E2E Team wit
 | CE Class Date  | {{ $data->start_date }}          |
 | Instructor     | {{ $data->user->name }}          |
 @endcomponent
+=======
+    @component('mail::table')
+        |                |                                  |
+        | -------------  |:-------------------------------- |
+        | CE Course Code | {{ $data->course->course_code }} |
+        | CE Class Date  | {{ $data->start_date }}          |
+        | Instructor     | {{ $data->user->name }}          |
+    @endcomponent
+>>>>>>> 6b4bd44a81f0c9e185291563519d57884bbc97a9
 
 Please contact the E2E Team at [educate2earn@amerifirst.us](mailto:educate2earn@amerifirst.us) with any questions.
 

@@ -11,14 +11,18 @@ class InstructorNewCourse extends Notification
 {
     use Queueable;
 
+    public $name;
+    public $course;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($name, $course)
     {
-        //
+        $this->name  = $name;
+        $this->course = $course;
     }
 
     /**
@@ -41,9 +45,9 @@ class InstructorNewCourse extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject('PSRE: New License Added')
+                    ->greeting('Hello ' . $this->name . ',')
+                    ->line('You have been certified to instruct a new course called ' . $this->course->title . '. You can begin instructing this course immediately.');
     }
 
     /**

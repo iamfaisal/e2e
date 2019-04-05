@@ -11,14 +11,16 @@ class InstructorUpdated extends Notification
 {
     use Queueable;
 
+    public $name;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($name)
     {
-        //
+        $this->name = $name;
     }
 
     /**
@@ -41,9 +43,9 @@ class InstructorUpdated extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject('PSRE: Profile updated')
+                    ->greeting('Hello ' . $this->name . ',')
+                    ->line('Your instructor profile has been updated by an admin. Let us know if you have any questions!!');
     }
 
     /**
