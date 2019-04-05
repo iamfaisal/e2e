@@ -1,6 +1,6 @@
 export function asset(resource, hideTrailingSlash = false) {
     const trailingSlash = !hideTrailingSlash ? "/" : "";
-    return window.location.origin + trailingSlash + resource;
+    return "http://school.educate2earn.com" + trailingSlash + resource; //window.location.origin
 }
 
 export function getUserFullName(user) {
