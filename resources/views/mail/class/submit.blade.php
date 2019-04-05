@@ -8,11 +8,11 @@
     within 2 business days of the approval status.
 
     @component('mail::table')
-        |               |                                  |
-        | ------------- | -------------------------------- |
-        | CE Course Code| {{ $data->course->course_code }} |
-        | CE Class Date | {{ $data->start_date }}          |
-        | Instructor    | {{ $data->user->name }}          |
+        |                |                                  |
+        | -------------  | -------------------------------- |
+        | CE Course Code | {{ $data->course->course_code }} |
+        | CE Class Date  | {{ $data->start_date }}          |
+        | Instructor     | {{ $data->user->name }}          |
     @endcomponent
 
     Please contact the E2E Team at
