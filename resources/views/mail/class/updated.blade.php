@@ -9,23 +9,13 @@ class approval email.**
 
 In accordance with your request, we have cancelled the following CE class:
 
-<<<<<<< HEAD
 @component('mail::table')
 |                |                                  |
-| -------------  | -------------------------------- |
-| CE Course Code | {{ $data->course->course_code }} |
+| -------------  | :------------------------------- |
+| CE Course Code | {{ $data->course->code }}        |
 | CE Class Date  | {{ $data->start_date }}          |
 | Instructor     | {{ $data->user->name }}          |
 @endcomponent
-=======
-    @component('mail::table')
-        |                |                                  |
-        | -------------  |:-------------------------------- |
-        | CE Course Code | {{ $data->course->course_code }} |
-        | CE Class Date  | {{ $data->start_date }}          |
-        | Instructor     | {{ $data->user->name }}          |
-    @endcomponent
->>>>>>> 6b4bd44a81f0c9e185291563519d57884bbc97a9
 
 *The E2E Team will review your request and notify you within 2 business days of the status of this class.*
 

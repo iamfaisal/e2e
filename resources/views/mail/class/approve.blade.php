@@ -3,7 +3,7 @@
 @component('mail::table')
 |                |                                  |
 | -------------  |:-------------------------------- |
-| CE Course Code | {{ $data->course->course_code }} |
+| CE Course Code | {{ $data->course->code }}        |
 | CE Class Date  | {{ $data->start_date }}          |
 | Instructor     | {{ $data->user->name }}          |
 | Status         | Registered and Approved - Class materials and docs are now available in the E2E system. |
