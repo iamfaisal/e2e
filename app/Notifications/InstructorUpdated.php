@@ -43,9 +43,9 @@ class InstructorUpdated extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('PSRE: Welcome to the system')
+                    ->subject('PSRE: Profile updated')
                     ->greeting('Hello ' . $this->name . ',')
-                    ->line('Your new instructor profile has been created for PSRE. Congrats!!');
+                    ->line('Your instructor profile has been updated by an admin. Let us know if you have any questions!!');
     }
 
     /**
