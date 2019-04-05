@@ -40,7 +40,7 @@ class ClassCreated extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Notification Subject')
+                    ->subject('CE Class Registration Has Been Received')
                     ->markdown('mail.class.created', ['data' => $this->lesson]);
     }
 
