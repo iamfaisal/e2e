@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Lesson;
 use App\Approval;
 use App\Cancellation;
+use App\Notifications\ClassApproval;
 use App\Notifications\ClassCancellation;
 use App\Notifications\ClassCreated;
 use App\Notifications\ClassNeedReview;
 use App\Notifications\ClassSubmitToState;
+use App\Notifications\ClassUpdated;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -167,6 +169,9 @@ class ClassesController extends Controller
             $class->sponsors()->sync($request->sponsors);
         }
         $class->update($data);
+        if ($class->status === "Updated") {
+            $this->user->notify(new ClassUpdated($class->load('course', 'user')));
+        }
         return response()->json([
             'class' => $class
         ], 200);
@@ -221,6 +226,9 @@ class ClassesController extends Controller
         }
         if ($class->status === "Needs Review") {
             $this->user->notify(new ClassNeedReview($class->load('course', 'user')));
+        }
+        if ($class->status === "Approved") {
+            $this->user->notify(new ClassApproval($class->load('course', 'user')));
         }
 
         return response()->json([
