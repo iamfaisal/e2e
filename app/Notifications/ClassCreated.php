@@ -10,14 +10,13 @@ class ClassCreated extends Notification
 {
     use Queueable;
 
+    public $lesson;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-
-    public $lesson;
-
     public function __construct($lesson)
     {
         $this->lesson = $lesson;

@@ -11,14 +11,16 @@ class ClassCancellation extends Notification
 {
     use Queueable;
 
+    public $lesson;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($lesson)
     {
-        //
+        $this->lesson = $lesson;
     }
 
     /**

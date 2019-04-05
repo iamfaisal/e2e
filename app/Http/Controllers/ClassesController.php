@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Lesson;
 use App\Approval;
 use App\Cancellation;
+use App\Notifications\ClassCancellation;
 use App\Notifications\ClassCreated;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -233,6 +234,7 @@ class ClassesController extends Controller
             'status' => 'Cancelled',
             'is_cancelled' => true
         ]);
+        $this->user->notify(new ClassCancellation($class->load('course', 'user')));
         return response()->json([
             'class' => $class
         ], 200);
