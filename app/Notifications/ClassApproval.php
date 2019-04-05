@@ -43,7 +43,7 @@ class ClassApproval extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('CE Class Has Been Updated')
+                    ->subject('CE Class Has Been Approved')
                     ->markdown('mail.class.approve', ['data' => $this->lesson]);
     }
 

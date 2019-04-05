@@ -9,6 +9,7 @@ use App\Notifications\ClassApproval;
 use App\Notifications\ClassCancellation;
 use App\Notifications\ClassCreated;
 use App\Notifications\ClassNeedReview;
+use App\Notifications\ClassNeedsRosterToInstructor;
 use App\Notifications\ClassSubmitToState;
 use App\Notifications\ClassUpdated;
 use Illuminate\Support\Str;
@@ -79,6 +80,9 @@ class ClassesController extends Controller
                 ->where('user_id', $user->id)
                 ->where('status', '!=', 'Complete')
                 ->where('roster', null);
+        if ($classes->exists()) {
+            $this->user->notify(new ClassNeedsRosterToInstructor());
+        }
         return response()->json([
             'classes' => $classes->get()
         ], 200);
