@@ -40,11 +40,9 @@ class ClassCreated extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('This message does not constitute final class approval. It&rsquo;s important you do not begin marketing the class until you receive the final CE class approval email.')
-                    // pull data from $lesson
-                    // create table view
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject('Notification Subject')
+                    ->greeting('This message does not constitute final class approval. It’s important you do not begin marketing the class until you receive the final CE class approval email.')
+                    ->markdown('mail.class.created', ['data' => $this->lesson]);
     }
 
     /**
