@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Lesson;
 use App\Approval;
 use App\Cancellation;
+use App\Notifications\ClassCancellation;
 use App\Notifications\ClassCreated;
+use App\Notifications\ClassNeedReview;
+use App\Notifications\ClassSubmitToState;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -213,6 +216,13 @@ class ClassesController extends Controller
         }
         $class->update($data);
 
+        if ($class->status === "Submitted") {
+            $this->user->notify(new ClassSubmitToState($class->load('course', 'user')));
+        }
+        if ($class->status === "Needs Review") {
+            $this->user->notify(new ClassNeedReview($class->load('course', 'user')));
+        }
+
         return response()->json([
             'class' => $class
         ], 200);
@@ -233,6 +243,7 @@ class ClassesController extends Controller
             'status' => 'Cancelled',
             'is_cancelled' => true
         ]);
+        $this->user->notify(new ClassCancellation($class->load('course', 'user')));
         return response()->json([
             'class' => $class
         ], 200);
