@@ -14,7 +14,7 @@
         Scottsdale, AZ 85260
         ATTN: Educate2Earn
 
-    *It is the instructor\'s responsibility to ensure the class roster is uploaded to the E2E system!*
+    *It is the instructor's responsibility to ensure the class roster is uploaded to the E2E system!*
 
     **WARNING:** The system WILL NOT allow you to schedule future classes if you have any outstanding rosters. It will automatically lock the "Register New Class" button until your rosters are uploaded.
 
