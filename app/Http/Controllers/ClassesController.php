@@ -7,6 +7,7 @@ use App\Approval;
 use App\Cancellation;
 use App\Notifications\ClassCancellation;
 use App\Notifications\ClassCreated;
+use App\Notifications\ClassNeedReview;
 use App\Notifications\ClassSubmitToState;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -217,6 +218,9 @@ class ClassesController extends Controller
 
         if ($class->status === "Submitted") {
             $this->user->notify(new ClassSubmitToState($class->load('course', 'user')));
+        }
+        if ($class->status === "Needs Review") {
+            $this->user->notify(new ClassNeedReview($class->load('course', 'user')));
         }
 
         return response()->json([
