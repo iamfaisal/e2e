@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Lesson;
 use App\Approval;
 use App\Cancellation;
+use App\Notifications\ClassApproval;
 use App\Notifications\ClassCancellation;
 use App\Notifications\ClassCreated;
 use App\Notifications\ClassNeedReview;
@@ -225,6 +226,9 @@ class ClassesController extends Controller
         }
         if ($class->status === "Needs Review") {
             $this->user->notify(new ClassNeedReview($class->load('course', 'user')));
+        }
+        if ($class->status === "Approved") {
+            $this->user->notify(new ClassApproval($class->load('course', 'user')));
         }
 
         return response()->json([
