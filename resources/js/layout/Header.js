@@ -70,7 +70,8 @@ class Header extends Component {
                         <Link className="profile" to={"/" + editProfileRoute + "/edit/" + user.id}>
                             <img src={getUserAvatar(user)} alt={userName} />
                         </Link>
-                        <a href="javascript:void(0)" onClick={this.handleLogout} className="logout ion-md-log-out"/>
+                        <a href="javascript:void(0)" onClick={this.handleLogout} className="logout ion-md-log-out"
+                            data-toggle="tooltip" data-placement="left" title="Logout" />
                         <a className="ion-md-more" onClick={this.handleSidebarToggle} />
                     </div>
                 </header>

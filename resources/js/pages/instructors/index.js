@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
-import { read, remove, create, filter } from "../../helpers/resource";
+import { read, remove, filter } from "../../helpers/resource";
 import { getUserFullName } from "../../helpers/app";
+import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
 
 class Instructors extends Component {
@@ -10,6 +11,7 @@ class Instructors extends Component {
 
         this.state = {
             instructors: [],
+            regulations: [],
             filters: {},
             loader: true
         };
@@ -40,6 +42,12 @@ class Instructors extends Component {
                     loader: true
                 });
             });
+
+        read('regulations', {}).then(res => {
+            this.setState({
+                regulations: res.data.regulations
+            });
+        }).catch(err => console.log(err));
     }
 
     renderLoader() {
@@ -80,14 +88,34 @@ class Instructors extends Component {
         }
     }
 
-    setfilter(e, key) {
+    setfilter(value, key) {
         let { filters } = this.state;
-        filters[key] = e.target.value;
-        this.setState({filters: filters});
+
+        if (typeof value == 'string') {
+            filters[key] = value;
+        } else {
+            filters[key] = value.target.value;
+        }
+
+        this.setState({ filters: filters });
+    }
+
+    toggleNeedApproval(e) {
+        let { filters } = this.state;
+        delete filters.status;
+        if (e.target.checked) filters.status = "0";
+        this.setState({ filters: filters });
+    }
+
+    toggleArchived(e) {
+        let { filters } = this.state;
+        delete filters.is_deleted;
+        if (e.target.checked) filters.is_deleted = "1";
+        this.setState({ filters: filters });
     }
 
     render() {
-        let { instructors, filters, loader } = this.state;
+        let { instructors, regulations, filters, loader } = this.state;
         const columns = [
             {
                 name: 'Name',
@@ -120,6 +148,19 @@ class Instructors extends Component {
 
                 <div className="filter">
                     <input type="text" placeholder="Search Instructors" onChange={e => this.setfilter(e, "email")} />
+                    <Select items={regulations} placeholder="Select State" id={"abbreviation"} val={"name"} onChange={value => this.setfilter(value, "profile.state")} />
+
+                    <br />
+
+                    <label className="checkbox">
+                        <input type="checkbox" onChange={e => this.toggleNeedApproval(e)} />
+                        <span>Need Approval</span>
+                    </label>
+
+                    <label className="checkbox">
+                        <input type="checkbox" onChange={e => this.toggleArchived(e)} />
+                        <span>Show archived</span>
+                    </label>
                 </div>
 
                 <div className="tablewrap">

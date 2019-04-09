@@ -139,12 +139,12 @@ class CreateCourse extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <label>
-                            <span>Regulation</span>
+                            <span>State</span>
                             <Select
+                                placeholder="Select State" 
                                 onChange={this.handleChange}
                                 name="regulation_id"
                                 items={regulations}
-                                placeholder="Select Regulation"
                                 id={"id"}
                                 val={"name"}
                             />

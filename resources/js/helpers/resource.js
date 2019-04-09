@@ -155,3 +155,7 @@ export function addDays(date, days) {
     date.setDate(date.getDate() + days);
     return date;
 }
+
+export function formatPhone(phone) {
+    return phone.replace(/[^\d]/g, '').replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+}

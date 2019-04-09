@@ -1,9 +1,10 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import { getuser } from "../../helpers/app";
 import DatePicker from "react-datepicker";
-import { read, create, dateToString } from "../../helpers/resource";
+import { read, create, dateToString, addDays } from "../../helpers/resource";
 
 class CreateMyClass extends Component {
     constructor(props) {
@@ -12,11 +13,12 @@ class CreateMyClass extends Component {
         this.state = {
             loading: false,
             user: getuser(),
+            canAddNew: true,
             fields: {
                 course_id: "",
                 venue_id: "",
-                start_date_time: new Date,
-                end_date_time: new Date,
+                start_date_time: addDays(new Date, 16),
+                end_date_time: addDays(new Date, 16),
                 price: "",
                 capacity: "",
                 alternate_instructor: "",
@@ -40,6 +42,14 @@ class CreateMyClass extends Component {
     }
 
     componentDidMount() {
+        read('classes/hasPendingRosters', {})
+            .then(res => {
+                this.setState({
+                    canAddNew: res.data.classes.length ? false : true
+                });
+            })
+            .catch(err => console.log(err));
+
         read('classes/my-courses', {})
             .then(res => {
                 this.setState({
@@ -98,7 +108,16 @@ class CreateMyClass extends Component {
     }
 
     render() {
-        const { user, fields, courses, venues, loading, isFormValid, formValidationData } = this.state;
+        const { user, canAddNew, fields, courses, venues, loading, isFormValid, formValidationData } = this.state;
+
+        if (!canAddNew) return (
+            <div>
+                <header className="pageheader">
+                    <h2>Create Class</h2>
+                </header>
+                <Link className="button" to={"/my-classes"}>Upload rosters to add a new class</Link>
+            </div>
+        );
 
         return (
             <div>
@@ -145,6 +164,7 @@ class CreateMyClass extends Component {
                                 showTimeSelect
                                 timeFormat="HH:mm"
                                 timeIntervals={30}
+                                minDate={addDays(new Date, 16)}
                                 dateFormat="MMMM d, yyyy h:mm aa"
                                 timeCaption="time"
                             />
@@ -158,6 +178,7 @@ class CreateMyClass extends Component {
                                 showTimeSelect
                                 timeFormat="HH:mm"
                                 timeIntervals={30}
+                                minDate={addDays(new Date, 16)}
                                 dateFormat="MMMM d, yyyy h:mm aa"
                                 timeCaption="time"
                             />

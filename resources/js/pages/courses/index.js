@@ -10,7 +10,6 @@ class Courses extends Component {
 
         this.state = {
             courses: [],
-            categories: [],
             regulations: [],
             filters: {
                 is_deleted: "0"
@@ -34,7 +33,6 @@ class Courses extends Component {
             .then(res => {
                 this.setState({
                     courses: res.data.courses,
-                    categories: res.data.categories,
                     regulations: res.data.regulations,
                     loader: false
                 });
@@ -59,7 +57,7 @@ class Courses extends Component {
                 <Link className="ion-md-create" to={"/courses/edit/" + course.id}
                     data-toggle="tooltip" title="Edit Course" />
                 <a className="ion-md-close" onClick={e => this.deleteCourse(e, course.id)}
-                    data-toggle="tooltip" title="Delete Course" />
+                    data-toggle="tooltip" title="Archive Course" />
             </div>
         );
     }
@@ -73,7 +71,7 @@ class Courses extends Component {
     }
 
     deleteCourse(e, course) {
-        if (confirm('Do you really want to delete this Course?')) {
+        if (confirm('Do you really want to archive this Course?')) {
             remove('courses/' + course, {})
                 .then(res => {
                     this.getData();
@@ -105,17 +103,20 @@ class Courses extends Component {
 
     render() {
         let { courses } = this.state;
-        const { filters, categories, regulations, loader } = this.state;
+        const { filters, regulations, loader } = this.state;
         const columns = [
             {
-                name: 'ID',
-                selector: 'id',
+                name: 'Code',
+                selector: 'code',
                 sortable: true,
-                width: '60px'
+                maxWidth: '100px'
             },
             {
                 name: 'Title',
-                selector: 'title',
+                cell: row => {
+                    return <Link to={"/courses/edit/" + row.id}>{row.title}</Link>
+                },
+                ignoreRowClick: true,
                 sortable: true
             },
             {
@@ -125,10 +126,9 @@ class Courses extends Component {
                 maxWidth: '50px'
             },
             {
-                name: 'Code',
-                selector: 'code',
-                sortable: true,
-                maxWidth: '100px'
+                name: '#',
+                selector: 'number',
+                sortable: true
             },
             {
                 name: 'Categories',
@@ -168,8 +168,7 @@ class Courses extends Component {
                 </header>
 
                 <div className="filter">
-                    <Select items={regulations} placeholder="Select Regulation" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")} />
-                    <Select items={categories} placeholder="Select Category" id={"label"} val={"label"} onChange={value => this.setfilter(value, "categories.label")} />
+                    <Select items={regulations} placeholder="Select State" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")} />
                     <input type="text" placeholder="Course Code" onChange={e => this.setfilter(e, "code")} />
 
                     <br />

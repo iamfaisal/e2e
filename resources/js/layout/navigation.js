@@ -13,7 +13,7 @@ export const links = [
         role: "super-admin"
     },
     {
-        name: "Regulations",
+        name: "State Regulations",
         url: "/regulations",
         icon: "ion-ios-hand",
         role: "super-admin"

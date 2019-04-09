@@ -50,15 +50,15 @@ class Regulations extends Component {
         return (
             <div className="actions">
                 <Link className="ion-md-create" to={"/regulations/edit/" + regulation.id}
-                    data-toggle="tooltip" title="Edit Regulation" />
+                    data-toggle="tooltip" title="Edit State Regulation" />
                 <a className="ion-md-close" onClick={e => this.deleteRegulation(e, regulation.id)}
-                    data-toggle="tooltip" title="Delete Regulation" />
+                    data-toggle="tooltip" title="Delete State Regulation" />
             </div>
         );
     }
 
     deleteRegulation(e, reg) {
-        if (confirm('Do you really want to delete this Regulation?')) {
+        if (confirm('Do you really want to delete this State Regulation?')) {
             remove('regulations/'+reg, {})
             .then(res => {
                 this.getData();
@@ -102,8 +102,8 @@ class Regulations extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Regulations</h2>
-                    <Link className="button" to={"/regulations/create"}>Add New Regulation</Link>
+                    <h2>State Regulations</h2>
+                    <Link className="button" to={"/regulations/create"}>Add New State Regulation</Link>
                 </header>
 
                 <div className="filter">

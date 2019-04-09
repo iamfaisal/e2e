@@ -1,6 +1,7 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { read, remove, filter } from "../../helpers/resource";
+import { read, remove, filter, formatPhone } from "../../helpers/resource";
+import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
 
 class MySponsors extends Component {
@@ -9,7 +10,7 @@ class MySponsors extends Component {
 
         this.state = {
             sponsors: [],
-            instructors: [],
+            regulations: [],
             filters: {},
             loader: true
         };
@@ -21,6 +22,12 @@ class MySponsors extends Component {
 
     componentDidMount() {
         this.getData();
+
+        read('regulations', {}).then(res => {
+            this.setState({
+                regulations: res.data.regulations
+            });
+        }).catch(err => console.log(err));
     }
 
     getData() {
@@ -81,23 +88,40 @@ class MySponsors extends Component {
     }
 
     render() {
-        let { sponsors, filters, loader } = this.state;
+        let { sponsors, regulations, filters, loader } = this.state;
         const columns = [
+            {
+                name: 'Company',
+                selector: 'company',
+                sortable: true,
+            },
             {
                 name: 'Name',
                 cell: user => { return user.first_name + " " + user.last_name },
                 sortable: true,
-                maxWidth: '200px'
+                maxWidth: '160px'
+            },
+            {
+                name: 'Address',
+                cell: user => {
+                    let address = user.address;
+                    if (user.city) address += ", " + user.city;
+                    if (user.state) address += ", " + user.state;
+                    return address;
+                },
+                sortable: true,
             },
             {
                 name: 'Email',
                 selector: 'email',
                 sortable: true,
+                maxWidth: '160px'
             },
             {
-                name: 'Company',
-                selector: 'company',
+                name: 'Phone',
+                cell: user => formatPhone(user.phone),
                 sortable: true,
+                maxWidth: '120px'
             },
             {
                 name: 'Actions',
@@ -120,6 +144,7 @@ class MySponsors extends Component {
 
                 <div className="filter">
                     <input type="text" placeholder="Search Sponsors" onChange={e => this.setfilter(e, "email")} />
+                    <Select items={regulations} placeholder="Select State" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation_id")} />
                 </div>
 
                 <div className="tablewrap">

@@ -167,7 +167,7 @@ class EditCourse extends Component {
                             validation={[validations.isEmpty]}
                         />
                         <label>
-                            <span>Regulation</span>
+                            <span>State</span>
                             <Select
                                 onChange={this.handleChange}
                                 name="regulation_id"

@@ -127,7 +127,10 @@ class MyClasses extends Component {
         const columns = [
             {
                 name: 'Course',
-                cell: row => { return row.course.title },
+                cell: row => {
+                    return <Link to={"/my-classes/edit/" + row.id}>{row.course.title}</Link>
+                },
+                ignoreRowClick: true,
                 sortable: true
             },
             {

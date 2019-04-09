@@ -110,7 +110,7 @@ class CreateRegulation extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Create Regulation</h2>
+                    <h2>Create State Regulation</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -233,7 +233,7 @@ class CreateRegulation extends Component {
                         name="regulations_doc"
                         labelText="Regulations Doc"/>
 
-                    <button className="button" disabled={!isFormValid}>Create Regulation</button>
+                    <button className="button" disabled={!isFormValid}>Create State Regulation</button>
                 </form>
             </div>
         );

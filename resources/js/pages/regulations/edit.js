@@ -129,7 +129,7 @@ class EditRegulation extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Edit Regulation</h2>
+                    <h2>Edit State Regulation</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -254,7 +254,7 @@ class EditRegulation extends Component {
                         value={fields.regulations_doc}
                     />
 
-                    <button className="button" disabled={!isFormValid}>Update Regulation</button>
+                    <button className="button" disabled={!isFormValid}>Update State Regulation</button>
                 </form>
             </div>
         );
