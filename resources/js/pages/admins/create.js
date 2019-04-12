@@ -113,7 +113,7 @@ class CreateAdmin extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Create Admin</h2>
+                    <h2>Create School</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -202,7 +202,7 @@ class CreateAdmin extends Component {
                         value={fields.status}
                         labelText="Approved?" /><br />
 
-                    <button className="button" disabled={!isFormValid}>Create Admin</button>
+                    <button className="button" disabled={!isFormValid}>Create School</button>
                 </form>
             </div>
         );

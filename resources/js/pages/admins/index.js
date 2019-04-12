@@ -51,9 +51,9 @@ class Admins extends Component {
         let classname = user.status === 1 ? "hand" : "checkmark";
         return (
             <div className="actions">
-                <a data-toggle="tooltip" title={user.status === 1 ? "Cancel Admin" : "Approve Admin"} className={"ion-md-" + classname} onClick={e => this.toggleStatus(e, user)} />
-                <Link data-toggle="tooltip" title="Edit Admin" className="ion-md-create" to={"/users/edit/" + user.id} />
-                <a data-toggle="tooltip" title="Delete Admin" className="ion-md-close" onClick={e => this.deleteAdmin(e, user.id)} />
+                <a data-toggle="tooltip" title={user.status === 1 ? "Cancel School" : "Approve School"} className={"ion-md-" + classname} onClick={e => this.toggleStatus(e, user)} />
+                <Link data-toggle="tooltip" title="Edit School" className="ion-md-create" to={"/users/edit/" + user.id} />
+                <a data-toggle="tooltip" title="Delete School" className="ion-md-close" onClick={e => this.deleteAdmin(e, user.id)} />
             </div>
         );
     }
@@ -109,12 +109,12 @@ class Admins extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Administrators</h2>
-                    <Link className="button" to={"/users/create"}>Add New Admin</Link>
+                    <h2>School</h2>
+                    <Link className="button" to={"/users/create"}>Add New School</Link>
                 </header>
 
                 <div className="filter">
-                    <input type="text" placeholder="Search Admins" onChange={e => this.setfilter(e, "email")} />
+                    <input type="text" placeholder="Search Schools" onChange={e => this.setfilter(e, "email")} />
                 </div>
 
                 <div className="tablewrap">

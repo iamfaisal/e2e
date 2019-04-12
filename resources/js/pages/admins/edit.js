@@ -140,7 +140,7 @@ class EditAdmin extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Edit Admin</h2>
+                    <h2>Edit School</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -232,7 +232,7 @@ class EditAdmin extends Component {
                         value={fields.status}
                         labelText="Approved?" /><br />
 
-                    <button className="button" disabled={!isFormValid}>Update Admin</button>
+                    <button className="button" disabled={!isFormValid}>Update School</button>
                 </form>
             </div>
         );
