@@ -4,31 +4,31 @@ export const links = [
         name: "Courses",
         url: "/courses",
         icon: "ion-ios-filing",
-        role: "super-admin"
+        role: "system"
     },
     {
         name: "Territories",
         url: "/territories",
         icon: "ion-ios-globe",
-        role: "super-admin"
+        role: "system"
     },
     {
         name: "State Regulations",
         url: "/regulations",
         icon: "ion-ios-hand",
-        role: "super-admin"
+        role: "system"
     },
     {
         name: "Categories",
         url: "/categories",
         icon: "ion-ios-bookmark",
-        role: "super-admin"
+        role: "system"
     },
     {
-        name: "School Admins",
+        name: "Admins",
         url: "/users",
         icon: "ion-ios-people",
-        role: "super-admin"
+        role: "system"
     },
     // school admin
     {

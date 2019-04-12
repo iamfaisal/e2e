@@ -16,15 +16,15 @@ class AccessControlListDataSeeder extends Seeder
     {
         // define base rules
         $roles = [
-            "super-admin"   => "System Admin",
-            "admin"         => "School Admin",
+            "system"        => "System",
+            "admin"         => "School",
             "instructor"    => "Instructor",
             "student"       => "Student",
         ];
 
         // define base permissions for each role
         $permissions = [
-            "super-admin" => [
+            "system" => [
                 "update-self" => "Can update own profile",
                 // school admins
                 "create-admin" => "Can create School Administrators",
@@ -127,7 +127,7 @@ class AccessControlListDataSeeder extends Seeder
         }
 
         $user = User::find(1);
-        $user->assign("super-admin");
+        $user->assign("system");
         $user->assign("admin");
         $user->assign("instructor");
     }

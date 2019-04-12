@@ -35,7 +35,7 @@ export function routeToDashboard() {
     if (is("admin")) {
         dashboard = "/classes";
     }
-    if (is("super-admin")) {
+    if (is("system")) {
         dashboard = "/courses";
     }
     return dashboard;

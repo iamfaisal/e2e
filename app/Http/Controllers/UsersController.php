@@ -268,7 +268,7 @@ class UsersController extends Controller
         $user = User::find($userID);
         $checkSelf = $checkSelf ? $currentUser->id !== $user->id : true;
         if (
-            ($currentUser->hasRole("super-admin") && !$user->hasRole("super-admin") && $checkSelf)
+            ($currentUser->hasRole("system") && !$user->hasRole("system") && $checkSelf)
             ||
             ($currentUser->hasRole("admin") && !$user->hasRole("admin") && $checkSelf)
         ) {
