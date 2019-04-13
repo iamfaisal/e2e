@@ -12,7 +12,9 @@ class Instructors extends Component {
         this.state = {
             instructors: [],
             regulations: [],
-            filters: {},
+            filters: {
+                deleted: "0"
+            },
             loader: true
         };
 
@@ -109,8 +111,8 @@ class Instructors extends Component {
 
     toggleArchived(e) {
         let { filters } = this.state;
-        delete filters.is_deleted;
-        if (e.target.checked) filters.is_deleted = "1";
+        filters.deleted = "0";
+        if (e.target.checked) filters.deleted = "1";
         this.setState({ filters: filters });
     }
 
