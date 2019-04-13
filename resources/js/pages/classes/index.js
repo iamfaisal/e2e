@@ -187,7 +187,7 @@ class Classes extends Component {
             <div>
                 <header className="pageheader">
                     <h2>Classes</h2>
-                    <Link className="button" to={"/classes/create"}>Add New Class</Link>
+                    <Link className="button" to={"/classes/create"}>Register Class</Link>
                 </header>
 
                 <div className="filter">
