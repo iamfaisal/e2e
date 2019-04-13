@@ -88,6 +88,12 @@ class Venues extends Component {
         let { venues, instructors, filters, loader } = this.state;
         const columns = [
             {
+                name: '#',
+                selector: "id",
+                sortable: true,
+                width: '80px'
+            },
+            {
                 name: 'Name',
                 cell: row => {
                     return <Link to={"/venues/edit/" + row.id}>{row.name}</Link>

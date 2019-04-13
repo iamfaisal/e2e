@@ -78,6 +78,12 @@ class MyVenues extends Component {
         let { venues, filters, loader } = this.state;
         const columns = [
             {
+                name: '#',
+                selector: "id",
+                sortable: true,
+                width: '80px'
+            },
+            {
                 name: 'Name',
                 cell: row => {
                     return <Link to={"/my-venues/edit/" + row.id}>{row.name}</Link>
