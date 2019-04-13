@@ -255,7 +255,8 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->update(['deleted', 1]);
+        $status = $user->status == 1 ? 0 : 1;
+        $user->update(['deleted' => true, 'status' => $status]);
         return response()->json([
             'user' => 'success'
         ], 200);
