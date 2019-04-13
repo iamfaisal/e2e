@@ -133,12 +133,24 @@ class Instructors extends Component {
                 sortable: true,
             },
             {
+                name: 'State',
+                cell: user => user.profile.state,
+                sortable: true,
+            },
+            {
+                name: 'Approved',
+                cell: user => user.status ? "Yes" : "No",
+                sortable: true,
+            },
+            {
                 name: 'Actions',
                 cell: user => this.renderActions(user),
                 ignoreRowClick: true,
                 width: '100px',
             }
         ];
+
+        console.log(instructors);
 
         if (Object.keys(filters).length) {
             instructors = filter(instructors, filters);
