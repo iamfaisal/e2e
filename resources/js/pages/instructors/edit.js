@@ -450,26 +450,6 @@ class EditInstructor extends Component {
                         </Fragment> : ""}
                     </div>
 
-                    <fieldset className="fields horizontal">
-                        <TextField
-                            onChange={this.handleChange}
-                            type="password"
-                            name="password"
-                            value={fields.password}
-                            maxLength={50}
-                            labelText="Password"
-                        />
-                        <TextField
-                            onChange={this.handleChange}
-                            type="password"
-                            name="confirm_pass"
-                            value={fields.confirm_pass}
-                            maxLength={50}
-                            labelText="Confirm Password"
-                            equalTo={fields.password}
-                        />
-                    </fieldset>
-
                     <CheckBox
                         onChange={this.handleChange}
                         name="status"
