@@ -76,7 +76,10 @@ class Categories extends Component {
         const columns = [
             {
                 name: 'Title',
-                selector: 'label',
+                cell: row => {
+                    return <Link to={"/categories/edit/" + row.id}>{row.label}</Link>
+                },
+                ignoreRowClick: true,
                 sortable: true,
             },
             {

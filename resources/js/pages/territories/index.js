@@ -93,7 +93,10 @@ class Territories extends Component {
         const columns = [
             {
                 name: 'Name',
-                selector: 'name',
+                cell: row => {
+                    return <Link to={"/territories/edit/" + row.id}>{row.name}</Link>
+                },
+                ignoreRowClick: true,
                 sortable: true,
             },
             {

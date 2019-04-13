@@ -83,7 +83,10 @@ class Regulations extends Component {
         const columns = [
             {
                 name: 'Title',
-                selector: 'name',
+                cell: row => {
+                    return <Link to={"/regulations/edit/" + row.id}>{row.name}</Link>
+                },
+                ignoreRowClick: true,
                 sortable: true,
             },
             {

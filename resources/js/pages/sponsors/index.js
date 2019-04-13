@@ -101,7 +101,10 @@ class Sponsors extends Component {
         const columns = [
             {
                 name: 'Company',
-                selector: 'company',
+                cell: row => {
+                    return <Link to={"/sponsors/edit/" + row.id}>{row.company}</Link>
+                },
+                ignoreRowClick: true,
                 sortable: true,
             },
             {

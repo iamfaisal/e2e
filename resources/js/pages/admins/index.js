@@ -86,7 +86,10 @@ class Admins extends Component {
         const columns = [
             {
                 name: 'Name',
-                cell: user => getUserFullName(user),
+                cell: user => {
+                    return <Link to={"/users/edit/" + user.id}>{getUserFullName(user)}</Link>
+                },
+                ignoreRowClick: true,
                 sortable: true,
             },
             {

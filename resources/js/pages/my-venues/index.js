@@ -79,7 +79,10 @@ class MyVenues extends Component {
         const columns = [
             {
                 name: 'Name',
-                selector: 'name',
+                cell: row => {
+                    return <Link to={"/my-venues/edit/" + row.id}>{row.name}</Link>
+                },
+                ignoreRowClick: true,
                 sortable: true,
                 maxWidth: '200px'
             },
@@ -108,7 +111,7 @@ class MyVenues extends Component {
                 </header>
 
                 <div className="filter">
-                    <input type="text" placeholder="Search Sponsors" onChange={e => this.setfilter(e, "name")} />
+                    <input type="text" placeholder="Search Venues" onChange={e => this.setfilter(e, "name")} />
                 </div>
 
                 <div className="tablewrap">

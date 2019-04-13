@@ -119,7 +119,10 @@ class Instructors extends Component {
         const columns = [
             {
                 name: 'Name',
-                cell: user => getUserFullName(user),
+                cell: user => {
+                    return <Link to={"/instructors/edit/" + user.id}>{getUserFullName(user)}</Link>
+                },
+                ignoreRowClick: true,
                 sortable: true,
             },
             {

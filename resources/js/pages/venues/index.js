@@ -89,7 +89,10 @@ class Venues extends Component {
         const columns = [
             {
                 name: 'Name',
-                selector: 'name',
+                cell: row => {
+                    return <Link to={"/venues/edit/" + row.id}>{row.name}</Link>
+                },
+                ignoreRowClick: true,
                 sortable: true,
                 maxWidth: '200px'
             },
@@ -123,7 +126,7 @@ class Venues extends Component {
                 </header>
 
                 <div className="filter">
-                    <input type="text" placeholder="Search Sponsors" onChange={e => this.setfilter(e, "name")} />
+                    <input type="text" placeholder="Search Venues" onChange={e => this.setfilter(e, "name")} />
                     <Select items={instructors} placeholder="Select Instructors" id={"name"} val={"name"} onChange={value => this.setfilter(value, "user.name")} />
                 </div>
 
