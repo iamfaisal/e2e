@@ -49,11 +49,11 @@ class CoursesController extends Controller
     public function materials()
     {
         $courses = Course::with('regulation')
-            ->orderBy('created_at', 'desc')->get()
+            ->orderBy('created_at', 'desc')
             ->where("is_deleted", false);
         $regulations = Regulation::all();
         return response()->json([
-            'courses' => $courses,
+            'courses' => $courses->get(),
             'regulations' => $regulations
         ], 200);
     }
