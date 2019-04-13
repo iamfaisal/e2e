@@ -158,7 +158,7 @@ class MyClasses extends Component {
                     <h2>Classes</h2>
                     {canAddNew
                     ? <Link className="button" to={"/my-classes/create"}>Register Class</Link>
-                        : <button className="button" onClick={() => { if (archived_cb) archived_cb.checked = true; this.toggleArchived(true) }}>Upload rosters to add a new class</button>}
+                        : <button className="button" onClick={() => { if (archived_cb) archived_cb.checked = true; this.toggleArchived(true) }}>Upload rosters to register a new class</button>}
                 </header>
 
                 <div className="filter">

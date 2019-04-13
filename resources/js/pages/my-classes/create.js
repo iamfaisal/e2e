@@ -115,7 +115,7 @@ class CreateMyClass extends Component {
                 <header className="pageheader">
                     <h2>Create Class</h2>
                 </header>
-                <Link className="button" to={"/my-classes"}>Upload rosters to add a new class</Link>
+                <Link className="button" to={"/my-classes"}>Upload rosters to register a new class</Link>
             </div>
         );
 
