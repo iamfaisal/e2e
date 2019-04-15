@@ -108,7 +108,11 @@ export function filter(data, filters) {
 
             if (search instanceof Date) {
                 if (filter == "start_date" && new Date(tosearch) >= search) continue;
-                if (filter == "end_date" && new Date(tosearch) <= search) continue;
+                if (filter == "end_date") {
+                    search.setHours(23);
+                    search.setMinutes(59);
+                    if (new Date(tosearch) <= search) continue;
+                }
             }
 
             if (!tosearch) {
@@ -116,7 +120,11 @@ export function filter(data, filters) {
                 continue;
             }
 
-            if (tosearch.search(new RegExp(search, "i")) < 0) ok = false;
+            if (search.substr(0, 1) == '!') {
+                if (tosearch.search(new RegExp(search.substr(1), "i")) >= 0) ok = false;
+            } else {
+                if (tosearch.search(new RegExp(search, "i")) < 0) ok = false;
+            }
         }
         return ok;
     });

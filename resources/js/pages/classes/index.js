@@ -262,6 +262,11 @@ class Classes extends Component {
                     <br />
 
                     <label className="checkbox">
+                        <input type="checkbox" onChange={e => this.setfilter(e.target.checked ? "!Approved" : "", "status")} />
+                        <span>Need Approval</span>
+                    </label>
+
+                    <label className="checkbox">
                         <input type="checkbox" onChange={e => this.toggleArchived(e)} />
                         <span>Show archived</span>
                     </label>

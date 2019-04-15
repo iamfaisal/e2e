@@ -1,8 +1,10 @@
-import React, {Component} from "react";
+import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter, formatDate } from "../../helpers/resource";
 import Select from "../../common/Select";
+import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
+import { dateDifference } from "../../helpers/resource";
 
 class MyClasses extends Component {
     constructor(props) {
@@ -11,7 +13,12 @@ class MyClasses extends Component {
         this.state = {
             classes: [],
             courses: [],
-            filters: {},
+            regulations: [],
+            filters: {
+                is_deleted: "0",
+                start_date: "",
+                end_date: ""
+            },
             loader: true,
             canAddNew: false
         };
@@ -39,6 +46,12 @@ class MyClasses extends Component {
                 });
             })
             .catch(err => console.log(err));
+
+        read('regulations', {}).then(res => {
+            this.setState({
+                regulations: res.data.regulations
+            });
+        }).catch(err => console.log(err));
     }
 
     getData(params = {}) {
@@ -95,7 +108,7 @@ class MyClasses extends Component {
     setfilter(value, key) {
         let { filters } = this.state;
 
-        if (typeof value == 'string') {
+        if (typeof value == 'string' || value instanceof Date) {
             filters[key] = value;
         } else {
             filters[key] = value.target.value;
@@ -122,23 +135,56 @@ class MyClasses extends Component {
 
     render() {
         let { archived_cb, classes, canAddNew } = this.state;
-        const { filters, courses, loader } = this.state;
+        const { filters, courses, regulations, loader } = this.state;
 
         const columns = [
             {
+                name: 'Date',
+                cell: row => formatDate(row.start_date, true),
+                sortable: true,
+                width: '110px'
+            },
+            {
+                name: 'ID',
+                selector: "id",
+                sortable: true,
+                width: '50px'
+            },
+            {
                 name: 'Course',
                 cell: row => {
-                    return <Link to={"/my-classes/edit/" + row.id}>{row.course.title}</Link>
+                    return <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link>
                 },
                 ignoreRowClick: true,
                 sortable: true
             },
             {
-                name: 'Date',
+                name: 'Location',
                 cell: row => {
-                    return formatDate(row.start_date) + " to " + formatDate(row.end_date);
+                    return <Fragment>{row.venue.name}<br />{row.venue.city}, {row.venue.zip_code}</Fragment>;
                 },
                 sortable: true
+            },
+            {
+                name: 'Hours',
+                cell: row => dateDifference(row.start_date, row.end_date),
+                sortable: true,
+                width: '60px'
+            },
+            {
+                name: 'Cost',
+                cell: row => row.price ? row.price : "Free",
+                sortable: true,
+                width: '60px'
+            },
+            {
+                name: 'Created At',
+                cell: row => {
+                    let parts = formatDate(row.created_at).split(", ");
+                    return <Fragment>{parts[0]}<br />{parts[1]}</Fragment>;
+                },
+                sortable: true,
+                width: '100px'
             },
             {
                 name: 'Actions',
@@ -163,6 +209,25 @@ class MyClasses extends Component {
 
                 <div className="filter">
                     <Select items={courses} placeholder="Select Course" id="id" val={"title"} onChange={value => this.setfilter(value, "course.id")} />
+                    <Select items={regulations} placeholder="Select State" id="id" val="name" onChange={value => this.setfilter(value, "venue.regulation_id")} />
+
+                    <br />
+
+                    <DatePicker
+                        selected={filters.start_date}
+                        selectsStart
+                        startDate={filters.start_date}
+                        endDate={filters.end_date}
+                        placeholderText="Start"
+                        onChange={date => this.setfilter(date, "start_date")} />
+
+                    <DatePicker
+                        selected={filters.end_date}
+                        selectsEnd
+                        startDate={filters.start_date}
+                        endDate={filters.end_date}
+                        placeholderText="End"
+                        onChange={date => this.setfilter(date, "end_date")} />
 
                     <br />
 
