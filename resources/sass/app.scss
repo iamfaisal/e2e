@@ -1282,3 +1282,30 @@ legend .checkbox {
   background-color: #000;
   border-radius: 0.25rem;
 }
+
+.status {
+	display: inline-block;
+	background: #444;
+	padding: 1px 6px 0;
+	border-radius: 3px;
+	font-size: 12px;
+	color: #fff;
+}
+.status.needs-review {
+	background: #EE252F;
+}
+.status.updated {
+	background: #EE252F;
+}
+.status.submitted {
+	background: #2174B9;
+}
+.status.approved {
+	background: #8CC340;
+}
+.status.approved {
+	background: #8CC340;
+}
+.status.cancelled {
+	background: #A7A7A7;
+}

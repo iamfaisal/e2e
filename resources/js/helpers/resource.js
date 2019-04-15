@@ -106,17 +106,23 @@ export function filter(data, filters) {
             if (Array.isArray(tosearch)) tosearch = tosearch.join(' ');
             if (typeof tosearch == 'number') tosearch = tosearch.toString();
 
+            if (search instanceof Date) {
+                if (filter == "start_date" && new Date(tosearch) >= search) continue;
+                if (filter == "end_date" && new Date(tosearch) <= search) continue;
+            }
+
             if (!tosearch) {
                 ok = false;
                 continue;
             }
+
             if (tosearch.search(new RegExp(search, "i")) < 0) ok = false;
         }
         return ok;
     });
 }
 
-export function formatDate(str) {
+export function formatDate(str, dateOnly) {
     const date = new Date(str);
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "No", "Dec"];
 
@@ -131,7 +137,10 @@ export function formatDate(str) {
     if (hour.toString().length == 1) hour = "0" + hour;
     if (min.toString().length == 1) min = "0" + min;
 
-    return day + " " + months[month] + " " + year + ", " + hour + ":" + min + " " + ampm;
+    let output = day + " " + months[month] + " " + year;
+    if (!dateOnly) output += ", " + hour + ":" + min + " " + ampm;
+
+    return output;
 }
 
 export function dateToString(date, time) {
@@ -149,6 +158,10 @@ export function dateToString(date, time) {
     } else {
         return year + "-" + month + "-" + day;
     }
+}
+
+export function dateDifference(date1, date2) {
+    return (new Date(date2) - new Date(date1)) / (1000*60*60);
 }
 
 export function addDays(date, days) {
