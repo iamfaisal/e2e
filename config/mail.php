@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME', 'notifications@e2e-app.site'),
+    'username' => env('MAIL_USERNAME', 'email@example.com'), //notifications@e2e-app.site
 
-    'password' => env('MAIL_PASSWORD', 'eVggk+IPx0Qh'),
+    'password' => env('MAIL_PASSWORD', 'pass'), //eVggk+IPx0Qh
 
     /*
     |--------------------------------------------------------------------------
