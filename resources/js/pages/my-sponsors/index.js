@@ -99,7 +99,7 @@ class MySponsors extends Component {
                 sortable: true,
             },
             {
-                name: 'Name',
+                name: 'Contact',
                 cell: user => { return user.first_name + " " + user.last_name },
                 sortable: true,
                 maxWidth: '160px'
@@ -142,7 +142,7 @@ class MySponsors extends Component {
             <div>
                 <header className="pageheader">
                     <h2>Sponsors</h2>
-                    <Link className="button" to={"/my-sponsors/create"}>Add New Sponsor</Link>
+                    <Link className="button" to={"/my-sponsors/create"}>Create New Sponsor</Link>
                 </header>
 
                 <div className="filter">

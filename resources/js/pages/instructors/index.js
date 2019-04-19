@@ -21,7 +21,6 @@ class Instructors extends Component {
         this.renderLoader = this.renderLoader.bind(this);
         this.renderActions = this.renderActions.bind(this);
         this.deleteInstructor = this.deleteInstructor.bind(this);
-        this.toggleStatus = this.toggleStatus.bind(this);
     }
 
     componentDidMount() {
@@ -59,25 +58,14 @@ class Instructors extends Component {
     }
 
     renderActions(instructor) {
-        let classname = instructor.status == 1 ? "hand" : "checkmark";
-        let tooltip = instructor.status == 1 ? "Cancel" : "Approve";
         return (
             <div className="actions">
-                <a className={"ion-md-" + classname} onClick={e => this.toggleStatus(e, instructor)}
-                    data-toggle="tooltip" title={tooltip + " Instructor"} />
                 <Link className="ion-md-create" to={"/instructors/edit/" + instructor.id}
-                    data-toggle="tooltip" title="Edit Instructor" />
+                    data-toggle="tooltip" title="Edit / Archive" />
                 <a className="ion-md-close" onClick={e => this.deleteInstructor(e, instructor.id)}
                     data-toggle="tooltip" title="Delete Instructor" />
             </div>
         );
-    }
-
-    toggleStatus(e, instructor) {
-        read('users/status/'+instructor.id, {}).then(res => {
-            instructor.status = !instructor.status;
-            this.setState({});
-        }).catch(err => alert("You do not have sufficient permissions to perform this task."));
     }
 
     deleteInstructor(e, instructor) {
@@ -135,6 +123,11 @@ class Instructors extends Component {
             {
                 name: 'State',
                 cell: user => user.profile.state,
+                sortable: true,
+            },
+            {
+                name: 'License',
+                cell: user => console.log(user),
                 sortable: true,
             },
             {

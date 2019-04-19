@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
-import { read, remove, filter } from "../../helpers/resource";
+import { read, remove, filter, formatDate } from "../../helpers/resource";
 import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
 
@@ -144,7 +144,7 @@ class Courses extends Component {
             },
             {
                 name: 'Expiration',
-                selector: 'expiration_date',
+                cell: row => formatDate(row.expiration_date, true),
                 sortable: true,
                 maxWidth: '120px'
             },
@@ -169,7 +169,7 @@ class Courses extends Component {
 
                 <div className="filter">
                     <Select items={regulations} placeholder="Select State" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")} />
-                    <input type="text" placeholder="Course Code" onChange={e => this.setfilter(e, "code")} />
+                    <input type="text" placeholder="Search Course Code" onChange={e => this.setfilter(e, "code")} />
 
                     <br />
 

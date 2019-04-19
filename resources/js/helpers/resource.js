@@ -132,20 +132,23 @@ export function filter(data, filters) {
 
 export function formatDate(str, dateOnly) {
     const date = new Date(str);
-    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "No", "Dec"];
 
     let day = date.getDate();
     let month = date.getMonth();
     let year = date.getFullYear();
 
+    if (isNaN(day)) return "-";
+
     let hour = date.getHours();
     let min = date.getMinutes();
-    let ampm = hour >= 12 ? 'pm' : 'am';
+    let ampm = hour >= 12 ? 'PM' : 'AM';
 
+    if (day < 10) day = "0" + day;
+    if (month < 10) month = "0" + month;
     if (hour.toString().length == 1) hour = "0" + hour;
     if (min.toString().length == 1) min = "0" + min;
 
-    let output = day + " " + months[month] + " " + year;
+    let output = day + "/" + month + "/" + year;
     if (!dateOnly) output += ", " + hour + ":" + min + " " + ampm;
 
     return output;

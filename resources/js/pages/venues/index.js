@@ -98,6 +98,7 @@ class Venues extends Component {
                 cell: row => {
                     return <Link to={"/venues/edit/" + row.id}>{row.name}</Link>
                 },
+                selector: "name",
                 ignoreRowClick: true,
                 sortable: true,
                 maxWidth: '200px'
@@ -105,6 +106,7 @@ class Venues extends Component {
             {
                 name: 'Address',
                 cell: venue => { return [venue.address, venue.city, venue.regulation.name + " " + venue.zip_code].join(", ") },
+                selector: "address",
                 sortable: true,
             },
             {
@@ -128,7 +130,7 @@ class Venues extends Component {
             <div>
                 <header className="pageheader">
                     <h2>Venues</h2>
-                    <Link className="button" to={"/venues/create"}>Add New Venue</Link>
+                    <Link className="button" to={"/venues/create"}>Create New Venue</Link>
                 </header>
 
                 <div className="filter">
@@ -138,7 +140,7 @@ class Venues extends Component {
 
                 <div className="tablewrap">
                     {!loader && venues
-                        ? <DataTable columns={columns} data={venues} noHeader={true} pagination />
+                        ? <DataTable columns={columns} data={venues} defaultSortField="name" noHeader={true} pagination />
                         : this.renderLoader()}
                 </div>
             </div>

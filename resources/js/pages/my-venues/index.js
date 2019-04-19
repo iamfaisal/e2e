@@ -113,7 +113,7 @@ class MyVenues extends Component {
             <div>
                 <header className="pageheader">
                     <h2>Venues</h2>
-                    <Link className="button" to={"/my-venues/create"}>Add New Venue</Link>
+                    <Link className="button" to={"/my-venues/create"}>Create New Venue</Link>
                 </header>
 
                 <div className="filter">

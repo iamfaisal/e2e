@@ -11,7 +11,6 @@ class Sponsors extends Component {
         this.state = {
             sponsors: [],
             regulations: [],
-            instructors: [],
             filters: {},
             loader: true
         };
@@ -23,14 +22,6 @@ class Sponsors extends Component {
 
     componentDidMount() {
         this.getData();
-
-        read('users/', { params: { role: "instructor" } })
-            .then(res => {
-                this.setState({
-                    instructors: res.data.users
-                });
-            })
-            .catch(err => console.log(err));
 
         read('regulations', {}).then(res => {
             this.setState({
@@ -97,7 +88,7 @@ class Sponsors extends Component {
     }
 
     render() {
-        let { sponsors, regulations, instructors, filters, loader } = this.state;
+        let { sponsors, regulations, filters, loader } = this.state;
         const columns = [
             {
                 name: 'Company',
@@ -108,7 +99,7 @@ class Sponsors extends Component {
                 sortable: true,
             },
             {
-                name: 'Name',
+                name: 'Contact',
                 cell: user => { return user.first_name + " " + user.last_name },
                 sortable: true,
                 maxWidth: '160px'
@@ -151,13 +142,12 @@ class Sponsors extends Component {
             <div>
                 <header className="pageheader">
                     <h2>Sponsors</h2>
-                    <Link className="button" to={"/sponsors/create"}>Add New Sponsor</Link>
+                    <Link className="button" to={"/sponsors/create"}>Create New Sponsor</Link>
                 </header>
 
                 <div className="filter">
                     <input type="text" placeholder="Search Sponsors" onChange={e => this.setfilter(e, "email")} />
                     <Select items={regulations} placeholder="Select State" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation_id")} />
-                    <Select items={instructors} placeholder="Select Instructors" id={"name"} val={"name"} onChange={value => this.setfilter(value, "user.name")} />
                 </div>
 
                 <div className="tablewrap">
