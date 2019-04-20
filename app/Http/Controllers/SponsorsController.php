@@ -146,7 +146,7 @@ class SponsorsController extends Controller
     private function handleFileUpload($file) {
         $filenameonly = str_replace($file->getClientOriginalExtension(), "", $file->getClientOriginalName());
         $filename = time() . '-' . Str::slug($filenameonly, '-') .'.' . $file->getClientOriginalExtension();
-        $path = '/uploads/sponsors/';
+        $path = '/storage/sponsors/';
         $destinationPath = public_path() . $path;
         $file->move($destinationPath, $filename);
         return $path . $filename;
