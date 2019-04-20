@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Lesson;
 use App\Approval;
 use App\Cancellation;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -242,7 +243,10 @@ class ClassesController extends Controller
         }
         if ($class->status === "Needs Review") {
             $lessonData = $class->load('course', 'user');
-            $lessonData->user->notify(new ClassNeedReview($lessonData));
+            $filteredApprovalData = Arr::where($approvalData, function ($value, $key) {
+                return $value !== false;
+            });
+            $lessonData->user->notify(new ClassNeedReview($lessonData, $filteredApprovalData));
         }
         if ($class->status === "Approved") {
             $lessonData = $class->load('course', 'user');

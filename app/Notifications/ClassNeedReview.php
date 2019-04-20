@@ -12,15 +12,17 @@ class ClassNeedReview extends Notification
     use Queueable;
 
     public $lesson;
+    public $filteredApprovalData;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($lesson)
+    public function __construct($lesson, $filteredApprovalData)
     {
         $this->lesson = $lesson;
+        $this->filteredApprovalData = $filteredApprovalData;
     }
 
     /**
@@ -43,8 +45,8 @@ class ClassNeedReview extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Class IS NOT Approved - Immediate Action Require')
-                    ->markdown('mail.class.review', ['data' => $this->lesson]);
+                    ->subject('Class IS NOT Approved - Immediate Action Required')
+                    ->markdown('mail.class.review', ['data' => $this->lesson, 'review' => $this->filteredApprovalData]);
     }
 
     /**

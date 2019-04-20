@@ -2,7 +2,7 @@
 
 **This message does not constitute final class approval. It’s important you do not begin marketing the class until you receive the final CE class approval email.**
 
-Your CE class request has been received and will be reviewed by the E2E Team within 2 business days.
+This class CANNOT BE APPROVED and needs your IMMEDIATE attention. Please login to the E2E system and review this class submission.
 
 @component('mail::table')
 |                |                                  |
@@ -10,10 +10,17 @@ Your CE class request has been received and will be reviewed by the E2E Team wit
 | CE Course Code | {{ $data->course->code }}        |
 | CE Class Date  | {{ $data->start_date }}          |
 | Instructor     | {{ $data->user->name }}          |
-| Status         | **This class CANNOT BE APPROVED and needs your IMMEDIATE attention. Please login to the E2E system and review this class submission.** |
 @endcomponent
 
 ### Action Required
+@component('mail::table')
+|                |                                  |
+| -------------- | :------------------------------- |
+@foreach($review as $key => $value)
+| {{ ucwords(str_replace('_', ' ', $key)) }} | {!! is_bool($value) ? "Needs Attention" : $value !!} |
+@endforeach
+@endcomponent
+
 **Once all issues are resolved, resubmit the request to
 E2E within the state mandated registration window**
 + AZ requires 16 calendar days advance registration.
