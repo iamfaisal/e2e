@@ -113,6 +113,8 @@ export function filter(data, filters) {
                     search.setMinutes(59);
                     if (new Date(tosearch) <= search) continue;
                 }
+                ok = false;
+                continue;
             }
 
             if (!tosearch) {
@@ -134,7 +136,7 @@ export function formatDate(str, dateOnly) {
     const date = new Date(str);
 
     let day = date.getDate();
-    let month = date.getMonth();
+    let month = date.getMonth() + 1;
     let year = date.getFullYear();
 
     if (isNaN(day)) return "-";
