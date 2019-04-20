@@ -47,17 +47,19 @@ class VenuesController extends Controller
      */
     public function store(Request $request)
     {
-        $venue = Venue::create([
-            'regulation_id' => $request->get('regulation'),
-            'user_id' => $request->get('user'),
-            'name' => $request->get('name'),
-            'address' => $request->get('address'),
-            'city' => $request->get('city'),
-            'zip_code' => $request->get('zip_code')
-        ]);
-        return response()->json([
-            'venue' => $venue
-        ], 200);
+        if ($users = $request->has('users')) {
+            $venue = Venue::create([
+                'regulation_id' => $request->get('regulation'),
+                'users' => implode(',', $users),
+                'name' => $request->get('name'),
+                'address' => $request->get('address'),
+                'city' => $request->get('city'),
+                'zip_code' => $request->get('zip_code')
+            ]);
+            return response()->json([
+                'venue' => $venue
+            ], 200);
+        }
     }
 
     /**
@@ -68,6 +70,7 @@ class VenuesController extends Controller
      */
     public function show(Venue $venue)
     {
+
         return response()->json([
             'venue' => $venue
         ], 200);
@@ -82,17 +85,19 @@ class VenuesController extends Controller
      */
     public function update(Request $request, Venue $venue)
     {
-        $venue->update([
-            'regulation_id' => $request->get('regulation'),
-            'user_id' => $request->get('user'),
-            'name' => $request->get('name'),
-            'address' => $request->get('address'),
-            'city' => $request->get('city'),
-            'zip_code' => $request->get('zip_code')
-        ]);
-        return response()->json([
-            'venue' => $venue
-        ], 200);
+        if ($users = $request->has('users')) {
+            $venue->update([
+                'regulation_id' => $request->get('regulation'),
+                'user_id' => implode(',', $users),
+                'name' => $request->get('name'),
+                'address' => $request->get('address'),
+                'city' => $request->get('city'),
+                'zip_code' => $request->get('zip_code')
+            ]);
+            return response()->json([
+                'venue' => $venue
+            ], 200);
+        }
     }
 
     /**

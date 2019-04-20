@@ -12,7 +12,7 @@ class Venue extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'regulation_id', 'user_id', 'address', 'city', 'zip_code'
+        'name', 'regulation_id', 'address', 'city', 'zip_code', 'users'
     ];
 
     public function regulation()
