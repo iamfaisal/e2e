@@ -131,10 +131,11 @@ class CreateVenue extends Component {
                             <span>Instructor</span>
                             <Select
                                 onChange={this.handleChange}
-                                name="user"
+                                name="users[]"
                                 items={instructors}
                                 id={"id"}
                                 val={"name"}
+                                multiple={true}
                             />
                         </label>
                     </fieldset>

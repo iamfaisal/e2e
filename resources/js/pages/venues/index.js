@@ -86,6 +86,9 @@ class Venues extends Component {
 
     render() {
         let { venues, instructors, filters, loader } = this.state;
+
+        if (!instructors.length) return false;
+
         const columns = [
             {
                 name: '#',
@@ -111,7 +114,13 @@ class Venues extends Component {
             },
             {
                 name: 'Instructor',
-                selector: "user.name",
+                cell: venue => {
+                    let names = [];
+                    const ids = venue.users.split(",");
+                    let users = instructors.filter(instructor => ids.indexOf(instructor.id+"") > -1);
+                    users.map(user => names.push(user.name));
+                    return names.join(", ");
+                },
                 sortable: true
             },
             {
