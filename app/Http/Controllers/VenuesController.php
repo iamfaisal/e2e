@@ -88,7 +88,7 @@ class VenuesController extends Controller
         if ($request->has('users')) {
             $venue->update([
                 'regulation_id' => $request->get('regulation'),
-                'user_id' => implode(',', $request->get('users')),
+                'users' => implode(',', $request->get('users')),
                 'name' => $request->get('name'),
                 'address' => $request->get('address'),
                 'city' => $request->get('city'),
