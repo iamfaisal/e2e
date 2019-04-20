@@ -47,10 +47,10 @@ class VenuesController extends Controller
      */
     public function store(Request $request)
     {
-        if ($users = $request->has('users')) {
+        if ($request->has('users')) {
             $venue = Venue::create([
                 'regulation_id' => $request->get('regulation'),
-                'users' => implode(',', $users),
+                'users' => implode(',', $request->get('users')),
                 'name' => $request->get('name'),
                 'address' => $request->get('address'),
                 'city' => $request->get('city'),
@@ -85,10 +85,10 @@ class VenuesController extends Controller
      */
     public function update(Request $request, Venue $venue)
     {
-        if ($users = $request->has('users')) {
+        if ($request->has('users')) {
             $venue->update([
                 'regulation_id' => $request->get('regulation'),
-                'user_id' => implode(',', $users),
+                'user_id' => implode(',', $request->get('users')),
                 'name' => $request->get('name'),
                 'address' => $request->get('address'),
                 'city' => $request->get('city'),
