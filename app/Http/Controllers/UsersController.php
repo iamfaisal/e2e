@@ -39,9 +39,11 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
+        $relations = ['roles', 'profile', 'licenses'];
+        $request->has('role') ? array_push($relations,'licenses') : null;
         $users = User::whereHas('roles', function ($q) use ($request) {
             $q->where('name', $request->role);
-        })->with(['roles', 'profile'])->get();
+        })->with($relations)->get();
 
         return response()->json([
             'users' => $users
