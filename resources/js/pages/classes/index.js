@@ -81,7 +81,6 @@ class Classes extends Component {
     }
 
     renderActions(clss) {
-        console.log(clss);
         if (this.state.archived) {
             return (
                 <form className="actions roaster-actions">
@@ -295,6 +294,16 @@ class Classes extends Component {
                     <label className="checkbox">
                         <input type="checkbox" onChange={e => this.toggleCancelled(e)} />
                         <span>Show cancelled</span>
+                    </label>
+
+                    <label className="checkbox">
+                        <input type="checkbox" onChange={e => this.setfilter(e.target.checked ? "ce" : "", "course.categories.name")} />
+                        <span>CE Classes</span>
+                    </label>
+
+                    <label className="checkbox">
+                        <input type="checkbox" onChange={e => this.setfilter(e.target.checked ? "!ce" : "", "course.categories.name")} />
+                        <span>Workshops</span>
                     </label>
                 </div>
 
