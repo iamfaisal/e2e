@@ -139,8 +139,8 @@ class EditMyVenue extends Component {
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
                     {formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
-                    
-                    <input type="hidden" name="user" value={user.id} />
+
+                    <input type="hidden" name="users[]" value={user.id} />
 
                     <fieldset className="fields horizontal">
                         <TextField

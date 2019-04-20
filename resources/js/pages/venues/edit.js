@@ -17,7 +17,7 @@ class EditVenue extends Component {
                 city: "",
                 name: "",
                 regulation: "",
-                user: "",
+                users: "",
                 zip_code: ""
             },
             required_fields: {
@@ -152,11 +152,12 @@ class EditVenue extends Component {
                             <span>Instructor</span>
                             <Select
                                 onChange={this.handleChange}
-                                value={fields.user_id}
-                                name="user"
+                                value={Array.isArray(fields.users) ? fields.users : fields.users.split(",")}
+                                name="users[]"
                                 items={instructors}
                                 id={"id"}
                                 val={"name"}
+                                multiple={true}
                             />
                         </label>
                     </fieldset>
