@@ -139,6 +139,7 @@ class Courses extends Component {
             },
             {
                 name: 'Hours',
+                cell: row => (row.hours+"").replace(".00", ""),
                 selector: 'hours',
                 sortable: true,
                 maxWidth: '50px'
