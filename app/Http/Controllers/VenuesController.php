@@ -31,7 +31,7 @@ class VenuesController extends Controller
         $venues = Venue::with('regulation', 'user')
             ->orderBy('created_at', 'desc')
             ->when($request->fromInstructor, function ($query) use($user) {
-                return $query->where('user_id', $user->id);
+                return $query->whereBetween('user_id', [$user->id]);
             });
 
         return response()->json([
