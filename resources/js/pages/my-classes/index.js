@@ -83,12 +83,9 @@ class MyClasses extends Component {
     renderActions(clss) {
         return (
             <div className="actions">
-                <Link className="ion-md-create" to={"/my-classes/edit/" + clss.id}
-                    data-toggle="tooltip" title="Edit Class" />
-                <Link className="ion-md-hand" to={"/my-classes/cancel/" + clss.id}
-                    data-toggle="tooltip" title="Cancel Class" />
-                <a className="ion-md-close" onClick={e => this.deleteClass(e, clss.id)}
-                    data-toggle="tooltip" title="Delete Class" />
+                {clss.status != 'Cancelled' ? <Link data-toggle="tooltip" title="Cancel Class" className="ion-md-close" to={"/my-classes/cancel/" + clss.id} /> : ""}
+                <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/my-classes/edit/" + clss.id} />
+                <a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
             </div>
         );
     }

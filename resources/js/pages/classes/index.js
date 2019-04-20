@@ -26,6 +26,7 @@ class Classes extends Component {
 
         this.renderLoader = this.renderLoader.bind(this);
         this.renderActions = this.renderActions.bind(this);
+        this.deleteClass = this.deleteClass.bind(this);
         this.uploadRoster = this.uploadRoster.bind(this);
     }
 
@@ -80,6 +81,7 @@ class Classes extends Component {
     }
 
     renderActions(clss) {
+        console.log(clss);
         if (this.state.archived) {
             return (
                 <form className="actions roaster-actions">
@@ -95,11 +97,24 @@ class Classes extends Component {
         } else {
             return (
                 <div className="actions">
-                    <Link data-toggle="tooltip" title="Approve Class" className="ion-md-checkmark" to={"/classes/approve/" + clss.id} />
+                    {clss.status != 'Approved' ? <Link data-toggle="tooltip" title="Approve Class" className="ion-md-checkmark" to={"/classes/approve/" + clss.id} /> : ""}
+                    {clss.status != 'Cancelled' ? <Link data-toggle="tooltip" title="Cancel Class" className="ion-md-close" to={"/classes/cancel/" + clss.id} /> : ""}
                     <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id} />
-                    <Link data-toggle="tooltip" title="Cancel Class" className="ion-md-close" to={"/classes/cancel/" + clss.id} />
+                    <a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
                 </div>
             );
+        }
+    }
+
+    deleteClass(e, clss) {
+        if (confirm('Do you really want to delete this Class?')) {
+            remove('classes/' + clss, {})
+                .then(res => {
+                    this.getData();
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     }
 
@@ -159,6 +174,12 @@ class Classes extends Component {
                 width: '50px'
             },
             {
+                name: 'Instructor',
+                cell: row => row.user.name,
+                sortable: true,
+                maxWidth: '100px'
+            },
+            {
                 name: 'Course',
                 cell: row => {
                     return <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link>
@@ -214,6 +235,7 @@ class Classes extends Component {
                 cell: row => this.renderActions(row),
                 ignoreRowClick: true,
                 width: this.state.archived ? '220px' : '120px',
+                right: true
             }
         ];
 
