@@ -242,6 +242,16 @@ class MyClasses extends Component {
                         <input type="checkbox" onChange={e => this.toggleCancelled(e)} />
                         <span>Show cancelled</span>
                     </label>
+
+                    <label className="checkbox">
+                        <input type="checkbox" onChange={e => this.setfilter(e.target.checked ? "ce" : "", "course.categories.name")} />
+                        <span>CE Classes</span>
+                    </label>
+
+                    <label className="checkbox">
+                        <input type="checkbox" onChange={e => this.setfilter(e.target.checked ? "!ce" : "", "course.categories.name")} />
+                        <span>Workshops</span>
+                    </label>
                 </div>
 
                 <div className="tablewrap">
