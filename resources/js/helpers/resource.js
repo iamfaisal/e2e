@@ -107,8 +107,8 @@ export function filter(data, filters) {
             if (typeof tosearch == 'number') tosearch = tosearch.toString();
 
             if (search instanceof Date) {
-                if (filter == "start_date" && new Date(tosearch) >= search) continue;
-                if (filter == "end_date") {
+                if (filter === "start_date" && new Date(tosearch) >= search) continue;
+                if (filter === "end_date") {
                     search.setHours(23);
                     search.setMinutes(59);
                     if (new Date(tosearch) <= search) continue;
@@ -122,7 +122,7 @@ export function filter(data, filters) {
                 continue;
             }
 
-            if (search.substr(0, 1) == '!') {
+            if (search.substr(0, 1) === '!') {
                 if (tosearch.search(new RegExp(search.substr(1), "i")) >= 0) ok = false;
             } else {
                 if (tosearch.search(new RegExp(search, "i")) < 0) ok = false;
@@ -147,8 +147,8 @@ export function formatDate(str, dateOnly) {
 
     if (day < 10) day = "0" + day;
     if (month < 10) month = "0" + month;
-    if (hour.toString().length == 1) hour = "0" + hour;
-    if (min.toString().length == 1) min = "0" + min;
+    if (hour.toString().length === 1) hour = "0" + hour;
+    if (min.toString().length === 1) min = "0" + min;
 
     let output = day + "/" + month + "/" + year;
     if (!dateOnly) output += ", " + hour + ":" + min + " " + ampm;
