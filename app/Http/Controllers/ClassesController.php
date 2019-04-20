@@ -153,7 +153,7 @@ class ClassesController extends Controller
      */
     public function update(Request $request, Lesson $class)
     {
-        $status = $class->status === "Needs Review" ? "Updated" : $class->status;
+        $status = $class->status === "Needs Review" ? "New" : $class->status;
         $data = [
             'user_id' => $request->get('instructor'),
             'course_id' => $request->get('course'),
