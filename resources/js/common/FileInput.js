@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import classnames from "classnames";
-import validator from "validator";
+import { asset } from "../helpers/app";
 
 class FileInput extends Component {
 	constructor(props) {
@@ -121,8 +121,8 @@ class FileInput extends Component {
                         return file.name ? <figure key={i}>
                             {file.type.search('image') > -1
                                 ? <img src={this.getFileURL(file)}/>
-                                : file.name.search('http') === 0
-                                    ? <a href={file.name} target="-blank">Download File</a>
+                                : file.name.search('/') > -1
+                                    ? <a href={asset(file.name)} target="-blank">Download File</a>
                                     : <figcaption>{file.name}</figcaption>
                             }
                         </figure> : false

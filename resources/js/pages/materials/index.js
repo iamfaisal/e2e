@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { asset } from "../../helpers/app";
 import { read, filter } from "../../helpers/resource";
 import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
@@ -82,9 +83,9 @@ class Materials extends Component {
                 name: 'Material',
                 cell: row => {
                     return <div className="material_actions">
-                        <a href={row.class_flyer_template} target="_blank">Flyer</a>
+                        <a href={asset(row.class_flyer_template)} target="_blank">Flyer</a>
                         &nbsp;|&nbsp;
-                        <a href={row.material} target="_blank">Material</a>
+                        <a href={asset(row.material)} target="_blank">Material</a>
                     </div>
                 },
                 ignoreRowClick: true,
