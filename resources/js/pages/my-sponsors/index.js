@@ -95,12 +95,14 @@ class MySponsors extends Component {
                 cell: row => {
                     return <Link to={"/my-sponsors/edit/" + row.id}>{row.company}</Link>
                 },
+                selector: 'company',
                 ignoreRowClick: true,
-                sortable: true,
+                sortable: true
             },
             {
                 name: 'Contact',
                 cell: user => { return user.first_name + " " + user.last_name },
+                selector: 'first_name',
                 sortable: true,
                 maxWidth: '160px'
             },
@@ -112,6 +114,7 @@ class MySponsors extends Component {
                     if (user.state) address += ", " + user.state;
                     return address;
                 },
+                selector: 'address',
                 sortable: true,
             },
             {
@@ -123,6 +126,7 @@ class MySponsors extends Component {
             {
                 name: 'Phone',
                 cell: user => formatPhone(user.phone),
+                selector: 'phone',
                 sortable: true,
                 maxWidth: '120px'
             },

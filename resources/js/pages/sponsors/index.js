@@ -95,12 +95,14 @@ class Sponsors extends Component {
                 cell: row => {
                     return <Link to={"/sponsors/edit/" + row.id}>{row.company}</Link>
                 },
+                selector: 'company',
                 ignoreRowClick: true,
-                sortable: true,
+                sortable: true
             },
             {
                 name: 'Contact',
                 cell: user => { return user.first_name + " " + user.last_name },
+                selector: 'first_name',
                 sortable: true,
                 maxWidth: '160px'
             },
@@ -112,7 +114,8 @@ class Sponsors extends Component {
                     if (user.state) address += ", " + user.state;
                     return address;
                 },
-                sortable: true,
+                selector: 'address',
+                sortable: true
             },
             {
                 name: 'Email',
@@ -123,6 +126,7 @@ class Sponsors extends Component {
             {
                 name: 'Phone',
                 cell: user => formatPhone(user.phone),
+                selector: 'phone',
                 sortable: true,
                 maxWidth: '120px'
             },

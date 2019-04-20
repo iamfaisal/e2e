@@ -30,7 +30,7 @@ class Instructors extends Component {
     getData() {
         this.setState({loader: true});
 
-        read('users', { params: { role: 'instructor'}})
+        read('users', { params: { role: 'instructor'} })
             .then(res => {
                 this.setState({
                     instructors: res.data.users,
@@ -112,38 +112,38 @@ class Instructors extends Component {
                 cell: user => {
                     return <Link to={"/instructors/edit/" + user.id}>{getUserFullName(user)}</Link>
                 },
+                selector: 'profile.first_name',
                 ignoreRowClick: true,
-                sortable: true,
+                sortable: true
             },
             {
                 name: 'Email',
                 selector: 'email',
-                sortable: true,
+                sortable: true
             },
             {
                 name: 'State',
-                cell: user => user.profile.state,
-                sortable: true,
+                selector: 'profile.state',
+                sortable: true
             },
             {
                 name: 'License',
-                cell: user => console.log(user),
-                sortable: true,
+                cell: user => user.licenses.length ? user.licenses[0].code : "",
+                sortable: true
             },
             {
                 name: 'Approved',
                 cell: user => user.status ? "Yes" : "No",
-                sortable: true,
+                selector: 'status',
+                sortable: true
             },
             {
                 name: 'Actions',
                 cell: user => this.renderActions(user),
                 ignoreRowClick: true,
-                width: '100px',
+                width: '100px'
             }
         ];
-
-        console.log(instructors);
 
         if (Object.keys(filters).length) {
             instructors = filter(instructors, filters);

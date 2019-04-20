@@ -89,19 +89,20 @@ class Admins extends Component {
                 cell: user => {
                     return <Link to={"/users/edit/" + user.id}>{getUserFullName(user)}</Link>
                 },
+                selector: 'profile.first_name',
                 ignoreRowClick: true,
-                sortable: true,
+                sortable: true
             },
             {
                 name: 'Email',
                 selector: 'email',
-                sortable: true,
+                sortable: true
             },
             {
                 name: 'Actions',
                 cell: user => this.renderActions(user),
                 ignoreRowClick: true,
-                width: '100px',
+                width: '100px'
             }
         ];
 

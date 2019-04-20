@@ -96,24 +96,25 @@ class Territories extends Component {
                 cell: row => {
                     return <Link to={"/territories/edit/" + row.id}>{row.name}</Link>
                 },
+                selector: 'name',
                 ignoreRowClick: true,
-                sortable: true,
+                sortable: true
             },
             {
                 name: 'Regulation',
                 selector: 'regulation.name',
-                sortable: true,
+                sortable: true
             },
             {
                 name: 'Zip Codes',
                 selector: 'zip_codes',
-                sortable: true,
+                sortable: true
             },
             {
                 name: 'Actions',
                 cell: row => this.renderActions(row),
                 ignoreRowClick: true,
-                width: '100px',
+                width: '100px'
             }
         ];
 

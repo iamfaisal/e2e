@@ -79,14 +79,15 @@ class Categories extends Component {
                 cell: row => {
                     return <Link to={"/categories/edit/" + row.id}>{row.label}</Link>
                 },
+                selector: "label",
                 ignoreRowClick: true,
-                sortable: true,
+                sortable: true
             },
             {
                 name: 'Actions',
                 cell: row => this.renderActions(row),
                 ignoreRowClick: true,
-                width: '100px',
+                width: '100px'
             }
         ];
 

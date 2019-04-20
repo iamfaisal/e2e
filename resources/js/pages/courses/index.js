@@ -116,6 +116,7 @@ class Courses extends Component {
                 cell: row => {
                     return <Link to={"/courses/edit/" + row.id}>{row.title}</Link>
                 },
+                selector: 'title',
                 ignoreRowClick: true,
                 sortable: true
             },
@@ -145,6 +146,7 @@ class Courses extends Component {
             {
                 name: 'Expiration',
                 cell: row => formatDate(row.expiration_date, true),
+                selector: 'expiration_date',
                 sortable: true,
                 maxWidth: '120px'
             },

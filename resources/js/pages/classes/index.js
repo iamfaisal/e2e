@@ -165,6 +165,7 @@ class Classes extends Component {
                 name: 'Date',
                 cell: row => formatDate(row.start_date, true),
                 sortable: true,
+                selector: "start_date",
                 width: '110px'
             },
             {
@@ -176,6 +177,7 @@ class Classes extends Component {
             {
                 name: 'Instructor',
                 cell: row => row.user.name,
+                selector: "user.name",
                 sortable: true,
                 maxWidth: '100px'
             },
@@ -184,6 +186,7 @@ class Classes extends Component {
                 cell: row => {
                     return <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link>
                 },
+                selector: "course.title",
                 ignoreRowClick: true,
                 sortable: true
             },
@@ -192,6 +195,7 @@ class Classes extends Component {
                 cell: row => {
                     return <Fragment>{row.venue.name}<br />{row.venue.city}, {row.venue.zip_code}</Fragment>;
                 },
+                selector: "venue.name",
                 sortable: true
             },
             {
@@ -210,6 +214,7 @@ class Classes extends Component {
                 name: 'Cost',
                 cell: row => row.price ? row.price : "Free",
                 sortable: true,
+                selector: "price",
                 width: '60px'
             },
             {
@@ -218,6 +223,7 @@ class Classes extends Component {
                     const classname = row.status.toLowerCase().replace(" ", '-');
                     return <span className={"status "+classname}>{row.status}</span>
                 },
+                selector: "status",
                 sortable: true,
                 width: '110px'
             },
@@ -227,6 +233,7 @@ class Classes extends Component {
                     let parts = formatDate(row.created_at).split(", ");
                     return <Fragment>{parts[0]}<br />{parts[1]}</Fragment>;
                 },
+                selector: "created_at",
                 sortable: true,
                 width: '100px'
             },

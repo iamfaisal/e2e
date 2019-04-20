@@ -111,7 +111,7 @@ class Venues extends Component {
             },
             {
                 name: 'Instructor',
-                cell: venue => { return venue.user.name },
+                selector: "user.name",
                 sortable: true
             },
             {

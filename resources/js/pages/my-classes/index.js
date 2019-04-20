@@ -138,6 +138,7 @@ class MyClasses extends Component {
             {
                 name: 'Date',
                 cell: row => formatDate(row.start_date, true),
+                selector: "start_date",
                 sortable: true,
                 width: '110px'
             },
@@ -152,6 +153,7 @@ class MyClasses extends Component {
                 cell: row => {
                     return <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link>
                 },
+                selector: "course.title",
                 ignoreRowClick: true,
                 sortable: true
             },
@@ -160,6 +162,7 @@ class MyClasses extends Component {
                 cell: row => {
                     return <Fragment>{row.venue.name}<br />{row.venue.city}, {row.venue.zip_code}</Fragment>;
                 },
+                selector: "venue.name",
                 sortable: true
             },
             {
@@ -171,6 +174,7 @@ class MyClasses extends Component {
             {
                 name: 'Cost',
                 cell: row => row.price ? row.price : "Free",
+                selector: "price",
                 sortable: true,
                 width: '60px'
             },
@@ -180,6 +184,7 @@ class MyClasses extends Component {
                     let parts = formatDate(row.created_at).split(", ");
                     return <Fragment>{parts[0]}<br />{parts[1]}</Fragment>;
                 },
+                selector: "created_at",
                 sortable: true,
                 width: '100px'
             },
@@ -187,7 +192,7 @@ class MyClasses extends Component {
                 name: 'Actions',
                 cell: row => this.renderActions(row),
                 ignoreRowClick: true,
-                width: '120px',
+                width: '120px'
             }
         ];
 

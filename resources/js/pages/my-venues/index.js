@@ -88,6 +88,7 @@ class MyVenues extends Component {
                 cell: row => {
                     return <Link to={"/my-venues/edit/" + row.id}>{row.name}</Link>
                 },
+                selector: "name",
                 ignoreRowClick: true,
                 sortable: true,
                 maxWidth: '200px'
@@ -95,7 +96,8 @@ class MyVenues extends Component {
             {
                 name: 'Address',
                 cell: venue => { return [venue.address, venue.city, venue.regulation.name + " " + venue.zip_code].join(", ") },
-                sortable: true,
+                selector: "address",
+                sortable: true
             },
             {
                 name: 'Actions',
