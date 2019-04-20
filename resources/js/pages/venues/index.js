@@ -144,7 +144,7 @@ class Venues extends Component {
 
                 <div className="filter">
                     <input type="text" placeholder="Search Venues" onChange={e => this.setfilter(e, "name")} />
-                    <Select items={instructors} placeholder="Select Instructors" id={"name"} val={"name"} onChange={value => this.setfilter(value, "user.name")} />
+                    <Select items={instructors} placeholder="Select Instructors" id="id" val="name" onChange={value => this.setfilter("="+value, "users")} />
                 </div>
 
                 <div className="tablewrap">

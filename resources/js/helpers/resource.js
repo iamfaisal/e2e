@@ -122,8 +122,11 @@ export function filter(data, filters) {
                 continue;
             }
 
-            if (search.substr(0, 1) === '!') {
+            if (search.substr(0, 1) == '!') {
                 if (tosearch.search(new RegExp(search.substr(1), "i")) >= 0) ok = false;
+            } else if (search.substr(0, 1) == '=') {
+                if (search == "=") continue;
+                if (tosearch !== search.substr(1)) ok = false;
             } else {
                 if (tosearch.search(new RegExp(search, "i")) < 0) ok = false;
             }
