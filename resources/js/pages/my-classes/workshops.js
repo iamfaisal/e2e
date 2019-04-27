@@ -5,31 +5,29 @@ import { asset } from "../../helpers/app";
 import Select from "../../common/Select";
 import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
-import { update, dateDifference } from "../../helpers/resource";
+import { dateDifference } from "../../helpers/resource";
 
-class Classes extends Component {
+class MyClassesWorkshops extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             classes: [],
             courses: [],
-            instructors: [],
             regulations: [],
             filters: {
                 is_deleted: "0",
                 start_date: "",
                 end_date: "",
-                "course.categories.name": "ce"
+                "course.categories.name": "!ce"
             },
             loader: true,
-            archived: false
+            canAddNew: false
         };
 
         this.renderLoader = this.renderLoader.bind(this);
         this.renderActions = this.renderActions.bind(this);
         this.deleteClass = this.deleteClass.bind(this);
-        this.uploadRoster = this.uploadRoster.bind(this);
     }
 
     componentDidMount() {
@@ -43,10 +41,10 @@ class Classes extends Component {
             })
             .catch(err => console.log(err));
 
-        read('users', { params: { role: 'instructor' } })
+        read('classes/hasPendingRosters', {})
             .then(res => {
                 this.setState({
-                    instructors: res.data.users
+                    canAddNew: res.data.classes.length ? false : true
                 });
             })
             .catch(err => console.log(err));
@@ -61,7 +59,9 @@ class Classes extends Component {
     getData(params = {}) {
         this.setState({ loader: true });
 
-        read('classes', params)
+        params.fromInstructor = true;
+
+        read('classes', { params: params })
             .then(res => {
                 this.setState({
                     classes: res.data.classes,
@@ -83,28 +83,13 @@ class Classes extends Component {
     }
 
     renderActions(clss) {
-        if (this.state.archived) {
-            return (
-                <form className="actions roaster-actions">
-                    <input type="hidden" name="class_id" value={clss.id} />
-                    {clss.roster ? <Link to={clss.roster} target="_blank">View Roaster</Link> : ""}
-                    <span>|</span>
-                    <label>
-                        <input type="file" name="roster" onChange={this.uploadRoster} />
-                        Upload Roaster
-                    </label>
-                </form>
-            );
-        } else {
-            return (
-                <div className="actions">
-                    {clss.status != 'Approved' ? <Link data-toggle="tooltip" title="Approve Class" className="ion-md-checkmark" to={"/classes/approve/" + clss.id} /> : ""}
-                    {clss.status != 'Cancelled' ? <Link data-toggle="tooltip" title="Cancel Class" className="ion-md-close" to={"/classes/cancel/" + clss.id} /> : ""}
-                    <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id} />
-                    <a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
-                </div>
-            );
-        }
+        return (
+            <div className="actions">
+                {clss.status != 'Cancelled' ? <Link data-toggle="tooltip" title="Cancel Class" className="ion-md-close" to={"/my-classes/cancel/" + clss.id} /> : ""}
+                <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/my-classes/edit/" + clss.id} />
+                <a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
+            </div>
+        );
     }
 
     deleteClass(e, clss) {
@@ -117,14 +102,6 @@ class Classes extends Component {
                     console.log(err);
                 });
         }
-    }
-
-    uploadRoster(e) {
-        update('classes/roster', new FormData(e.target.form), true)
-            .then(res => {
-                window.location.reload();
-            })
-            .catch(err => console.log(err));
     }
 
     setfilter(value, key) {
@@ -140,10 +117,8 @@ class Classes extends Component {
     }
 
     toggleArchived(e) {
-        this.setState({ archived: e.target.checked });
-
-        if (e.target.checked) {
-            this.getData({ params: { archived: true } });
+        if (e === true || e.target.checked) {
+            this.getData({ archived: true });
         } else {
             this.getData({});
         }
@@ -151,22 +126,22 @@ class Classes extends Component {
 
     toggleCancelled(e) {
         if (e.target.checked) {
-            this.getData({ params: { cancelled: true } });
+            this.getData({ cancelled: true });
         } else {
             this.getData({});
         }
     }
 
     render() {
-        let { classes } = this.state;
-        const { filters, courses, instructors, regulations, loader } = this.state;
+        let { archived_cb, classes, canAddNew } = this.state;
+        const { filters, courses, regulations, loader } = this.state;
 
         const columns = [
             {
                 name: 'Date',
                 cell: row => formatDate(row.start_date, true),
-                sortable: true,
                 selector: "start_date",
+                sortable: true,
                 width: '110px'
             },
             {
@@ -174,23 +149,6 @@ class Classes extends Component {
                 selector: "id",
                 sortable: true,
                 width: '50px'
-            },
-            {
-                name: 'Status',
-                cell: row => {
-                    const classname = row.status.toLowerCase().replace(" ", '-');
-                    return <span className={"status " + classname}>{row.status}</span>
-                },
-                selector: "status",
-                sortable: true,
-                width: '110px'
-            },
-            {
-                name: 'Instructor',
-                cell: row => row.user.name,
-                selector: "user.name",
-                sortable: true,
-                maxWidth: '100px'
             },
             {
                 name: 'Course',
@@ -213,12 +171,6 @@ class Classes extends Component {
                 sortable: true
             },
             {
-                name: 'RSVP’s',
-                cell: row => 10,
-                sortable: true,
-                width: '60px'
-            },
-            {
                 name: 'Hours',
                 cell: row => dateDifference(row.start_date, row.end_date),
                 sortable: true,
@@ -227,8 +179,8 @@ class Classes extends Component {
             {
                 name: 'Cost',
                 cell: row => row.price ? "$" + row.price : "Free",
-                sortable: true,
                 selector: "price",
+                sortable: true,
                 width: '60px'
             },
             {
@@ -260,8 +212,7 @@ class Classes extends Component {
                 name: 'Actions',
                 cell: row => this.renderActions(row),
                 ignoreRowClick: true,
-                width: this.state.archived ? '220px' : '120px',
-                right: true
+                width: '120px'
             }
         ];
 
@@ -272,13 +223,14 @@ class Classes extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>CE Classes</h2>
-                    <Link className="button" to={"/classes/create"}>Register Class</Link>
+                    <h2>Workshops</h2>
+                    {canAddNew
+                    ? <Link className="button" to={"/my-classes/create"}>Register Class</Link>
+                        : <button className="button" onClick={() => { if (archived_cb) archived_cb.checked = true; this.toggleArchived(true) }}>Upload rosters to register a new class</button>}
                 </header>
 
                 <div className="filter">
-                    <Select items={courses} placeholder="Select Course" id="id" val="title" onChange={value => this.setfilter(value, "course.id")} />
-                    <Select items={instructors} placeholder="Select Instructor" id="id" val="name" onChange={value => this.setfilter(value, "user.id")} />
+                    <Select items={courses} placeholder="Select Course" id="id" val={"title"} onChange={value => this.setfilter(value, "course.id")} />
                     <Select items={regulations} placeholder="Select State" id="id" val="name" onChange={value => this.setfilter(value, "venue.regulation_id")} />
 
                     <br />
@@ -302,12 +254,7 @@ class Classes extends Component {
                     <br />
 
                     <label className="checkbox">
-                        <input type="checkbox" onChange={e => this.setfilter(e.target.checked ? "!Approved" : "", "status")} />
-                        <span>Need Approval</span>
-                    </label>
-
-                    <label className="checkbox">
-                        <input type="checkbox" onChange={e => this.toggleArchived(e)} />
+                        <input type="checkbox" ref={el => this.state.archived_cb = el} onChange={e => this.toggleArchived(e)} />
                         <span>Show archived</span>
                     </label>
 
@@ -327,4 +274,4 @@ class Classes extends Component {
     }
 }
 
-export default Classes;
+export default MyClassesWorkshops;

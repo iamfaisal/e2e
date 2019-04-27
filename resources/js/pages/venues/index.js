@@ -11,6 +11,7 @@ class Venues extends Component {
         this.state = {
             venues: [],
             instructors: [],
+            regulations: [],
             filters: {},
             loader: true
         };
@@ -27,6 +28,14 @@ class Venues extends Component {
             .then(res => {
                 this.setState({
                     instructors: res.data.users
+                });
+            })
+            .catch(err => console.log(err));
+
+        read('regulations', {})
+            .then(res => {
+                this.setState({
+                    regulations: res.data.regulations
                 });
             })
             .catch(err => console.log(err));
@@ -85,19 +94,13 @@ class Venues extends Component {
     }
 
     render() {
-        let { venues, instructors, filters, loader } = this.state;
+        let { venues, instructors, regulations, filters, loader } = this.state;
 
         if (!instructors.length) return false;
 
         const columns = [
             {
-                name: '#',
-                selector: "id",
-                sortable: true,
-                width: '80px'
-            },
-            {
-                name: 'Name',
+                name: 'Venue Name',
                 cell: row => {
                     return <Link to={"/venues/edit/" + row.id}>{row.name}</Link>
                 },
@@ -145,6 +148,7 @@ class Venues extends Component {
                 <div className="filter">
                     <input type="text" placeholder="Search Venues" onChange={e => this.setfilter(e, "name")} />
                     <Select items={instructors} placeholder="Select Instructors" id="id" val="name" onChange={value => this.setfilter("="+value, "users")} />
+                    <Select items={regulations} placeholder="Select State" id={"id"} val={"name"} onChange={value => this.setfilter("=" + value, "regulation.id")} />
                 </div>
 
                 <div className="tablewrap">

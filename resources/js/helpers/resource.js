@@ -153,7 +153,7 @@ export function formatDate(str, dateOnly) {
     if (hour.toString().length === 1) hour = "0" + hour;
     if (min.toString().length === 1) min = "0" + min;
 
-    let output = day + "/" + month + "/" + year;
+    let output = month + "/" + day + "/" + year;
     if (!dateOnly) output += ", " + hour + ":" + min + " " + ampm;
 
     return output;

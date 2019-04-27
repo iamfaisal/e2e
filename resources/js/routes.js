@@ -27,6 +27,7 @@ import CreateVenue from "./pages/venues/create";
 import EditVenue from "./pages/venues/edit";
 
 import Classes from "./pages/classes";
+import ClassesWorkshops from "./pages/classes/workshops";
 import CreateClass from "./pages/classes/create";
 import EditClass from "./pages/classes/edit";
 import ApproveClass from "./pages/classes/approve";
@@ -41,6 +42,7 @@ import CreateInstructor from "./pages/instructors/create";
 import EditInstructor from "./pages/instructors/edit";
 
 import MyClasses from "./pages/my-classes";
+import MyClassesWorkshops from "./pages/my-classes";
 import CreateMyClass from "./pages/my-classes/create";
 import EditMyClass from "./pages/my-classes/edit";
 import CancelMyClass from "./pages/my-classes/cancel";
@@ -151,6 +153,11 @@ const routes = [
         exact: true
     },
     {
+        path: "/classes/workshops",
+        component: requireAuth(ClassesWorkshops),
+        exact: true
+    },
+    {
         path: "/classes/create",
         component: requireAuth(CreateClass),
         exact: true
@@ -218,6 +225,11 @@ const routes = [
     {
         path: "/my-classes",
         component: requireAuth(MyClasses),
+        exact: true
+    },
+    {
+        path: "/my-classes/workshops",
+        component: requireAuth(MyClassesWorkshops),
         exact: true
     },
     {

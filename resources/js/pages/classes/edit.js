@@ -148,8 +148,6 @@ class EditClass extends Component {
             fields.end_date = new Date(fields.end_date);
         }
 
-        console.log(fields);
-
         return (
             <div>
                 <header className="pageheader">

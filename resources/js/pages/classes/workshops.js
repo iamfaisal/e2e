@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
 import { update, dateDifference } from "../../helpers/resource";
 
-class Classes extends Component {
+class ClassesWorkshops extends Component {
     constructor(props) {
         super(props);
 
@@ -20,7 +20,7 @@ class Classes extends Component {
                 is_deleted: "0",
                 start_date: "",
                 end_date: "",
-                "course.categories.name": "ce"
+                "course.categories.name": "!ce"
             },
             loader: true,
             archived: false
@@ -272,7 +272,7 @@ class Classes extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>CE Classes</h2>
+                    <h2>Workshops</h2>
                     <Link className="button" to={"/classes/create"}>Register Class</Link>
                 </header>
 
@@ -327,4 +327,4 @@ class Classes extends Component {
     }
 }
 
-export default Classes;
+export default ClassesWorkshops;

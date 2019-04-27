@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter, formatDate } from "../../helpers/resource";
+import { asset } from "../../helpers/app";
 import Select from "../../common/Select";
 import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
@@ -17,7 +18,8 @@ class MyClasses extends Component {
             filters: {
                 is_deleted: "0",
                 start_date: "",
-                end_date: ""
+                end_date: "",
+                "course.categories.name": "ce"
             },
             loader: true,
             canAddNew: false
@@ -160,7 +162,10 @@ class MyClasses extends Component {
             {
                 name: 'Location',
                 cell: row => {
-                    return <Fragment>{row.venue.name}<br />{row.venue.city}, {row.venue.zip_code}</Fragment>;
+                    return <Fragment>
+                        {row.venue.name}<br />
+                        {row.venue.city}, {row.venue.zip_code}
+                    </Fragment>;
                 },
                 selector: "venue.name",
                 sortable: true
@@ -173,10 +178,25 @@ class MyClasses extends Component {
             },
             {
                 name: 'Cost',
-                cell: row => row.price ? row.price : "Free",
+                cell: row => row.price ? "$" + row.price : "Free",
                 selector: "price",
                 sortable: true,
                 width: '60px'
+            },
+            {
+                name: 'Class Details',
+                cell: row => {
+                    return <div className="links">
+                        <a href="#" target="_balank">Course Materials</a>
+                        <span className="sep"></span>
+                        <a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
+                        <span className="sep"></span>
+                        <a href={asset(row.docs, true)} target="_balank">Class Docs</a>
+                    </div>
+                },
+                sortable: false,
+                ignoreRowClick: true,
+                width: '260px'
             },
             {
                 name: 'Created At',
@@ -203,7 +223,7 @@ class MyClasses extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Classes</h2>
+                    <h2>CE Classes</h2>
                     {canAddNew
                     ? <Link className="button" to={"/my-classes/create"}>Register Class</Link>
                         : <button className="button" onClick={() => { if (archived_cb) archived_cb.checked = true; this.toggleArchived(true) }}>Upload rosters to register a new class</button>}
@@ -242,21 +262,11 @@ class MyClasses extends Component {
                         <input type="checkbox" onChange={e => this.toggleCancelled(e)} />
                         <span>Show cancelled</span>
                     </label>
-
-                    <label className="checkbox">
-                        <input type="checkbox" onChange={e => this.setfilter(e.target.checked ? "ce" : "", "course.categories.name")} />
-                        <span>CE Classes</span>
-                    </label>
-
-                    <label className="checkbox">
-                        <input type="checkbox" onChange={e => this.setfilter(e.target.checked ? "!ce" : "", "course.categories.name")} />
-                        <span>Workshops</span>
-                    </label>
                 </div>
 
                 <div className="tablewrap">
                     {!loader && classes
-                        ? <DataTable columns={columns} data={classes} noHeader={true} pagination />
+                        ? <DataTable columns={columns} data={classes} noHeader={true} pagination paginationRowsPerPageOptions={[10, 25, 50, 100, 500]} />
                         : this.renderLoader()}
                 </div>
             </div>

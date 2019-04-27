@@ -32,8 +32,14 @@ export const links = [
     },
     // school admin
     {
-        name: "Classes",
+        name: "CE Classes",
         url: "/classes",
+        icon: "ion-ios-albums",
+        role: "admin"
+    },
+    {
+        name: "Workshops",
+        url: "/classes/workshops",
         icon: "ion-ios-albums",
         role: "admin"
     },
@@ -57,8 +63,14 @@ export const links = [
     },
     // instructor
     {
-        name: "Classes",
+        name: "CE Classes",
         url: "/my-classes",
+        icon: "ion-ios-albums",
+        role: "instructor"
+    },
+    {
+        name: "Workshops",
+        url: "/my-classes/workshops",
         icon: "ion-ios-albums",
         role: "instructor"
     },

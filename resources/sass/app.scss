@@ -1309,3 +1309,14 @@ legend .checkbox {
 .status.cancelled {
 	background: #A7A7A7;
 }
+
+.links .sep {
+  display: inline-block;
+  margin: 0 6px;
+}
+.links .sep:after {
+  content: "|";
+}
+.links a {
+  color: #ee252f;
+}

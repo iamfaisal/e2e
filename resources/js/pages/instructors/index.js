@@ -20,7 +20,7 @@ class Instructors extends Component {
 
         this.renderLoader = this.renderLoader.bind(this);
         this.renderActions = this.renderActions.bind(this);
-        this.deleteInstructor = this.deleteInstructor.bind(this);
+        this.toggleStatus = this.toggleStatus.bind(this);
     }
 
     componentDidMount() {
@@ -58,24 +58,28 @@ class Instructors extends Component {
     }
 
     renderActions(instructor) {
+        let status = "Approve";
+        let icon = "ion-md-checkmark";
+        if (instructor.status) {
+            status = "Archive";
+            icon = "ion-md-close";
+        }
         return (
             <div className="actions">
                 <Link className="ion-md-create" to={"/instructors/edit/" + instructor.id}
-                    data-toggle="tooltip" title="Edit / Archive" />
-                <a className="ion-md-close" onClick={e => this.deleteInstructor(e, instructor.id)}
-                    data-toggle="tooltip" title="Delete Instructor" />
+                    data-toggle="tooltip" title="Edit Instructor" />
+                <a className={icon} onClick={e => this.toggleStatus(e, instructor.id)}
+                    data-toggle="tooltip" title={status + " Instructor"} />
             </div>
         );
     }
 
-    deleteInstructor(e, instructor) {
-        if (confirm('Do you really want to delete this Instructors?')) {
-            remove('users/' + instructor, {})
+    toggleStatus(e, instructor) {
+        read('users/status/' + instructor, {})
             .then(res => {
                 this.getData();
             })
             .catch(err => console.log(err));
-        }
     }
 
     setfilter(value, key) {

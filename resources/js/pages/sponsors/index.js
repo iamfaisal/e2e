@@ -7,10 +7,11 @@ import DataTable from "react-data-table-component";
 class Sponsors extends Component {
     constructor(props) {
         super(props);
-
+ 
         this.state = {
             sponsors: [],
             regulations: [],
+            instructors: [],
             filters: {},
             loader: true
         };
@@ -28,6 +29,14 @@ class Sponsors extends Component {
                 regulations: res.data.regulations
             });
         }).catch(err => console.log(err));
+
+        read('users/', { params: { role: "instructor" } })
+            .then(res => {
+                this.setState({
+                    instructors: res.data.users
+                });
+            })
+            .catch(err => console.log(err));
     }
 
     getData() {
@@ -88,7 +97,8 @@ class Sponsors extends Component {
     }
 
     render() {
-        let { sponsors, regulations, filters, loader } = this.state;
+        let { sponsors, regulations, instructors, filters, loader } = this.state;
+
         const columns = [
             {
                 name: 'Company',
@@ -152,6 +162,7 @@ class Sponsors extends Component {
                 <div className="filter">
                     <input type="text" placeholder="Search Sponsors" onChange={e => this.setfilter(e, "email")} />
                     <Select items={regulations} placeholder="Select State" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation_id")} />
+                    <Select items={instructors} placeholder="Select Instructor" id="id" val="name" onChange={value => this.setfilter("=" + value, "user_id")} />
                 </div>
 
                 <div className="tablewrap">

@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter } from "../../helpers/resource";
+import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
 
 class MyVenues extends Component {
@@ -9,6 +10,7 @@ class MyVenues extends Component {
 
         this.state = {
             venues: [],
+            regulations: [],
             filters: {},
             loader: true
         };
@@ -20,6 +22,14 @@ class MyVenues extends Component {
 
     componentDidMount() {
         this.getData();
+
+        read('regulations', {})
+            .then(res => {
+                this.setState({
+                    regulations: res.data.regulations
+                });
+            })
+            .catch(err => console.log(err));
     }
 
     getData() {
@@ -75,16 +85,10 @@ class MyVenues extends Component {
     }
 
     render() {
-        let { venues, filters, loader } = this.state;
+        let { venues, regulations, filters, loader } = this.state;
         const columns = [
             {
-                name: '#',
-                selector: "id",
-                sortable: true,
-                width: '80px'
-            },
-            {
-                name: 'Name',
+                name: 'Venue Name',
                 cell: row => {
                     return <Link to={"/my-venues/edit/" + row.id}>{row.name}</Link>
                 },
@@ -120,6 +124,7 @@ class MyVenues extends Component {
 
                 <div className="filter">
                     <input type="text" placeholder="Search Venues" onChange={e => this.setfilter(e, "name")} />
+                    <Select items={regulations} placeholder="Select State" id={"id"} val={"name"} onChange={value => this.setfilter("="+value, "regulation.id")} />
                 </div>
 
                 <div className="tablewrap">

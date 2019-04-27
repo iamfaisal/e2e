@@ -75,21 +75,16 @@ class Materials extends Component {
                 sortable: true
             },
             {
-                name: 'State',
-                selector: 'regulation.abbreviation',
-                sortable: true,
-            },
-            {
-                name: 'Material',
+                name: 'Materials',
                 cell: row => {
                     return <div className="material_actions">
-                        <a href={asset(row.class_flyer_template)} target="_blank">Flyer</a>
+                        <a href={asset(row.class_flyer_template)} target="_blank">Flyer Template</a>
                         &nbsp;|&nbsp;
-                        <a href={asset(row.material)} target="_blank">Material</a>
+                        <a href={asset(row.material)} target="_blank">Course Materials</a>
                     </div>
                 },
                 ignoreRowClick: true,
-                maxWidth: '120px'
+                right: true
             }
         ];
 
@@ -104,7 +99,7 @@ class Materials extends Component {
                 </header>
 
                 <div className="filter">
-                    <Select items={regulations} placeholder="Select Regulation" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")} />
+                    <Select items={regulations} placeholder="Select State" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")} />
                     <input type="text" placeholder="Course Code" onChange={e => this.setfilter(e, "code")} />
                 </div>
 

@@ -1,4 +1,6 @@
 export function asset(resource, hideTrailingSlash = false) {
+    if (!resource) return;
+
     const trailingSlash = !hideTrailingSlash ? "/" : "";
     const APP = resource.indexOf("/uploads") === 0 ? "http://school.educate2earn.com" : window.location.origin;
     return APP + trailingSlash + resource;
