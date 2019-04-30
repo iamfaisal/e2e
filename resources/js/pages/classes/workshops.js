@@ -186,13 +186,6 @@ class ClassesWorkshops extends Component {
                 width: '110px'
             },
             {
-                name: 'Instructor',
-                cell: row => row.user.name,
-                selector: "user.name",
-                sortable: true,
-                maxWidth: '100px'
-            },
-            {
                 name: 'Course',
                 cell: row => {
                     return <Fragment>
