@@ -25,7 +25,7 @@ export const links = [
         role: "system"
     },
     {
-        name: "Schools",
+        name: "School Admins",
         url: "/users",
         icon: "ion-ios-people",
         role: "system"

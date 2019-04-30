@@ -206,7 +206,7 @@ class Classes extends Component {
                 cell: row => {
                     return <Fragment>
                         {row.venue.name}<br />
-                        {row.venue.city}, {row.venue.zip_code}
+                        {row.venue.city} {row.venue.regulation.abbreviation}, {row.venue.zip_code}
                     </Fragment>;
                 },
                 selector: "venue.name",
@@ -235,7 +235,7 @@ class Classes extends Component {
                 name: 'Class Details',
                 cell: row => {
                     return <div className="links">
-                        <a href="#" target="_balank">Course Materials</a>
+                        <a href={asset(row.course.material)} target="_balank">Course Materials</a>
                         <span className="sep"></span>
                         <a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
                         <span className="sep"></span>

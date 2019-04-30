@@ -127,7 +127,7 @@ class Courses extends Component {
                 maxWidth: '50px'
             },
             {
-                name: '#',
+                name: 'Course #',
                 selector: 'number',
                 sortable: true
             },
