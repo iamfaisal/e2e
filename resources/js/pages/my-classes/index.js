@@ -166,7 +166,8 @@ class MyClasses extends Component {
                 },
                 selector: "course.title",
                 ignoreRowClick: true,
-                sortable: true
+                sortable: true,
+                width: '230px'
             },
             {
                 name: 'Location',
@@ -177,7 +178,14 @@ class MyClasses extends Component {
                     </Fragment>;
                 },
                 selector: "venue.name",
-                sortable: true
+                sortable: true,
+                maxWidth: '150px'
+            },
+            {
+                name: 'RSVP’s',
+                cell: row => 10,
+                sortable: true,
+                width: '60px'
             },
             {
                 name: 'Hours',

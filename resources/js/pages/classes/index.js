@@ -214,7 +214,8 @@ class Classes extends Component {
                     </Fragment>;
                 },
                 selector: "venue.name",
-                sortable: true
+                sortable: true,
+                maxWidth: '150px'
             },
             {
                 name: 'RSVP’s',

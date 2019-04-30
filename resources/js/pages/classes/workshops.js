@@ -202,7 +202,8 @@ class ClassesWorkshops extends Component {
                 },
                 selector: "course.title",
                 ignoreRowClick: true,
-                sortable: true
+                sortable: true,
+                width: '230px'
             },
             {
                 name: 'Location',
@@ -213,7 +214,8 @@ class ClassesWorkshops extends Component {
                     </Fragment>;
                 },
                 selector: "venue.name",
-                sortable: true
+                sortable: true,
+                maxWidth: '150px'
             },
             {
                 name: 'RSVP’s',
