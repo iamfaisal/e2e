@@ -55,11 +55,11 @@ class User extends Authenticatable implements JWTSubject
 
     public function emailsToArray() {
         $userEmails = [$this->email];
-        if(!is_null($email = $this->profile->additional_email)) {
-            $userEmails[] = $email;
+        if(is_object($this->profile) && property_exists($this->profile, "additional_email")) {
+            $userEmails[] = $this->profile->additional_email;
         }
-        if(!is_null($email = $this->profile->additional_email2)) {
-            $userEmails[] = $email;
+        if(is_object($this->profile) && property_exists($this->profile, "additional_email2")) {
+            $userEmails[] = $this->profile->additional_email2;
         }
         return array_filter($userEmails);
     }
