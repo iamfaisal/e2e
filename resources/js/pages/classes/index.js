@@ -186,20 +186,24 @@ class Classes extends Component {
                 width: '110px'
             },
             {
-                name: 'Instructor',
-                cell: row => row.user.name,
-                selector: "user.name",
-                sortable: true,
-                maxWidth: '100px'
-            },
-            {
                 name: 'Course',
                 cell: row => {
-                    return <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link>
+                    return <Fragment>
+                        <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link><br />
+                        <small>{row.user.name}</small><br />
+                        <small className="links">
+                            <a href={asset(row.course.material)} target="_balank">Course Materials</a>
+                            <span className="sep"></span>
+                            <a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
+                            <span className="sep"></span>
+                            <a href={asset(row.docs, true)} target="_balank">Class Docs</a>
+                        </small>
+                    </Fragment>
                 },
                 selector: "course.title",
                 ignoreRowClick: true,
-                sortable: true
+                sortable: true,
+                width: '230px'
             },
             {
                 name: 'Location',
@@ -232,21 +236,6 @@ class Classes extends Component {
                 width: '60px'
             },
             {
-                name: 'Class Details',
-                cell: row => {
-                    return <div className="links">
-                        <a href={asset(row.course.material)} target="_balank">Course Materials</a>
-                        <span className="sep"></span>
-                        <a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
-                        <span className="sep"></span>
-                        <a href={asset(row.docs, true)} target="_balank">Class Docs</a>
-                    </div>
-                },
-                sortable: false,
-                ignoreRowClick: true,
-                width: '260px'
-            },
-            {
                 name: 'Created At',
                 cell: row => {
                     let parts = formatDate(row.created_at).split(", ");
@@ -254,7 +243,7 @@ class Classes extends Component {
                 },
                 selector: "created_at",
                 sortable: true,
-                width: '100px'
+                width: '90px'
             },
             {
                 name: 'Actions',

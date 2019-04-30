@@ -94,6 +94,7 @@ class Header extends Component {
                     <Link className="profile" to={"/"+editProfileRoute+"/edit/"+user.id}>
                         <img src={getUserAvatar(user)} alt={userName}/>
                         <h4>{userName}</h4>
+                        <h5>{user.email}</h5>
                     </Link>
                 </aside>
             </div>

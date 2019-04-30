@@ -195,7 +195,17 @@ class ClassesWorkshops extends Component {
             {
                 name: 'Course',
                 cell: row => {
-                    return <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link>
+                    return <Fragment>
+                        <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link><br />
+                        <small>{row.user.name}</small><br />
+                        <small className="links">
+                            <a href={asset(row.course.material)} target="_balank">Course Materials</a>
+                            <span className="sep"></span>
+                            <a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
+                            <span className="sep"></span>
+                            <a href={asset(row.docs, true)} target="_balank">Class Docs</a>
+                        </small>
+                    </Fragment>
                 },
                 selector: "course.title",
                 ignoreRowClick: true,
@@ -206,7 +216,7 @@ class ClassesWorkshops extends Component {
                 cell: row => {
                     return <Fragment>
                         {row.venue.name}<br />
-                        {row.venue.city}, {row.venue.zip_code}
+                        {row.venue.city} {row.venue.regulation.abbreviation}, {row.venue.zip_code}
                     </Fragment>;
                 },
                 selector: "venue.name",
@@ -230,21 +240,6 @@ class ClassesWorkshops extends Component {
                 sortable: true,
                 selector: "price",
                 width: '60px'
-            },
-            {
-                name: 'Class Details',
-                cell: row => {
-                    return <div className="links">
-                        <a href="#" target="_balank">Course Materials</a>
-                        <span className="sep"></span>
-                        <a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
-                        <span className="sep"></span>
-                        <a href={asset(row.docs, true)} target="_balank">Class Docs</a>
-                    </div>
-                },
-                sortable: false,
-                ignoreRowClick: true,
-                width: '260px'
             },
             {
                 name: 'Created At',
