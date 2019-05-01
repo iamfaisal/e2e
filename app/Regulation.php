@@ -6,11 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Regulation extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'name', 'abbreviation', 'commission_name', 'commission_abbreviation',
         'contact_first_name', 'contact_last_name', 'contact_email_address', 'contact_phone',
