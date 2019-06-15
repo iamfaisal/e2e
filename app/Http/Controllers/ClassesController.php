@@ -70,7 +70,7 @@ class ClassesController extends Controller
         }
         return response()->json([
             'classes' => $classes->get()
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     public function userCoursesOnly()
@@ -78,7 +78,7 @@ class ClassesController extends Controller
         $user = $this->user;
         return response()->json([
             'courses' => $user->courses
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     public function hasPendingRosters()
@@ -100,7 +100,7 @@ class ClassesController extends Controller
         }
         return response()->json([
             'classes' => $classes->get()
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -134,7 +134,7 @@ class ClassesController extends Controller
         $lessonData->user->notify(new ClassCreated($lessonData));
         return response()->json([
             'class' => $lesson
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -148,7 +148,7 @@ class ClassesController extends Controller
         return response()->json([
             'class' => $class,
             'sponsors' => $class->sponsors
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -197,7 +197,7 @@ class ClassesController extends Controller
         }
         return response()->json([
             'class' => $class
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -262,7 +262,7 @@ class ClassesController extends Controller
 
         return response()->json([
             'class' => $class
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -284,7 +284,7 @@ class ClassesController extends Controller
         $lessonData->user->notify(new ClassCancellation($lessonData));
         return response()->json([
             'class' => $class
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -304,7 +304,7 @@ class ClassesController extends Controller
         }
         return response()->json([
             'class' => $class
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -321,7 +321,7 @@ class ClassesController extends Controller
         ]);
         return response()->json([
             'class' => 'success'
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**

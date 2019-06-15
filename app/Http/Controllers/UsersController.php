@@ -47,7 +47,7 @@ class UsersController extends Controller
 
         return response()->json([
             'users' => $users
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -128,7 +128,7 @@ class UsersController extends Controller
             'user' => $user,
             'profile' => $user->profile,
             'roles' => $user->roles->pluck('id')
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -151,7 +151,7 @@ class UsersController extends Controller
             'courses' => $courses,
             'territories' => $territories,
             'roles' => $user->roles->pluck('id')
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -245,7 +245,7 @@ class UsersController extends Controller
             'user' => $user,
             'profile' => $user->profile,
             'roles' => $user->roles->pluck('id')
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -261,7 +261,7 @@ class UsersController extends Controller
         $user->update(['deleted' => true, 'status' => $status]);
         return response()->json([
             'user' => 'success'
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     private function canUserPerformOn($userID, $checkSelf = false) {
@@ -290,11 +290,11 @@ class UsersController extends Controller
             }
             return response()->json([
                 'user' => 'success'
-            ], 200, JSON_NUMERIC_CHECK);
+            ], 200);
         } else {
             return response()->json([
                 'user' => 'error'
-            ], 501, JSON_NUMERIC_CHECK);
+            ], 501);
         }
     }
 
@@ -306,7 +306,7 @@ class UsersController extends Controller
             $enrollment = $student->enroll($class);
             return response()->json([
                 'response' => $enrollment
-            ], 200, JSON_NUMERIC_CHECK);
+            ], 200);
         } else {
             return response()->json([
                 'response' => 'Requested resource could not be found!'

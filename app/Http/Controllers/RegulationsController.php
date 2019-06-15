@@ -30,7 +30,7 @@ class RegulationsController extends Controller
         $regulations = Regulation::orderBy('created_at', 'desc');
         return response()->json([
             'regulations' => $regulations->get()
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -65,7 +65,7 @@ class RegulationsController extends Controller
         $regulation = Regulation::create($data);
         return response()->json([
             'regulation' => $regulation
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -78,7 +78,7 @@ class RegulationsController extends Controller
     {
         return response()->json([
             'regulation' => $regulation
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -114,7 +114,7 @@ class RegulationsController extends Controller
         $regulation->update($data);
         return response()->json([
             'regulation' => $request->all()
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**

@@ -30,7 +30,7 @@ class CategoriesController extends Controller
         $categories = Category::orderBy('created_at', 'desc');
         return response()->json([
             'categories' => $categories->get()
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -47,7 +47,7 @@ class CategoriesController extends Controller
         ]);
         return response()->json([
             'category' => $category
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -60,7 +60,7 @@ class CategoriesController extends Controller
     {
         return response()->json([
             'category' => $category
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -78,7 +78,7 @@ class CategoriesController extends Controller
         ]);
         return response()->json([
             'category' => $category
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -93,6 +93,6 @@ class CategoriesController extends Controller
         $category->delete();
         return response()->json([
             'category' => 'success'
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 }

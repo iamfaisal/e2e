@@ -37,7 +37,7 @@ class SponsorsController extends Controller
 
         return response()->json([
             'sponsors' => $sponsors->get()
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -72,7 +72,7 @@ class SponsorsController extends Controller
         $sponsor = Sponsor::create($data);
         return response()->json([
             'sponsor' => $sponsor
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -85,7 +85,7 @@ class SponsorsController extends Controller
     {
         return response()->json([
             'sponsor' => $sponsor
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -121,7 +121,7 @@ class SponsorsController extends Controller
         $sponsor->update($data);
         return response()->json([
             'sponsor' => $sponsor
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -136,7 +136,7 @@ class SponsorsController extends Controller
         $sponsor->delete();
         return response()->json([
             'sponsor' => 'success'
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**

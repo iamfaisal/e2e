@@ -36,7 +36,7 @@ class VenuesController extends Controller
 
         return response()->json([
             'venues' => $venues->get()
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -58,7 +58,7 @@ class VenuesController extends Controller
             ]);
             return response()->json([
                 'venue' => $venue
-            ], 200, JSON_NUMERIC_CHECK);
+            ], 200);
         }
     }
 
@@ -73,7 +73,7 @@ class VenuesController extends Controller
 
         return response()->json([
             'venue' => $venue
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 
     /**
@@ -96,7 +96,7 @@ class VenuesController extends Controller
             ]);
             return response()->json([
                 'venue' => $venue
-            ], 200, JSON_NUMERIC_CHECK);
+            ], 200);
         }
     }
 
@@ -112,6 +112,6 @@ class VenuesController extends Controller
         $venue->delete();
         return response()->json([
             'venue' => 'success'
-        ], 200, JSON_NUMERIC_CHECK);
+        ], 200);
     }
 }
