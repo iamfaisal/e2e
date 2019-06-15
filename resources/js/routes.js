@@ -42,7 +42,7 @@ import CreateInstructor from "./pages/instructors/create";
 import EditInstructor from "./pages/instructors/edit";
 
 import MyClasses from "./pages/my-classes";
-import MyClassesWorkshops from "./pages/my-classes";
+import MyClassesWorkshops from "./pages/my-classes/workshops";
 import CreateMyClass from "./pages/my-classes/create";
 import EditMyClass from "./pages/my-classes/edit";
 import CancelMyClass from "./pages/my-classes/cancel";

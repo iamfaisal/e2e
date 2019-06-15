@@ -10,6 +10,8 @@ class CreateMyClass extends Component {
     constructor(props) {
         super(props);
 
+        const queryParams = new URL(location).searchParams;
+
         this.state = {
             loading: false,
             user: getuser(),
@@ -32,6 +34,7 @@ class CreateMyClass extends Component {
                 flyer_image: "",
                 docs: ""
             },
+            workshop: queryParams.get("ws") ? 1 : 0,
             courses: [],
             venues: [],
             formValidationData: {}
@@ -83,6 +86,8 @@ class CreateMyClass extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
+        let { workshop } = this.state;
+
         this.setState({
             loading: true
         });
@@ -90,7 +95,7 @@ class CreateMyClass extends Component {
         create('classes', new FormData(e.target), true)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/my-classes")
+                    ? this.props.history.push(workshop ? "/my-classes/workshops" : "/my-classes")
                     : this.setState({
                         loading: false,
                         isFormValid: false
@@ -108,7 +113,7 @@ class CreateMyClass extends Component {
     }
 
     render() {
-        const { user, canAddNew, fields, courses, venues, loading, isFormValid, formValidationData } = this.state;
+        const { user, canAddNew, fields, workshop, courses, venues, loading, isFormValid, formValidationData } = this.state;
 
         if (!canAddNew) return (
             <div>
@@ -122,7 +127,7 @@ class CreateMyClass extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Create Class</h2>
+                    <h2>Create {workshop ? "Workshop" : "Class"}</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -238,7 +243,8 @@ class CreateMyClass extends Component {
                         />
                     </fieldset>
 
-                    <button className="button">Create Class</button>
+                    <input type="hidden" name="is_workshop" value={workshop} />
+                    <button className="button">Create {workshop ? "Workshop" : "Class"}</button>
                 </form>
             </div>
         );

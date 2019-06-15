@@ -18,8 +18,7 @@ class MyClassesWorkshops extends Component {
             filters: {
                 is_deleted: "0",
                 start_date: "",
-                end_date: "",
-                "course.categories.name": "!ce"
+                end_date: ""
             },
             loader: true,
             canAddNew: false
@@ -60,6 +59,7 @@ class MyClassesWorkshops extends Component {
         this.setState({ loader: true });
 
         params.fromInstructor = true;
+        params.workshop = true;
 
         read('classes', { params: params })
             .then(res => {
@@ -154,7 +154,7 @@ class MyClassesWorkshops extends Component {
                 name: 'Course',
                 cell: row => {
                     return <Fragment>
-                        <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link><br />
+                        <Link to={"/my-classes/edit/" + row.id}>{row.course.title}</Link><br />
                         <small className="links">
                             <a href={asset(row.course.material)} target="_balank">Course Materials</a>
                             <span className="sep"></span>
@@ -227,7 +227,7 @@ class MyClassesWorkshops extends Component {
                 <header className="pageheader">
                     <h2>Workshops</h2>
                     {canAddNew
-                    ? <Link className="button" to={"/my-classes/create"}>Register Class</Link>
+                    ? <Link className="button" to={"/my-classes/create?ws=1"}>Register Class</Link>
                         : <button className="button" onClick={() => { if (archived_cb) archived_cb.checked = true; this.toggleArchived(true) }}>Upload rosters to register a new class</button>}
                 </header>
 
@@ -253,16 +253,9 @@ class MyClassesWorkshops extends Component {
                         placeholderText="End"
                         onChange={date => this.setfilter(date, "end_date")} />
 
-                    <br />
-
                     <label className="checkbox">
                         <input type="checkbox" ref={el => this.state.archived_cb = el} onChange={e => this.toggleArchived(e)} />
                         <span>Show archived</span>
-                    </label>
-
-                    <label className="checkbox">
-                        <input type="checkbox" onChange={e => this.toggleCancelled(e)} />
-                        <span>Show cancelled</span>
                     </label>
                 </div>
 

@@ -34,6 +34,7 @@ class EditMyClass extends Component {
                 flyer_image: "",
                 docs: "",
             },
+            workshop: 0,
             sponsors: [],
             courses: [],
             venues: [],
@@ -52,6 +53,7 @@ class EditMyClass extends Component {
                 let { fields } = this.state;
                 this.setState({
                     loaded: true,
+                    workshop: res.data.class.is_workshop,
                     fields: { ...fields, ...res.data.class }
                 });
             })
@@ -110,7 +112,7 @@ class EditMyClass extends Component {
         update('classes/' + id, data, true)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/my-classes")
+                    ? this.props.history.push(workshop ? "/my-classes/workshops" : "/my-classes")
                     : this.setState({
                         loading: false,
                         isFormValid: false
@@ -128,7 +130,7 @@ class EditMyClass extends Component {
     }
 
     render() {
-        const { loaded, user, fields, courses, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, user, fields, workshop, courses, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
         
         if (!loaded) return false;
 
@@ -143,7 +145,7 @@ class EditMyClass extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Edit Class</h2>
+                    <h2>Edit {workshop ? "Workshop" : "Class"}</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -293,7 +295,8 @@ class EditMyClass extends Component {
                         </div>
                     </div>
 
-                    <button className="button">Update Class</button>
+                    <input type="hidden" name="is_workshop" value={workshop} />
+                    <button className="button">Update {workshop ? "Workshop" : "Class"}</button>
                 </form>
             </div>
         );

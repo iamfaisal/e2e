@@ -18,8 +18,7 @@ class MyClasses extends Component {
             filters: {
                 is_deleted: "0",
                 start_date: "",
-                end_date: "",
-                "course.categories.name": "ce"
+                end_date: ""
             },
             loader: true,
             canAddNew: false
@@ -154,7 +153,7 @@ class MyClasses extends Component {
                 name: 'Course',
                 cell: row => {
                     return <Fragment>
-                        <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link><br />
+                        <Link to={"/my-classes/edit/" + row.id}>{row.course.title}</Link><br />
                         <small className="links">
                             <a href={asset(row.course.material)} target="_balank">Course Materials</a>
                             <span className="sep"></span>

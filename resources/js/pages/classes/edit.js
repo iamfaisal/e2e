@@ -110,7 +110,7 @@ class EditClass extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { id } = this.state;
+        const { id, workshop } = this.state;
 
         this.setState({
             loading: true
@@ -122,7 +122,7 @@ class EditClass extends Component {
         update('classes/' + id, data, true)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/classes")
+                    ? this.props.history.push(workshop ? "/classes/workshops" : "/classes")
                     : this.setState({
                         loading: false,
                         isFormValid: false
