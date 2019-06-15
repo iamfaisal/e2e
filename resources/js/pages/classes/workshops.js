@@ -19,8 +19,7 @@ class ClassesWorkshops extends Component {
             filters: {
                 is_deleted: "0",
                 start_date: "",
-                end_date: "",
-                "course.categories.name": "!ce"
+                end_date: ""
             },
             loader: true,
             archived: false
@@ -33,7 +32,9 @@ class ClassesWorkshops extends Component {
     }
 
     componentDidMount() {
-        this.getData({});
+        this.getData({
+            params: { workshop: 1 }
+        });
 
         read('courses/', {})
             .then(res => {
@@ -98,8 +99,6 @@ class ClassesWorkshops extends Component {
         } else {
             return (
                 <div className="actions">
-                    {clss.status != 'Approved' ? <Link data-toggle="tooltip" title="Approve Class" className="ion-md-checkmark" to={"/classes/approve/" + clss.id} /> : ""}
-                    {clss.status != 'Cancelled' ? <Link data-toggle="tooltip" title="Cancel Class" className="ion-md-close" to={"/classes/cancel/" + clss.id} /> : ""}
                     <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id} />
                     <a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
                 </div>
@@ -263,7 +262,7 @@ class ClassesWorkshops extends Component {
             <div>
                 <header className="pageheader">
                     <h2>Workshops</h2>
-                    <Link className="button" to={"/classes/create"}>Register Class</Link>
+                    <Link className="button" to={"/classes/create?ws=1"}>Register Workshop</Link>
                 </header>
 
                 <div className="filter">
@@ -289,21 +288,9 @@ class ClassesWorkshops extends Component {
                         placeholderText="End"
                         onChange={date => this.setfilter(date, "end_date")} />
 
-                    <br />
-
-                    <label className="checkbox">
-                        <input type="checkbox" onChange={e => this.setfilter(e.target.checked ? "!Approved" : "", "status")} />
-                        <span>Need Approval</span>
-                    </label>
-
                     <label className="checkbox">
                         <input type="checkbox" onChange={e => this.toggleArchived(e)} />
                         <span>Show archived</span>
-                    </label>
-
-                    <label className="checkbox">
-                        <input type="checkbox" onChange={e => this.toggleCancelled(e)} />
-                        <span>Show cancelled</span>
                     </label>
                 </div>
 

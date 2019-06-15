@@ -8,6 +8,7 @@ class CreateClass extends Component {
     constructor(props) {
         super(props);
 
+        const queryParams = new URL(location).searchParams;
 
         this.state = {
             loading: false,
@@ -30,6 +31,7 @@ class CreateClass extends Component {
                 flyer_image: "",
                 docs: ""
             },
+            workshop: queryParams.get("ws") ? 1 : 0,
             courses: [],
             instructors: [],
             venues: [],
@@ -82,6 +84,8 @@ class CreateClass extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
+        let { workshop } = this.state;
+
         this.setState({
             loading: true
         });
@@ -89,7 +93,7 @@ class CreateClass extends Component {
         create('classes', new FormData(e.target), true)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/classes")
+                    ? this.props.history.push(workshop ? "/classes/workshops" : "/classes")
                     : this.setState({
                         loading: false,
                         isFormValid: false
@@ -107,12 +111,12 @@ class CreateClass extends Component {
     }
 
     render() {
-        const { fields, courses, instructors, venues, loading, isFormValid, formValidationData } = this.state;
+        const { fields, workshop, courses, instructors, venues, loading, isFormValid, formValidationData } = this.state;
 
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Create Class</h2>
+                    <h2>Create {workshop ? "Workshop" : "Class"}</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -236,7 +240,8 @@ class CreateClass extends Component {
                         />
                     </fieldset>
 
-                    <button className="button">Create Class</button>
+                    <input type="hidden" name="is_workshop" value={workshop} />
+                    <button className="button">Create {workshop ? "Workshop" : "Class"}</button>
                 </form>
             </div>
         );

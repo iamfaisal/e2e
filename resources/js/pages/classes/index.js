@@ -19,8 +19,7 @@ class Classes extends Component {
             filters: {
                 is_deleted: "0",
                 start_date: "",
-                end_date: "",
-                "course.categories.name": "ce"
+                end_date: ""
             },
             loader: true,
             archived: false

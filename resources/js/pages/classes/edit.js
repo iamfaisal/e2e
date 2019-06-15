@@ -34,6 +34,7 @@ class EditClass extends Component {
                 flyer_image: "",
                 docs: "",
             },
+            workshop: 0,
             sponsors: [],
             courses: [],
             instructors: [],
@@ -51,8 +52,10 @@ class EditClass extends Component {
         read('classes/' + id, {})
             .then(res => {
                 let { fields } = this.state;
+
                 this.setState({
                     loaded: true,
+                    workshop: res.data.class.is_workshop,
                     fields: { ...fields, ...res.data.class },
                 });
             })
@@ -137,7 +140,7 @@ class EditClass extends Component {
     }
 
     render() {
-        const { loaded, fields, courses, instructors, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
+        const { loaded, fields, workshop, courses, instructors, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
         
         if (!loaded) return false;
         
@@ -151,7 +154,7 @@ class EditClass extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Edit Class</h2>
+                    <h2>Edit {workshop ? "Workshop" : "Class"}</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -310,7 +313,8 @@ class EditClass extends Component {
                         </div>
                     </div>
 
-                    <button className="button">Update Class</button>
+                    <input type="hidden" name="is_workshop" value={workshop} />
+                    <button className="button">Update {workshop ? "Workshop" : "Class"}</button>
                 </form>
             </div>
         );
