@@ -126,6 +126,7 @@ class ClassesController extends Controller
             'rsvp_email' => $request->get('rsvp_email'),
             'rsvp_link_text' => $request->get('rsvp_link_text'),
             'rsvp_link_url' => $request->get('rsvp_link_url'),
+            'is_workshop' => $request->get('is_workshop'),
             'status' => 'New'
         ];
         $lesson = Lesson::create($data);
@@ -175,6 +176,7 @@ class ClassesController extends Controller
             'rsvp_email' => $request->get('rsvp_email'),
             'rsvp_link_text' => $request->get('rsvp_link_text'),
             'rsvp_link_url' => $request->get('rsvp_link_url'),
+            'is_workshop' => $request->get('is_workshop'),
             'status' => $status
         ];
         if($request->hasFile('flyer'))
