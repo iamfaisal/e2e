@@ -89,7 +89,7 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
             'roles' => $user->allPermissions()
-        ], $user->status == 1 && $user->deleted == 0 ? 200 : 501);
+        ], $user->status == 1 && $user->deleted == 0 ? 200 : 501, JSON_NUMERIC_CHECK);
     }
 
     /**

@@ -28,6 +28,6 @@ class RolesController extends Controller
         $roles = Role::orderBy('created_at', 'desc');
         return response()->json([
             'roles' => $roles->get()
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 }

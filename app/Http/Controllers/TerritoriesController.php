@@ -29,7 +29,7 @@ class TerritoriesController extends Controller
         $territories = Territory::with('regulation')->orderBy('created_at', 'desc');
         return response()->json([
             'territories' => $territories->get()
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -47,7 +47,7 @@ class TerritoriesController extends Controller
         ]);
         return response()->json([
             'territory' => $territory
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -60,7 +60,7 @@ class TerritoriesController extends Controller
     {
         return response()->json([
             'territory' => $territory
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -79,7 +79,7 @@ class TerritoriesController extends Controller
         ]);
         return response()->json([
             'territory' => $territory
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -94,6 +94,6 @@ class TerritoriesController extends Controller
         $territory->delete();
         return response()->json([
             'territory' => 'success'
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 }

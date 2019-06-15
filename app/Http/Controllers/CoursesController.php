@@ -43,7 +43,7 @@ class CoursesController extends Controller
             'courses' => $courses->get(),
             'categories' => $categories,
             'regulations' => $regulations
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 
     public function materials()
@@ -55,7 +55,7 @@ class CoursesController extends Controller
         return response()->json([
             'courses' => $courses->get(),
             'regulations' => $regulations
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -96,7 +96,7 @@ class CoursesController extends Controller
 
         return response()->json([
             'course' => $course
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 
 
@@ -111,7 +111,7 @@ class CoursesController extends Controller
         return response()->json([
             'course' => $course,
             'categories' => $course->categories
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -151,7 +151,7 @@ class CoursesController extends Controller
         $course->update($data);
         return response()->json([
             'course' => $course
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -168,7 +168,7 @@ class CoursesController extends Controller
         ]);
         return response()->json([
             'course' => 'success'
-        ], 200);
+        ], 200, JSON_NUMERIC_CHECK);
     }
 
     /**
