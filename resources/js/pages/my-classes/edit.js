@@ -53,7 +53,7 @@ class EditMyClass extends Component {
                 let { fields } = this.state;
                 this.setState({
                     loaded: true,
-                    workshop: res.data.class.is_workshop,
+                    workshop: parseInt(res.data.class.is_workshop),
                     fields: { ...fields, ...res.data.class }
                 });
             })
