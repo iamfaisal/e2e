@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Lesson;
+use Carbon\Carbon;
 use App\Approval;
 use App\Cancellation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 use App\Notifications\ClassApproval;
 use App\Notifications\ClassCancellation;
 use App\Notifications\ClassCreated;
