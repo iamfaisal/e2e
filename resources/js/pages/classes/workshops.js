@@ -32,9 +32,7 @@ class ClassesWorkshops extends Component {
     }
 
     componentDidMount() {
-        this.getData({
-            params: { workshop: 1 }
-        });
+        this.getData();
 
         read('courses/', {})
             .then(res => {
@@ -44,7 +42,7 @@ class ClassesWorkshops extends Component {
             })
             .catch(err => console.log(err));
 
-        read('users', { params: { role: 'instructor' } })
+        read('users', { role: 'instructor' })
             .then(res => {
                 this.setState({
                     instructors: res.data.users
@@ -62,7 +60,9 @@ class ClassesWorkshops extends Component {
     getData(params = {}) {
         this.setState({ loader: true });
 
-        read('classes', params)
+        params.workshop = 1;
+
+        read('classes', { params: params })
             .then(res => {
                 this.setState({
                     classes: res.data.classes,
@@ -142,7 +142,7 @@ class ClassesWorkshops extends Component {
         this.setState({ archived: e.target.checked });
 
         if (e.target.checked) {
-            this.getData({ params: { archived: true } });
+            this.getData({ archived: true });
         } else {
             this.getData({});
         }
