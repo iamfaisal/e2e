@@ -264,7 +264,7 @@ class EditClass extends Component {
 							onChange={this.handleChange}
 							name="alternate_instructor"
 							value={fields.alternate_instructor}
-							labelText="Alternate Instructor"
+							labelText="Co-Instructor"
 						/>
 						<TextField
 							onChange={this.handleChange}

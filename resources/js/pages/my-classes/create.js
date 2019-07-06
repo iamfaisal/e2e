@@ -5,23 +5,27 @@ import Select from "../../common/Select";
 import { getuser } from "../../helpers/app";
 import DatePicker from "react-datepicker";
 import { read, create, dateToString, addDays } from "../../helpers/resource";
+import { toggleModel } from "../../helpers/app";
+import CreateVenue from "../my-venues/create";
 
 class CreateMyClass extends Component {
 	constructor(props) {
 		super(props);
 
 		const queryParams = new URL(location).searchParams;
+		const minDate = queryParams.get("ws") ? 3 : 16;
 
 		this.state = {
 			loading: false,
 			user: getuser(),
 			canAddNew: true,
+			minDate: minDate,
 			fields: {
 				course_id: "",
 				venue_id: "",
-				start_date_time: addDays(new Date, 16),
-				end_date_time: addDays(new Date, 16),
-				price: "",
+				start_date_time: addDays(new Date, minDate),
+				end_date_time: addDays(new Date, minDate),
+				price: "0",
 				capacity: "",
 				alternate_instructor: "",
 				guest_speaker: "",
@@ -42,13 +46,14 @@ class CreateMyClass extends Component {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.onVenueAdded = this.onVenueAdded.bind(this);
 	}
 
 	componentDidMount() {
 		read('classes/hasPendingRosters', {})
 			.then(res => {
 				this.setState({
-					canAddNew: res.data.classes.length ? false : true
+					// canAddNew: res.data.classes.length ? false : true
 				});
 			})
 			.catch(err => console.log(err));
@@ -61,6 +66,10 @@ class CreateMyClass extends Component {
 			})
 			.catch(err => console.log(err));
 
+		this.getVenues();
+	}
+
+	getVenues(venue) {
 		read('venues', {})
 			.then(res => {
 				this.setState({
@@ -131,8 +140,13 @@ class CreateMyClass extends Component {
 			});
 	}
 
+	onVenueAdded() {
+		this.getVenues();
+		toggleModel('venue');
+	}
+
 	render() {
-		const { user, canAddNew, fields, workshop, courses, venues, loading, isFormValid, formValidationData } = this.state;
+		const { user, canAddNew, minDate, fields, workshop, courses, venues, loading, isFormValid, formValidationData } = this.state;
 
 		if (!canAddNew) return (
 			<div>
@@ -173,13 +187,14 @@ class CreateMyClass extends Component {
 								id="id"
 								val="name"
 							/>
+							<button className="addnew" type="button" onClick={() => toggleModel("venue")}>+</button>
 						</label>
 						<label>
 							<span>Date</span>
 							<DatePicker
 								selected={fields.start_date_time}
 								onChange={d => this.handleDateChange(d)}
-								minDate={addDays(new Date, 16)}
+								minDate={addDays(new Date, minDate)}
 								dateFormat="MMMM d, yyyy"
 							/>
 						</label>
@@ -227,7 +242,7 @@ class CreateMyClass extends Component {
 							onChange={this.handleChange}
 							name="alternate_instructor"
 							value={fields.alternate_instructor}
-							labelText="Alternate Instructor"
+							labelText="Co-Instructor"
 						/>
 						<TextField
 							onChange={this.handleChange}
@@ -276,6 +291,13 @@ class CreateMyClass extends Component {
 					<input type="hidden" name="is_workshop" value={workshop} />
 					<button className="button">Create {workshop ? "Workshop" : "Class"}</button>
 				</form>
+
+				<div className="modal modal-venue">
+					<button className="modal-close ion-md-close" onClick={toggleModel}></button>
+					<div className="modal-content">
+						<CreateVenue onSuccess={this.onVenueAdded} />
+					</div>
+				</div>
 			</div>
 		);
 	}

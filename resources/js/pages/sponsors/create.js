@@ -241,8 +241,8 @@ class CreateSponsor extends Component {
 						<div className="col-md-6 col-lg-4">
 							<FileInput
 								onChange={event => this.handleChange(event)}
-								name="Headshot"
-								labelText="Avatar"
+								name="avatar"
+								labelText="Headshot"
 							/>
 						</div>
 					</div>

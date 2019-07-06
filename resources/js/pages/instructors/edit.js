@@ -337,62 +337,63 @@ class EditInstructor extends Component {
 						/>
 					</fieldset>
 
-					{!isJustInstructor() ? <Fragment>
-						{fields.licenses.map((license, i) => {
-							if (license.expiration && license.expiration.constructor !== Date) {
-								license.expiration = new Date(license.expiration);
-							}
-							return <fieldset key={i} className="fields horizontal">
-								<label>
-									<span>State</span>
-									<Select
-										name={"licenses[" + i + "][regulation]"}
-										items={regulations}
-										placeholder="Select Regulation"
-										id={"id"}
-										val={"name"}
-										value={license["regulation_id"]}
-									/>
-								</label>
-								<TextField
-									onChange={this.handleChange}
-									name={"licenses[" + i + "][code]"}
-									value={""}
-									maxLength={50}
-									labelText="License Number"
-									value={license["code"]}
+					{fields.licenses.map((license, i) => {
+						if (license.expiration && license.expiration.constructor !== Date) {
+							license.expiration = new Date(license.expiration);
+						}
+						return <fieldset key={i} className="fields horizontal">
+							<label>
+								<span>State</span>
+								<Select
+									name={"licenses[" + i + "][regulation]"}
+									items={regulations}
+									placeholder="Select Regulation"
+									id={"id"}
+									val={"name"}
+									value={license["regulation_id"]}
 								/>
-								<label>
-									<span>Expiration</span>
-									<DatePicker
-										selected={license.expiration || new Date()}
-										onChange={d => this.setLicenseDate(i, d)}
-										dateFormat="MMMM d, yyyy"
-									/>
-									<input
-										type="hidden"
-										name={"licenses[" + i + "][expiration]"}
-										value={dateToString(license.expiration)}
-									/>
-								</label>
-								<FileInput
-									onChange={event => this.handleChange(event)}
-									name={"licenses[" + i + "][certificate]"}
-									labelText="Certificate"
-									value={license["certificate"]}
+							</label>
+							<TextField
+								onChange={this.handleChange}
+								name={"licenses[" + i + "][code]"}
+								value={""}
+								maxLength={50}
+								labelText="License Number"
+								value={license["code"]}
+							/>
+							<label>
+								<span>Expiration</span>
+								<DatePicker
+									selected={license.expiration || new Date()}
+									onChange={d => this.setLicenseDate(i, d)}
+									dateFormat="MMMM d, yyyy"
 								/>
 								<input
 									type="hidden"
-									name={"licenses[" + i + "][certificate_file]"}
-									value={license["certificate"]}
+									name={"licenses[" + i + "][expiration]"}
+									value={dateToString(license.expiration)}
 								/>
-							</fieldset>
-						})}
-						<div className={"repeatActions count-" + fields.licenses.length}>
-							<button className="ion-md-remove" onClick={this.removeLicense}></button>
-							<button className="ion-md-add" onClick={this.addLicense}></button>
-						</div>
+							</label>
+							<FileInput
+								onChange={event => this.handleChange(event)}
+								name={"licenses[" + i + "][certificate]"}
+								labelText="Certificate"
+								value={license["certificate"]}
+							/>
+							<input
+								type="hidden"
+								name={"licenses[" + i + "][certificate_file]"}
+								value={license["certificate"]}
+							/>
+						</fieldset>
+					})}
+					<div className={"repeatActions count-" + fields.licenses.length}>
+						{isJustInstructor() && <p>if you want to aplpy for instructor certification in anthoer state, email <a href="mailto:tiannetta@amerifirst.us">tiannetta@amerifirst.us</a></p>}
+						<button className="ion-md-remove" onClick={this.removeLicense}></button>
+						<button className="ion-md-add" onClick={this.addLicense}></button>
+					</div>
 
+					{!isJustInstructor() ? <Fragment>
 						<legend>Territories</legend>
 						<fieldset className="fields horizontal">
 							<label>
@@ -454,7 +455,30 @@ class EditInstructor extends Component {
 						</Fragment> : ""}
 					</div>
 
-					{!isJustInstructor() && <div><CheckBox onChange={this.handleChange} name="status" value={fields.status} labelText="Approved?" /></div>}
+					{!isJustInstructor() && <div>
+						<fieldset className="fields horizontal">
+							<TextField
+								onChange={this.handleChange}
+								type="password"
+								name="password"
+								value={fields.password}
+								maxLength={50}
+								labelText="Password"
+								validation={[validations.isEmpty, validations.isAlphaNumeric]}
+							/>
+							<TextField
+								onChange={this.handleChange}
+								type="password"
+								name="confirm_pass"
+								value={fields.confirm_pass}
+								maxLength={50}
+								labelText="Confirm Password"
+								equalTo={fields.password}
+								validation={[validations.isEmpty, validations.isAlphaNumeric, validations.equalTo]}
+							/>
+						</fieldset>
+						<CheckBox onChange={this.handleChange} name="status" value={fields.status} labelText="Approved?" />
+					</div>}
 
 					<button className="button" disabled={!isFormValid} onClick={() => { this.state.status = "update" }}>Update Instructor</button>
 				</form>

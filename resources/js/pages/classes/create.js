@@ -3,21 +3,25 @@ import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import DatePicker from "react-datepicker";
 import { read, create, dateToString, addDays } from "../../helpers/resource";
+import { toggleModel } from "../../helpers/app";
+import CreateVenue from "../venues/create";
 
 class CreateClass extends Component {
 	constructor(props) {
 		super(props);
 
 		const queryParams = new URL(location).searchParams;
+		const minDate = queryParams.get("ws") ? 3 : 16;
 
 		this.state = {
 			loading: false,
+			minDate: minDate,
 			fields: {
 				instructor: "",
 				course_id: "",
 				venue_id: "",
-				start_date_time: addDays(new Date, 16),
-				end_date_time: addDays(new Date, 16),
+				start_date_time: addDays(new Date, minDate),
+				end_date_time: addDays(new Date, minDate),
 				price: "0",
 				capacity: "",
 				alternate_instructor: "",
@@ -40,6 +44,7 @@ class CreateClass extends Component {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.onVenueAdded = this.onVenueAdded.bind(this);
 	}
 
 	componentDidMount() {
@@ -59,6 +64,10 @@ class CreateClass extends Component {
 			})
 			.catch(err => console.log(err));
 
+		this.getVenues();
+	}
+
+	getVenues(venue) {
 		read('venues', {})
 			.then(res => {
 				this.setState({
@@ -129,8 +138,13 @@ class CreateClass extends Component {
 			});
 	}
 
+	onVenueAdded() {
+		this.getVenues();
+		toggleModel('venue');
+	}
+
 	render() {
-		const { fields, workshop, courses, instructors, venues, loading, isFormValid, formValidationData } = this.state;
+		const { minDate, fields, workshop, courses, instructors, venues, loading, isFormValid, formValidationData } = this.state;
 
 		return (
 			<div>
@@ -170,6 +184,7 @@ class CreateClass extends Component {
 								id="id"
 								val="name"
 							/>
+							<button className="addnew" type="button" onClick={() => toggleModel("venue")}>+</button>
 						</label>
 						<TextField
 							onChange={this.handleChange}
@@ -182,7 +197,7 @@ class CreateClass extends Component {
 							<DatePicker
 								selected={fields.start_date_time}
 								onChange={d => this.handleDateChange(d)}
-								minDate={addDays(new Date, 16)}
+								minDate={addDays(new Date, minDate)}
 								dateFormat="MMMM d, yyyy"
 							/>
 						</label>
@@ -224,7 +239,7 @@ class CreateClass extends Component {
 							onChange={this.handleChange}
 							name="alternate_instructor"
 							value={fields.alternate_instructor}
-							labelText="Alternate Instructor"
+							labelText="Co-Instructor"
 						/>
 						<TextField
 							onChange={this.handleChange}
@@ -273,6 +288,13 @@ class CreateClass extends Component {
 					<input type="hidden" name="is_workshop" value={workshop} />
 					<button className="button">Create {workshop ? "Workshop" : "Class"}</button>
 				</form>
+
+				<div className="modal modal-venue">
+					<button className="modal-close ion-md-close" onClick={toggleModel}></button>
+					<div className="modal-content">
+						<CreateVenue onSuccess={this.onVenueAdded} />
+					</div>
+				</div>
 			</div>
 		);
 	}

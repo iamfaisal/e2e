@@ -792,6 +792,7 @@ table {
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 15px;
 		padding: 15px;
+		position: relative;
 
 		label {
 			padding: 0;
@@ -801,6 +802,24 @@ table {
 			border: 0;
 			border-right: 1px solid $color_mystic_approx;
 		}
+	}
+
+	.addnew {
+		position: absolute;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		background: #eceef3;
+		border: 0;
+		padding: 10px;
+		font-size: 24px;
+		line-height: 1;
+		color: #727886;
+		cursor: pointer;
+		transition: .25s;
+	}
+	.addnew:hover {
+		background: #e4e7ee;
 	}
 }
 @media(min-width: 576px) {
@@ -1064,6 +1083,15 @@ form.loading {
 	align-items: center;
 	justify-content: flex-end;
 	margin-bottom: 30px;
+
+	p {
+		flex-grow: 1;
+		margin: 0;
+	}
+
+	p a {
+		color: #ee252f;
+	}
 
 	button {
 		background: #ee252f;
@@ -1361,4 +1389,62 @@ legend .checkbox {
 
 form > label {
 	max-width: 380px;
+}
+
+body.modal-visible {
+	overflow: hidden;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 9999;
+	transition: background .4s;
+
+	.modal-close {
+		background: none;
+		border: 0;
+		padding: 0;
+		position: fixed;
+		top: 15px;
+		right: 20px;
+		font-size: 32px;
+		color: #727886;
+		cursor: pointer;
+		z-index: 1;
+		transition: .25s;
+
+		&:hover {
+			color: #232d39;
+		}
+	}
+
+	.modal-content {
+		background: #f6f7fb;
+		height: 100%;
+		overflow: auto;
+		margin-left: 30%;
+		padding: 40px;
+		position: relative;
+		box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+		transition: .4s;
+	}
+
+	&:not(.show) {
+		background: transparent;
+		pointer-events: none;
+
+		.modal-close {
+			opacity: 0;
+		}
+
+		.modal-content {
+			transform: translateX(100%);
+			box-shadow: 0 0;
+		}
+	}
 }
