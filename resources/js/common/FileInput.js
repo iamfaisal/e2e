@@ -103,7 +103,7 @@ class FileInput extends Component {
 	render() {
         const { isValid, errorText } = this.state;
         let { files } = this.state;
-        const { labelText, name, id, value, multiple, required } = this.props;
+        const { labelText, name, id, value, multiple, required, preview } = this.props;
 
         if (!files.length) files.push({
             name: value,
@@ -111,7 +111,7 @@ class FileInput extends Component {
         });
 
 		return (
-            <label className={classnames('uploader', { "invalid": !isValid })}>
+            <label className={classnames('uploader', { "invalid": !isValid }, preview)}>
                 <h3>{labelText}</h3>
                 <span>Drag n Drop</span>
                 <span className="sep">-OR-</span>
@@ -120,9 +120,9 @@ class FileInput extends Component {
                     {files.map((file, i) => {
                         return file.name ? <figure key={i}>
                             {file.type.search('image') > -1
-                                ? <img src={this.getFileURL(file)}/>
+                                ? <a href={this.getFileURL(file)} target="_blank"><img src={this.getFileURL(file)}/></a>
                                 : file.name.search('/') > -1
-                                    ? <a href={asset(file.name)} target="-blank">Download File</a>
+                                    ? <a href={asset(file.name)} target="_blank">Download File</a>
                                     : <figcaption>{file.name}</figcaption>
                             }
                         </figure> : false

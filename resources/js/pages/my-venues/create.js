@@ -121,7 +121,7 @@ class CreateVenue extends Component {
                             name="name"
                             value={fields.name}
                             maxLength={50}
-                            labelText="Name"
+                            labelText="Venue Name"
                         />
                     </fieldset>
 

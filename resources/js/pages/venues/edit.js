@@ -144,7 +144,7 @@ class EditVenue extends Component {
                             name="name"
                             value={fields.name}
                             maxLength={50}
-                            labelText="Name"
+                            labelText="Venue Name"
                             required={true}
                             validation={[validations.isEmpty]}
                         />
