@@ -94,7 +94,7 @@ class CreateVenue extends Component {
 					});
 				} else {
 					res.status === 200
-						? this.props.history.push("/venues")
+						? this.props.history.push("/my-venues")
 						: this.setState({
 							loading: false,
 							isFormValid: false

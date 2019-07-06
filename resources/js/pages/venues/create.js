@@ -105,7 +105,7 @@ class CreateVenue extends Component {
 
 		let data = new FormData(e.target);
 
-		fields.instructors.forEach(function (sponsor) {
+		fields.users.forEach(function (sponsor) {
 			data.append("users[]", sponsor);
 		});
 

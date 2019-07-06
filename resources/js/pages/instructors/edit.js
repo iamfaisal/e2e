@@ -516,7 +516,7 @@ class EditInstructor extends Component {
 						<CheckBox onChange={this.handleChange} name="status" value={fields.status} labelText="Approved?" />
 					</div>}
 
-					<button className="button" disabled={!isFormValid} onClick={() => { this.state.status = "update" }}>Update Instructor</button>
+					<button className="button" disabled={!isFormValid} onClick={() => { this.state.status = "update" }}>Update Profile</button>
 				</form>
 			</div>
 		);
