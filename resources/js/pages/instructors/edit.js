@@ -8,6 +8,7 @@ import DatePicker from "react-datepicker";
 import CheckBox from "../../common/CheckBox";
 import { isJustInstructor } from "../../helpers/acl";
 import { read, update, dateToString } from "../../helpers/resource";
+import MultiSelect from '@khanacademy/react-multi-select';
 
 class EditInstructor extends Component {
 	constructor(props) {
@@ -64,6 +65,7 @@ class EditInstructor extends Component {
 		this.addLicense = this.addLicense.bind(this);
 		this.removeLicense = this.removeLicense.bind(this);
 		this.setLicenseDate = this.setLicenseDate.bind(this);
+		this.handleSelectedChanged = this.handleSelectedChanged.bind(this);
 	}
 
 	componentDidMount() {
@@ -77,7 +79,7 @@ class EditInstructor extends Component {
 				if (res.data.licenses.length) fields.licenses = res.data.licenses;
 				if (res.data.user_courses.length) fields.courses = res.data.user_courses;
 				if (res.data.user_territories.length) fields.territories = res.data.user_territories;
-				
+
 				this.setState({
 					fields: {...fields, ...res.data.profile},
 					courses: res.data.courses,
@@ -94,7 +96,23 @@ class EditInstructor extends Component {
 
 		read('territories', {}).then(res => {
 			this.setState({
-				territories: res.data.territories
+				territories: res.data.territories.map(territory => {
+					return {
+						label: territory.name,
+						value: territory.id
+					}
+				})
+			});
+		}).catch(err => console.log(err));
+
+		read('courses', {}).then(res => {
+			this.setState({
+				courses: res.data.courses.map(course => {
+					return {
+						label: course.title,
+						value: course.id
+					}
+				})
 			});
 		}).catch(err => console.log(err));
 	}
@@ -116,6 +134,15 @@ class EditInstructor extends Component {
 		this.validate();
 	}
 
+	handleSelectedChanged(name, value) {
+		let { fields } = this.state;
+		fields[name] = value;
+
+		this.setState({
+			fields: fields
+		});
+	}
+
 	validate() {
 		let { formValidationData, required_fields } = this.state;
 
@@ -131,7 +158,7 @@ class EditInstructor extends Component {
 	handleSubmit(e) {
 		e.preventDefault();
 
-		const { id, isFormValid } = this.state;
+		const { id, fields, isFormValid } = this.state;
 
 		if (!isFormValid) return;
 
@@ -142,6 +169,14 @@ class EditInstructor extends Component {
 		let data = new FormData(e.target);
 		data.append("_method", "PUT");
 		data.append('roles[]', 3);
+
+		fields.territories.forEach(function (territory) {
+			data.append("territories[]", territory);
+		});
+
+		fields.courses.forEach(function (sponsor) {
+			data.append("courses[]", sponsor);
+		});
 
 		update('users/' + id, data)
 			.then(res => {
@@ -200,6 +235,8 @@ class EditInstructor extends Component {
 		const { loaded, fields, regulations, territories, courses, loading, isFormValid, formValidationData } = this.state;
 
 		if (!loaded) return false;
+
+		console.log(fields.courses);
 
 		return (
 			<div>
@@ -393,37 +430,36 @@ class EditInstructor extends Component {
 						<button className="ion-md-add" onClick={this.addLicense}></button>
 					</div>
 
-					{!isJustInstructor() ? <Fragment>
-						<legend>Territories</legend>
-						<fieldset className="fields horizontal">
-							<label>
-								<Select
-									onChange={this.handleChange}
-									name="territories[]"
-									items={territories}
-									value={fields.territories}
-									multiple
-									id={"id"}
-									val={"name"}
-								/>
-							</label>
-						</fieldset>
-
-						<legend>Courses</legend>
-						<fieldset className="fields horizontal">
-							<label>
-								<Select
-									onChange={this.handleChange}
-									name="courses[]"
-									items={courses}
-									value={fields.courses}
-									multiple
-									id={"id"}
-									val={"title"}
-								/>
-							</label>
-						</fieldset>
-					</Fragment> : ""}
+					{!isJustInstructor() ? <fieldset className="fields horizontal">
+						<label>
+							<span>Territories</span>
+							<MultiSelect
+								options={territories}
+								selected={fields.territories}
+								onSelectedChanged={v => this.handleSelectedChanged("territories", v)}
+								overrideStrings={{
+									selectSomeItems: "Select Territories...",
+									allItemsAreSelected: "All Territories",
+									selectAll: "Select All Territories",
+									search: "Search Territories",
+								}}
+							/>
+						</label>
+						<label>
+							<span>Courses</span>
+							<MultiSelect
+								options={courses}
+								selected={fields.courses}
+								onSelectedChanged={v => this.handleSelectedChanged("courses", v)}
+								overrideStrings={{
+									selectSomeItems: "Select Courses...",
+									allItemsAreSelected: "All Courses",
+									selectAll: "Select All Courses",
+									search: "Search Courses",
+								}}
+							/>
+						</label>
+					</fieldset> : ""}
 
 					<div className="row">
 						<div className="col-md-6 col-lg-4">

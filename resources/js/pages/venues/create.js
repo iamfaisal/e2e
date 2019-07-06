@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";;
 import { read, create } from "../../helpers/resource";
+import MultiSelect from '@khanacademy/react-multi-select';
 
 class CreateVenue extends Component {
 	constructor(props) {
@@ -14,7 +15,7 @@ class CreateVenue extends Component {
 				city: "",
 				name: "",
 				regulation: "",
-				user: "",
+				users: [],
 				zip_code: ""
 			},
 			required_fields: {
@@ -31,10 +32,15 @@ class CreateVenue extends Component {
 	}
 
 	componentDidMount() {
-		read('users/', {params: { role: "instructor" } })
+		read('users/', { params: { role: "instructor" } })
 			.then(res => {
 				this.setState({
-					instructors: res.data.users
+					instructors: res.data.users.map(user => {
+						return {
+							label: user.name,
+							value: user.id
+						}
+					})
 				});
 			})
 			.catch(err => console.log(err));
@@ -65,6 +71,15 @@ class CreateVenue extends Component {
 		this.validate();
 	}
 
+	handleSelectedChanged(selected) {
+		let { fields } = this.state;
+		fields.users = selected;
+
+		this.setState({
+			fields: fields
+		});
+	}
+
 	validate() {
 		let { formValidationData, required_fields } = this.state;
 
@@ -88,33 +103,37 @@ class CreateVenue extends Component {
 			loading: true
 		});
 
-		create('venues', new FormData(e.target))
-			.then(res => {
-				if (this.props.onSuccess) {
-					this.props.onSuccess();
+		let data = new FormData(e.target);
 
-					this.setState({
+		fields.instructors.forEach(function (sponsor) {
+			data.append("users[]", sponsor);
+		});
+
+		create('venues', data).then(res => {
+			if (this.props.onSuccess) {
+				this.props.onSuccess();
+
+				this.setState({
+					loading: false,
+					isFormValid: false
+				});
+			} else {
+				res.status === 200
+					? this.props.history.push("/venues")
+					: this.setState({
 						loading: false,
 						isFormValid: false
 					});
-				} else {
-					res.status === 200
-						? this.props.history.push("/venues")
-						: this.setState({
-							loading: false,
-							isFormValid: false
-						});
-				}
+			}
+		}).catch(err => {
+			let { formValidationData } = this.state;
+			formValidationData.form = "Unable To Create Venue";
+			this.setState({
+				formValidationData: formValidationData,
+				loading: false,
+				isFormValid: false
 			})
-			.catch(err => {
-				let { formValidationData } = this.state;
-				formValidationData.form = "Unable To Create Venue";
-				this.setState({
-					formValidationData: formValidationData,
-					loading: false,
-					isFormValid: false
-				})
-			});
+		});
 	}
 
 	render() {
@@ -139,13 +158,16 @@ class CreateVenue extends Component {
 						/>
 						<label>
 							<span>Instructor</span>
-							<Select
-								onChange={this.handleChange}
-								name="users[]"
-								items={instructors}
-								id={"id"}
-								val={"name"}
-								multiple={true}
+							<MultiSelect
+								options={instructors}
+								selected={fields.users}
+								onSelectedChanged={this.handleSelectedChanged.bind(this)}
+								overrideStrings={{
+									selectSomeItems: "Select Instructors...",
+									allItemsAreSelected: "All Instructors",
+									selectAll: "Select All Instructors",
+									search: "Search Instructors",
+								}}
 							/>
 						</label>
 					</fieldset>

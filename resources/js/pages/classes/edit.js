@@ -4,6 +4,7 @@ import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
 import DatePicker from "react-datepicker";
 import { read, update, dateToString } from "../../helpers/resource";
+import MultiSelect from '@khanacademy/react-multi-select';
 
 class EditClass extends Component {
 	constructor(props) {
@@ -36,6 +37,7 @@ class EditClass extends Component {
 			},
 			workshop: 0,
 			sponsors: [],
+			selectedSponsors: [],
 			courses: [],
 			instructors: [],
 			venues: [],
@@ -52,6 +54,8 @@ class EditClass extends Component {
 		read('classes/' + id, {})
 			.then(res => {
 				let { fields } = this.state;
+
+				res.data.class.sponsors = res.data.sponsors.map(({id}) => id);
 
 				this.setState({
 					loaded: true,
@@ -88,7 +92,12 @@ class EditClass extends Component {
 		read('sponsors', { params: { role: 'admin' } })
 			.then(res => {
 				this.setState({
-					sponsors: res.data.sponsors
+					sponsors: res.data.sponsors.map(sponsor => {
+						return {
+							label: sponsor.first_name + " " + sponsor.last_name,
+							value: sponsor.id
+						}
+					})
 				});
 			})
 			.catch(err => console.log(err));
@@ -101,6 +110,15 @@ class EditClass extends Component {
 		} else {
 			fields[name] = value;
 		}
+
+		this.setState({
+			fields: fields
+		});
+	}
+
+	handleSelectedChanged(selected) {
+		let { fields } = this.state;
+		fields.sponsors = selected;
 
 		this.setState({
 			fields: fields
@@ -129,7 +147,7 @@ class EditClass extends Component {
 	handleSubmit(e) {
 		e.preventDefault();
 
-		const { id, workshop } = this.state;
+		const { id, workshop, fields } = this.state;
 
 		this.setState({
 			loading: true
@@ -137,6 +155,10 @@ class EditClass extends Component {
 
 		let data = new FormData(e.target);
 		data.append("_method", "PUT");
+
+		fields.sponsors.forEach(function (sponsor) {
+			data.append("sponsors[]", sponsor);
+		});
 
 		update('classes/' + id, data, true)
 			.then(res => {
@@ -311,19 +333,17 @@ class EditClass extends Component {
 					</fieldset>
 
 					<legend>Sponsors</legend>
-					<fieldset className="fields horizontal">
-						<label>
-							<Select
-								onChange={v => fields.course = v}
-								name="sponsors[]"
-								items={sponsors}
-								id="id"
-								val="first_name|last_name"
-								multiple={true}
-								value={fields.sponsors.map(({ id }) => id)}
-							/>
-						</label>
-					</fieldset>
+					<MultiSelect
+						options={sponsors}
+						selected={fields.sponsors}
+						onSelectedChanged={this.handleSelectedChanged.bind(this)}
+						overrideStrings={{
+							selectSomeItems: "Select Sponsors...",
+							allItemsAreSelected: "All Sponsors",
+							selectAll: "Select All Sponsors",
+							search: "Search Sponsors",
+						}}
+					/>
 
 					<div className="row">
 						<div className="col-lg-4">

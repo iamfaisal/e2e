@@ -114,7 +114,10 @@ class Instructors extends Component {
             {
                 name: 'Name',
                 cell: user => {
-                    return <Link to={"/instructors/edit/" + user.id}>{getUserFullName(user)}</Link>
+                    return <div>
+                        <Link to={"/instructors/edit/" + user.id}>{getUserFullName(user)}</Link><br />
+                        <small>educate</small>
+                    </div>
                 },
                 selector: 'profile.first_name',
                 ignoreRowClick: true,

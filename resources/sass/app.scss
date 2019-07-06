@@ -821,6 +821,22 @@ table {
 	.addnew:hover {
 		background: #e4e7ee;
 	}
+
+	.multi-select {
+		.dropdown-heading {
+			border: 0 !important;
+			height: 23px !important;
+
+			.dropdown-heading-value {
+				line-height: 23px !important;
+				padding: 0 !important;
+			}
+		}
+
+		.dropdown-content .select-item span {
+			color: #232d39 !important;
+		}
+	}
 }
 @media(min-width: 576px) {
 	.fields.horizontal > label,
@@ -1387,8 +1403,32 @@ legend .checkbox {
 	}
 }
 
-form > label {
-	max-width: 380px;
+form {
+	> label {
+		max-width: 380px;
+	}
+
+	> .multi-select {
+		margin-bottom: 30px;
+		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
+		.dropdown-heading {
+			border: 0 !important;
+			height: 42px !important;
+
+			.dropdown-heading-value {
+				padding: 5px 12px !important;
+			}
+		}
+
+		.dropdown-content {
+			border: 0 !important;
+
+			.select-item {
+				color: #232d39 !important;
+			}
+		}
+	}
 }
 
 body.modal-visible {
