@@ -185,13 +185,15 @@ class Classes extends Component {
 				width: '110px'
 			},
 			{
+				name: 'Instructor',
+				selector: "user.name",
+				ignoreRowClick: true,
+				sortable: true,
+				width: '100px'
+			},
+			{
 				name: 'Course',
-				cell: row => {
-					return <Fragment>
-						<Link to={"/classes/edit/" + row.id}>{row.course.title}</Link><br />
-						<small>{row.user.name}</small><br />
-					</Fragment>
-				},
+				cell: row => <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link>,
 				selector: "course.title",
 				ignoreRowClick: true,
 				sortable: true,
@@ -216,7 +218,7 @@ class Classes extends Component {
 				width: '60px'
 			},
 			{
-				name: 'Hours',
+				name: 'Length',
 				cell: row => dateDifference(row.start_date, row.end_date),
 				sortable: true,
 				width: '60px'
@@ -229,6 +231,19 @@ class Classes extends Component {
 				width: '60px'
 			},
 			{
+				name: 'Material',
+				cell: row => {
+					return <small className="links">
+						<a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
+						<span className="sep"></span>
+						<a href={asset(row.docs, true)} target="_balank">Class Docs</a>
+					</small>
+				},
+				ignoreRowClick: true,
+				sortable: true,
+				width: '130px'
+			},
+			{
 				name: 'Created At',
 				cell: row => {
 					let parts = formatDate(row.created_at).split(", ");
@@ -237,22 +252,6 @@ class Classes extends Component {
 				selector: "created_at",
 				sortable: true,
 				width: '90px'
-			},
-			{
-				name: 'Material',
-				cell: row => {
-					return <small className="links">
-						<a href={asset(row.course.material)} target="_balank">Course Materials</a>
-						<span className="sep"></span>
-						<a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
-						<span className="sep"></span>
-						<a href={asset(row.docs, true)} target="_balank">Class Docs</a>
-					</small>
-				},
-				selector: "course.title",
-				ignoreRowClick: true,
-				sortable: true,
-				width: '230px'
 			},
 			{
 				name: 'Actions',
@@ -301,17 +300,17 @@ class Classes extends Component {
 
 					<label className="checkbox">
 						<input type="checkbox" onChange={e => this.setfilter(e.target.checked ? "!Approved" : "", "status")} />
-						<span>Need Approval</span>
+						<span>Pending Approval</span>
 					</label>
 
 					<label className="checkbox">
 						<input type="checkbox" onChange={e => this.toggleArchived(e)} />
-						<span>Show archived</span>
+						<span>Archived Classes</span>
 					</label>
 
 					<label className="checkbox">
 						<input type="checkbox" onChange={e => this.toggleCancelled(e)} />
-						<span>Show cancelled</span>
+						<span>Show Cancelled</span>
 					</label>
 				</div>
 

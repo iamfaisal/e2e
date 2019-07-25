@@ -52,14 +52,13 @@ class Courses extends Component {
     }
 
     renderActions(course) {
-        return (
-            <div className="actions">
-                <Link className="ion-md-create" to={"/courses/edit/" + course.id}
-                    data-toggle="tooltip" title="Edit Course" />
-                <a className="ion-md-close" onClick={e => this.deleteCourse(e, course.id)}
-                    data-toggle="tooltip" title="Archive Course" />
-            </div>
-        );
+        const archived = course.is_deleted == "1";
+
+        return <div className="actions">
+            <Link className="ion-md-create" to={"/courses/edit/" + course.id} data-toggle="tooltip" title="Edit Course" />
+            {!archived && <a className="ion-md-close" onClick={e => this.deleteCourse(e, course.id)} data-toggle="tooltip" title="Archive Course" />}
+            {archived && <a className="ion-md-refresh" onClick={e => this.deleteCourse(e, course.id)} data-toggle="tooltip" title="Unarchive Course" />}
+        </div>
     }
 
     renderCategories(course) {
@@ -132,13 +131,13 @@ class Courses extends Component {
                 sortable: true
             },
             {
-                name: 'Categories',
+                name: 'Category',
                 cell: row => this.renderCategories(row),
                 sortable: true,
                 maxWidth: '150px'
             },
             {
-                name: 'Hours',
+                name: 'Length',
                 cell: row => (row.hours+"").replace(".00", ""),
                 selector: 'hours',
                 sortable: true,
@@ -178,7 +177,7 @@ class Courses extends Component {
 
                     <label className="checkbox">
                         <input type="checkbox" onChange={e => this.toggleArchived(e)} />
-                        <span>Show archived</span>
+                        <span>Archived CE Courses</span>
                     </label>
                 </div>
 

@@ -58,6 +58,10 @@ class Select extends Component {
 
         if (multiple && !Array.isArray(value)) value = [value];
 
+        if (val == "name" || val == "label") {
+            items.sort((a, b) => a[val] < b[val] ? -1 : 1);
+        }
+
         return (
             <select
                 name={name}
@@ -66,15 +70,9 @@ class Select extends Component {
                 multiple={multiple}>
                 {placeholder && <option value={""}>{placeholder}</option>}
                 {
-                    items.map((item, i) => {
-                        return (
-                            <option key={i} value={item[id]}>
-                                {val.split('|').map(element => {
-                                    return item[element] + " ";
-                                })}
-                            </option>
-                        )
-                    })
+                    items.map((item, i) => <option key={i} value={item[id]}>
+                        {val.split('|').map(element => item[element] + " ")}
+                    </option>)
                 }
             </select>
         );

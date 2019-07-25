@@ -1,7 +1,7 @@
 export const links = [
     // super admin
     {
-        name: "Courses",
+        name: "CE Courses",
         url: "/courses",
         icon: "ion-ios-filing",
         role: "system"
