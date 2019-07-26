@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
+import FileInput from "../../common/FileInput";
 import DatePicker from "react-datepicker";
 import { read, create, dateToString, addDays } from "../../helpers/resource";
 import { toggleModel } from "../../helpers/app";
 import CreateVenue from "../venues/create";
+import MultiSelect from '@khanacademy/react-multi-select';
 
 class CreateClass extends Component {
 	constructor(props) {
@@ -36,9 +38,11 @@ class CreateClass extends Component {
 				docs: ""
 			},
 			workshop: queryParams.get("ws") ? 1 : 0,
+			sponsors: [],
 			courses: [],
 			instructors: [],
 			venues: [],
+			isFormValid: false,
 			formValidationData: {}
 		};
 
@@ -48,6 +52,17 @@ class CreateClass extends Component {
 	}
 
 	componentDidMount() {
+		read('sponsors/', {params: {role: 'admin'}}).then(res => {
+			this.setState({
+				sponsors: res.data.sponsors.map(sponsor => {
+					return {
+						label: sponsor.first_name + " " + sponsor.last_name,
+						value: sponsor.id
+					}
+				})
+			});
+		}).catch(console.log);
+
 		read('courses/', {})
 			.then(res => {
 				this.setState({
@@ -109,6 +124,15 @@ class CreateClass extends Component {
 		this.setState({fields: fields});
 	}
 
+	handleSelectedChanged(selected) {
+		let { fields } = this.state;
+		fields.sponsors = selected;
+
+		this.setState({
+			fields: fields
+		});
+	}
+
 	handleSubmit(e) {
 		e.preventDefault();
 
@@ -144,7 +168,7 @@ class CreateClass extends Component {
 	}
 
 	render() {
-		const { minDate, fields, workshop, courses, instructors, venues, loading, isFormValid, formValidationData } = this.state;
+		const { minDate, fields, workshop, sponsors, courses, instructors, venues, loading, isFormValid, formValidationData } = this.state;
 
 		return (
 			<div>
@@ -154,19 +178,57 @@ class CreateClass extends Component {
 
 				<form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
 				{formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
+					<label>
+						<span>Instructor</span>
+						<Select
+							onChange={v => fields.instructor = v}
+							name="instructor"
+							items={instructors}
+							id="id"
+							val="name"
+						/>
+					</label>
+
 					<fieldset className="fields horizontal">
 						<label>
-							<span>Instructor</span>
-							<Select
-								onChange={v => fields.instructor = v}
-								name="instructor"
-								items={instructors}
-								id="id"
-								val="name"
+							<span>Class Date</span>
+							<DatePicker
+								selected={fields.start_date_time}
+								onChange={d => this.handleDateChange(d)}
+								minDate={addDays(new Date, minDate)}
+								dateFormat="MMMM d, yyyy"
 							/>
 						</label>
+						<div className="label">
+							<label>
+								<span>Start Time</span>
+								<DatePicker
+									selected={fields.start_date_time}
+									onChange={d => this.handleDateChange(d, "start_date_time")}
+									showTimeSelect
+									showTimeSelectOnly
+									timeFormat="h:mm aa"
+									timeIntervals={30}
+									dateFormat="h:mm aa"
+								/>
+								<input type="hidden" name="start_date_time" value={dateToString(fields.start_date_time, true)} />
+							</label>
+							<label>
+								<span>End Time</span>
+								<DatePicker
+									selected={fields.end_date_time}
+									onChange={d => this.handleDateChange(d, "end_date_time")}
+									showTimeSelect
+									showTimeSelectOnly
+									timeFormat="h:mm aa"
+									timeIntervals={30}
+									dateFormat="h:mm aa"
+								/>
+								<input type="hidden" name="end_date_time" value={dateToString(fields.end_date_time, true)} />
+							</label>
+						</div>
 						<label>
-							<span>Course</span>
+							<span>Course Title</span>
 							<Select
 								onChange={v => fields.course = v}
 								name="course"
@@ -175,6 +237,13 @@ class CreateClass extends Component {
 								val="title"
 							/>
 						</label>
+						<TextField
+							onChange={this.handleChange}
+							name="price"
+							value={fields.price}
+							labelText="Class Cost"
+							placeholder="Class Cost (must enter a value even if it is zero)"
+						/>
 						<label>
 							<span>Venue</span>
 							<Select
@@ -191,61 +260,21 @@ class CreateClass extends Component {
 							name="capacity"
 							value={fields.capacity}
 							labelText="Capacity"
-						/>
-						<label>
-							<span>Date</span>
-							<DatePicker
-								selected={fields.start_date_time}
-								onChange={d => this.handleDateChange(d)}
-								minDate={addDays(new Date, minDate)}
-								dateFormat="MMMM d, yyyy"
-							/>
-						</label>
-						<div className="label">
-							<label>
-								<span>From</span>
-								<DatePicker
-									selected={fields.start_date_time}
-									onChange={d => this.handleDateChange(d, "start_date_time")}
-									showTimeSelect
-									showTimeSelectOnly
-									timeFormat="h:mm aa"
-									timeIntervals={30}
-									dateFormat="h:mm aa"
-								/>
-								<input type="hidden" name="start_date_time" value={dateToString(fields.start_date_time, true)} />
-							</label>
-							<label>
-								<span>To</span>
-								<DatePicker
-									selected={fields.end_date_time}
-									onChange={d => this.handleDateChange(d, "end_date_time")}
-									showTimeSelect
-									showTimeSelectOnly
-									timeFormat="h:mm aa"
-									timeIntervals={30}
-									dateFormat="h:mm aa"
-								/>
-								<input type="hidden" name="end_date_time" value={dateToString(fields.end_date_time, true)} />
-							</label>
-						</div>
-						<TextField
-							onChange={this.handleChange}
-							name="price"
-							value={fields.price}
-							labelText="Cost"
+							placeholder="Capacity (optional)"
 						/>
 						<TextField
 							onChange={this.handleChange}
 							name="alternate_instructor"
 							value={fields.alternate_instructor}
 							labelText="Co-Instructor"
+							placeholder="Co-Instructor (optional)"
 						/>
 						<TextField
 							onChange={this.handleChange}
 							name="guest_speaker"
 							value={fields.guest_speaker}
 							labelText="Guest Speaker"
+							placeholder="Guest Speaker (optional)"
 						/>
 					</fieldset>
 
@@ -285,12 +314,44 @@ class CreateClass extends Component {
 						</div>
 					</fieldset>
 
+					<legend>Sponsors</legend>
+					<MultiSelect
+						options={sponsors}
+						selected={[]}
+						onSelectedChanged={this.handleSelectedChanged.bind(this)}
+						overrideStrings={{
+							selectSomeItems: "Select Sponsors...",
+							allItemsAreSelected: "All Sponsors",
+							selectAll: "Select All Sponsors",
+							search: "Search Sponsors",
+						}}
+					/>
+
+					<div className="row">
+						<div className="col-lg-4">
+							<FileInput
+								onChange={(event) => this.handleChange(event)}
+								name="flyer"
+								labelText="Class Flyer"
+								value={fields.flyer}
+							/>
+						</div>
+						<div className="col-lg-4">
+							<FileInput
+								onChange={(event) => this.handleChange(event)}
+								name="flyer_image"
+								labelText="Class Flyer Image"
+								value={fields.flyer_image}
+							/>
+						</div>
+					</div>
+
 					<input type="hidden" name="is_workshop" value={workshop} />
 					<button className="button">Create {workshop ? "Workshop" : "Class"}</button>
 				</form>
 
 				<div className="modal modal-venue">
-					<button className="modal-close ion-md-close" onClick={toggleModel}></button>
+					<button className="modal-close ion-md-close" onClick={toggleModel} disabled={isFormValid}></button>
 					<div className="modal-content">
 						<CreateVenue onSuccess={this.onVenueAdded} />
 					</div>

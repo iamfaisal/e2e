@@ -200,31 +200,21 @@ class EditClass extends Component {
 
 				<form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
 					{formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
+					<label>
+						<span>Instructor</span>
+						<Select
+							onChange={v => fields.user_id = v}
+							value={fields.user_id}
+							name="instructor"
+							items={instructors}
+							id="id"
+							val="name"
+						/>
+					</label>
+
 					<fieldset className="fields horizontal">
 						<label>
-							<span>Instructor</span>
-							<Select
-								onChange={v => fields.user_id = v}
-								value={fields.user_id}
-								name="instructor"
-								items={instructors}
-								id="id"
-								val="name"
-							/>
-						</label>
-						<label>
-							<span>Course</span>
-							<Select
-								onChange={v => fields.course_id = v}
-								value={fields.course_id}
-								name="course"
-								items={courses}
-								id="id"
-								val="title"
-							/>
-						</label>
-						<label>
-							<span>Date</span>
+							<span>Class Date</span>
 							<DatePicker
 								selected={fields.start_date}
 								onChange={d => this.handleDateChange(d)}
@@ -233,7 +223,7 @@ class EditClass extends Component {
 						</label>
 						<div className="label">
 							<label>
-								<span>From</span>
+								<span>Start Time</span>
 								<DatePicker
 									selected={fields.start_date}
 									onChange={d => this.handleDateChange(d, "start_date")}
@@ -246,7 +236,7 @@ class EditClass extends Component {
 								<input type="hidden" name="start_date_time" value={dateToString(fields.start_date, true)} />
 							</label>
 							<label>
-								<span>To</span>
+								<span>End Time</span>
 								<DatePicker
 									selected={fields.end_date}
 									onChange={d => this.handleDateChange(d, "end_date")}
@@ -259,6 +249,24 @@ class EditClass extends Component {
 								<input type="hidden" name="end_date_time" value={dateToString(fields.end_date, true)} />
 							</label>
 						</div>
+						<label>
+							<span>Course Title</span>
+							<Select
+								onChange={v => fields.course_id = v}
+								value={fields.course_id}
+								name="course"
+								items={courses}
+								id="id"
+								val="title"
+							/>
+						</label>
+						<TextField
+							onChange={this.handleChange}
+							name="price"
+							value={fields.price ? fields.price : "0"}
+							labelText="Class Cost"
+							placeholder="Class Cost (must enter a value even if it is zero)"
+						/>
 						<label>
 							<span>Venue</span>
 							<Select
@@ -275,24 +283,21 @@ class EditClass extends Component {
 							name="capacity"
 							value={fields.capacity}
 							labelText="Capacity"
-						/>
-						<TextField
-							onChange={this.handleChange}
-							name="price"
-							value={fields.price ? fields.price : "0"}
-							labelText="Cost"
+							placeholder="Capacity (optional)"
 						/>
 						<TextField
 							onChange={this.handleChange}
 							name="alternate_instructor"
 							value={fields.alternate_instructor}
 							labelText="Co-Instructor"
+							placeholder="Co-Instructor (optional)"
 						/>
 						<TextField
 							onChange={this.handleChange}
 							name="guest_speaker"
 							value={fields.guest_speaker}
 							labelText="Guest Speaker"
+							placeholder="Guest Speaker (optional)"
 						/>
 					</fieldset>
 

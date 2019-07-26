@@ -82,7 +82,7 @@ class Classes extends Component {
 	}
 
 	renderActions(clss) {
-		if (this.state.archived) {
+		if (this.state.archived && false) {
 			return (
 				<form className="actions roaster-actions">
 					<input type="hidden" name="class_id" value={clss.id} />
@@ -97,9 +97,9 @@ class Classes extends Component {
 		} else {
 			return (
 				<div className="actions">
+					<Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id} />
 					{clss.status != 'Approved' ? <Link data-toggle="tooltip" title="Approve Class" className="ion-md-checkmark" to={"/classes/approve/" + clss.id} /> : ""}
 					{clss.status != 'Cancelled' ? <Link data-toggle="tooltip" title="Cancel Class" className="ion-md-close" to={"/classes/cancel/" + clss.id} /> : ""}
-					<Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id} />
 					<a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
 				</div>
 			);
