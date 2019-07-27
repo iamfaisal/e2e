@@ -13,7 +13,8 @@ class Instructors extends Component {
             instructors: [],
             regulations: [],
             filters: {
-                deleted: "0"
+                deleted: "0",
+                status: "1"
             },
             loader: true
         };
@@ -51,27 +52,23 @@ class Instructors extends Component {
         }).catch(err => console.log(err));
     }
 
-    renderLoader() {
-        return (
-            <div className="loader"/>
-        );
-    }
+    renderLoader() { return <div className="loader" /> }
 
     renderActions(instructor) {
         let status = "Approve";
         let icon = "ion-md-checkmark";
+
         if (instructor.status) {
             status = "Archive";
             icon = "ion-md-close";
         }
-        return (
-            <div className="actions">
-                <Link className="ion-md-create" to={"/instructors/edit/" + instructor.id}
-                    data-toggle="tooltip" title="Edit Instructor" />
-                <a className={icon} onClick={e => this.toggleStatus(e, instructor.id)}
-                    data-toggle="tooltip" title={status + " Instructor"} />
-            </div>
-        );
+
+        return <div className="actions">
+            <Link className="ion-md-create" to={"/instructors/edit/" + instructor.id}
+                data-toggle="tooltip" title="Edit Instructor" />
+            <a className={icon} onClick={e => this.toggleStatus(e, instructor.id)}
+                data-toggle="tooltip" title={status + " Instructor"} />
+        </div>
     }
 
     toggleStatus(e, instructor) {
@@ -96,8 +93,7 @@ class Instructors extends Component {
 
     toggleNeedApproval(e) {
         let { filters } = this.state;
-        delete filters.status;
-        if (e.target.checked) filters.status = "0";
+        filters.status = e.target.checked ? "0" : "1";
         this.setState({ filters: filters });
     }
 
@@ -171,12 +167,12 @@ class Instructors extends Component {
 
                     <label className="checkbox">
                         <input type="checkbox" onChange={e => this.toggleNeedApproval(e)} />
-                        <span>Need Approval</span>
+                        <span>Pending Approval</span>
                     </label>
 
                     <label className="checkbox">
                         <input type="checkbox" onChange={e => this.toggleArchived(e)} />
-                        <span>Show archived</span>
+                        <span>Archived Instructors</span>
                     </label>
                 </div>
 

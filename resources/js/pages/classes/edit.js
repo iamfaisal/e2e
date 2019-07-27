@@ -4,7 +4,10 @@ import Select from "../../common/Select";
 import FileInput from "../../common/FileInput";
 import DatePicker from "react-datepicker";
 import { read, update, dateToString } from "../../helpers/resource";
-import MultiSelect from '@khanacademy/react-multi-select';
+import { toggleModel } from "../../helpers/app";
+import CreateVenue from "../venues/create";
+import CreateSponsor from "../sponsors/create";
+import ReactSelect from 'react-select';
 
 class EditClass extends Component {
 	constructor(props) {
@@ -37,7 +40,6 @@ class EditClass extends Component {
 			},
 			workshop: 0,
 			sponsors: [],
-			selectedSponsors: [],
 			courses: [],
 			instructors: [],
 			venues: [],
@@ -46,6 +48,8 @@ class EditClass extends Component {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.onVenueAdded = this.onVenueAdded.bind(this);
+		this.onSponsorAdded = this.onSponsorAdded.bind(this);
 	}
 
 	componentDidMount() {
@@ -81,39 +85,44 @@ class EditClass extends Component {
 			})
 			.catch(err => console.log(err));
 
-		read('venues', {})
-			.then(res => {
-				this.setState({
-					venues: res.data.venues
-				});
-			})
-			.catch(err => console.log(err));
+		this.getVenues();
 
-		read('sponsors', { params: { role: 'admin' } })
-			.then(res => {
-				this.setState({
-					sponsors: res.data.sponsors.map(sponsor => {
-						return {
-							label: sponsor.first_name + " " + sponsor.last_name,
-							value: sponsor.id
-						}
-					})
-				});
-			})
-			.catch(err => console.log(err));
+		this.getSponsors();
+	}
+
+	getVenues() {
+		read('venues', {}).then(res => {
+			this.setState({
+				venues: res.data.venues
+			});
+		}).catch(console.log);
+	}
+
+	getSponsors() {
+		read('sponsors/', { params: { role: 'admin' } }).then(res => {
+			this.setState({
+				sponsors: res.data.sponsors.map(sponsor => {
+					return {
+						label: sponsor.first_name + " " + sponsor.last_name,
+						value: sponsor.id
+					}
+				}).sort((a, b) => a.label < b.label ? -1 : 1)
+			});
+		}).catch(console.log);
 	}
 
 	handleChange(name, value) {
 		let { fields } = this.state;
+
 		if (event && event.target.files) {
 			fields[name] = event.target.files;
+		} else if (Array.isArray(value)) {
+			fields[name] = value.map(v => v.value);
 		} else {
 			fields[name] = value;
 		}
 
-		this.setState({
-			fields: fields
-		});
+		this.setState({fields: fields});
 	}
 
 	handleSelectedChanged(selected) {
@@ -180,6 +189,16 @@ class EditClass extends Component {
 			});
 	}
 
+	onVenueAdded() {
+		this.getVenues();
+		toggleModel('venue');
+	}
+
+	onSponsorAdded() {
+		this.getSponsors();
+		toggleModel('sponsor');
+	}
+
 	render() {
 		const { loaded, fields, workshop, courses, instructors, venues, sponsors, loading, isFormValid, formValidationData } = this.state;
 		
@@ -191,6 +210,12 @@ class EditClass extends Component {
 		if (fields.end_date.constructor !== Date) {
 			fields.end_date = new Date(fields.end_date);
 		}
+
+		let selectedSponsors = fields.sponsors.map(c => {
+			let label = "";
+			sponsors.forEach(sponsor => sponsor.value == c ? label = sponsor.label : "");
+			return { label: label, value: c }
+		});
 
 		return (
 			<div>
@@ -277,6 +302,7 @@ class EditClass extends Component {
 								id="id"
 								val="name"
 							/>
+							<span className="addnew" onClick={() => toggleModel("venue")}>+</span>
 						</label>
 						<TextField
 							onChange={this.handleChange}
@@ -337,18 +363,19 @@ class EditClass extends Component {
 						</div>	
 					</fieldset>
 
-					<legend>Sponsors</legend>
-					<MultiSelect
-						options={sponsors}
-						selected={fields.sponsors}
-						onSelectedChanged={this.handleSelectedChanged.bind(this)}
-						overrideStrings={{
-							selectSomeItems: "Select Sponsors...",
-							allItemsAreSelected: "All Sponsors",
-							selectAll: "Select All Sponsors",
-							search: "Search Sponsors",
-						}}
-					/>
+					<fieldset className="fields horizontal">
+						<label>
+							<span>Sponsors</span>
+							<span className="addnew" onClick={() => toggleModel("sponsor")}>+</span>
+							<ReactSelect
+								className="react-select"
+								options={sponsors}
+								value={selectedSponsors}
+								onChange={v => this.handleChange("sponsors", v)}
+								isMulti={true}
+								name="sponsors[]" />
+						</label>
+					</fieldset>
 
 					<div className="row">
 						<div className="col-lg-4">
@@ -372,6 +399,20 @@ class EditClass extends Component {
 					<input type="hidden" name="is_workshop" value={workshop} />
 					<button className="button">Update {workshop ? "Workshop" : "Class"}</button>
 				</form>
+
+				<div className="modal modal-venue">
+					<button className="modal-close ion-md-close" onClick={toggleModel}></button>
+					<div className="modal-content">
+						<CreateVenue onSuccess={this.onVenueAdded} />
+					</div>
+				</div>
+
+				<div className="modal modal-sponsor">
+					<button className="modal-close ion-md-close" onClick={toggleModel}></button>
+					<div className="modal-content">
+						<CreateSponsor onSuccess={this.onSponsorAdded} />
+					</div>
+				</div>
 			</div>
 		);
 	}

@@ -3,7 +3,7 @@ import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import { read, update } from "../../helpers/resource";
-import MultiSelect from '@khanacademy/react-multi-select';
+import ReactSelect from 'react-select';
 
 class EditVenue extends Component {
 	constructor(props) {
@@ -58,7 +58,7 @@ class EditVenue extends Component {
 							label: user.name,
 							value: user.id+""
 						}
-					})
+					}).sort((a, b) => a.label < b.label ? -1 : 1)
 				});
 			})
 			.catch(err => console.log(err));
@@ -76,6 +76,8 @@ class EditVenue extends Component {
 		let { fields, formValidationData } = this.state;
 		if (event && event.target.files) {
 			fields[name] = event.target.files;
+		} else if (Array.isArray(value)) {
+			fields[name] = value.map(v => v.value);
 		} else {
 			fields[name] = value;
 		}
@@ -113,7 +115,7 @@ class EditVenue extends Component {
 	handleSubmit(e) {
 		e.preventDefault();
 
-		const { id, fields, isFormValid } = this.state;
+		const { id, isFormValid } = this.state;
 
 		if (!isFormValid) return;
 
@@ -123,10 +125,6 @@ class EditVenue extends Component {
 		
 		let data = new FormData(e.target);
 		data.append('_method', 'PUT');
-
-		fields.users.forEach(function (sponsor) {
-			data.append("users[]", sponsor);
-		});
 
 		update('venues/' + id, data)
 			.then(res => {
@@ -153,6 +151,12 @@ class EditVenue extends Component {
 
 		if (!loaded) return false;
 
+		let selected_instructors = fields.users.map(c => {
+			let label = "";
+			instructors.forEach(instructor => instructor.value == c ? label = instructor.label : "");
+			return { label: label, value: c }
+		});
+
 		return (
 			<div>
 				<header className="pageheader">
@@ -173,16 +177,13 @@ class EditVenue extends Component {
 						/>
 						<label>
 							<span>Instructor</span>
-							<MultiSelect
+							<ReactSelect
+								className="react-select"
 								options={instructors}
-								selected={fields.users}
-								onSelectedChanged={this.handleSelectedChanged.bind(this)}
-								overrideStrings={{
-									selectSomeItems: "Select Instructors...",
-									allItemsAreSelected: "All Instructors",
-									selectAll: "Select All Instructors",
-									search: "Search Instructors",
-								}}
+								selected={selected_instructors}
+								onChange={v => this.handleChange("users", v)}
+								isMulti={true}
+								name="users[]"
 							/>
 						</label>
 					</fieldset>

@@ -53,7 +53,7 @@ class CreateMyClass extends Component {
 		read('classes/hasPendingRosters', {})
 			.then(res => {
 				this.setState({
-					// canAddNew: res.data.classes.length ? false : true
+					canAddNew: res.data.classes.length ? false : true
 				});
 			})
 			.catch(err => console.log(err));

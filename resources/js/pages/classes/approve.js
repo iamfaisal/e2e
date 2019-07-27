@@ -192,7 +192,7 @@ class ApproveClass extends Component {
                             <CheckBox name="capacity" labelText="Needs Attention" />
                         </li>
                         <li>
-                            <b>Alternate Instructor:</b>
+                            <b>Co-Instructor:</b>
                             <span>{fields.alternate_instructor}</span>
                             <CheckBox name="alternate_instructor" labelText="Needs Attention" />
                         </li>

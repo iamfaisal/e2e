@@ -817,6 +817,14 @@ table {
 		color: #727886;
 		cursor: pointer;
 		transition: .25s;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 1;
+
+		+ .react-select {
+			margin-right: 20px;
+		}
 	}
 	.addnew:hover {
 		background: #e4e7ee;
@@ -1485,6 +1493,32 @@ body.modal-visible {
 		.modal-content {
 			transform: translateX(100%);
 			box-shadow: 0 0;
+		}
+	}
+}
+
+.fields .react-select {
+	> [class$=control] {
+		min-height: 23px;
+		border: 0;
+		box-shadow: none !important;
+		
+		> div {
+			padding: 0;
+			border: 0 !important;
+		}
+
+		[class$=Input] {
+			margin: 0;
+			padding: 0;
+		}
+
+		[class$=indicatorSeparator] {
+			display: none;
+		}
+
+		[class$=indicatorContainer] {
+			padding: 1px 8px;
 		}
 	}
 }

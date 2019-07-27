@@ -6,7 +6,8 @@ import DatePicker from "react-datepicker";
 import { read, create, dateToString, addDays } from "../../helpers/resource";
 import { toggleModel } from "../../helpers/app";
 import CreateVenue from "../venues/create";
-import MultiSelect from '@khanacademy/react-multi-select';
+import CreateSponsor from "../sponsors/create";
+import ReactSelect from 'react-select';
 
 class CreateClass extends Component {
 	constructor(props) {
@@ -49,20 +50,10 @@ class CreateClass extends Component {
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.onVenueAdded = this.onVenueAdded.bind(this);
+		this.onSponsorAdded = this.onSponsorAdded.bind(this);
 	}
 
 	componentDidMount() {
-		read('sponsors/', {params: {role: 'admin'}}).then(res => {
-			this.setState({
-				sponsors: res.data.sponsors.map(sponsor => {
-					return {
-						label: sponsor.first_name + " " + sponsor.last_name,
-						value: sponsor.id
-					}
-				})
-			});
-		}).catch(console.log);
-
 		read('courses/', {})
 			.then(res => {
 				this.setState({
@@ -80,29 +71,41 @@ class CreateClass extends Component {
 			.catch(err => console.log(err));
 
 		this.getVenues();
+
+		this.getSponsors();
 	}
 
-	getVenues(venue) {
-		read('venues', {})
-			.then(res => {
-				this.setState({
-					venues: res.data.venues
-				});
-			})
-			.catch(err => console.log(err));
+	getVenues() {
+		read('venues', {}).then(res => {
+			this.setState({
+				venues: res.data.venues
+			});
+		}).catch(console.log);
+	}
+
+	getSponsors() {
+		read('sponsors/', { params: { role: 'admin' } }).then(res => {
+			this.setState({
+				sponsors: res.data.sponsors.map(sponsor => {
+					return {
+						label: sponsor.first_name + " " + sponsor.last_name,
+						value: sponsor.id
+					}
+				}).sort((a, b) => a.label < b.label ? -1 : 1)
+			});
+		}).catch(console.log);
 	}
 
 	handleChange(name, value) {
 		let { fields } = this.state;
-		if (event && event.target.files) {
-			fields[name] = event.target.files;
+	
+		if (name.target && name.target.files) {
+			fields[name.target.name] = name.target.files;
 		} else {
 			fields[name] = value;
 		}
 
-		this.setState({
-			fields: fields
-		});
+		this.setState({fields: fields});
 	}
 
 	handleDateChange(date, field) {
@@ -167,13 +170,20 @@ class CreateClass extends Component {
 		toggleModel('venue');
 	}
 
+	onSponsorAdded() {
+		this.getSponsors();
+		toggleModel('sponsor');
+	}
+
 	render() {
 		const { minDate, fields, workshop, sponsors, courses, instructors, venues, loading, isFormValid, formValidationData } = this.state;
+
+		let title = workshop ? "Workshop" : "Class";
 
 		return (
 			<div>
 				<header className="pageheader">
-					<h2>Create {workshop ? "Workshop" : "Class"}</h2>
+					<h2>Create {title}</h2>
 				</header>
 
 				<form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -191,7 +201,7 @@ class CreateClass extends Component {
 
 					<fieldset className="fields horizontal">
 						<label>
-							<span>Class Date</span>
+							<span>{title} Date</span>
 							<DatePicker
 								selected={fields.start_date_time}
 								onChange={d => this.handleDateChange(d)}
@@ -228,7 +238,7 @@ class CreateClass extends Component {
 							</label>
 						</div>
 						<label>
-							<span>Course Title</span>
+							<span>{workshop ? "Workshop" : "Course"} Title</span>
 							<Select
 								onChange={v => fields.course = v}
 								name="course"
@@ -241,8 +251,8 @@ class CreateClass extends Component {
 							onChange={this.handleChange}
 							name="price"
 							value={fields.price}
-							labelText="Class Cost"
-							placeholder="Class Cost (must enter a value even if it is zero)"
+							labelText={title + " Cost"}
+							placeholder={title + " Cost (must enter a value even if it is zero)"}
 						/>
 						<label>
 							<span>Venue</span>
@@ -253,7 +263,7 @@ class CreateClass extends Component {
 								id="id"
 								val="name"
 							/>
-							<button className="addnew" type="button" onClick={() => toggleModel("venue")}>+</button>
+							<span className="addnew" onClick={() => toggleModel("venue")}>+</span>
 						</label>
 						<TextField
 							onChange={this.handleChange}
@@ -314,23 +324,22 @@ class CreateClass extends Component {
 						</div>
 					</fieldset>
 
-					<legend>Sponsors</legend>
-					<MultiSelect
-						options={sponsors}
-						selected={[]}
-						onSelectedChanged={this.handleSelectedChanged.bind(this)}
-						overrideStrings={{
-							selectSomeItems: "Select Sponsors...",
-							allItemsAreSelected: "All Sponsors",
-							selectAll: "Select All Sponsors",
-							search: "Search Sponsors",
-						}}
-					/>
+					<fieldset className="fields horizontal">
+						<label>
+							<span>Sponsors</span>
+							<span className="addnew" onClick={() => toggleModel("sponsor")}>+</span>
+							<ReactSelect
+								className="react-select"
+								options={sponsors}
+								isMulti={true}
+								name="sponsors[]" />
+						</label>
+					</fieldset>
 
 					<div className="row">
 						<div className="col-lg-4">
 							<FileInput
-								onChange={(event) => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="flyer"
 								labelText="Class Flyer"
 								value={fields.flyer}
@@ -338,7 +347,7 @@ class CreateClass extends Component {
 						</div>
 						<div className="col-lg-4">
 							<FileInput
-								onChange={(event) => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="flyer_image"
 								labelText="Class Flyer Image"
 								value={fields.flyer_image}
@@ -347,13 +356,20 @@ class CreateClass extends Component {
 					</div>
 
 					<input type="hidden" name="is_workshop" value={workshop} />
-					<button className="button">Create {workshop ? "Workshop" : "Class"}</button>
+					<button className="button" disabled={!fields.flyer}>Create {workshop ? "Workshop" : "Class"}</button>
 				</form>
 
 				<div className="modal modal-venue">
-					<button className="modal-close ion-md-close" onClick={toggleModel} disabled={isFormValid}></button>
+					<button className="modal-close ion-md-close" onClick={toggleModel}></button>
 					<div className="modal-content">
 						<CreateVenue onSuccess={this.onVenueAdded} />
+					</div>
+				</div>
+
+				<div className="modal modal-sponsor">
+					<button className="modal-close ion-md-close" onClick={toggleModel}></button>
+					<div className="modal-content">
+						<CreateSponsor onSuccess={this.onSponsorAdded} />
 					</div>
 				</div>
 			</div>

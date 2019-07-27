@@ -178,7 +178,7 @@ class CreateInstructor extends Component {
 							value={fields.first_name}
 							required={true}
 							maxLength={50}
-							labelText="First Name"
+							labelText="Instructor First Name"
 							validation={[validations.isEmpty]}
 						/>
 						<TextField
@@ -187,7 +187,7 @@ class CreateInstructor extends Component {
 							value={fields.last_name}
 							required={true}
 							maxLength={50}
-							labelText="Last Name"
+							labelText="Instructor Last Name"
 							validation={[validations.isEmpty]}
 						/>
 						<TextField
@@ -196,7 +196,7 @@ class CreateInstructor extends Component {
 							value={fields.email}
 							required={true}
 							maxLength={50}
-							labelText="Email"
+							labelText="Instructor Email"
 							validation={[validations.isEmail]}
 						/>
 						<TextField
@@ -204,52 +204,21 @@ class CreateInstructor extends Component {
 							name="sub_domain"
 							value={fields.sub_domain}
 							maxLength={50}
-							labelText="Sub Domain"
+							labelText="Instructor Sub Domain"
 						/>
-					</fieldset>
-
-					<fieldset className="fields horizontal">
 						<TextField
 							onChange={this.handleChange}
 							name="cell_phone"
 							value={fields.cell_phone}
 							maxLength={50}
-							labelText="Cell Phone"
+							labelText="Instructor Cell Phone"
 						/>
 						<TextField
 							onChange={this.handleChange}
 							name="work_phone"
 							value={fields.work_phone}
 							maxLength={50}
-							labelText="Work Phone"
-						/>
-						<TextField
-							onChange={this.handleChange}
-							name="additional_name"
-							value={fields.additional_name}
-							maxLength={50}
-							labelText="Additional Name (#1)"
-						/>
-						<TextField
-							onChange={this.handleChange}
-							name="additional_email"
-							value={fields.additional_email}
-							maxLength={50}
-							labelText="Additional Email Address (#1)"
-						/>
-						<TextField
-							onChange={this.handleChange}
-							name="additional_name2"
-							value={fields.additional_name2}
-							maxLength={50}
-							labelText="Additional Name (#2)"
-						/>
-						<TextField
-							onChange={this.handleChange}
-							name="additional_email2"
-							value={fields.additional_email2}
-							maxLength={50}
-							labelText="Additional Email Address (#2)"
+							labelText="Instructor Work Phone"
 						/>
 					</fieldset>
 
@@ -283,6 +252,37 @@ class CreateInstructor extends Component {
 							value={fields.zip_code}
 							maxLength={50}
 							labelText="Zip Code"
+						/>
+					</fieldset>
+
+					<fieldset className="fields horizontal">
+						<TextField
+							onChange={this.handleChange}
+							name="additional_name"
+							value={fields.additional_name}
+							maxLength={50}
+							labelText="Additional Contact (#1)"
+						/>
+						<TextField
+							onChange={this.handleChange}
+							name="additional_email"
+							value={fields.additional_email}
+							maxLength={50}
+							labelText="Additional Contact Email #1"
+						/>
+						<TextField
+							onChange={this.handleChange}
+							name="additional_name2"
+							value={fields.additional_name2}
+							maxLength={50}
+							labelText="Additional Contact #2"
+						/>
+						<TextField
+							onChange={this.handleChange}
+							name="additional_email2"
+							value={fields.additional_email2}
+							maxLength={50}
+							labelText="Additional Contact Email #2"
 						/>
 					</fieldset>
 
@@ -377,7 +377,7 @@ class CreateInstructor extends Component {
 						onChange={this.handleChange}
 						name="status"
 						value={fields.status}
-						labelText="Approved?" /><br />
+						labelText="Approve" /><br />
 
 					<button className="button" disabled={!isFormValid}>Create Instructor</button>
 				</form>

@@ -99,24 +99,31 @@ class CreateSponsor extends Component {
 			loading: true
 		});
 
-		create('sponsors', new FormData(e.target))
-			.then(res => {
+		create('sponsors', new FormData(e.target)).then(res => {
+			if (this.props.onSuccess) {
+				this.props.onSuccess();
+
+				this.setState({
+					loading: false,
+					isFormValid: false
+				});
+			} else {
 				res.status === 200
 					? this.props.history.push("/sponsors")
 					: this.setState({
 						loading: false,
 						isFormValid: false
 					});
+			}
+		}).catch(err => {
+			let { formValidationData } = this.state;
+			formValidationData.form = "Unable To Create Sponsor";
+			this.setState({
+				formValidationData: formValidationData,
+				loading: false,
+				isFormValid: false
 			})
-			.catch(err => {
-				let { formValidationData } = this.state;
-				formValidationData.form = "Unable To Create Sponsor";
-				this.setState({
-					formValidationData: formValidationData,
-					loading: false,
-					isFormValid: false
-				})
-			});
+		});
 	}
 
 	render() {
@@ -149,7 +156,7 @@ class CreateSponsor extends Component {
 							maxLength={50}
 							labelText="Company Name"
 						/>
-						<div class="label">
+						<div className="label">
 							<TextField
 								onChange={this.handleChange}
 								name="first_name"

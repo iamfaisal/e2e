@@ -200,7 +200,7 @@ class MyClassesWorkshops extends Component {
                 width: '60px'
             },
             {
-                name: 'Created At',
+                name: 'Created On',
                 cell: row => {
                     let parts = formatDate(row.created_at).split(", ");
                     return <Fragment>{parts[0]}<br />{parts[1]}</Fragment>;

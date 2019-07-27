@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import CheckBox from "../../common/CheckBox";
 import { isJustInstructor } from "../../helpers/acl";
 import { read, update, dateToString } from "../../helpers/resource";
-import MultiSelect from '@khanacademy/react-multi-select';
+import ReactSelect from 'react-select';
 
 class EditInstructor extends Component {
 	constructor(props) {
@@ -101,7 +101,7 @@ class EditInstructor extends Component {
 						label: territory.name,
 						value: territory.id
 					}
-				})
+				}).sort((a, b) => a.label < b.label ? -1 : 1)
 			});
 		}).catch(err => console.log(err));
 
@@ -112,7 +112,7 @@ class EditInstructor extends Component {
 						label: course.title,
 						value: course.id
 					}
-				})
+				}).sort((a, b) => a.label < b.label ? -1 : 1)
 			});
 		}).catch(err => console.log(err));
 	}
@@ -121,6 +121,8 @@ class EditInstructor extends Component {
 		let { fields, formValidationData } = this.state;
 		if (event && event.target.files) {
 			fields[name] = event.target.files;
+		} else if (Array.isArray(value)) {
+			fields[name] = value.map(v => v.value);
 		} else {
 			fields[name] = value;
 		}
@@ -158,7 +160,7 @@ class EditInstructor extends Component {
 	handleSubmit(e) {
 		e.preventDefault();
 
-		const { id, fields, isFormValid } = this.state;
+		const { id, isFormValid } = this.state;
 
 		if (!isFormValid) return;
 
@@ -169,14 +171,6 @@ class EditInstructor extends Component {
 		let data = new FormData(e.target);
 		data.append("_method", "PUT");
 		data.append('roles[]', 3);
-
-		fields.territories.forEach(function (territory) {
-			data.append("territories[]", territory);
-		});
-
-		fields.courses.forEach(function (sponsor) {
-			data.append("courses[]", sponsor);
-		});
 
 		update('users/' + id, data)
 			.then(res => {
@@ -236,7 +230,17 @@ class EditInstructor extends Component {
 
 		if (!loaded) return false;
 
-		console.log(fields.courses);
+		let selectedTerratories = fields.territories.map(c => {
+			let label = "";
+			territories.forEach(territory => territory.value == c ? label = territory.label : "");
+			return {label: label, value: c}
+		});
+
+		let selectedCourses = fields.courses.map(c => {
+			let label = "";
+			courses.forEach(course => course.value == c ? label = course.label : "");
+			return { label: label, value: c }
+		});
 
 		return (
 			<div>
@@ -253,7 +257,7 @@ class EditInstructor extends Component {
 							value={fields.first_name}
 							required={true}
 							maxLength={50}
-							labelText="First Name"
+							labelText="Instructor First Name"
 							validation={[validations.isEmpty]}
 						/>
 						<TextField
@@ -262,7 +266,7 @@ class EditInstructor extends Component {
 							value={fields.last_name}
 							required={true}
 							maxLength={50}
-							labelText="Last Name"
+							labelText="Instructor Last Name"
 							validation={[validations.isEmpty]}
 						/>
 						<TextField
@@ -271,7 +275,7 @@ class EditInstructor extends Component {
 							value={fields.email}
 							required={true}
 							maxLength={50}
-							labelText="Email"
+							labelText="Instructor Email"
 							validation={[validations.isEmail]}
 						/>
 						<TextField
@@ -279,7 +283,21 @@ class EditInstructor extends Component {
 							name="sub_domain"
 							value={fields.sub_domain}
 							maxLength={50}
-							labelText="Sub Domain"
+							labelText="Instructor Sub Domain"
+						/>
+						<TextField
+							onChange={this.handleChange}
+							name="cell_phone"
+							value={fields.cell_phone}
+							maxLength={50}
+							labelText="Instructor Cell Phone"
+						/>
+						<TextField
+							onChange={this.handleChange}
+							name="work_phone"
+							value={fields.work_phone}
+							maxLength={50}
+							labelText="Instructor Work Phone"
 						/>
 					</fieldset>
 
@@ -319,48 +337,31 @@ class EditInstructor extends Component {
 					<fieldset className="fields horizontal">
 						<TextField
 							onChange={this.handleChange}
-							name="cell_phone"
-							value={fields.cell_phone}
-							maxLength={50}
-							labelText="Cell Phone"
-						/>
-						<TextField
-							onChange={this.handleChange}
-							name="work_phone"
-							value={fields.work_phone}
-							maxLength={50}
-							labelText="Work Phone"
-						/>
-					</fieldset>
-
-					<fieldset className="fields horizontal">
-						<TextField
-							onChange={this.handleChange}
 							name="additional_name"
 							value={fields.additional_name}
 							maxLength={50}
-							labelText="Additional Name (#1)"
+							labelText="Additional Contact #1"
 						/>
 						<TextField
 							onChange={this.handleChange}
 							name="additional_email"
 							value={fields.additional_email}
 							maxLength={50}
-							labelText="Additional Email Address (#1)"
+							labelText="Additional Contact Email #1"
 						/>
 						<TextField
 							onChange={this.handleChange}
 							name="additional_name2"
 							value={fields.additional_name2}
 							maxLength={50}
-							labelText="Additional Name (#2)"
+							labelText="Additional Contact #2"
 						/>
 						<TextField
 							onChange={this.handleChange}
 							name="additional_email2"
 							value={fields.additional_email2}
 							maxLength={50}
-							labelText="Additional Email Address (#2)"
+							labelText="Additional Contact Email #2"
 						/>
 					</fieldset>
 
@@ -433,31 +434,23 @@ class EditInstructor extends Component {
 					{!isJustInstructor() ? <fieldset className="fields horizontal">
 						<label>
 							<span>Territories</span>
-							<MultiSelect
+							<ReactSelect
+								className="react-select"
 								options={territories}
-								selected={fields.territories}
-								onSelectedChanged={v => this.handleSelectedChanged("territories", v)}
-								overrideStrings={{
-									selectSomeItems: "Select Territories...",
-									allItemsAreSelected: "All Territories",
-									selectAll: "Select All Territories",
-									search: "Search Territories",
-								}}
-							/>
+								value={selectedTerratories}
+								onChange={v => this.handleChange("territories", v, true)}
+								isMulti={true}
+								name="territories[]" />
 						</label>
 						<label>
 							<span>Courses</span>
-							<MultiSelect
+							<ReactSelect
+								className="react-select"
 								options={courses}
-								selected={fields.courses}
-								onSelectedChanged={v => this.handleSelectedChanged("courses", v)}
-								overrideStrings={{
-									selectSomeItems: "Select Courses...",
-									allItemsAreSelected: "All Courses",
-									selectAll: "Select All Courses",
-									search: "Search Courses",
-								}}
-							/>
+								value={selectedCourses}
+								onChange={v => this.handleChange("courses", v, true)}
+								isMulti={true}
+								name="courses[]" />
 						</label>
 					</fieldset> : ""}
 
@@ -476,7 +469,7 @@ class EditInstructor extends Component {
 								<FileInput
 									onChange={event => this.handleChange(event)}
 									name="application_docs"
-									labelText="Application Docs"
+									labelText="Instructor Agreement"
 									value={fields.application_docs}
 								/>
 							</div>
@@ -484,7 +477,7 @@ class EditInstructor extends Component {
 								<FileInput
 									onChange={event => this.handleChange(event)}
 									name="custom_flyer"
-									labelText="Custom Flyer"
+									labelText="Instructor Promo Flyer"
 									value={fields.custom_flyer}
 								/>
 							</div>
@@ -499,7 +492,7 @@ class EditInstructor extends Component {
 								name="password"
 								value={fields.password}
 								maxLength={50}
-								labelText="Password"
+								labelText="Change Password"
 								validation={[validations.isEmpty, validations.isAlphaNumeric]}
 							/>
 							<TextField
@@ -508,12 +501,12 @@ class EditInstructor extends Component {
 								name="confirm_pass"
 								value={fields.confirm_pass}
 								maxLength={50}
-								labelText="Confirm Password"
+								labelText="Confirm Change Password"
 								equalTo={fields.password}
 								validation={[validations.isEmpty, validations.isAlphaNumeric, validations.equalTo]}
 							/>
 						</fieldset>
-						<CheckBox onChange={this.handleChange} name="status" value={fields.status} labelText="Approved?" />
+						<CheckBox onChange={this.handleChange} name="status" value={fields.status} labelText="Approve" />
 					</div>}
 
 					<button className="button" disabled={!isFormValid} onClick={() => { this.state.status = "update" }}>Update Profile</button>

@@ -75,35 +75,25 @@ class Classes extends Component {
 			});
 	}
 
-	renderLoader() {
-		return (
-			<div className="loader"/>
-		);
-	}
+	renderLoader() { return <div className="loader" /> }
 
 	renderActions(clss) {
-		if (this.state.archived && false) {
-			return (
-				<form className="actions roaster-actions">
-					<input type="hidden" name="class_id" value={clss.id} />
-					{clss.roster ? <Link to={clss.roster} target="_blank">View Roaster</Link> : ""}
-					<span>|</span>
-					<label>
-						<input type="file" name="roster" onChange={this.uploadRoster} />
-						Upload Roaster
-					</label>
-				</form>
-			);
-		} else {
-			return (
-				<div className="actions">
-					<Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id} />
-					{clss.status != 'Approved' ? <Link data-toggle="tooltip" title="Approve Class" className="ion-md-checkmark" to={"/classes/approve/" + clss.id} /> : ""}
-					{clss.status != 'Cancelled' ? <Link data-toggle="tooltip" title="Cancel Class" className="ion-md-close" to={"/classes/cancel/" + clss.id} /> : ""}
-					<a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
-				</div>
-			);
-		}
+		return this.state.archived
+		? <form className="actions roaster-actions">
+			<input type="hidden" name="class_id" value={clss.id} />
+			{clss.roster ? <Link to={clss.roster} target="_blank">View Roaster</Link> : ""}
+			<span>|</span>
+			<label>
+				<input type="file" name="roster" onChange={this.uploadRoster} />
+				Upload Roaster
+			</label>
+		</form>
+		: <div className="actions">
+			<Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id} />
+			{clss.status != 'Approved' ? <Link data-toggle="tooltip" title="Approve Class" className="ion-md-checkmark" to={"/classes/approve/" + clss.id} /> : ""}
+			{clss.status != 'Cancelled' ? <Link data-toggle="tooltip" title="Cancel Class" className="ion-md-close" to={"/classes/cancel/" + clss.id} /> : ""}
+			<a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
+		</div>
 	}
 
 	deleteClass(e, clss) {
@@ -119,11 +109,13 @@ class Classes extends Component {
 	}
 
 	uploadRoster(e) {
+		this.setState({ loader: true });
+
 		update('classes/roster', new FormData(e.target.form), true)
 			.then(res => {
-				window.location.reload();
+				this.getData({ params: { archived: true } });
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 	}
 
 	setfilter(value, key) {
@@ -244,7 +236,7 @@ class Classes extends Component {
 				width: '130px'
 			},
 			{
-				name: 'Created At',
+				name: 'Created On',
 				cell: row => {
 					let parts = formatDate(row.created_at).split(", ");
 					return <Fragment>{parts[0]}<br />{parts[1]}</Fragment>;

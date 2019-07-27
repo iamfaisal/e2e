@@ -77,33 +77,23 @@ class ClassesWorkshops extends Component {
             });
     }
 
-    renderLoader() {
-        return (
-            <div className="loader"/>
-        );
-    }
+    renderLoader() { return <div className="loader"/> }
 
     renderActions(clss) {
-        if (this.state.archived) {
-            return (
-                <form className="actions roaster-actions">
-                    <input type="hidden" name="class_id" value={clss.id} />
-                    {clss.roster ? <Link to={clss.roster} target="_blank">View Roaster</Link> : ""}
-                    <span>|</span>
-                    <label>
-                        <input type="file" name="roster" onChange={this.uploadRoster} />
-                        Upload Roaster
-                    </label>
-                </form>
-            );
-        } else {
-            return (
-                <div className="actions">
-                    <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id} />
-                    <a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
-                </div>
-            );
-        }
+        return this.state.archived
+        ? <form className="actions roaster-actions">
+            <input type="hidden" name="class_id" value={clss.id} />
+            {clss.roster ? <Link to={clss.roster} target="_blank">View Roaster</Link> : ""}
+            <span>|</span>
+            <label>
+                <input type="file" name="roster" onChange={this.uploadRoster} />
+                Upload Roaster
+                </label>
+        </form>
+        : <div className="actions">
+            <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id} />
+            <a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
+        </div>
     }
 
     deleteClass(e, clss) {
@@ -119,11 +109,13 @@ class ClassesWorkshops extends Component {
     }
 
     uploadRoster(e) {
+        this.setState({ loader: true });
+
         update('classes/roster', new FormData(e.target.form), true)
             .then(res => {
-                window.location.reload();
+                this.getData({ params: { archived: true } });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     setfilter(value, key) {
@@ -185,20 +177,15 @@ class ClassesWorkshops extends Component {
                 width: '110px'
             },
             {
-                name: 'Course',
-                cell: row => {
-                    return <Fragment>
-                        <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link><br />
-                        <small>{row.user.name}</small><br />
-                        <small className="links">
-                            <a href={asset(row.course.material)} target="_balank">Course Materials</a>
-                            <span className="sep"></span>
-                            <a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
-                            <span className="sep"></span>
-                            <a href={asset(row.docs, true)} target="_balank">Class Docs</a>
-                        </small>
-                    </Fragment>
-                },
+                name: 'Instructor',
+                selector: "user.name",
+                ignoreRowClick: true,
+                sortable: true,
+                width: '100px'
+            },
+            {
+                name: 'Workshop',
+                cell: row => <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link>,
                 selector: "course.title",
                 ignoreRowClick: true,
                 sortable: true,
@@ -223,7 +210,7 @@ class ClassesWorkshops extends Component {
                 width: '60px'
             },
             {
-                name: 'Hours',
+                name: 'Length',
                 cell: row => dateDifference(row.start_date, row.end_date),
                 sortable: true,
                 width: '60px'
@@ -236,7 +223,20 @@ class ClassesWorkshops extends Component {
                 width: '60px'
             },
             {
-                name: 'Created At',
+                name: 'Material',
+                cell: row => {
+                    return <small className="links">
+                        <a href={asset(row.flyer, true)} target="_balank">Workshop Flyer</a>
+                        <span className="sep"></span>
+                        <a href={asset(row.docs, true)} target="_balank">Workshop Docs</a>
+                    </small>
+                },
+                ignoreRowClick: true,
+                sortable: true,
+                width: '180px'
+            },
+            {
+                name: 'Created On',
                 cell: row => {
                     let parts = formatDate(row.created_at).split(", ");
                     return <Fragment>{parts[0]}<br />{parts[1]}</Fragment>;
@@ -266,7 +266,7 @@ class ClassesWorkshops extends Component {
                 </header>
 
                 <div className="filter">
-                    <Select items={courses} placeholder="Select Course" id="id" val="title" onChange={value => this.setfilter(value, "course.id")} />
+                    <Select items={courses} placeholder="Select Workshop" id="id" val="title" onChange={value => this.setfilter(value, "course.id")} />
                     <Select items={instructors} placeholder="Select Instructor" id="id" val="name" onChange={value => this.setfilter(value, "user.id")} />
                     <Select items={regulations} placeholder="Select State" id="id" val="name" onChange={value => this.setfilter(value, "venue.regulation_id")} />
 
@@ -290,7 +290,7 @@ class ClassesWorkshops extends Component {
 
                     <label className="checkbox">
                         <input type="checkbox" onChange={e => this.toggleArchived(e)} />
-                        <span>Show archived</span>
+                        <span>Archived Workshops</span>
                     </label>
                 </div>
 

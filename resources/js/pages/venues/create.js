@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";;
 import { read, create } from "../../helpers/resource";
-import MultiSelect from '@khanacademy/react-multi-select';
+import ReactSelect from 'react-select';
 
 class CreateVenue extends Component {
 	constructor(props) {
@@ -40,7 +40,7 @@ class CreateVenue extends Component {
 							label: user.name,
 							value: user.id
 						}
-					})
+					}).sort((a, b) => a.label < b.label ? -1 : 1)
 				});
 			})
 			.catch(err => console.log(err));
@@ -95,7 +95,7 @@ class CreateVenue extends Component {
 	handleSubmit(e) {
 		e.preventDefault();
 
-		const { fields, isFormValid } = this.state;
+		const { isFormValid } = this.state;
 
 		if (!isFormValid) return;
 		
@@ -104,10 +104,6 @@ class CreateVenue extends Component {
 		});
 
 		let data = new FormData(e.target);
-
-		fields.users.forEach(function (sponsor) {
-			data.append("users[]", sponsor);
-		});
 
 		create('venues', data).then(res => {
 			if (this.props.onSuccess) {
@@ -158,16 +154,11 @@ class CreateVenue extends Component {
 						/>
 						<label>
 							<span>Instructor</span>
-							<MultiSelect
+							<ReactSelect
+								className="react-select"
 								options={instructors}
-								selected={fields.users}
-								onSelectedChanged={this.handleSelectedChanged.bind(this)}
-								overrideStrings={{
-									selectSomeItems: "Select Instructors...",
-									allItemsAreSelected: "All Instructors",
-									selectAll: "Select All Instructors",
-									search: "Search Instructors",
-								}}
+								isMulti={true}
+								name="users[]"
 							/>
 						</label>
 					</fieldset>

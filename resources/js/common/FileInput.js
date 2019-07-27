@@ -28,13 +28,9 @@ class FileInput extends Component {
     }
 
 	onChange(event) {
-        this.setState({
-            files: [...event.target.files]
-        }, () => {
-            if(this.props.onChange){
-                this.props.onChange(event);
-            }
-        });
+        event.persist();
+        this.setState({files: [...event.target.files]});
+        if (this.props.onChange) this.props.onChange(event);
     }
 
 	isValid() {

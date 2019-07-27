@@ -6,6 +6,8 @@ import Courses from "./pages/courses";
 import CreateCourse from "./pages/courses/create";
 import EditCourse from "./pages/courses/edit";
 
+import CoursesWorkshops from "./pages/courses/workshops";
+
 import Territories from "./pages/territories";
 import CreateTerritory from "./pages/territories/create";
 import EditTerritory from "./pages/territories/edit";
@@ -60,228 +62,233 @@ import EditMySponsor from "./pages/my-sponsors/edit";
 import requireAuth from "./utils/requireAuth";
 
 const routes = [
-    {
-        path: "/login",
-        component: Login,
-    },
-    {
-        path: "/forgot/password",
-        component: ForgotPassword,
-    },
-    {
-        path: "/password/reset/:token",
-        component: ResetPassword,
-    },
-    {
-        path: "/courses",
-        component: requireAuth(Courses),
-        exact: true
-    },
-    {
-        path: "/courses/create",
-        component: requireAuth(CreateCourse),
-        exact: true
-    },
-    {
-        path: "/courses/edit/:course",
-        component: requireAuth(EditCourse),
-        exact: true
-    },
-    {
-        path: "/territories",
-        component: requireAuth(Territories),
-        exact: true
-    },
-    {
-        path: "/territories/create",
-        component: requireAuth(CreateTerritory),
-        exact: true
-    },
-    {
-        path: "/territories/edit/:territory",
-        component: requireAuth(EditTerritory),
-        exact: true
-    },
-    {
-        path: "/regulations",
-        component: requireAuth(Regulations),
-        exact: true
-    },
-    {
-        path: "/regulations/create",
-        component: requireAuth(CreateRegulation),
-        exact: true
-    },
-    {
-        path: "/regulations/edit/:regulation",
-        component: requireAuth(EditRegulation),
-        exact: true
-    },
-    {
-        path: "/categories",
-        component: requireAuth(Categories),
-        exact: true
-    },
-    {
-        path: "/categories/create",
-        component: requireAuth(CreateCategory),
-        exact: true
-    },
-    {
-        path: "/categories/edit/:category",
-        component: requireAuth(EditCategory),
-        exact: true
-    },
-    {
-        path: "/users",
-        component: requireAuth(Admins),
-        exact: true
-    },
-    {
-        path: "/users/create",
-        component: requireAuth(CreateAdmin),
-        exact: true
-    },
-    {
-        path: "/users/edit/:category",
-        component: requireAuth(EditAdmin),
-        exact: true
-    },
-    {
-        path: "/classes",
-        component: requireAuth(Classes),
-        exact: true
-    },
-    {
-        path: "/classes/workshops",
-        component: requireAuth(ClassesWorkshops),
-        exact: true
-    },
-    {
-        path: "/classes/create",
-        component: requireAuth(CreateClass),
-        exact: true
-    },
-    {
-        path: "/classes/edit/:class",
-        component: requireAuth(EditClass),
-        exact: true
-    },
-    {
-        path: "/classes/approve/:class",
-        component: requireAuth(ApproveClass),
-        exact: true
-    },
-    {
-        path: "/classes/cancel/:class",
-        component: requireAuth(CancelClass),
-        exact: true
-    },
-    {
-        path: "/venues",
-        component: requireAuth(Venues),
-        exact: true
-    },
-    {
-        path: "/venues/create",
-        component: requireAuth(CreateVenue),
-        exact: true
-    },
-    {
-        path: "/venues/edit/:venue",
-        component: requireAuth(EditVenue),
-        exact: true
-    },
-    {
-        path: "/sponsors",
-        component: requireAuth(Sponsors),
-        exact: true
-    },
-    {
-        path: "/sponsors/create",
-        component: requireAuth(CreateSponsor),
-        exact: true
-    },
-    {
-        path: "/sponsors/edit/:sponsor",
-        component: requireAuth(EditSponsor),
-        exact: true
-    },
-    {
-        path: "/instructors",
-        component: requireAuth(Instructors),
-        exact: true
-    },
-    {
-        path: "/instructors/create",
-        component: requireAuth(CreateInstructor),
-        exact: true
-    },
-    {
-        path: "/instructors/edit/:instructor",
-        component: requireAuth(EditInstructor),
-        exact: true
-    },
-    {
-        path: "/my-classes",
-        component: requireAuth(MyClasses),
-        exact: true
-    },
-    {
-        path: "/my-classes/workshops",
-        component: requireAuth(MyClassesWorkshops),
-        exact: true
-    },
-    {
-        path: "/my-classes/create",
-        component: requireAuth(CreateMyClass),
-        exact: true
-    },
-    {
-        path: "/my-classes/edit/:class",
-        component: requireAuth(EditMyClass),
-        exact: true
-    },
-    {
-        path: "/my-classes/cancel/:class",
-        component: requireAuth(CancelMyClass),
-        exact: true
-    },
-    {
-        path: "/course-materials",
-        component: requireAuth(Materials),
-        exact: true
-    },
-    {
-        path: "/my-venues",
-        component: requireAuth(MyVenues),
-        exact: true
-    },
-    {
-        path: "/my-venues/create",
-        component: requireAuth(CreateMyVenue),
-        exact: true
-    },
-    {
-        path: "/my-venues/edit/:venue",
-        component: requireAuth(EditMyVenue),
-        exact: true
-    },
-    {
-        path: "/my-sponsors",
-        component: requireAuth(MySponsors),
-        exact: true
-    },
-    {
-        path: "/my-sponsors/create",
-        component: requireAuth(CreateMySponsor),
-        exact: true
-    },
-    {
-        path: "/my-sponsors/edit/:sponsor",
-        component: requireAuth(EditMySponsor),
-        exact: true
-    },
+	{
+		path: "/login",
+		component: Login,
+	},
+	{
+		path: "/forgot/password",
+		component: ForgotPassword,
+	},
+	{
+		path: "/password/reset/:token",
+		component: ResetPassword,
+	},
+	{
+		path: "/courses",
+		component: requireAuth(Courses),
+		exact: true
+	},
+	{
+		path: "/courses/create",
+		component: requireAuth(CreateCourse),
+		exact: true
+	},
+	{
+		path: "/courses/edit/:course",
+		component: requireAuth(EditCourse),
+		exact: true
+	},
+	{
+		path: "/courses/workshops",
+		component: requireAuth(CoursesWorkshops),
+		exact: true
+	},
+	{
+		path: "/territories",
+		component: requireAuth(Territories),
+		exact: true
+	},
+	{
+		path: "/territories/create",
+		component: requireAuth(CreateTerritory),
+		exact: true
+	},
+	{
+		path: "/territories/edit/:territory",
+		component: requireAuth(EditTerritory),
+		exact: true
+	},
+	{
+		path: "/regulations",
+		component: requireAuth(Regulations),
+		exact: true
+	},
+	{
+		path: "/regulations/create",
+		component: requireAuth(CreateRegulation),
+		exact: true
+	},
+	{
+		path: "/regulations/edit/:regulation",
+		component: requireAuth(EditRegulation),
+		exact: true
+	},
+	{
+		path: "/categories",
+		component: requireAuth(Categories),
+		exact: true
+	},
+	{
+		path: "/categories/create",
+		component: requireAuth(CreateCategory),
+		exact: true
+	},
+	{
+		path: "/categories/edit/:category",
+		component: requireAuth(EditCategory),
+		exact: true
+	},
+	{
+		path: "/users",
+		component: requireAuth(Admins),
+		exact: true
+	},
+	{
+		path: "/users/create",
+		component: requireAuth(CreateAdmin),
+		exact: true
+	},
+	{
+		path: "/users/edit/:category",
+		component: requireAuth(EditAdmin),
+		exact: true
+	},
+	{
+		path: "/classes",
+		component: requireAuth(Classes),
+		exact: true
+	},
+	{
+		path: "/classes/workshops",
+		component: requireAuth(ClassesWorkshops),
+		exact: true
+	},
+	{
+		path: "/classes/create",
+		component: requireAuth(CreateClass),
+		exact: true
+	},
+	{
+		path: "/classes/edit/:class",
+		component: requireAuth(EditClass),
+		exact: true
+	},
+	{
+		path: "/classes/approve/:class",
+		component: requireAuth(ApproveClass),
+		exact: true
+	},
+	{
+		path: "/classes/cancel/:class",
+		component: requireAuth(CancelClass),
+		exact: true
+	},
+	{
+		path: "/venues",
+		component: requireAuth(Venues),
+		exact: true
+	},
+	{
+		path: "/venues/create",
+		component: requireAuth(CreateVenue),
+		exact: true
+	},
+	{
+		path: "/venues/edit/:venue",
+		component: requireAuth(EditVenue),
+		exact: true
+	},
+	{
+		path: "/sponsors",
+		component: requireAuth(Sponsors),
+		exact: true
+	},
+	{
+		path: "/sponsors/create",
+		component: requireAuth(CreateSponsor),
+		exact: true
+	},
+	{
+		path: "/sponsors/edit/:sponsor",
+		component: requireAuth(EditSponsor),
+		exact: true
+	},
+	{
+		path: "/instructors",
+		component: requireAuth(Instructors),
+		exact: true
+	},
+	{
+		path: "/instructors/create",
+		component: requireAuth(CreateInstructor),
+		exact: true
+	},
+	{
+		path: "/instructors/edit/:instructor",
+		component: requireAuth(EditInstructor),
+		exact: true
+	},
+	{
+		path: "/my-classes",
+		component: requireAuth(MyClasses),
+		exact: true
+	},
+	{
+		path: "/my-classes/workshops",
+		component: requireAuth(MyClassesWorkshops),
+		exact: true
+	},
+	{
+		path: "/my-classes/create",
+		component: requireAuth(CreateMyClass),
+		exact: true
+	},
+	{
+		path: "/my-classes/edit/:class",
+		component: requireAuth(EditMyClass),
+		exact: true
+	},
+	{
+		path: "/my-classes/cancel/:class",
+		component: requireAuth(CancelMyClass),
+		exact: true
+	},
+	{
+		path: "/course-materials",
+		component: requireAuth(Materials),
+		exact: true
+	},
+	{
+		path: "/my-venues",
+		component: requireAuth(MyVenues),
+		exact: true
+	},
+	{
+		path: "/my-venues/create",
+		component: requireAuth(CreateMyVenue),
+		exact: true
+	},
+	{
+		path: "/my-venues/edit/:venue",
+		component: requireAuth(EditMyVenue),
+		exact: true
+	},
+	{
+		path: "/my-sponsors",
+		component: requireAuth(MySponsors),
+		exact: true
+	},
+	{
+		path: "/my-sponsors/create",
+		component: requireAuth(CreateMySponsor),
+		exact: true
+	},
+	{
+		path: "/my-sponsors/edit/:sponsor",
+		component: requireAuth(EditMySponsor),
+		exact: true
+	}
 ]
 
 export default routes
