@@ -22,16 +22,23 @@ class Layout extends Component {
         this.setState({sidebar: change});
     }
 
+    goBack() {
+        location = location.href.replace(/\/[\w|?|=]+$/, '');
+    }
+
     render() {
         const currentUser = getAuthUser();
         const { sidebar } = this.state;
         const mainWrapperClass = classnames({"content": currentUser}, {"full": !sidebar});
+
+        let showCancel = location.pathname.includes("create") || location.pathname.includes("edit");
 
         return (
             <Fragment>
                 {currentUser && <Header sidebar={this.sidebarHandler} page={this.state.page}/>}
                 <main className={mainWrapperClass}>
                     {this.props.children}
+                    {showCancel && <button className="button cancel" onClick={this.goBack}>Cancel</button>}
                 </main>
             </Fragment>
         );

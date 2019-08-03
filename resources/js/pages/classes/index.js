@@ -40,7 +40,7 @@ class Classes extends Component {
 					courses: res.data.courses
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('users', { params: { role: 'instructor' } })
 			.then(res => {
@@ -48,13 +48,13 @@ class Classes extends Component {
 					instructors: res.data.users
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('regulations', {}).then(res => {
 			this.setState({
 				regulations: res.data.regulations
 			});
-		}).catch(err => console.log(err));
+		}).catch(console.log);
 	}
 
 	getData(params = {}) {
@@ -247,7 +247,7 @@ class Classes extends Component {
 			},
 			{
 				name: 'Actions',
-				cell: row => this.renderActions(row),
+				cell: this.renderActions,
 				ignoreRowClick: true,
 				width: this.state.archived ? '220px' : '120px',
 				right: true

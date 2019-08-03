@@ -86,13 +86,13 @@ class EditInstructor extends Component {
 					loaded: true
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('regulations/', {}).then(res => {
 			this.setState({
 				regulations: res.data.regulations
 			});
-		}).catch(err => console.log(err));
+		}).catch(console.log);
 
 		read('territories', {}).then(res => {
 			this.setState({
@@ -103,7 +103,7 @@ class EditInstructor extends Component {
 					}
 				}).sort((a, b) => a.label < b.label ? -1 : 1)
 			});
-		}).catch(err => console.log(err));
+		}).catch(console.log);
 
 		read('courses', {}).then(res => {
 			this.setState({
@@ -114,7 +114,7 @@ class EditInstructor extends Component {
 					}
 				}).sort((a, b) => a.label < b.label ? -1 : 1)
 			});
-		}).catch(err => console.log(err));
+		}).catch(console.log);
 	}
 
 	handleChange(name, value, valid) {
@@ -368,12 +368,24 @@ class EditInstructor extends Component {
 					<legend>Profile</legend>
 					<fieldset className="fields horizontal">
 						<TextArea
-							onChange={(event) => this.handleChange(event)}
+							onChange={this.handleChange}
 							name="info"
 							value={fields.info}
 							placeholder="Profile"
 						/>
 					</fieldset>
+
+					<div className="row">
+						<div className="col-md-6 col-lg-4">
+							<FileInput
+								onChange={this.handleChange}
+								name="avatar"
+								labelText="Headshot"
+								value={fields.avatar}
+								preview="large"
+							/>
+						</div>
+					</div>
 
 					{fields.licenses.map((license, i) => {
 						if (license.expiration && license.expiration.constructor !== Date) {
@@ -413,7 +425,7 @@ class EditInstructor extends Component {
 								/>
 							</label>
 							<FileInput
-								onChange={event => this.handleChange(event)}
+								onChange={this.handleChange}
 								name={"licenses[" + i + "][certificate]"}
 								labelText="Certificate"
 								value={license["certificate"]}
@@ -455,19 +467,10 @@ class EditInstructor extends Component {
 					</fieldset> : ""}
 
 					<div className="row">
-						<div className="col-md-6 col-lg-4">
-							<FileInput
-								onChange={event => this.handleChange(event)}
-								name="avatar"
-								labelText="Headshot"
-								value={fields.avatar}
-								preview="large"
-							/>
-						</div>
 						{!isJustInstructor() ? <Fragment>
 							<div className="col-md-6 col-lg-4">
 								<FileInput
-									onChange={event => this.handleChange(event)}
+									onChange={this.handleChange}
 									name="application_docs"
 									labelText="Instructor Agreement"
 									value={fields.application_docs}
@@ -475,7 +478,7 @@ class EditInstructor extends Component {
 							</div>
 							<div className="col-md-6 col-lg-4">
 								<FileInput
-									onChange={event => this.handleChange(event)}
+									onChange={this.handleChange}
 									name="custom_flyer"
 									labelText="Instructor Promo Flyer"
 									value={fields.custom_flyer}

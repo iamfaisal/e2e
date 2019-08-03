@@ -53,7 +53,7 @@ class EditMySponsor extends Component {
 					loaded: true
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('regulations', {})
 			.then(res => {
@@ -61,7 +61,7 @@ class EditMySponsor extends Component {
 					regulations: res.data.regulations,
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 	}
 
 	handleChange(name, value, valid) {
@@ -235,7 +235,7 @@ class EditMySponsor extends Component {
 					<div className="row">
 						<div className="col-md-6 col-lg-4">
 							<FileInput
-								onChange={event => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="logo"
 								labelText="Logo"
 								value={fields.logo}
@@ -243,7 +243,7 @@ class EditMySponsor extends Component {
 						</div>
 						<div className="col-md-6 col-lg-4">
 							<FileInput
-								onChange={event => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="avatar"
 								labelText="Headshot"
 								value={fields.avatar}

@@ -38,7 +38,7 @@ class CreateVenue extends Component {
 					regulations: res.data.regulations,
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 	}
 
 	handleChange(name, value, valid) {

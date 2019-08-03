@@ -63,7 +63,7 @@ class Regulations extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
         }
     }
 
@@ -83,9 +83,7 @@ class Regulations extends Component {
         const columns = [
             {
                 name: 'Title',
-                cell: row => {
-                    return <Link to={"/regulations/edit/" + row.id}>{row.name}</Link>
-                },
+                cell: row => <Link to={"/regulations/edit/" + row.id}>{row.name}</Link>,
                 selector: 'name',
                 ignoreRowClick: true,
                 sortable: true
@@ -97,7 +95,7 @@ class Regulations extends Component {
             },
             {
                 name: 'Actions',
-                cell: row => this.renderActions(row),
+                cell: this.renderActions,
                 ignoreRowClick: true,
                 width: '100px'
             }

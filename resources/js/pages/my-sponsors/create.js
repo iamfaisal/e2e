@@ -49,7 +49,7 @@ class CreateMySponsor extends Component {
 					regulations: res.data.regulations,
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 	}
 
 	handleChange(name, value, valid) {
@@ -217,14 +217,14 @@ class CreateMySponsor extends Component {
 					<div className="row">
 						<div className="col-md-6 col-lg-4">
 							<FileInput
-								onChange={event => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="logo"
 								labelText="Logo"
 							/>
 						</div>
 						<div className="col-md-6 col-lg-4">
 							<FileInput
-								onChange={event => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="avatar"
 								labelText="Headshot"
 							/>

@@ -44,7 +44,7 @@ class EditMyVenue extends Component {
                     loaded: true
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('users/', { params: { role: "instructor" } })
             .then(res => {
@@ -52,7 +52,7 @@ class EditMyVenue extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('regulations', {})
             .then(res => {
@@ -60,7 +60,7 @@ class EditMyVenue extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     handleChange(name, value, valid) {

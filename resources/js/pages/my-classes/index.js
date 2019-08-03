@@ -5,7 +5,7 @@ import { asset } from "../../helpers/app";
 import Select from "../../common/Select";
 import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
-import { dateDifference } from "../../helpers/resource";
+import { update, dateDifference } from "../../helpers/resource";
 
 class MyClasses extends Component {
     constructor(props) {
@@ -21,12 +21,15 @@ class MyClasses extends Component {
                 end_date: ""
             },
             loader: true,
-            canAddNew: false
+            canAddNew: false,
+            archived: false,
+            cancelled: false
         };
 
         this.renderLoader = this.renderLoader.bind(this);
         this.renderActions = this.renderActions.bind(this);
         this.deleteClass = this.deleteClass.bind(this);
+        this.uploadRoster = this.uploadRoster.bind(this);
     }
 
     componentDidMount() {
@@ -38,7 +41,7 @@ class MyClasses extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('classes/hasPendingRosters', {})
             .then(res => {
@@ -46,13 +49,13 @@ class MyClasses extends Component {
                     canAddNew: res.data.classes.length ? false : true
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('regulations', {}).then(res => {
             this.setState({
                 regulations: res.data.regulations
             });
-        }).catch(err => console.log(err));
+        }).catch(console.log);
     }
 
     getData(params = {}) {
@@ -76,19 +79,30 @@ class MyClasses extends Component {
     }
 
     renderLoader() {
-        return (
-            <div className="loader"/>
-        );
+        return <div className="loader" />
+    }
+
+    allowEdit(date, state) {
+        let diffrence = (new Date(date) - new Date) / (1000 * 60 * 60 * 24);
+        return state == "AZ" ? diffrence > 16 : diffrence > 10;
     }
 
     renderActions(clss) {
-        return (
-            <div className="actions">
+        return this.state.archived
+            ? <form className="actions roaster-actions">
+                <input type="hidden" name="class_id" value={clss.id} />
+                {clss.roster && <Fragment><Link to={clss.roster} target="_blank">View Roaster</Link> <span>|</span></Fragment>}
+                <label>
+                    <input type="file" name="roster" onChange={this.uploadRoster} />
+                    Upload Roaster
+			</label>
+            </form>
+            : <div className="actions">
+                {this.allowEdit(clss.start_date, clss.venue.abbreviation)
+                    ? <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/my-classes/edit/" + clss.id} />
+                    : <a data-toggle="tooltip" title="Class can no longer be changed" className="ion-md-lock" />}
                 {clss.status != 'Cancelled' ? <Link data-toggle="tooltip" title="Cancel Class" className="ion-md-close" to={"/my-classes/cancel/" + clss.id} /> : ""}
-                <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/my-classes/edit/" + clss.id} />
-                <a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
             </div>
-        );
     }
 
     deleteClass(e, clss) {
@@ -101,6 +115,11 @@ class MyClasses extends Component {
                     console.log(err);
                 });
         }
+    }
+
+    uploadRoster(e) {
+        this.setState({ loader: true });
+        update('classes/roster', new FormData(e.target.form), true).then(res => this.getData({ archived: true }))
     }
 
     setfilter(value, key) {
@@ -117,13 +136,17 @@ class MyClasses extends Component {
 
     toggleArchived(e) {
         if (e === true || e.target.checked) {
+            this.setState({ archived: true });
             this.getData({ archived: true });
         } else {
+            this.setState({ archived: false });
             this.getData({});
         }
     }
 
     toggleCancelled(e) {
+        this.setState({ cancelled: e.target.checked });
+
         if (e.target.checked) {
             this.getData({ cancelled: true });
         } else {
@@ -132,12 +155,12 @@ class MyClasses extends Component {
     }
 
     render() {
-        let { archived_cb, classes, canAddNew } = this.state;
+        let { archived_cb, classes, canAddNew, cancelled } = this.state;
         const { filters, courses, regulations, loader } = this.state;
 
         const columns = [
             {
-                name: 'Date',
+                name: 'Class Date',
                 cell: row => formatDate(row.start_date, true),
                 selector: "start_date",
                 sortable: true,
@@ -150,19 +173,10 @@ class MyClasses extends Component {
                 width: '50px'
             },
             {
-                name: 'Course',
-                cell: row => {
-                    return <Fragment>
-                        <Link to={"/my-classes/edit/" + row.id}>{row.course.title}</Link><br />
-                        <small className="links">
-                            <a href={asset(row.course.material)} target="_balank">Course Materials</a>
-                            <span className="sep"></span>
-                            <a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
-                            <span className="sep"></span>
-                            <a href={asset(row.docs, true)} target="_balank">Class Docs</a>
-                        </small>
-                    </Fragment>
-                },
+                name: 'Course Title',
+                cell: row => this.allowEdit(row.start_date, row.venue.abbreviation)
+                    ? <Link to={"/my-classes/edit/" + row.id}>{row.course.title}</Link>
+                    : row.course.title,
                 selector: "course.title",
                 ignoreRowClick: true,
                 sortable: true,
@@ -170,15 +184,13 @@ class MyClasses extends Component {
             },
             {
                 name: 'Location',
-                cell: row => {
-                    return <Fragment>
-                        {row.venue.name}<br />
-                        {row.venue.city} {row.venue.regulation.abbreviation}, {row.venue.zip_code}
-                    </Fragment>;
-                },
+                cell: row => <Fragment>
+                    {row.venue.name}<br />
+                    {row.venue.city} {row.venue.regulation.abbreviation}, {row.venue.zip_code}
+                </Fragment>,
                 selector: "venue.name",
                 sortable: true,
-                maxWidth: '150px'
+                maxWidth: '180px'
             },
             {
                 name: 'RSVP’s',
@@ -187,10 +199,10 @@ class MyClasses extends Component {
                 width: '60px'
             },
             {
-                name: 'Hours',
+                name: 'Course Length',
                 cell: row => dateDifference(row.start_date, row.end_date),
                 sortable: true,
-                width: '60px'
+                width: '100px'
             },
             {
                 name: 'Cost',
@@ -210,12 +222,30 @@ class MyClasses extends Component {
                 width: '100px'
             },
             {
-                name: 'Actions',
-                cell: row => this.renderActions(row),
+                name: 'Material',
+                cell: row => {
+                    return <small className="links">
+                        <a href={asset(row.course.material)} target="_balank">Course Materials</a>
+                        <span className="sep"></span>
+                        <a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
+                        <span className="sep"></span>
+                        <a href={asset(row.docs, true)} target="_balank">Class Docs</a>
+                    </small>
+                },
                 ignoreRowClick: true,
-                width: '120px'
+                sortable: true,
+                width: '230px'
+            },
+            {
+                name: 'Actions',
+                cell: this.renderActions,
+                ignoreRowClick: true,
+                width: this.state.archived ? '200px' : '120px',
+                right: true
             }
         ];
+
+        cancelled && columns.pop();
 
         if (Object.keys(filters).length) {
             classes = filter(classes, filters);
@@ -256,12 +286,12 @@ class MyClasses extends Component {
 
                     <label className="checkbox">
                         <input type="checkbox" ref={el => this.state.archived_cb = el} onChange={e => this.toggleArchived(e)} />
-                        <span>Show archived</span>
+                        <span>Archived Classes</span>
                     </label>
 
                     <label className="checkbox">
                         <input type="checkbox" onChange={e => this.toggleCancelled(e)} />
-                        <span>Show cancelled</span>
+                        <span>Show Cancelled</span>
                     </label>
                 </div>
 

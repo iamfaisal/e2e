@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
+import ReactSelect from 'react-select';
 import FileInput from "../../common/FileInput";
 import DatePicker from "react-datepicker";
 import { read, create, dateToString, addDays } from "../../helpers/resource";
 import { toggleModel } from "../../helpers/app";
 import CreateVenue from "../venues/create";
 import CreateSponsor from "../sponsors/create";
-import ReactSelect from 'react-select';
 
 class CreateClass extends Component {
 	constructor(props) {
@@ -60,7 +60,7 @@ class CreateClass extends Component {
 					courses: res.data.courses
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('users', { params: { role: 'instructor' } })
 			.then(res => {
@@ -68,7 +68,7 @@ class CreateClass extends Component {
 					instructors: res.data.users
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		this.getVenues();
 

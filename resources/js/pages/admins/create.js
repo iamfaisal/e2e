@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
+import ReactSelect from 'react-select';
 import FileInput from "../../common/FileInput";
 import CheckBox from "../../common/CheckBox";
 import { read, create } from "../../helpers/resource";
@@ -41,10 +42,15 @@ class CreateAdmin extends Component {
         read('roles/', {})
             .then(res => {
                 this.setState({
-                    roles: res.data.roles
+                    roles: res.data.roles.map(role => {
+                        return {
+                            label: role.label,
+                            value: role.id
+                        }
+                    }).sort((a, b) => a.label < b.label ? -1 : 1)
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     handleChange(name, value, valid) {
@@ -151,13 +157,11 @@ class CreateAdmin extends Component {
                     <fieldset className="fields horizontal">
                         <label>
                             <span>Roles</span>
-                            <Select
-                                onChange={this.handleChange}
+                            <ReactSelect
+                                className="react-select"
                                 name="roles[]"
-                                items={roles}
-                                multiple
-                                id={"id"}
-                                val={"label"}
+                                options={roles}
+                                isMulti={true}
                             />
                         </label>
                     </fieldset>
@@ -189,7 +193,7 @@ class CreateAdmin extends Component {
                     <div className="row">
                         <div className="col-md-6 col-lg-4">
                             <FileInput
-                                onChange={event => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="avatar"
                                 labelText="Avatar"
                             />

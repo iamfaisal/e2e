@@ -116,7 +116,10 @@ class FileInput extends Component {
                     {files.map((file, i) => {
                         return file.name ? <figure key={i}>
                             {file.type.search('image') > -1
-                                ? <a href={this.getFileURL(file)} target="_blank"><img src={this.getFileURL(file)}/></a>
+                                ? <a href={this.getFileURL(file)} target="_blank">
+                                    <img src={this.getFileURL(file)}/>
+                                    <span>Download File</span>
+                                </a>
                                 : file.name.search('/') > -1
                                     ? <a href={asset(file.name)} target="_blank">Download File</a>
                                     : <figcaption>{file.name}</figcaption>

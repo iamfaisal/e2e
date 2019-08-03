@@ -58,8 +58,8 @@ class Select extends Component {
 
         if (multiple && !Array.isArray(value)) value = [value];
 
-        if (val == "name" || val == "label" || val == "title") {
-            items.sort((a, b) => a[val] < b[val] ? -1 : 1);
+        if (!val.includes('|')) {
+            items.sort((a, b) => a[val].trim() < b[val].trim() ? -1 : 1);
         }
 
         return (

@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
+import ReactSelect from 'react-select';
 import FileInput from "../../common/FileInput";
 import CheckBox from "../../common/CheckBox";
 import { is } from "../../helpers/acl"
@@ -58,21 +59,28 @@ class EditAdmin extends Component {
                     loaded: true
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('roles/', {})
             .then(res => {
                 this.setState({
-                    roles: res.data.roles
+                    roles: res.data.roles.map(role => {
+                        return {
+                            label: role.label,
+                            value: role.id
+                        }
+                    }).sort((a, b) => a.label < b.label ? -1 : 1)
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     handleChange(name, value, valid) {
         let { fields, formValidationData } = this.state;
         if (event && event.target.files) {
             fields[name] = event.target.files;
+        } else if (Array.isArray(value)) {
+            fields[name] = value.map(v => v.value);
         } else {
             fields[name] = value;
         }
@@ -137,6 +145,12 @@ class EditAdmin extends Component {
 
         if (!loaded) return false;
 
+        let selectedRoles = fields.roles.map(c => {
+            let label = "";
+            roles.forEach(role => role.value == c ? label = role.label : "");
+            return { label: label, value: c }
+        });
+
         return (
             <div>
                 <header className="pageheader">
@@ -179,15 +193,13 @@ class EditAdmin extends Component {
                     <fieldset className="fields horizontal">
                         <label>
                             <span>Roles</span>
-                            <Select
-                                onChange={this.handleChange}
-                                name="roles[]"
-                                items={roles}
-                                value={fields.roles}
-                                multiple
-                                id={"id"}
-                                val={"label"}
-                            />
+                            <ReactSelect
+                                className="react-select"
+                                options={roles}
+                                value={selectedRoles}
+                                isMulti={true}
+                                onChange={v => this.handleChange("roles", v, true)}
+                                name="roles[]" />
                         </label>
                     </fieldset>
                     }
@@ -218,7 +230,7 @@ class EditAdmin extends Component {
                     <div className="row">
                         <div className="col-md-6 col-lg-4">
                             <FileInput
-                                onChange={event => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="avatar"
                                 labelText="Avatar"
                                 value={fields.avatar}

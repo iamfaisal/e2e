@@ -20,8 +20,9 @@ class MyClassesWorkshops extends Component {
                 start_date: "",
                 end_date: ""
             },
-            loader: true,
-            canAddNew: false
+            archived: false,
+            cancelled: false,
+            loader: true
         };
 
         this.renderLoader = this.renderLoader.bind(this);
@@ -32,27 +33,17 @@ class MyClassesWorkshops extends Component {
     componentDidMount() {
         this.getData({});
 
-        read('courses/', {})
-            .then(res => {
-                this.setState({
-                    courses: res.data.courses
-                });
-            })
-            .catch(err => console.log(err));
-
-        read('classes/hasPendingRosters', {})
-            .then(res => {
-                this.setState({
-                    canAddNew: res.data.classes.length ? false : true
-                });
-            })
-            .catch(err => console.log(err));
+        read('courses/', {}).then(res => {
+            this.setState({
+                courses: res.data.courses
+            });
+        });
 
         read('regulations', {}).then(res => {
             this.setState({
                 regulations: res.data.regulations
             });
-        }).catch(err => console.log(err));
+        });
     }
 
     getData(params = {}) {
@@ -77,22 +68,28 @@ class MyClassesWorkshops extends Component {
     }
 
     renderLoader() {
-        return (
-            <div className="loader"/>
-        );
+        return <div className="loader"/>;
+    }
+
+    allowEdit(clss) {
+        let diff = (new Date(clss.start_date) - new Date) / (1000 * 60 * 60);
+        return diff > 24 && !clss.is_cancelled;
     }
 
     renderActions(clss) {
-        return (
-            <div className="actions">
-                <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/my-classes/edit/" + clss.id} />
-                <a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
-            </div>
-        );
+        return <div className="actions">
+            {this.allowEdit(clss) && <Link data-toggle="tooltip" title="Edit Workshop" className="ion-md-create" to={"/my-classes/edit/" + clss.id} />}
+            {clss.status != 'Cancelled' && <Link data-toggle="tooltip" title="Cancel Workshop" className="ion-md-close" to={"/my-classes/cancel/" + clss.id} />}
+        </div>
+    }
+
+    uploadRoster(e) {
+        this.setState({ loader: true });
+        update('classes/roster', new FormData(e.target.form), true).then(res => this.getData({ archived: true }))
     }
 
     deleteClass(e, clss) {
-        if (confirm('Do you really want to delete this Class?')) {
+        if (confirm('Do you really want to delete this Workshop?')) {
             remove('classes/' + clss, {})
                 .then(res => {
                     this.getData();
@@ -118,26 +115,29 @@ class MyClassesWorkshops extends Component {
     toggleArchived(e) {
         if (e === true || e.target.checked) {
             this.getData({ archived: true });
+            this.setState({ archived: true });
         } else {
             this.getData({});
+            this.setState({ archived: false });
         }
     }
 
     toggleCancelled(e) {
         if (e.target.checked) {
             this.getData({ cancelled: true });
+            this.setState({ cancelled: true });
         } else {
             this.getData({});
+            this.setState({ cancelled: false });
         }
     }
 
     render() {
-        let { archived_cb, classes, canAddNew } = this.state;
-        const { filters, courses, regulations, loader } = this.state;
+        let { classes, filters, courses, loader, archived, cancelled } = this.state;
 
         const columns = [
             {
-                name: 'Date',
+                name: 'Workshop Date',
                 cell: row => formatDate(row.start_date, true),
                 selector: "start_date",
                 sortable: true,
@@ -150,19 +150,10 @@ class MyClassesWorkshops extends Component {
                 width: '50px'
             },
             {
-                name: 'Course',
-                cell: row => {
-                    return <Fragment>
-                        <Link to={"/my-classes/edit/" + row.id}>{row.course.title}</Link><br />
-                        <small className="links">
-                            <a href={asset(row.course.material)} target="_balank">Course Materials</a>
-                            <span className="sep"></span>
-                            <a href={asset(row.flyer, true)} target="_balank">Class Flyer</a>
-                            <span className="sep"></span>
-                            <a href={asset(row.docs, true)} target="_balank">Class Docs</a>
-                        </small>
-                    </Fragment>
-                },
+                name: 'Workshop Title',
+                cell: row => this.allowEdit(row)
+                    ? <Link to={"/my-classes/edit/" + row.id}>{row.course.title}</Link>
+                    : row.course.title,
                 selector: "course.title",
                 ignoreRowClick: true,
                 sortable: true,
@@ -187,7 +178,7 @@ class MyClassesWorkshops extends Component {
                 width: '60px'
             },
             {
-                name: 'Hours',
+                name: 'Length',
                 cell: row => dateDifference(row.start_date, row.end_date),
                 sortable: true,
                 width: '60px'
@@ -210,31 +201,48 @@ class MyClassesWorkshops extends Component {
                 width: '100px'
             },
             {
+                name: 'Workshop Materials',
+                cell: row => <form className="actions roaster-actions">
+                    <input type="hidden" name="class_id" value={row.id} />
+
+                    <a href={asset(row.course.material)} target="_balank">WS Teaching Kit</a>
+                    <span>|</span>
+                    <a href={asset(row.flyer, true)} target="_balank">WS Flyer</a>
+
+                    {dateDifference(row.end_date, new Date) > 0 && <Fragment>
+                        <span>|</span>
+                        <Link to={row.roster ? row.roster : "!"} target="_blank">View WS Roster &amp; Evaluation</Link>
+
+                        <span>|</span>
+                        <label><input type="file" name="roster" onChange={this.uploadRoster} /> Upload WS Roster &amp; Evaluation</label>
+                    </Fragment>}
+                </form>,
+                ignoreRowClick: true,
+                sortable: true
+            },
+            {
                 name: 'Actions',
-                cell: row => this.renderActions(row),
+                cell: this.renderActions,
                 ignoreRowClick: true,
                 width: '120px'
             }
         ];
+
+        if (archived || cancelled) columns.pop();
 
         if (Object.keys(filters).length) {
             classes = filter(classes, filters);
         }
 
         return (
-            <div>
+            <Fragment>
                 <header className="pageheader">
                     <h2>Workshops</h2>
-                    {canAddNew
-                    ? <Link className="button" to={"/my-classes/create?ws=1"}>Register Class</Link>
-                        : <button className="button" onClick={() => { if (archived_cb) archived_cb.checked = true; this.toggleArchived(true) }}>Upload rosters to register a new class</button>}
+                    <Link className="button" to="/my-classes/create?ws=1">Register Workshop</Link>
                 </header>
 
                 <div className="filter">
-                    <Select items={courses} placeholder="Select Course" id="id" val={"title"} onChange={value => this.setfilter(value, "course.id")} />
-                    <Select items={regulations} placeholder="Select State" id="id" val="name" onChange={value => this.setfilter(value, "venue.regulation_id")} />
-
-                    <br />
+                    <Select items={courses} placeholder="Select Workshop" id="id" val={"title"} onChange={value => this.setfilter(value, "course.id")} />
 
                     <DatePicker
                         selected={filters.start_date}
@@ -252,9 +260,16 @@ class MyClassesWorkshops extends Component {
                         placeholderText="End"
                         onChange={date => this.setfilter(date, "end_date")} />
 
+                    <br />
+
                     <label className="checkbox">
-                        <input type="checkbox" ref={el => this.state.archived_cb = el} onChange={e => this.toggleArchived(e)} />
-                        <span>Show archived</span>
+                        <input type="checkbox" onChange={e => this.toggleArchived(e)} />
+                        <span>Archived Workshops</span>
+                    </label>
+
+                    <label className="checkbox">
+                        <input type="checkbox" onChange={e => this.toggleCancelled(e)} />
+                        <span>Show Cancelled</span>
                     </label>
                 </div>
 
@@ -263,7 +278,7 @@ class MyClassesWorkshops extends Component {
                         ? <DataTable columns={columns} data={classes} noHeader={true} pagination paginationRowsPerPageOptions={[10, 25, 50, 100, 500]} />
                         : this.renderLoader()}
                 </div>
-            </div>
+            </Fragment>
         );
     }
 }

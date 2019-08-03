@@ -40,7 +40,7 @@ class ClassesWorkshops extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('users', { role: 'instructor' })
             .then(res => {
@@ -48,13 +48,13 @@ class ClassesWorkshops extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('regulations', {}).then(res => {
             this.setState({
                 regulations: res.data.regulations
             });
-        }).catch(err => console.log(err));
+        }).catch(console.log);
     }
 
     getData(params = {}) {
@@ -247,7 +247,7 @@ class ClassesWorkshops extends Component {
             },
             {
                 name: 'Actions',
-                cell: row => this.renderActions(row),
+                cell: this.renderActions,
                 ignoreRowClick: true,
                 width: this.state.archived ? '220px' : '120px',
                 right: true
@@ -259,7 +259,7 @@ class ClassesWorkshops extends Component {
         }
 
         return (
-            <div>
+            <Fragment>
                 <header className="pageheader">
                     <h2>Workshops</h2>
                     <Link className="button" to={"/classes/create?ws=1"}>Register Workshop</Link>
@@ -299,7 +299,7 @@ class ClassesWorkshops extends Component {
                         ? <DataTable columns={columns} data={classes} noHeader={true} pagination paginationRowsPerPageOptions={[10, 25, 50, 100, 500]} />
                         : this.renderLoader()}
                 </div>
-            </div>
+            </Fragment>
         );
     }
 }

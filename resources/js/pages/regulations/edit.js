@@ -55,7 +55,7 @@ class EditRegulation extends Component {
                     loaded: true
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     handleChange(name, value, valid) {
@@ -230,7 +230,7 @@ class EditRegulation extends Component {
                     <legend>Regulations</legend>
                     <fieldset className="fields horizontal">
                         <TextArea
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="regulations"
                             value={fields.regulations}
                             placeholder="Regulations"
@@ -240,7 +240,7 @@ class EditRegulation extends Component {
                     <legend>CE Requirements Statement</legend>
                     <fieldset className="fields horizontal">
                         <TextArea
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="ce_requirements_statement"
                             value={fields.ce_requirements_statement}
                             placeholder="CE Eequirements Statement"
@@ -248,7 +248,7 @@ class EditRegulation extends Component {
                     </fieldset>
 
                     <FileInput
-                        onChange={(event) => this.handleChange(event)}
+                        onChange={this.handleChange}
                         name="regulations_doc"
                         labelText="Regulations Doc"
                         value={fields.regulations_doc}

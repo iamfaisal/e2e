@@ -61,7 +61,7 @@ class Categories extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
         }
     }
 
@@ -85,7 +85,7 @@ class Categories extends Component {
             },
             {
                 name: 'Actions',
-                cell: row => this.renderActions(row),
+                cell: this.renderActions,
                 ignoreRowClick: true,
                 width: '100px'
             }

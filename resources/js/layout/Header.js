@@ -34,20 +34,19 @@ class Header extends Component {
     }
 
     renderNavigation(role, roleLinks) {
-        return(
-            <nav key={role}>
-                <h3>{role.replace("-", " ")}</h3>
-                <ul>
-                    {roleLinks.map(function(link) {
-                        return (
-                            <li key={link.url} className={classnames({"active": window.location.pathname === link.url})}>
-                                <Link to={link.url} className={link.icon}> <span>{link.name}</span></Link>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </nav>
-        );
+        return <nav key={role}>
+            <h3>{role.replace("-", " ")}</h3>
+            <ul>
+                {roleLinks.map(link => <li key={link.url} className={classnames({ "active": window.location.pathname === link.url })}>
+                    <Link to={link.url} className={link.icon}> <span>{link.name}</span></Link>
+                    {link.menu && <ul>
+                        {link.menu.map(sublink => <li key={sublink.url} className={classnames({ "active": window.location.pathname === sublink.url })}>
+                            <Link to={sublink.url}>{sublink.name}</Link>
+                        </li>)}
+                    </ul>}
+                </li>)}
+            </ul>
+        </nav>
     }
 
     render() {

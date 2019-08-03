@@ -27,7 +27,7 @@ class MySponsors extends Component {
             this.setState({
                 regulations: res.data.regulations
             });
-        }).catch(err => console.log(err));
+        }).catch(console.log);
     }
 
     getData() {
@@ -71,7 +71,7 @@ class MySponsors extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
         }
     }
 

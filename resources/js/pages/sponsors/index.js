@@ -28,7 +28,7 @@ class Sponsors extends Component {
             this.setState({
                 regulations: res.data.regulations
             });
-        }).catch(err => console.log(err));
+        }).catch(console.log);
 
         read('users/', { params: { role: "instructor" } })
             .then(res => {
@@ -36,7 +36,7 @@ class Sponsors extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     getData() {
@@ -80,7 +80,7 @@ class Sponsors extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
         }
     }
 

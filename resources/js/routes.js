@@ -49,7 +49,8 @@ import CreateMyClass from "./pages/my-classes/create";
 import EditMyClass from "./pages/my-classes/edit";
 import CancelMyClass from "./pages/my-classes/cancel";
 
-import Materials from "./pages/materials";
+import CourseMaterials from "./pages/materials/course";
+import WorkshopMaterials from "./pages/materials/workshop";
 
 import MyVenues from "./pages/my-venues";
 import CreateMyVenue from "./pages/my-venues/create";
@@ -256,7 +257,12 @@ const routes = [
 	},
 	{
 		path: "/course-materials",
-		component: requireAuth(Materials),
+		component: requireAuth(CourseMaterials),
+		exact: true
+	},
+	{
+		path: "/workshop-materials",
+		component: requireAuth(WorkshopMaterials),
 		exact: true
 	},
 	{

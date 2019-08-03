@@ -62,7 +62,7 @@ class CreateInstructor extends Component {
 					regulations: res.data.regulations
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 	}
 
 	handleChange(name, value, valid) {
@@ -296,6 +296,17 @@ class CreateInstructor extends Component {
 						/>
 					</fieldset>
 
+					<div className="row">
+						<div className="col-md-4">
+							<FileInput
+								onChange={this.handleChange}
+								name="avatar"
+								labelText="Headshot"
+								preview="large"
+							/>
+						</div>
+					</div>
+
 					{fields.licenses.map((license, i) => {
 						return <fieldset key={i} className="fields horizontal">
 							<label>
@@ -329,7 +340,7 @@ class CreateInstructor extends Component {
 								/>
 							</label>
 							<FileInput
-								onChange={event => this.handleChange(event)}
+								onChange={this.handleChange}
 								name={"licenses[" + i + "][certificate]"}
 								labelText="Certificate"
 							/>
@@ -338,17 +349,6 @@ class CreateInstructor extends Component {
 					<div className={ "repeatActions count-" + fields.licenses.length }>
 						<button className="ion-md-remove" onClick={this.removeLicense}></button>
 						<button className="ion-md-add" onClick={this.addLicense}></button>
-					</div>
-
-					<div className="row">
-						<div className="col-md-4">
-							<FileInput
-								onChange={event => this.handleChange(event)}
-								name="avatar"
-								labelText="Headshot"
-								preview="large"
-							/>
-						</div>
 					</div>
 
 					<fieldset className="fields horizontal">

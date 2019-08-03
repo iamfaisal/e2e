@@ -17,6 +17,7 @@ class CancelMyClass extends Component {
             class: {},
             courses: [],
             formValidationData: {},
+            workshop: 0
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -31,10 +32,11 @@ class CancelMyClass extends Component {
                 this.setState({
                     loaded: true,
                     class: res.data.class,
+                    workshop: parseInt(res.data.class.is_workshop),
                     dataLoaded: true
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     handleChange(name, value) {
@@ -53,13 +55,9 @@ class CancelMyClass extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        this.setState({
-            loading: true
-        });
+        this.setState({loading: true});
 
-        let data = new FormData(e.target);
-
-        create('classes/cancel', data, true)
+        create('classes/cancel', new FormData(e.target), true)
             .then(res => {
                 res.status === 200
                     ? this.props.history.push("/my-classes")
@@ -80,15 +78,17 @@ class CancelMyClass extends Component {
     }
 
     render() {
-        let { id, dataLoaded, fields, loading, isFormValid, formValidationData } = this.state;
+        let { id, dataLoaded, fields, loading, isFormValid, formValidationData, workshop } = this.state;
 
         if (!dataLoaded) return false;
         if (fields.reason && fields.policy) isFormValid = true;
 
+        let title = workshop ? "Workshop" : "Class";
+
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Are you sure you want to cancel the class</h2>
+                    <h2>Are you sure you want to cancel the {title.toLowerCase()}</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -118,7 +118,7 @@ class CancelMyClass extends Component {
                         />
                     </fieldset>
 
-                    <button className="button" disabled={!isFormValid}>Cancel Class</button>
+                    <button className="button" disabled={!isFormValid}>Cancel {title}</button>
 
                     <input type="hidden" name="class_id" value={id} />
                 </form>

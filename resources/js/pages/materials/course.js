@@ -4,7 +4,7 @@ import { read, filter } from "../../helpers/resource";
 import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
 
-class Materials extends Component {
+class CourseMaterials extends Component {
     constructor(props) {
         super(props);
 
@@ -42,9 +42,7 @@ class Materials extends Component {
     }
 
     renderLoader() {
-        return (
-            <div className="loader"/>
-        );
+        return<div className="loader"/>
     }
 
     setfilter(value, key) {
@@ -78,9 +76,9 @@ class Materials extends Component {
                 name: 'Materials',
                 cell: row => {
                     return <div className="material_actions">
-                        <a href={asset(row.class_flyer_template)} target="_blank">Flyer Template</a>
+                        <a href={asset(row.class_flyer_template)} target="_blank">CE Flyer Template</a>
                         &nbsp;|&nbsp;
-                        <a href={asset(row.material)} target="_blank">Course Materials</a>
+                        <a href={asset(row.material)} target="_blank">CE Course Materials</a>
                     </div>
                 },
                 ignoreRowClick: true,
@@ -95,12 +93,12 @@ class Materials extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Course Materials</h2>
+                    <h2>CE Course Material Library</h2>
                 </header>
 
                 <div className="filter">
                     <Select items={regulations} placeholder="Select State" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")} />
-                    <input type="text" placeholder="Course Code" onChange={e => this.setfilter(e, "code")} />
+                    <input type="text" placeholder="Search Course Title" onChange={e => this.setfilter(e, "title")} />
                 </div>
 
                 <div className="tablewrap">
@@ -113,4 +111,4 @@ class Materials extends Component {
     }
 }
 
-export default Materials;
+export default CourseMaterials;

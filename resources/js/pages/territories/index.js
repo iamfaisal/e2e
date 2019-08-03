@@ -29,7 +29,7 @@ class Territories extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     getData() {
@@ -71,7 +71,7 @@ class Territories extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
         }
     }
 
@@ -112,7 +112,7 @@ class Territories extends Component {
             },
             {
                 name: 'Actions',
-                cell: row => this.renderActions(row),
+                cell: this.renderActions,
                 ignoreRowClick: true,
                 width: '100px'
             }

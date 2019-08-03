@@ -211,7 +211,7 @@ class CreateRegulation extends Component {
                     <legend>Regulations</legend>
                     <fieldset className="fields horizontal">
                         <TextArea
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="regulations"
                             value={fields.regulations}
                             placeholder="Regulations"
@@ -221,7 +221,7 @@ class CreateRegulation extends Component {
                     <legend>CE Requirements Statement</legend>
                     <fieldset className="fields horizontal">
                         <TextArea
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="ce_requirements_statement"
                             value={fields.ce_requirements_statement}
                             placeholder="CE Eequirements Statement"
@@ -229,7 +229,7 @@ class CreateRegulation extends Component {
                     </fieldset>
 
                     <FileInput
-                        onChange={(event) => this.handleChange(event)}
+                        onChange={this.handleChange}
                         name="regulations_doc"
                         labelText="Regulations Doc"/>
 

@@ -49,7 +49,7 @@ class Instructors extends Component {
             this.setState({
                 regulations: res.data.regulations
             });
-        }).catch(err => console.log(err));
+        }).catch(console.log);
     }
 
     renderLoader() { return <div className="loader" /> }
@@ -76,7 +76,7 @@ class Instructors extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     setfilter(value, key) {

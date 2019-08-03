@@ -67,7 +67,7 @@ class EditClass extends Component {
 					fields: { ...fields, ...res.data.class },
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('courses/', {})
 			.then(res => {
@@ -75,7 +75,7 @@ class EditClass extends Component {
 					courses: res.data.courses
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('users', { params: { role: 'instructor' } })
 			.then(res => {
@@ -83,7 +83,7 @@ class EditClass extends Component {
 					instructors: res.data.users
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		this.getVenues();
 
@@ -380,7 +380,7 @@ class EditClass extends Component {
 					<div className="row">
 						<div className="col-lg-4">
 							<FileInput
-								onChange={(event) => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="flyer"
 								labelText="Class Flyer"
 								value={fields.flyer}
@@ -388,7 +388,7 @@ class EditClass extends Component {
 						</div>
 						<div className="col-lg-4">
 							<FileInput
-								onChange={(event) => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="flyer_image"
 								labelText="Class Flyer Image"
 								value={fields.flyer_image}

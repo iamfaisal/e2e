@@ -52,7 +52,7 @@ class EditSponsor extends Component {
 					loaded: true
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('users/', { params: { role: "instructor" } })
 			.then(res => {
@@ -60,7 +60,7 @@ class EditSponsor extends Component {
 					instructors: res.data.users
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('regulations', {})
 			.then(res => {
@@ -68,7 +68,7 @@ class EditSponsor extends Component {
 					regulations: res.data.regulations,
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 	}
 
 	handleChange(name, value, valid) {
@@ -253,7 +253,7 @@ class EditSponsor extends Component {
 					<div className="row">
 						<div className="col-md-6 col-lg-4">
 							<FileInput
-								onChange={event => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="logo"
 								labelText="Logo"
 								value={fields.logo}
@@ -261,7 +261,7 @@ class EditSponsor extends Component {
 						</div>
 						<div className="col-md-6 col-lg-4">
 							<FileInput
-								onChange={event => this.handleChange(event)}
+								onChange={this.handleChange}
 								name="avatar"
 								labelText="Headshot"
 								value={fields.avatar}

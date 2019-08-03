@@ -40,7 +40,7 @@ class CreateTerritory extends Component {
                     fields: fields
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     handleChange(name, value, valid) {

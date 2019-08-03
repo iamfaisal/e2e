@@ -294,7 +294,8 @@ select:not([multiple]) {
 			display: inline-block;
 		}
 
-		a:not(:last-child) {
+		a:not(:last-child),
+		span:not(:last-child) {
 			margin-right: 10px;
 		}
 	}
@@ -448,7 +449,12 @@ table {
 
 			a {
 				display: block;
-				text-align: center
+				text-align: center;
+
+				span {
+					display: block;
+					margin-top: 5px;
+				}
 			}
 
 			figcaption {
@@ -538,6 +544,19 @@ table {
 		}
 		&:not(:last-child) {
 			margin-bottom: 20px;
+		}
+
+		ul {
+			background: #feeced;
+			margin-bottom: 10px;
+			padding: 10px 28px;
+
+			a {
+				border: 0;
+				padding: 2px 0;
+
+				&:hover {}
+			}
 		}
 	}
 	.profile {
@@ -1229,6 +1248,10 @@ legend .checkbox {
 
 .roaster-actions {
 	font-size: 12px !important;
+	a[href$="!"] {
+		pointer-events: none;
+		opacity: .6;
+	}
 	span {
 		display: none;
 	}
@@ -1241,9 +1264,6 @@ legend .checkbox {
 		&:hover {
 			color: $color_alizarin_crimson_approx;
 		}
-	}
-	a ~ label {
-		margin-left: 10px;
 	}
 	input[type=file] {
 		display: none;
@@ -1497,28 +1517,46 @@ body.modal-visible {
 	}
 }
 
-.fields .react-select {
-	> [class$=control] {
-		min-height: 23px;
-		border: 0;
-		box-shadow: none !important;
-		
-		> div {
-			padding: 0;
-			border: 0 !important;
-		}
+.react-select > [class$=control] {
+	min-height: 23px;
+	margin-bottom: 10px;
+	border-color: rgba(200, 202, 208, 0.4);
 
-		[class$=Input] {
-			margin: 0;
-			padding: 0;
-		}
-
-		[class$=indicatorSeparator] {
-			display: none;
-		}
-
-		[class$=indicatorContainer] {
-			padding: 1px 8px;
-		}
+	input {
+		height: 26px;
+		margin: 0;
 	}
+
+	[class$=Input] {
+		margin: 0;
+		padding: 0;
+	}
+
+	[class$=indicatorSeparator] {
+		display: none;
+	}
+
+	[class$=indicatorContainer] {
+		padding: 1px 8px;
+	}
+}
+
+.fields .react-select > [class$=control] {
+	border: 0;
+	box-shadow: none !important;
+	margin-bottom: 0;
+
+	> div {
+		padding: 0;
+		border: 0 !important;
+	}
+}
+
+.cancel {
+	float: right;
+	background: #FF9800;
+	margin-top: -40px;
+}
+.tablewrap ~ .cancel {
+	display: none;
 }

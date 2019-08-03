@@ -152,7 +152,7 @@ class Courses extends Component {
             },
             {
                 name: 'Actions',
-                cell: row => this.renderActions(row),
+                cell: this.renderActions,
                 ignoreRowClick: true,
                 width: '100px',
             }

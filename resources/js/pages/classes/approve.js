@@ -57,7 +57,7 @@ class ApproveClass extends Component {
                     dataLoaded: true
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('courses/', {})
             .then(res => {
@@ -65,7 +65,7 @@ class ApproveClass extends Component {
                     courses: res.data.courses
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('users', { params: { role: 'instructor' } })
             .then(res => {
@@ -73,7 +73,7 @@ class ApproveClass extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('venues', {})
             .then(res => {
@@ -81,7 +81,7 @@ class ApproveClass extends Component {
                     venues: res.data.venues
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     handleChange(name, value) {
@@ -242,7 +242,7 @@ class ApproveClass extends Component {
                     <div className="row">
                         <div className="col-lg-4">
                             <FileInput
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="flyer"
                                 labelText="Class Flyer"
                                 value={fields.flyer}
@@ -251,7 +251,7 @@ class ApproveClass extends Component {
                         </div>
                         <div className="col-lg-4">
                             <FileInput
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="flyer_image"
                                 labelText="Class Flyer Image"
                                 value={fields.flyer_image}
@@ -259,7 +259,7 @@ class ApproveClass extends Component {
                         </div>
                         <div className="col-lg-4">
                             <FileInput
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="docs"
                                 labelText="Class Docs"
                                 value={fields.docs}
@@ -270,7 +270,7 @@ class ApproveClass extends Component {
                     <legend>Notes to Instructor</legend>
                     <fieldset className="fields horizontal">
                         <TextArea
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="notes"
                             value={fields.notes}
                         />

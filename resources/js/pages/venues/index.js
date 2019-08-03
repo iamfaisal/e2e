@@ -30,7 +30,7 @@ class Venues extends Component {
                     instructors: res.data.users
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('regulations', {})
             .then(res => {
@@ -38,7 +38,7 @@ class Venues extends Component {
                     regulations: res.data.regulations
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     getData() {
@@ -51,7 +51,7 @@ class Venues extends Component {
                     loader: false
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     renderLoader() {
@@ -77,7 +77,7 @@ class Venues extends Component {
             .then(res => {
                 this.getData();
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
         }
     }
 

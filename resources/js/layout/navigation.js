@@ -84,7 +84,14 @@ export const links = [
 		name: "Materials",
 		url: "/course-materials",
 		icon: "ion-ios-briefcase",
-		role: "instructor"
+		role: "instructor",
+		menu: [{
+			name: "CE Courses",
+			url: "/course-materials"
+		}, {
+			name: "Workshops",
+			url: "/workshop-materials"
+		}]
 	},
 	{
 		name: "Venues",

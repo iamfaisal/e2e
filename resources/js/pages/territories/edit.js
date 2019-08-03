@@ -39,7 +39,7 @@ class EditTerritory extends Component {
                     loaded: true
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('regulations/', {})
             .then(res => {
@@ -47,7 +47,7 @@ class EditTerritory extends Component {
                     regulations: res.data.regulations,
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     handleChange(name, value, valid) {

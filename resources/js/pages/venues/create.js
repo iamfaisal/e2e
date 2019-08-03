@@ -43,7 +43,7 @@ class CreateVenue extends Component {
 					}).sort((a, b) => a.label < b.label ? -1 : 1)
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('regulations', {})
 			.then(res => {
@@ -51,7 +51,7 @@ class CreateVenue extends Component {
 					regulations: res.data.regulations,
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 	}
 
 	handleChange(name, value, valid) {
@@ -143,6 +143,16 @@ class CreateVenue extends Component {
 
 				<form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
 					{formValidationData.form && !isFormValid && <div className="alert alert-danger">{formValidationData.form}</div>}
+					<label>
+						<span>Instructor</span>
+						<ReactSelect
+							className="react-select"
+							options={instructors}
+							isMulti={true}
+							name="users[]"
+						/>
+					</label>
+
 					<fieldset className="fields horizontal">
 						<TextField
 							onChange={this.handleChange}
@@ -152,15 +162,6 @@ class CreateVenue extends Component {
 							labelText="Venue Name"
 							required={true}
 						/>
-						<label>
-							<span>Instructor</span>
-							<ReactSelect
-								className="react-select"
-								options={instructors}
-								isMulti={true}
-								name="users[]"
-							/>
-						</label>
 					</fieldset>
 
 					<fieldset className="fields horizontal">

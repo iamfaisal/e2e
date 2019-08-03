@@ -3,6 +3,7 @@ import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import TextArea from "../../common/TextArea";
 import Select from "../../common/Select";
+import ReactSelect from 'react-select';
 import FileInput from "../../common/FileInput";
 import DatePicker from "react-datepicker";
 import { read, create, dateToString } from "../../helpers/resource";
@@ -46,15 +47,20 @@ class CreateCourse extends Component {
                     regulations: res.data.regulations
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
 
         read('categories/', {})
             .then(res => {
                 this.setState({
-                    categories: res.data.categories
+                    categories: res.data.categories.map(role => {
+                        return {
+                            label: role.label,
+                            value: role.id
+                        }
+                    }).sort((a, b) => a.label < b.label ? -1 : 1)
                 });
             })
-            .catch(err => console.log(err));
+            .catch(console.log);
     }
 
     handleChange(name, value, valid) {
@@ -145,8 +151,8 @@ class CreateCourse extends Component {
                                 onChange={this.handleChange}
                                 name="regulation_id"
                                 items={regulations}
-                                id={"id"}
-                                val={"name"}
+                                id="id"
+                                val="name"
                             />
                         </label>
                         <TextField
@@ -187,13 +193,11 @@ class CreateCourse extends Component {
                     <fieldset className="fields horizontal">
                         <label>
                             <span>Categories</span>
-                            <Select
-                                onChange={this.handleChange}
+                            <ReactSelect
+                                className="react-select"
                                 name="categories[]"
-                                items={categories}
-                                multiple
-                                id={"id"}
-                                val={"label"}
+                                options={categories}
+                                isMulti={true}
                             />
                         </label>
                     </fieldset>
@@ -201,7 +205,7 @@ class CreateCourse extends Component {
                     <legend>Description</legend>
                     <fieldset className="fields horizontal">
                         <TextArea
-                            onChange={(event) => this.handleChange(event)}
+                            onChange={this.handleChange}
                             name="description"
                             value={fields.description}
                             placeholder="Description"
@@ -211,21 +215,21 @@ class CreateCourse extends Component {
                     <div className="row">
                         <div className="col-lg-4">
                             <FileInput
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="class_flyer_template"
                                 labelText="Class Flyer Template"
                             />
                         </div>
                         <div className="col-lg-4">
                             <FileInput
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="class_docs_template"
                                 labelText="Class Docs Template"
                             />
                         </div>
                         <div className="col-lg-4">
                             <FileInput
-                                onChange={(event) => this.handleChange(event)}
+                                onChange={this.handleChange}
                                 name="material"
                                 labelText="Course Material"
                             />

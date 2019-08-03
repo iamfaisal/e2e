@@ -148,6 +148,8 @@ export function formatDate(str, dateOnly) {
     let min = date.getMinutes();
     let ampm = hour >= 12 ? 'PM' : 'AM';
 
+    hour = hour % 12 ? hour % 12 : 12;
+
     if (day < 10) day = "0" + day;
     if (month < 10) month = "0" + month;
     if (hour.toString().length === 1) hour = "0" + hour;

@@ -48,7 +48,7 @@ class EditVenue extends Component {
 					loaded: true
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('users/', { params: { role: "instructor" } })
 			.then(res => {
@@ -61,7 +61,7 @@ class EditVenue extends Component {
 					}).sort((a, b) => a.label < b.label ? -1 : 1)
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 
 		read('regulations', {})
 			.then(res => {
@@ -69,7 +69,7 @@ class EditVenue extends Component {
 					regulations: res.data.regulations,
 				});
 			})
-			.catch(err => console.log(err));
+			.catch(console.log);
 	}
 
 	handleChange(name, value, valid) {
