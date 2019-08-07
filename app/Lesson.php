@@ -15,12 +15,12 @@ class Lesson extends Model
 
     public function course()
     {
-        return $this->belongsTo(Course::class)->where('is_workshop', false);
+        return $this->belongsTo(Course::class)->where('is_workshop', 0);
     }
 
 	public function workshop()
     {
-        return $this->belongsTo(Course::class)->where('is_workshop', true);
+        return $this->belongsTo(Course::class)->where('is_workshop', 1);
     }
 
     public function user()
