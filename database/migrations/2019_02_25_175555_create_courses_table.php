@@ -27,6 +27,7 @@ class CreateCoursesTable extends Migration
             $table->string('class_docs_template')->nullable();
             $table->string('material')->nullable();
             $table->string('commercial_link')->nullable();
+			$table->boolean('is_workshop')->default(false);
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });

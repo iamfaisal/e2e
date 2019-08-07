@@ -8,7 +8,8 @@ class Course extends Model
 {
     protected $fillable = [
         'title', 'regulation_id', 'number', 'code', 'hours', 'description', 'expiration_date',
-        'class_flyer_template', 'class_docs_template', 'material', 'commercial_link', 'is_deleted'
+        'class_flyer_template', 'class_docs_template', 'material', 'commercial_link', 
+		'is_deleted', 'is_workshop'
     ];
 
     public function categories()

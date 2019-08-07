@@ -40,7 +40,6 @@ class CreateLessonsTable extends Migration
             $table->boolean('is_approved')->default(false);
             $table->boolean('is_deleted')->default(false);
             $table->boolean('is_cancelled')->default(false);
-            $table->boolean('is_workshop')->default(false);
             $table->timestamps();
         });
 

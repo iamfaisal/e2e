@@ -41,7 +41,7 @@ class ClassesController extends Controller
     {
         $currentDateTime = Carbon::now()->toDateTimeString();
         $user = $this->user;
-        $classes = Lesson::with('course', 'course.categories', 'user', 'venue', 'venue.regulation')
+        $classes = Lesson::with('course.categories', 'user', 'venue', 'venue.regulation')
             ->orderBy('created_at', 'desc')
             ->where('is_deleted', false)
             ->when($request->archived, function ($query) use($currentDateTime) {
@@ -55,9 +55,9 @@ class ClassesController extends Controller
                 return $query->where('is_cancelled', false);
             })
             ->when($request->workshop, function ($query) {
-                return $query->where('is_workshop', true);
+                return $query->with('workshop');
             }, function ($query) {
-                return $query->where('is_workshop', false);
+                return $query->where('course');
             })
             ->when($request->fromInstructor, function ($query) use($user) {
                 return $query->where('user_id', $user->id);
@@ -126,7 +126,6 @@ class ClassesController extends Controller
             'rsvp_email' => $request->get('rsvp_email'),
             'rsvp_link_text' => $request->get('rsvp_link_text'),
             'rsvp_link_url' => $request->get('rsvp_link_url'),
-            'is_workshop' => $request->get('is_workshop') ? true : false,
             'status' => 'New'
         ];
         $lesson = Lesson::create($data);
@@ -176,7 +175,6 @@ class ClassesController extends Controller
             'rsvp_email' => $request->get('rsvp_email'),
             'rsvp_link_text' => $request->get('rsvp_link_text'),
             'rsvp_link_url' => $request->get('rsvp_link_url'),
-            'is_workshop' => $request->get('is_workshop') ? true : false,
             'status' => $status
         ];
         if($request->hasFile('flyer'))

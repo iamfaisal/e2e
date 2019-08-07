@@ -31,7 +31,12 @@ class CoursesController extends Controller
     public function index(Request $request)
     {
         $courses = Course::with('categories:name,label', 'regulation')
-                    ->orderBy('created_at', 'desc');
+                    ->orderBy('created_at', 'desc')
+					->when($request->workshop, function ($query) {
+						return $query->where('is_workshop', true);
+					}, function ($query) {
+						return $query->where('is_workshop', false);
+					});
 
         if ($request->has('active')) {
             $courses->where("is_deleted", false);
@@ -74,6 +79,7 @@ class CoursesController extends Controller
             'hours' => $request->get('hours'),
             'description' => $request->get('description'),
             'expiration_date' => $request->get('expiration_date'),
+            'is_workshop' => $request->get('is_workshop'),
             'commercial_link' => $request->get('commercial_link')
         ];
         if($request->hasFile('class_flyer_template'))
