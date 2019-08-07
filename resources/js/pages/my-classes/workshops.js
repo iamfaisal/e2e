@@ -33,7 +33,7 @@ class MyClassesWorkshops extends Component {
     componentDidMount() {
         this.getData({});
 
-        read('courses/', {}).then(res => {
+        read('courses/', { params: { workshop: 1 } }).then(res => {
             this.setState({
                 courses: res.data.courses
             });
@@ -50,7 +50,7 @@ class MyClassesWorkshops extends Component {
         this.setState({ loader: true });
 
         params.fromInstructor = true;
-        params.workshop = true;
+        params.workshop = 1;
 
         read('classes', { params: params })
             .then(res => {

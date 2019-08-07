@@ -12,7 +12,10 @@ class CreateCourse extends Component {
     constructor(props) {
         super(props);
 
+        const queryParams = new URL(location).searchParams;
+
         this.state = {
+            workshop: queryParams.get("ws") !== null,
             loading: false,
             fields: {
                 title: "",
@@ -96,7 +99,7 @@ class CreateCourse extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const {isFormValid } = this.state;
+        const {workshop, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -107,7 +110,7 @@ class CreateCourse extends Component {
         create('courses', new FormData(e.target), true)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/courses")
+                    ? this.props.history.push(workshop ? "/courses/workshops" : "/courses")
                     : this.setState({
                         loading: false,
                         isFormValid: false
@@ -125,12 +128,14 @@ class CreateCourse extends Component {
     }
 
     render() {
-        const { fields, regulations, categories, loading, isFormValid, formValidationData } = this.state;
+        const { workshop, fields, regulations, categories, loading, isFormValid, formValidationData } = this.state;
+
+        let title = workshop ? "Workshop" : "CE Course";
 
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Create CE Course</h2>
+                    <h2>Create {title}</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -217,26 +222,27 @@ class CreateCourse extends Component {
                             <FileInput
                                 onChange={this.handleChange}
                                 name="class_flyer_template"
-                                labelText="Class Flyer Template"
+                                labelText={title + " Flyer Template"}
                             />
                         </div>
                         <div className="col-lg-4">
                             <FileInput
                                 onChange={this.handleChange}
                                 name="class_docs_template"
-                                labelText="Class Docs Template"
+                                labelText={title + " Docs Template"}
                             />
                         </div>
                         <div className="col-lg-4">
                             <FileInput
                                 onChange={this.handleChange}
                                 name="material"
-                                labelText="Course Material"
+                                labelText={title + " Material"}
                             />
                         </div>
                     </div>
 
-                    <button className="button" disabled={!isFormValid}>Create CE Course</button>
+                    <input type="hidden" name="is_workshop" value={workshop ? "1" : "0"} />
+                    <button className="button" disabled={!isFormValid}>Create {title}</button>
                 </form>
             </div>
         );

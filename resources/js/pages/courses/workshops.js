@@ -29,7 +29,7 @@ class CoursesWorkshops extends Component {
 	getData() {
 		this.setState({ loader: true });
 
-		read('courses', {})
+		read('courses', { params: { workshop: 1 } })
 			.then(res => {
 				this.setState({
 					courses: res.data.courses,
@@ -53,9 +53,9 @@ class CoursesWorkshops extends Component {
 		const archived = course.is_deleted == "1";
 
 		return <div className="actions">
-			<Link className="ion-md-create" to={"/courses/edit/" + course.id} data-toggle="tooltip" title="Edit Course" />
-			{!archived && <a className="ion-md-close" onClick={e => this.deleteCourse(e, course.id)} data-toggle="tooltip" title="Archive Course" />}
-			{archived && <a className="ion-md-refresh" onClick={e => this.deleteCourse(e, course.id)} data-toggle="tooltip" title="Unarchive Course" />}
+			<Link className="ion-md-create" to={"/courses/edit/" + course.id + "?ws"} data-toggle="tooltip" title="Edit Workshop" />
+			{!archived && <a className="ion-md-close" onClick={e => this.deleteCourse(e, course.id)} data-toggle="tooltip" title="Archive Workshop" />}
+			{archived && <a className="ion-md-refresh" onClick={e => this.deleteCourse(e, course.id)} data-toggle="tooltip" title="Unarchive Workshop" />}
 		</div>
 	}
 
@@ -68,7 +68,7 @@ class CoursesWorkshops extends Component {
 	}
 
 	deleteCourse(e, course) {
-		if (confirm('Do you really want to archive this Course?')) {
+		if (confirm('Do you really want to archive this Workshop?')) {
 			remove('courses/' + course, {})
 				.then(res => {
 					this.getData();
@@ -111,7 +111,7 @@ class CoursesWorkshops extends Component {
 			{
 				name: 'Title',
 				cell: row => {
-					return <Link to={"/courses/edit/" + row.id}>{row.title}</Link>
+					return <Link to={"/courses/edit/" + row.id + "?ws"}>{row.title}</Link>
 				},
 				selector: 'title',
 				ignoreRowClick: true,
@@ -145,7 +145,7 @@ class CoursesWorkshops extends Component {
 		return <div>
 			<header className="pageheader">
 				<h2>Workshops</h2>
-				<Link className="button" to={"/courses/create"}>Add New Workshop</Link>
+				<Link className="button" to={"/courses/create?ws"}>Add New Workshop</Link>
 			</header>
 
 			<div className="filter">

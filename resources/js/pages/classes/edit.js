@@ -13,8 +13,11 @@ class EditClass extends Component {
 	constructor(props) {
 		super(props);
 
+		const queryParams = new URL(location).searchParams;
+
 		this.state = {
 			id: props.match.params.class,
+			workshop: queryParams.get("ws") !== null,
 			loading: false,
 			loaded: false,
 			fields: {
@@ -38,7 +41,6 @@ class EditClass extends Component {
 				flyer_image: "",
 				docs: "",
 			},
-			workshop: 0,
 			sponsors: [],
 			courses: [],
 			instructors: [],
@@ -53,9 +55,7 @@ class EditClass extends Component {
 	}
 
 	componentDidMount() {
-		const { id } = this.state;
-
-		read('classes/' + id, {})
+		read('courses/', this.state.workshop ? { params: { workshop: 1 } } : {})
 			.then(res => {
 				let { fields } = this.state;
 

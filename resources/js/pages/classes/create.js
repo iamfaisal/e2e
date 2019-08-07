@@ -17,6 +17,7 @@ class CreateClass extends Component {
 		const minDate = queryParams.get("ws") ? 3 : 16;
 
 		this.state = {
+			workshop: queryParams.get("ws") !== null,
 			loading: false,
 			minDate: minDate,
 			fields: {
@@ -38,7 +39,6 @@ class CreateClass extends Component {
 				flyer_image: "",
 				docs: ""
 			},
-			workshop: queryParams.get("ws") ? 1 : 0,
 			sponsors: [],
 			courses: [],
 			instructors: [],
@@ -54,7 +54,7 @@ class CreateClass extends Component {
 	}
 
 	componentDidMount() {
-		read('courses/', {})
+		read('courses/', this.state.workshop ? { params: { workshop: 1 } } : {})
 			.then(res => {
 				this.setState({
 					courses: res.data.courses

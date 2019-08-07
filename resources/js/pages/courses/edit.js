@@ -14,6 +14,7 @@ class EditCourse extends Component {
 
         this.state = {
             id: props.match.params.course,
+            workshop: false,
             loading: false,
             loaded: false,
             fields: {
@@ -46,20 +47,19 @@ class EditCourse extends Component {
     componentDidMount() {
         const { id } = this.state;
 
-        read('courses/'+id, {})
-            .then(res => {
-                let { course } = res.data;
-                let cats = [];
-                course.categories.forEach(category => {
-                    cats.push(category.id);
-                });
-                course.categories = cats;
-                this.setState({
-                    fields: course,
-                    loaded: true
-                });
-            })
-            .catch(console.log);
+        read('courses/' + id, {}).then(res => {
+            let { course } = res.data;
+            let cats = [];
+            course.categories.forEach(category => {
+                cats.push(category.id);
+            });
+            course.categories = cats;
+            this.setState({
+                workshop: course.is_workshop,
+                fields: course,
+                loaded: true
+            });
+        }).catch(console.log);
 
         read('regulations/', {})
             .then(res => {
@@ -117,7 +117,7 @@ class EditCourse extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const { id, isFormValid } = this.state;
+        const { id, workshop, isFormValid } = this.state;
 
         if (!isFormValid) return;
         
@@ -131,7 +131,7 @@ class EditCourse extends Component {
         update('courses/'+id, data, true)
             .then(res => {
                 res.status === 200
-                    ? this.props.history.push("/courses")
+                    ? this.props.history.push(workshop ? "/courses/workshops" : "/courses")
                     : this.setState({
                         loading: false,
                         isFormValid: false
@@ -149,7 +149,7 @@ class EditCourse extends Component {
     }
 
     render() {
-        const { loaded, fields, regulations, categories, loading, isFormValid, formValidationData } = this.state;
+        const { workshop, loaded, fields, regulations, categories, loading, isFormValid, formValidationData } = this.state;
 
         if (!loaded) return false;
 
@@ -163,10 +163,12 @@ class EditCourse extends Component {
             return { label: label, value: c }
         });
 
+        let title = workshop ? "Workshop" : "CE Course";
+
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Edit Course</h2>
+                    <h2>Edit {title}</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -255,7 +257,7 @@ class EditCourse extends Component {
                             <FileInput
                                 onChange={this.handleChange}
                                 name="class_flyer_template"
-                                labelText="Class Flyer Template"
+                                labelText={title + " Flyer Template"}
                                 value={fields.class_flyer_template}
                             />
                         </div>
@@ -263,7 +265,7 @@ class EditCourse extends Component {
                             <FileInput
                                 onChange={this.handleChange}
                                 name="class_docs_template"
-                                labelText="Class Docs Template"
+                                labelText={title + " Docs Template"}
                                 value={fields.class_docs_template}
                             />
                         </div>
@@ -271,13 +273,13 @@ class EditCourse extends Component {
                             <FileInput
                                 onChange={this.handleChange}
                                 name="material"
-                                labelText="Material"
+                                labelText={title + "Material"}
                                 value={fields.material}
                             />
                         </div>
                     </div>
 
-                    <button className="button" disabled={!isFormValid}>Update Course</button>
+                    <button className="button" disabled={!isFormValid}>Update {title}</button>
                 </form>
             </div>
         );

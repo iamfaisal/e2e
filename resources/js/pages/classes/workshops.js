@@ -34,7 +34,7 @@ class ClassesWorkshops extends Component {
     componentDidMount() {
         this.getData();
 
-        read('courses/', {})
+        read('courses/', { params: { workshop: true } })
             .then(res => {
                 this.setState({
                     courses: res.data.courses

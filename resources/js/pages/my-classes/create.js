@@ -19,6 +19,7 @@ class CreateMyClass extends Component {
 		const minDate = queryParams.get("ws") ? 3 : 16;
 
 		this.state = {
+			workshop: queryParams.get("ws") !== null,
 			loading: false,
 			user: getuser(),
 			canAddNew: true,
@@ -41,7 +42,6 @@ class CreateMyClass extends Component {
 				flyer_image: "",
 				docs: ""
 			},
-			workshop: queryParams.get("ws") ? 1 : 0,
 			sponsors: [],
 			courses: [],
 			venues: [],
