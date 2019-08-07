@@ -118,17 +118,6 @@ class CoursesWorkshops extends Component {
 				sortable: true
 			},
 			{
-				name: 'State',
-				selector: 'regulation.abbreviation',
-				sortable: true,
-				maxWidth: '50px'
-			},
-			{
-				name: 'Course #',
-				selector: 'number',
-				sortable: true
-			},
-			{
 				name: 'Category',
 				cell: row => this.renderCategories(row),
 				sortable: true,
@@ -140,13 +129,6 @@ class CoursesWorkshops extends Component {
 				selector: 'hours',
 				sortable: true,
 				maxWidth: '50px'
-			},
-			{
-				name: 'Expiration',
-				cell: row => formatDate(row.expiration_date, true),
-				selector: 'expiration_date',
-				sortable: true,
-				maxWidth: '120px'
 			},
 			{
 				name: 'Actions',
@@ -168,13 +150,13 @@ class CoursesWorkshops extends Component {
 
 			<div className="filter">
 				<Select items={regulations} placeholder="Select State" id={"id"} val={"name"} onChange={value => this.setfilter(value, "regulation.id")} />
-				<input type="text" placeholder="Search Course Code" onChange={e => this.setfilter(e, "code")} />
+				<input type="text" placeholder="Search Workshop Code" onChange={e => this.setfilter(e, "code")} />
 
 				<br />
 
 				<label className="checkbox">
 					<input type="checkbox" onChange={e => this.toggleArchived(e)} />
-					<span>Archived CE Courses</span>
+					<span>Archived Workshops</span>
 				</label>
 			</div>
 

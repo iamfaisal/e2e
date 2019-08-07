@@ -165,8 +165,8 @@ class Courses extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Courses</h2>
-                    <Link className="button" to={"/courses/create"}>Add New Course</Link>
+                    <h2>CE Courses</h2>
+                    <Link className="button" to={"/courses/create"}>Add New CE Course</Link>
                 </header>
 
                 <div className="filter">

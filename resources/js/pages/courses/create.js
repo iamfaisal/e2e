@@ -130,7 +130,7 @@ class CreateCourse extends Component {
         return (
             <div>
                 <header className="pageheader">
-                    <h2>Create Course</h2>
+                    <h2>Create CE Course</h2>
                 </header>
 
                 <form className={loading ? "loading" : ""} onSubmit={this.handleSubmit}>
@@ -171,7 +171,7 @@ class CreateCourse extends Component {
                             onChange={this.handleChange}
                             name="hours"
                             value={fields.hours}
-                            labelText="Hours"
+                            labelText="Length"
                         />
                         <label>
                             <span>Expiration Date</span>
@@ -236,7 +236,7 @@ class CreateCourse extends Component {
                         </div>
                     </div>
 
-                    <button className="button" disabled={!isFormValid}>Create Course</button>
+                    <button className="button" disabled={!isFormValid}>Create CE Course</button>
                 </form>
             </div>
         );

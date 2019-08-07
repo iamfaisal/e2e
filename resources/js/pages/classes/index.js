@@ -223,6 +223,16 @@ class Classes extends Component {
 				width: '60px'
 			},
 			{
+				name: 'Created On',
+				cell: row => {
+					let parts = formatDate(row.created_at).split(", ");
+					return <Fragment>{parts[0]}<br />{parts[1]}</Fragment>;
+				},
+				selector: "created_at",
+				sortable: true,
+				width: '90px'
+			},
+			{
 				name: 'Material',
 				cell: row => {
 					return <small className="links">
@@ -234,16 +244,6 @@ class Classes extends Component {
 				ignoreRowClick: true,
 				sortable: true,
 				width: '130px'
-			},
-			{
-				name: 'Created On',
-				cell: row => {
-					let parts = formatDate(row.created_at).split(", ");
-					return <Fragment>{parts[0]}<br />{parts[1]}</Fragment>;
-				},
-				selector: "created_at",
-				sortable: true,
-				width: '90px'
 			},
 			{
 				name: 'Actions',
