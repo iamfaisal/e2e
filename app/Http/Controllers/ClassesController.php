@@ -57,7 +57,7 @@ class ClassesController extends Controller
             ->when($request->workshop, function ($query) {
                 return $query->with('workshop');
             }, function ($query) {
-                return $query->where('course');
+                return $query->with('course');
             })
             ->when($request->fromInstructor, function ($query) use($user) {
                 return $query->where('user_id', $user->id);
