@@ -62,19 +62,12 @@ class ClassesWorkshops extends Component {
 
         params.workshop = 1;
 
-        read('classes', { params: params })
-            .then(res => {
-                this.setState({
-                    classes: res.data.classes,
-                    loader: false
-                });
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({
-                    loader: true
-                });
+        read('classes', { params: params }).then(res => {
+            this.setState({
+                classes: res.data.classes.filter(cl => cl.course.is_workshop),
+                loader: false
             });
+        }).catch(console.log);
     }
 
     renderLoader() { return <div className="loader"/> }
@@ -91,7 +84,7 @@ class ClassesWorkshops extends Component {
                 </label>
         </form>
         : <div className="actions">
-            <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id} />
+            <Link data-toggle="tooltip" title="Edit Class" className="ion-md-create" to={"/classes/edit/" + clss.id + "?ws"} />
             <a data-toggle="tooltip" title="Delete Class" className="ion-md-trash" onClick={e => this.deleteClass(e, clss.id)} />
         </div>
     }
@@ -185,7 +178,7 @@ class ClassesWorkshops extends Component {
             },
             {
                 name: 'Workshop',
-                cell: row => <Link to={"/classes/edit/" + row.id}>{row.course.title}</Link>,
+                cell: row => <Link to={"/classes/edit/" + row.id + "?ws"}>{row.course.title}</Link>,
                 selector: "course.title",
                 ignoreRowClick: true,
                 sortable: true,

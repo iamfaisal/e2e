@@ -55,7 +55,9 @@ class EditClass extends Component {
 	}
 
 	componentDidMount() {
-		read('courses/', this.state.workshop ? { params: { workshop: 1 } } : {})
+		let { id, workshop } = this.state;
+	
+		read('classes/' + id, {})
 			.then(res => {
 				let { fields } = this.state;
 
@@ -69,7 +71,7 @@ class EditClass extends Component {
 			})
 			.catch(console.log);
 
-		read('courses/', {})
+		read('courses/', workshop ? { params: { workshop: 1 } } : {})
 			.then(res => {
 				this.setState({
 					courses: res.data.courses
@@ -396,7 +398,6 @@ class EditClass extends Component {
 						</div>
 					</div>
 
-					<input type="hidden" name="is_workshop" value={workshop} />
 					<button className="button">Update {workshop ? "Workshop" : "Class"}</button>
 				</form>
 

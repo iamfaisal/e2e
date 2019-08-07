@@ -45,6 +45,9 @@ class EditInstructor extends Component {
 				}],
 				territories: [],
 				courses: [],
+				workshops: [],
+				venues: [],
+				sponsors: [],
 				status: false
 			},
 			required_fields: {
@@ -55,6 +58,7 @@ class EditInstructor extends Component {
 			regulations: [],
 			territories: [],
 			courses: [],
+			workshops: [],
 			formValidationData: {},
 			isFormValid: true,
 			status: false
@@ -71,22 +75,20 @@ class EditInstructor extends Component {
 	componentDidMount() {
 		const { id } = this.state;
 
-		read('users/' + id, {})
-			.then(res => {
-				let { fields } = this.state;
-				fields.email = res.data.user.email;
-				fields.status = res.data.user.status;
-				if (res.data.licenses.length) fields.licenses = res.data.licenses;
-				if (res.data.user_courses.length) fields.courses = res.data.user_courses;
-				if (res.data.user_territories.length) fields.territories = res.data.user_territories;
+		read('users/' + id, {}).then(res => {
+			let { fields } = this.state;
+			fields.email = res.data.user.email;
+			fields.status = res.data.user.status;
+			if (res.data.licenses.length) fields.licenses = res.data.licenses;
+			if (res.data.user_courses.length) fields.courses = res.data.user_courses;
+			if (res.data.user_territories.length) fields.territories = res.data.user_territories;
 
-				this.setState({
-					fields: {...fields, ...res.data.profile},
-					courses: res.data.courses,
-					loaded: true
-				});
-			})
-			.catch(console.log);
+			this.setState({
+				fields: {...fields, ...res.data.profile},
+				courses: res.data.courses,
+				loaded: true
+			});
+		}).catch(console.log);
 
 		read('regulations/', {}).then(res => {
 			this.setState({
@@ -115,6 +117,39 @@ class EditInstructor extends Component {
 				}).sort((a, b) => a.label < b.label ? -1 : 1)
 			});
 		}).catch(console.log);
+
+		read('courses', { params: { workshop: 1 } }).then(res => {
+			this.setState({
+				workshops: res.data.courses.map(course => {
+					return {
+						label: course.title,
+						value: course.id
+					}
+				}).sort((a, b) => a.label < b.label ? -1 : 1)
+			});
+		})
+
+		read('venues').then(res => {
+			this.setState({
+				venues: res.data.venues.map(venue => {
+					return {
+						label: venue.name,
+						value: venue.id
+					}
+				}).sort((a, b) => a.label < b.label ? -1 : 1)
+			});
+		})
+
+		read('sponsors', { params: { role: 'admin' } }).then(res => {
+			this.setState({
+				sponsors: res.data.sponsors.map(sponsor => {
+					return {
+						label: sponsor.company,
+						value: sponsor.id
+					}
+				}).sort((a, b) => a.label < b.label ? -1 : 1)
+			});
+		});
 	}
 
 	handleChange(name, value, valid) {
@@ -226,7 +261,7 @@ class EditInstructor extends Component {
 	}
 
 	render() {
-		const { loaded, fields, regulations, territories, courses, loading, isFormValid, formValidationData } = this.state;
+		const { loaded, fields, regulations, territories, courses, venues, sponsors, workshops, loading, isFormValid, formValidationData } = this.state;
 
 		if (!loaded) return false;
 
@@ -239,6 +274,24 @@ class EditInstructor extends Component {
 		let selectedCourses = fields.courses.map(c => {
 			let label = "";
 			courses.forEach(course => course.value == c ? label = course.label : "");
+			return { label: label, value: c }
+		});
+
+		let selectedWorkshops = fields.workshops.map(c => {
+			let label = "";
+			workshops.forEach(workshop => workshop.value == c ? label = workshop.label : "");
+			return { label: label, value: c }
+		});
+
+		let selectedVenues = fields.venues.map(c => {
+			let label = "";
+			venues.forEach(venue => venue.value == c ? label = venue.label : "");
+			return { label: label, value: c }
+		});
+
+		let selectedSponsors = fields.sponsors.map(c => {
+			let label = "";
+			sponsors.forEach(sponsor => sponsor.value == c ? label = sponsor.label : "");
 			return { label: label, value: c }
 		});
 
@@ -464,6 +517,36 @@ class EditInstructor extends Component {
 								isMulti={true}
 								name="courses[]" />
 						</label>
+						<label>
+							<span>Workshops</span>
+							<ReactSelect
+								className="react-select"
+								options={workshops}
+								value={selectedWorkshops}
+								onChange={v => this.handleChange("workshops", v, true)}
+								isMulti={true}
+								name="workshops[]" />
+						</label>
+						{/*<label>
+							<span>Venues</span>
+							<ReactSelect
+								className="react-select"
+								options={venues}
+								value={selectedVenues}
+								onChange={v => this.handleChange("venues", v, true)}
+								isMulti={true}
+								name="venues[]" />
+						</label>
+						<label>
+							<span>Sponsors</span>
+							<ReactSelect
+								className="react-select"
+								options={sponsors}
+								value={selectedSponsors}
+								onChange={v => this.handleChange("sponsors", v, true)}
+								isMulti={true}
+								name="sponsors[]" />
+						</label>*/}
 					</fieldset> : ""}
 
 					<div className="row">

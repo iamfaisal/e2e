@@ -54,14 +54,15 @@ class CreateMyClass extends Component {
 	}
 
 	componentDidMount() {
-		!this.state.workshop && read('classes/hasPendingRosters', {})
-			.then(res => {
-				this.setState({
-					// canAddNew: res.data.classes.length ? false : true
-				});
+		const { workshop } = this.state;
+	
+		!workshop && read('classes/hasPendingRosters', {}).then(res => {
+			this.setState({
+				canAddNew: res.data.classes.length ? false : true
 			});
+		});
 
-		read('classes/my-courses', {})
+		read('classes/my-courses', workshop ? { params: { workshop: 1 } } : {})
 			.then(res => {
 				this.setState({
 					courses: res.data.courses

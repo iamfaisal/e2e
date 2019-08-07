@@ -125,10 +125,17 @@ class CoursesWorkshops extends Component {
 			},
 			{
 				name: 'Length',
-				cell: row => (row.hours+"").replace(".00", ""),
+				cell: row => {
+					let output = "";
+					let hours = (row.hours / 60).toString().split('.')[0];
+					let minutes = row.hours % 60;
+					if (hours >= 1) output += hours + (hours >= 2 ? " Hours" : " Hour");
+					if (minutes >= 1) output += " " + minutes + (minutes >= 2 ? " Minutes" : " Minute");
+					return output;
+				},
 				selector: 'hours',
 				sortable: true,
-				maxWidth: '50px'
+				maxWidth: '120px'
 			},
 			{
 				name: 'Actions',

@@ -355,7 +355,6 @@ class CreateClass extends Component {
 						</div>
 					</div>
 
-					<input type="hidden" name="is_workshop" value={workshop} />
 					<button className="button" disabled={!fields.flyer}>Create {workshop ? "Workshop" : "Class"}</button>
 				</form>
 

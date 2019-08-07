@@ -52,19 +52,12 @@ class MyClassesWorkshops extends Component {
         params.fromInstructor = true;
         params.workshop = 1;
 
-        read('classes', { params: params })
-            .then(res => {
-                this.setState({
-                    classes: res.data.classes,
-                    loader: false
-                });
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({
-                    loader: true
-                });
+        read('classes', { params: params }).then(res => {
+            this.setState({
+                classes: res.data.classes.filter(cl => cl.course.is_workshop),
+                loader: false
             });
+        }).catch(console.log);
     }
 
     renderLoader() {

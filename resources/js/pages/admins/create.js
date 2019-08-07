@@ -57,6 +57,9 @@ class CreateAdmin extends Component {
         let { fields, formValidationData } = this.state;
         if (event && event.target.files) {
             fields[name] = event.target.files;
+        } else if (Array.isArray(value)) {
+            fields[name] = value.map(v => v.value);
+            if (value.length) valid = true;
         } else {
             fields[name] = value;
         }
@@ -77,6 +80,7 @@ class CreateAdmin extends Component {
         for (let key in required_fields) {
             if (!formValidationData[key]) {
                 isFormValid = false;
+                console.log(key, formValidationData[key]);
             }
         }
         this.setState({ isFormValid: isFormValid });
@@ -159,6 +163,7 @@ class CreateAdmin extends Component {
                             <span>Roles</span>
                             <ReactSelect
                                 className="react-select"
+                                onChange={v => this.handleChange("roles", v)}
                                 name="roles[]"
                                 options={roles}
                                 isMulti={true}

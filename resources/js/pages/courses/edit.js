@@ -33,7 +33,25 @@ class EditCourse extends Component {
             },
             required_fields: {
                 title: "",
+                regulation_id: "",
+                number: "",
+                code: "",
+                hours: ""
             },
+            lengths: [
+                { value: 15, label: "15 Minutes" },
+                { value: 30, label: "30 Minutes" },
+                { value: 45, label: "45 Minutes" },
+                { value: 60, label: "1 Hour" },
+                { value: 75, label: "1 Hour, 15 Minutes" },
+                { value: 90, label: "1 Hour, 30 Minutes" },
+                { value: 105, label: "1 Hour, 45 Minutes" },
+                { value: 120, label: "2 Hour" },
+                { value: 135, label: "2 Hour, 15 Minutes" },
+                { value: 150, label: "2 Hour, 30 Minutes" },
+                { value: 165, label: "2 Hour, 45 Minutes" },
+                { value: 180, label: "3 Hour" }
+            ],
             regulations: [],
             categories: [],
             formValidationData: {},
@@ -89,6 +107,7 @@ class EditCourse extends Component {
             fields[name] = event.target.files;
         } else if (Array.isArray(value)) {
             fields[name] = value.map(v => v.value);
+            if (value.length) valid = true;
         } else {
             fields[name] = value;
         }
@@ -120,7 +139,7 @@ class EditCourse extends Component {
         const { id, workshop, isFormValid } = this.state;
 
         if (!isFormValid) return;
-        
+
         this.setState({
             loading: true
         });
@@ -149,7 +168,7 @@ class EditCourse extends Component {
     }
 
     render() {
-        const { workshop, loaded, fields, regulations, categories, loading, isFormValid, formValidationData } = this.state;
+        const { workshop, loaded, fields, lengths, regulations, categories, loading, isFormValid, formValidationData } = this.state;
 
         if (!loaded) return false;
 
@@ -198,19 +217,29 @@ class EditCourse extends Component {
                             name="number"
                             value={fields.number}
                             labelText="Number"
+                            required={true}
+                            validation={[validations.isEmpty]}
                         />
                         <TextField
                             onChange={this.handleChange}
                             name="code"
                             value={fields.code}
                             labelText="Code"
+                            required={true}
+                            validation={[validations.isEmpty]}
                         />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="hours"
-                            value={fields.hours}
-                            labelText="Hours"
-                        />
+                        <label>
+                            <span>Length</span>
+                            <Select
+                                onChange={this.handleChange}
+                                name="hours"
+                                items={lengths}
+                                sort={false}
+                                value={fields.hours}
+                                id="value"
+                                val="label"
+                            />
+                        </label>
                         <label>
                             <span>Expiration Date</span>
                             <DatePicker

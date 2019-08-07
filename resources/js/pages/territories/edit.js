@@ -19,6 +19,7 @@ class EditTerritory extends Component {
             },
             required_fields: {
                 name: "",
+                zip_codes: ""
             },
             regulations: [],
             formValidationData: {},
@@ -130,8 +131,8 @@ class EditTerritory extends Component {
                             onChange={this.handleChange}
                             name="name"
                             value={fields.name}
-                            required={true}
                             labelText="Name"
+                            required={true}
                             validation={[validations.isEmpty]}
                         />
                         <label>
@@ -140,8 +141,8 @@ class EditTerritory extends Component {
                                 onChange={this.handleChange}
                                 items={regulations}
                                 name="regulation"
-                                id={"id"}
-                                val={"name"}
+                                id="id"
+                                val="name"
                                 value={fields.regulation_id}
                             />
                         </label>
@@ -153,6 +154,8 @@ class EditTerritory extends Component {
                             name="zip_codes"
                             value={fields.zip_codes}
                             labelText="Zip Codes"
+                            required={true}
+                            validation={[validations.isEmpty]}
                         />
                     </fieldset>
 

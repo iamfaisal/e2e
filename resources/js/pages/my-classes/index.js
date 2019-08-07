@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter, formatDate } from "../../helpers/resource";
-import { asset } from "../../helpers/app";
+import { getuser, asset } from "../../helpers/app";
 import Select from "../../common/Select";
 import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
@@ -12,6 +12,7 @@ class MyClasses extends Component {
         super(props);
 
         this.state = {
+            user: getuser(),
             classes: [],
             courses: [],
             regulations: [],
@@ -21,7 +22,7 @@ class MyClasses extends Component {
                 end_date: ""
             },
             loader: true,
-            canAddNew: false,
+            canAddNew: true,
             archived: false,
             cancelled: false
         };
@@ -33,29 +34,31 @@ class MyClasses extends Component {
     }
 
     componentDidMount() {
+        const { user } = this.state;
+
         this.getData({});
 
-        read('courses/', {})
-            .then(res => {
-                this.setState({
-                    courses: res.data.courses
-                });
-            })
-            .catch(console.log);
-
-        read('classes/hasPendingRosters', {})
-            .then(res => {
-                this.setState({
-                    canAddNew: res.data.classes.length ? false : true
-                });
-            })
-            .catch(console.log);
-
-        read('regulations', {}).then(res => {
+        read('courses/', {}).then(res => {
             this.setState({
-                regulations: res.data.regulations
+                courses: res.data.courses
             });
         }).catch(console.log);
+
+        read('classes/hasPendingRosters', {}).then(res => {
+            this.setState({
+                canAddNew: res.data.classes.length ? false : true
+            });
+        }).catch(console.log);
+
+        read('users/' + user.id, {}).then(u_res => {
+            read('regulations', {}).then(res => {
+                this.setState({
+                    regulations: res.data.regulations.filter(r => {
+                        return !!u_res.data.licenses.find(l => l.regulation_id == r.id)
+                    })
+                });
+            });
+        });
     }
 
     getData(params = {}) {
@@ -63,19 +66,13 @@ class MyClasses extends Component {
 
         params.fromInstructor = true;
 
-        read('classes', { params: params })
-            .then(res => {
-                this.setState({
-                    classes: res.data.classes,
-                    loader: false
-                });
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({
-                    loader: true
-                });
+        read('classes', { params: params }).then(res => {
+            this.setState({
+                classes: res.data.classes.filter(cl => !cl.course.is_workshop),
+                loader: false
             });
+        })
+        .catch(console.log);
     }
 
     renderLoader() {

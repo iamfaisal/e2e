@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { Link } from "react-router-dom";
-import { read, remove, filter } from "../../helpers/resource";
+import { read, filter } from "../../helpers/resource";
 import { getUserFullName } from "../../helpers/app";
 import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
@@ -31,19 +31,13 @@ class Instructors extends Component {
     getData() {
         this.setState({loader: true});
 
-        read('users', { params: { role: 'instructor'} })
-            .then(res => {
-                this.setState({
-                    instructors: res.data.users,
-                    loader: false
-                });
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({
-                    loader: true
-                });
+        read('users', { params: { role: 'instructor'} }).then(res => {
+            this.setState({
+                instructors: res.data.users,
+                loader: false
             });
+        })
+        .catch(console.log);
 
         read('regulations', {}).then(res => {
             this.setState({

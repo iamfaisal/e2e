@@ -3,7 +3,7 @@ import TextField from "../../common/TextField";
 import TextArea from "../../common/TextArea";
 import CheckBox from "../../common/CheckBox";
 import FileInput from "../../common/FileInput";
-import { read, create } from "../../helpers/resource";
+import { read, create, formatDate } from "../../helpers/resource";
 
 class ApproveClass extends Component {
     constructor(props) {
@@ -162,13 +162,18 @@ class ApproveClass extends Component {
                             <span>{instructor.name}</span>
                         </li>
                         <li>
+                            <b>Date:</b>
+                            <span>{formatDate(fields.start_date, true)}</span>
+                            <CheckBox name="date" labelText="Needs Attention" />
+                        </li>
+                        <li>
                             <b>Start Time:</b>
-                            <span>{fields.start_date}</span>
+                            <span>{formatDate(fields.start_date).split(", ")[1]}</span>
                             <CheckBox name="start_time" labelText="Needs Attention" />
                         </li>
                         <li>
                             <b>End Time:</b>
-                            <span>{fields.end_date}</span>
+                            <span>{formatDate(fields.end_date).split(", ")[1]}</span>
                             <CheckBox name="end_time" labelText="Needs Attention" />
                         </li>
                         <li>

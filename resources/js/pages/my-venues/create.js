@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";
 import { getuser } from "../../helpers/app";
@@ -133,6 +134,8 @@ class CreateVenue extends Component {
 							value={fields.name}
 							maxLength={50}
 							labelText="Venue Name"
+							required={true}
+							validation={[validations.isEmpty]}
 						/>
 					</fieldset>
 

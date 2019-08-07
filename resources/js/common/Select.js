@@ -54,11 +54,11 @@ class Select extends Component {
 
     render() {
         let { value } = this.state;
-        const { name, items, id, val, placeholder, multiple } = this.props;
+        const { name, items, id, val, placeholder, multiple, sort } = this.props;
 
         if (multiple && !Array.isArray(value)) value = [value];
 
-        if (!val.includes('|')) {
+        if (!val.includes('|') && sort !== false) {
             items.sort((a, b) => a[val].trim() < b[val].trim() ? -1 : 1);
         }
 

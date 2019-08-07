@@ -29,8 +29,7 @@ class EditAdmin extends Component {
             required_fields: {
                 first_name: "",
                 last_name: "",
-                email: "",
-                roles: []
+                email: ""
             },
             roles: [],
             formValidationData: {},
@@ -81,6 +80,7 @@ class EditAdmin extends Component {
             fields[name] = event.target.files;
         } else if (Array.isArray(value)) {
             fields[name] = value.map(v => v.value);
+            if (value.length) valid = true;
         } else {
             fields[name] = value;
         }
@@ -145,6 +145,7 @@ class EditAdmin extends Component {
 
         if (!loaded) return false;
 
+        if (!Array.isArray(fields.roles)) fields.roles = [];
         let selectedRoles = fields.roles.map(c => {
             let label = "";
             roles.forEach(role => role.value == c ? label = role.label : "");
@@ -198,7 +199,7 @@ class EditAdmin extends Component {
                                 options={roles}
                                 value={selectedRoles}
                                 isMulti={true}
-                                onChange={v => this.handleChange("roles", v, true)}
+                                onChange={v => this.handleChange("roles", v)}
                                 name="roles[]" />
                         </label>
                     </fieldset>

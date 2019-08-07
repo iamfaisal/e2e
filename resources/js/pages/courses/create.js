@@ -28,11 +28,31 @@ class CreateCourse extends Component {
                 class_flyer_template: "",
                 class_docs_template: "",
                 material: "",
-                commercial_link: ""
+                commercial_link: "",
+                categories: []
             },
             required_fields: {
                 title: "",
+                regulation_id: "",
+                number: "",
+                code: "",
+                hours: "",
+                categories: []
             },
+            lengths: [
+                { value: 15, label: "15 Minutes" },
+                { value: 30, label: "30 Minutes" },
+                { value: 45, label: "45 Minutes" },
+                { value: 60, label: "1 Hour" },
+                { value: 75, label: "1 Hour, 15 Minutes" },
+                { value: 90, label: "1 Hour, 30 Minutes" },
+                { value: 105, label: "1 Hour, 45 Minutes" },
+                { value: 120, label: "2 Hour" },
+                { value: 135, label: "2 Hour, 15 Minutes" },
+                { value: 150, label: "2 Hour, 30 Minutes" },
+                { value: 165, label: "2 Hour, 45 Minutes" },
+                { value: 180, label: "3 Hour" }
+            ],
             regulations: [],
             categories: [],
             formValidationData: {},
@@ -71,6 +91,9 @@ class CreateCourse extends Component {
     
         if (event && event.target.files) {
             fields[name] = event.target.files;
+        } else if (Array.isArray(value)) {
+            fields[name] = value.map(v => v.value);
+            if (value.length) valid = true;
         } else {
             fields[name] = value;
         }
@@ -128,7 +151,7 @@ class CreateCourse extends Component {
     }
 
     render() {
-        const { workshop, fields, regulations, categories, loading, isFormValid, formValidationData } = this.state;
+        const { workshop, fields, lengths, regulations, categories, loading, isFormValid, formValidationData } = this.state;
 
         let title = workshop ? "Workshop" : "CE Course";
 
@@ -165,19 +188,29 @@ class CreateCourse extends Component {
                             name="number"
                             value={fields.number}
                             labelText="Number"
+                            required={true}
+                            validation={[validations.isEmpty]}
                         />
                         <TextField
                             onChange={this.handleChange}
                             name="code"
                             value={fields.code}
                             labelText="Code"
+                            required={true}
+                            validation={[validations.isEmpty]}
                         />
-                        <TextField
-                            onChange={this.handleChange}
-                            name="hours"
-                            value={fields.hours}
-                            labelText="Length"
-                        />
+                        <label>
+                            <span>Length</span>
+                            <Select
+                                placeholder="Select Length"
+                                onChange={this.handleChange}
+                                name="hours"
+                                items={lengths}
+                                sort={false}
+                                id="value"
+                                val="label"
+                            />
+                        </label>
                         <label>
                             <span>Expiration Date</span>
                             <DatePicker
@@ -200,6 +233,7 @@ class CreateCourse extends Component {
                             <span>Categories</span>
                             <ReactSelect
                                 className="react-select"
+                                onChange={v => this.handleChange("categories", v)}
                                 name="categories[]"
                                 options={categories}
                                 isMulti={true}

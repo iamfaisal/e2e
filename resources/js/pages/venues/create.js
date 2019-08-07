@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { validations } from "../../utils/validations";
 import TextField from "../../common/TextField";
 import Select from "../../common/Select";;
 import { read, create } from "../../helpers/resource";
@@ -19,7 +20,8 @@ class CreateVenue extends Component {
 				zip_code: ""
 			},
 			required_fields: {
-				name: ""
+				name: "",
+				users: []
 			},
 			instructors: [],
 			regulations: [],
@@ -58,6 +60,9 @@ class CreateVenue extends Component {
 		let { fields, formValidationData } = this.state;
 		if (event && event.target.files) {
 			fields[name] = event.target.files;
+		} else if (Array.isArray(value)) {
+			fields[name] = value.map(v => v.value);
+			if (value.length) valid = true;
 		} else {
 			fields[name] = value;
 		}
@@ -147,6 +152,7 @@ class CreateVenue extends Component {
 						<span>Instructor</span>
 						<ReactSelect
 							className="react-select"
+							onChange={v => this.handleChange("users", v)}
 							options={instructors}
 							isMulti={true}
 							name="users[]"
@@ -161,6 +167,7 @@ class CreateVenue extends Component {
 							maxLength={50}
 							labelText="Venue Name"
 							required={true}
+							validation={[validations.isEmpty]}
 						/>
 					</fieldset>
 

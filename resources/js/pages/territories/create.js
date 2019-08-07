@@ -17,6 +17,7 @@ class CreateTerritory extends Component {
             },
             required_fields: {
                 name: "",
+                zip_codes: ""
             },
             regulations: [],
             formValidationData: {},
@@ -119,8 +120,8 @@ class CreateTerritory extends Component {
                             onChange={this.handleChange}
                             name="name"
                             value={fields.name}
-                            required={true}
                             labelText="Name"
+                            required={true}
                             validation={[validations.isEmpty]}
                         />
                         <label>
@@ -129,8 +130,8 @@ class CreateTerritory extends Component {
                                 onChange={this.handleChange}
                                 name="regulation"
                                 items={regulations}
-                                id={"id"}
-                                val={"name"}
+                                id="id"
+                                val="name"
                             />
                         </label>
                     </fieldset>
@@ -141,6 +142,8 @@ class CreateTerritory extends Component {
                             name="zip_codes"
                             value={fields.zip_codes}
                             labelText="Zip Codes"
+                            required={true}
+                            validation={[validations.isEmpty]}
                         />
                     </fieldset>
 
