@@ -54,11 +54,6 @@ class ClassesController extends Controller
             }, function ($query) {
                 return $query->where('is_cancelled', false);
             })
-            ->when($request->workshop, function ($query) {
-                return $query->with('workshop');
-            }, function ($query) {
-                return $query->with('course');
-            })
             ->when($request->fromInstructor, function ($query) use($user) {
                 return $query->where('user_id', $user->id);
             });
