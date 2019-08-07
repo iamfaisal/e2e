@@ -15,12 +15,7 @@ class Lesson extends Model
 
     public function course()
     {
-        return $this->belongsTo(Course::class)->where('is_workshop', 0);
-    }
-
-	public function workshop()
-    {
-        return $this->belongsTo(Course::class)->where('is_workshop', 1);
+        return $this->belongsTo(Course::class);
     }
 
     public function user()

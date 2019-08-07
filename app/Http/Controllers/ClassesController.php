@@ -41,7 +41,7 @@ class ClassesController extends Controller
     {
         $currentDateTime = Carbon::now()->toDateTimeString();
         $user = $this->user;
-        $classes = Lesson::with('course.categories', 'user', 'venue', 'venue.regulation')
+        $classes = Lesson::with('course','course.categories', 'user', 'venue', 'venue.regulation')
             ->orderBy('created_at', 'desc')
             ->where('is_deleted', false)
             ->when($request->archived, function ($query) use($currentDateTime) {
