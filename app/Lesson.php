@@ -13,13 +13,6 @@ class Lesson extends Model
         'is_approved', 'is_deleted', 'is_cancelled'
     ];
 
-	public $is_workshop;
-
-	public function __construct()
-	{
-		$this->is_workshop = $this->course->is_workshop;
-	}
-
     public function course()
     {
         return $this->belongsTo(Course::class)->where('is_workshop', false);
