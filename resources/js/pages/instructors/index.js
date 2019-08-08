@@ -36,14 +36,13 @@ class Instructors extends Component {
                 instructors: res.data.users,
                 loader: false
             });
-        })
-        .catch(console.log);
+        });
 
         read('regulations', {}).then(res => {
             this.setState({
                 regulations: res.data.regulations
             });
-        }).catch(console.log);
+        });
     }
 
     renderLoader() { return <div className="loader" /> }

@@ -81,6 +81,7 @@ class EditInstructor extends Component {
 			fields.status = res.data.user.status;
 			if (res.data.licenses.length) fields.licenses = res.data.licenses;
 			if (res.data.user_courses.length) fields.courses = res.data.user_courses;
+			if (res.data.user_workshops.length) fields.workshops = res.data.user_workshops;
 			if (res.data.user_territories.length) fields.territories = res.data.user_territories;
 
 			this.setState({

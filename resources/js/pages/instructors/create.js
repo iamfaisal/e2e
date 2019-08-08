@@ -36,6 +36,8 @@ class CreateInstructor extends Component {
 					certificate: "",
 					expiration: new Date
 				}],
+				courses: [],
+				workshops: [],
 				status: false
 			},
 			required_fields: {
@@ -56,13 +58,11 @@ class CreateInstructor extends Component {
 	}
 
 	componentDidMount() {
-		read('regulations/', {})
-			.then(res => {
-				this.setState({
-					regulations: res.data.regulations
-				});
-			})
-			.catch(console.log);
+		read('regulations/', {}).then(res => {
+			this.setState({
+				regulations: res.data.regulations
+			});
+		}).catch(console.log);
 	}
 
 	handleChange(name, value, valid) {
