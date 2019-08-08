@@ -63,7 +63,7 @@ class CoursesController extends Controller
 					return $query->where('is_workshop', false);
 				})
 			->whereHas('users', function($query) {
-    			$query->where(id, $this->user->id);
+    			$query->where('id', $this->user->id);
 			});
         $regulations = Regulation::all();
         return response()->json([
