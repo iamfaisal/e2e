@@ -53,7 +53,7 @@ class CoursesController extends Controller
 
     public function materials(Request $request)
     {
-        $courses = Course::with(['regulation','user' => function($query) {
+        $courses = Course::with(['regulation','users' => function($query) {
   				$query->where('id', $this->user->id);
 			}])
             ->orderBy('created_at', 'desc')
