@@ -118,7 +118,7 @@ class UsersController extends Controller
                         License::create($licenseData);
                     }
                 }
-                $user->notify(new InstructorCreated($profileData['first_name']));
+                //$user->notify(new InstructorCreated($profileData['first_name']));
             } else {
                 $user->roles()->sync($request->roles);
             }
