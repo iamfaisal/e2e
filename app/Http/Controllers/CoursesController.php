@@ -37,9 +37,7 @@ class CoursesController extends Controller
 					}, function ($query) {
 						return $query->where('is_workshop', false);
 					})
-					->with(['regulation','categories:name,label','users' => function($query) {
-  						$query->where('id', $this->user->id);
-					}]);
+					->with('regulation','categories:name,label');
 
         if ($request->has('active')) {
             $courses->where("is_deleted", false);
@@ -56,16 +54,17 @@ class CoursesController extends Controller
 
     public function materials(Request $request)
     {
-        $courses = Course::with(['regulation','users' => function($query) {
-  				$query->where('id', $this->user->id);
-			}])
+        $courses = Course::with('regulation')
             ->orderBy('created_at', 'desc')
             ->where("is_deleted", false)
 			->when($request->workshop, function ($query) {
 					return $query->where('is_workshop', true);
 				}, function ($query) {
 					return $query->where('is_workshop', false);
-				});
+				})
+			->whereHas('users', function($query) {
+    			$query->where(id, $this->user->id);
+			});
         $regulations = Regulation::all();
         return response()->json([
             'courses' => $courses->get(),
