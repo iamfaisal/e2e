@@ -25,5 +25,5 @@ Route::group(['prefix' => 'auth'], function()
     Route::resource('classes', 'ClassesController')->except(['create', 'edit']);
     Route::resource('sponsors', 'SponsorsController')->except(['create', 'edit']);
     Route::resource('venues', 'VenuesController')->except(['create', 'edit']);
-    Route::get('materials', 'CoursesController@materials');
+    Route::get('materials/{workshop}', 'CoursesController@materials');
 });
