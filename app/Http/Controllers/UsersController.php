@@ -115,7 +115,7 @@ class UsersController extends Controller
                         } else {
                             $licenseData['certificate'] = $license['certificate_file'];
                         }
-                        //$user->notify(new InstructorNewLicense($profileData['first_name'], $license['code']));
+                        $user->notify(new InstructorNewLicense($profileData['first_name'], $license['code']));
                         License::create($licenseData);
                     }
                 }

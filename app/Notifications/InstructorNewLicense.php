@@ -47,7 +47,7 @@ class InstructorNewLicense extends Notification
         return (new MailMessage)
                     ->subject('PSRE: New License Added')
                     ->greeting('Hello ' . $this->name . ',')
-                    ->line('Your new license has been added, Code = ' . $this->license->code . '.');
+                    ->line('Your new license has been added, Code = ' . $this->code . '.');
     }
 
     /**
