@@ -229,11 +229,12 @@ class UsersController extends Controller
             }
             if (in_array(3, $request->roles))
             {
-                $user->courses()->sync($request->courses);
+				$coursesData = array_merge($request->courses, $request->workshops);
+                $user->courses()->sync($coursesData);
                 $user->territories()->sync($request->territories);
                 $user->notify(new InstructorUpdated($profileData['first_name']));
-                if ($request->courses) {
-                    foreach ($request->courses as $courseID) {
+                if ($coursesData) {
+                    foreach ($coursesData as $courseID) {
                         $course = Course::find($courseID);
                         $user->notify(new InstructorNewCourse($profileData['first_name'], $course));
                     }
