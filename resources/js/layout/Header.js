@@ -2,17 +2,24 @@ import React, {Component} from "react";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
 import { getAuthUser, getAuthUserName, logout } from "../helpers/auth";
-import { asset, getUserAvatar } from "../helpers/app";
+import { asset, getuser, getUserAvatar } from "../helpers/app";
+import { read } from "../helpers/resource";
 import { getRoles, isJustInstructor, routeToDashboard } from "../helpers/acl";
 import { links } from "./navigation";
 
 class Header extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
+            user: {},
             sidebar: true,
             sidebar_open: false
         };
+
+        read('users/' + getuser().id, {}).then(res => {
+            this.setState({ user: res.data })
+        });
 
         this.handleLogout = this.handleLogout.bind(this);
         this.handleSidebarToggle = this.handleSidebarToggle.bind(this);
@@ -34,17 +41,27 @@ class Header extends Component {
     }
 
     renderNavigation(role, roleLinks) {
+        const { user } = this.state;
+
         return <nav key={role}>
             <h3>{role.replace("-", " ")}</h3>
             <ul>
-                {roleLinks.map(link => <li key={link.url} className={classnames({ "active": window.location.pathname === link.url })}>
-                    <Link to={link.url} className={link.icon}> <span>{link.name}</span></Link>
-                    {link.menu && <ul>
-                        {link.menu.map(sublink => <li key={sublink.url} className={classnames({ "active": window.location.pathname === sublink.url })}>
-                            <Link to={sublink.url}>{sublink.name}</Link>
-                        </li>)}
-                    </ul>}
-                </li>)}
+                {roleLinks.map(link => {
+                    let enabled = Object.keys(user).length && link.enable ? eval(link.enable) : true;
+
+                    return <li key={link.url} className={classnames({ "active": window.location.pathname === link.url })}>
+                        <Link to={link.url} className={link.icon} disabled={!enabled}> <span>{link.name}</span></Link>
+                        {link.menu && <ul>
+                            {link.menu.map(sublink => {
+                                let sub_enabled = Object.keys(user).length && sublink.enable ? eval(sublink.enable) : true;
+
+                                return <li key={sublink.url} className={classnames({ "active": window.location.pathname === sublink.url })}>
+                                    <Link to={sublink.url} disabled={!sub_enabled}>{sublink.name}</Link>
+                                </li>
+                            })}
+                        </ul>}
+                    </li>
+                })}
             </ul>
         </nav>
     }

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { asset } from "../../helpers/app";
+import { asset, getUserRegulations } from "../../helpers/app";
 import { read, filter } from "../../helpers/resource";
 import Select from "../../common/Select";
 import DataTable from "react-data-table-component";
@@ -20,29 +20,25 @@ class CourseMaterials extends Component {
 
     componentDidMount() {
         this.getData();
+
+        getUserRegulations().then(regs => {
+            this.setState({ regulations: regs });
+        });
     }
 
     getData() {
         this.setState({ loader: true });
 
-        read('materials', {})
-            .then(res => {
-                this.setState({
-                    materials: res.data.courses,
-                    regulations: res.data.regulations,
-                    loader: false
-                });
-            })
-            .catch(err => {
-                console.log(err);
-                this.setState({
-                    loader: true
-                });
+        read('materials', {}).then(res => {
+            this.setState({
+                materials: res.data.courses,
+                loader: false
             });
+        }).catch(console.log);
     }
 
     renderLoader() {
-        return<div className="loader"/>
+        return <div className="loader"/>
     }
 
     setfilter(value, key) {

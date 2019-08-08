@@ -88,13 +88,13 @@ class EditInstructor extends Component {
 				courses: res.data.courses,
 				loaded: true
 			});
-		}).catch(console.log);
+		});
 
 		read('regulations/', {}).then(res => {
 			this.setState({
 				regulations: res.data.regulations
 			});
-		}).catch(console.log);
+		});
 
 		read('territories', {}).then(res => {
 			this.setState({
@@ -105,18 +105,19 @@ class EditInstructor extends Component {
 					}
 				}).sort((a, b) => a.label < b.label ? -1 : 1)
 			});
-		}).catch(console.log);
+		});
 
 		read('courses', {}).then(res => {
 			this.setState({
 				courses: res.data.courses.map(course => {
 					return {
 						label: course.title,
-						value: course.id
+						value: course.id,
+						regulation: course.regulation_id
 					}
 				}).sort((a, b) => a.label < b.label ? -1 : 1)
 			});
-		}).catch(console.log);
+		});
 
 		read('courses', { params: { workshop: 1 } }).then(res => {
 			this.setState({
@@ -261,7 +262,8 @@ class EditInstructor extends Component {
 	}
 
 	render() {
-		const { loaded, fields, regulations, territories, courses, venues, sponsors, workshops, loading, isFormValid, formValidationData } = this.state;
+		const { loaded, fields, regulations, territories, venues, sponsors, workshops, loading, isFormValid, formValidationData } = this.state;
+		let { courses } = this.state;
 
 		if (!loaded) return false;
 
@@ -270,6 +272,8 @@ class EditInstructor extends Component {
 			territories.forEach(territory => territory.value == c ? label = territory.label : "");
 			return {label: label, value: c}
 		});
+
+		courses = courses.filter(cr => fields.licenses.find(l => l.regulation == cr.regulation));
 
 		let selectedCourses = fields.courses.map(c => {
 			let label = "";
@@ -448,18 +452,22 @@ class EditInstructor extends Component {
 							<label>
 								<span>State</span>
 								<Select
+									onChange={(n, v) => {
+										fields.licenses[i].regulation = v;
+										this.setState({ fields: fields });
+									}}
 									name={"licenses[" + i + "][regulation]"}
 									items={regulations}
 									placeholder="Select Regulation"
-									id={"id"}
-									val={"name"}
+									id="id"
+									val="name"
 									value={license["regulation_id"]}
 								/>
 							</label>
 							<TextField
 								onChange={this.handleChange}
 								name={"licenses[" + i + "][code]"}
-								value={""}
+								value=""
 								maxLength={50}
 								labelText="License Number"
 								value={license["code"]}

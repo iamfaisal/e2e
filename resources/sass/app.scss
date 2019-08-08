@@ -541,6 +541,10 @@ table {
 					color: $color_alizarin_crimson_approx;
 				}
 			}
+			&[disabled] {
+				opacity: .6;
+				pointer-events: none;
+			}
 		}
 		&:not(:last-child) {
 			margin-bottom: 20px;

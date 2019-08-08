@@ -1,3 +1,5 @@
+import { read } from "./resource";
+
 export function asset(resource, hideTrailingSlash = false) {
 	if (!resource) return;
 
@@ -45,4 +47,16 @@ export function toggleModel(name) {
 		document.body.classList.add('modal-visible');
 		modal.classList.add('show');
 	}
+}
+
+export function getUserRegulations() {
+	return new Promise(function (resolve) {
+		read('users/' + getuser().id, {}).then(u_res => {
+			read('regulations', {}).then(res => {
+				resolve(res.data.regulations.filter(r => {
+					return !!u_res.data.licenses.find(l => l.regulation_id == r.id)
+				}));
+			});
+		});
+	});
 }

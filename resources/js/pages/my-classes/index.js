@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { read, remove, filter, formatDate } from "../../helpers/resource";
-import { getuser, asset } from "../../helpers/app";
+import { asset, getUserRegulations } from "../../helpers/app";
 import Select from "../../common/Select";
 import DatePicker from "react-datepicker";
 import DataTable from "react-data-table-component";
@@ -12,7 +12,6 @@ class MyClasses extends Component {
         super(props);
 
         this.state = {
-            user: getuser(),
             classes: [],
             courses: [],
             regulations: [],
@@ -50,14 +49,8 @@ class MyClasses extends Component {
             });
         }).catch(console.log);
 
-        read('users/' + user.id, {}).then(u_res => {
-            read('regulations', {}).then(res => {
-                this.setState({
-                    regulations: res.data.regulations.filter(r => {
-                        return !!u_res.data.licenses.find(l => l.regulation_id == r.id)
-                    })
-                });
-            });
+        getUserRegulations().then(regs => {
+            this.setState({ regulations: regs });
         });
     }
 
