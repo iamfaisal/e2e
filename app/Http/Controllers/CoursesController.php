@@ -30,15 +30,16 @@ class CoursesController extends Controller
      */
     public function index(Request $request)
     {
-        $courses = Course::with(['regulation','categories:name,label','users' => function($query) {
-  						$query->where('id', $this->user->id);
-					}])
-                    ->orderBy('created_at', 'desc')
+        $courses = Course::
+                    orderBy('created_at', 'desc')
 					->when($request->workshop, function ($query) {
 						return $query->where('is_workshop', true);
 					}, function ($query) {
 						return $query->where('is_workshop', false);
-					});
+					})
+					->with(['regulation','categories:name,label','users' => function($query) {
+  						$query->where('id', $this->user->id);
+					}]);
 
         if ($request->has('active')) {
             $courses->where("is_deleted", false);
