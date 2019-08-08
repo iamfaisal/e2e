@@ -102,6 +102,7 @@ class UsersController extends Controller
             if (in_array(3, $request->roles) && $request->has('licenses')) {
                 $user->licenses()->delete();
                 foreach ($request->licenses as $index => $license) {
+					var_dump($license);
                     if (!empty($license['regulation']) && !empty($license['code']) && !empty($license['expiration'])) {
                         $licenseData = [
                             'regulation_id' => $license['regulation'],
@@ -118,7 +119,7 @@ class UsersController extends Controller
                         License::create($licenseData);
                     }
                 }
-                //$user->notify(new InstructorCreated($profileData['first_name']));
+                $user->notify(new InstructorCreated($profileData['first_name']));
             } else {
                 $user->roles()->sync($request->roles);
             }
