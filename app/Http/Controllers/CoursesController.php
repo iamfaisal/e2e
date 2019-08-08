@@ -51,14 +51,14 @@ class CoursesController extends Controller
         ], 200);
     }
 
-    public function materials($workshop)
+    public function materials(Request $request)
     {
         $courses = Course::with(['regulation','user' => function($query) {
   				$query->where('id', $this->user->id);
 			}])
             ->orderBy('created_at', 'desc')
             ->where("is_deleted", false)
-			->when($workshop, function ($query) {
+			->when($request->workshop, function ($query) {
 					return $query->where('is_workshop', true);
 				}, function ($query) {
 					return $query->where('is_workshop', false);
