@@ -141,10 +141,11 @@ class UsersController extends Controller
     {
         $regulations = $user->licenses->pluck('regulation_id');
         $courses = Course::whereIn('regulation_id', $regulations)->orderBy('created_at', 'desc')->get();
-        $territories = Territory::whereIn('regulation_id', $regulations)->orderBy('created_at', 'desc')->get();
+		$territories = Territory::whereIn('regulation_id', $regulations)->orderBy('created_at', 'desc')->get();
         return response()->json([
             'user' => $user,
             'user_courses' => $user->courses->pluck('id'),
+			'user_workshops' => $user->workshops->pluck('id'),
             'user_territories' => $user->territories->pluck('id'),
             'profile' => $user->profile,
             'licenses' => $user->licenses,
