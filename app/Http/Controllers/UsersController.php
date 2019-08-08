@@ -120,9 +120,8 @@ class UsersController extends Controller
                     }
                 }
                 $user->notify(new InstructorCreated($profileData['first_name']));
-            } else {
-                $user->roles()->sync($request->roles);
             }
+			$user->roles()->sync($request->roles);
         }
 
         return response()->json([
@@ -225,9 +224,8 @@ class UsersController extends Controller
                         License::create($licenseData);
                     }
                 }
-            } else {
-                $user->roles()->sync($request->roles);
-            }
+            } 
+			$user->roles()->sync($request->roles);
             if (in_array(3, $request->roles))
             {
 				$coursesData = array_merge($request->courses, $request->workshops);
