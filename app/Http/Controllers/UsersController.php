@@ -217,7 +217,7 @@ class UsersController extends Controller
                         ];
                         if ($_FILES['licenses']['name'][$index] && !empty($_FILES['licenses']['name'][$index]['certificate'])) {
                             $licenseData['certificate'] = $this->handleFileUpload($license['certificate']);
-                            $user->notify(new InstructorNewLicense($profileData['first_name'], $license['code']));
+                            $user->notify(new InstructorNewLicense($profileData['first_name'], $licenseData['code']));
                         } else {
                             $licenseData['certificate'] = $license['certificate_file'];
                         }
